@@ -1,6 +1,16 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: B. Endres (endres -at- systopia.de)    |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*/
+
 
 require_once 'donrec.civix.php';
+require_once 'donrec_lifecycle.php';
 
 /**
  * Implementation of hook_civicrm_config
@@ -36,6 +46,9 @@ function donrec_civicrm_uninstall() {
  * Implementation of hook_civicrm_enable
  */
 function donrec_civicrm_enable() {
+  // create/update custom groups
+  donrec_lifecycle_updateCustomGroups();
+  
   return _donrec_civix_civicrm_enable();
 }
 
