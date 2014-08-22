@@ -10,7 +10,7 @@
 
 
 require_once 'donrec.civix.php';
-require_once 'donrec_lifecycle.php';
+require_once 'CRM/Donrec/DataStructure.php';
 
 /**
  * Implementation of hook_civicrm_config
@@ -47,7 +47,7 @@ function donrec_civicrm_uninstall() {
  */
 function donrec_civicrm_enable() {
   // create/update custom groups
-  donrec_lifecycle_updateCustomGroups();
+  CRM_Donrec_DataStructure::updateCustomGroups();
   
   return _donrec_civix_civicrm_enable();
 }
