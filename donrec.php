@@ -47,7 +47,7 @@ function donrec_civicrm_uninstall() {
  */
 function donrec_civicrm_enable() {
   // create/update custom groups
-  CRM_Donrec_DataStructure::updateCustomGroups();
+  CRM_Donrec_DataStructure::update();
   
   return _donrec_civix_civicrm_enable();
 }

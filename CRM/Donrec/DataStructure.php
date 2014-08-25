@@ -16,7 +16,8 @@ class CRM_Donrec_DataStructure {
   public static $customGroupDefaults = array(
     'style' => 'Inline',
     'collapse_display' => 1,
-    'is_active' => 1
+    'is_active' => 1,
+    'is_multiple' => 1,
   );
   public static $customGroups = array(
     array(
@@ -27,13 +28,13 @@ class CRM_Donrec_DataStructure {
     array(
       'name' => 'zwb_donation_receipt_item',
       'title' => 'donation-receipt-item',
-      'extends' => 'Contact',
+      'extends' => 'Contribution',
     )
   );
   public static $customFieldDefaults = array(
     'is_searchable' => 1,
     'is_active' => 1,
-    'is_required' => 1,
+    'is_view' => 1,
   );
   public static $customFields = array(
     array(
@@ -199,63 +200,68 @@ class CRM_Donrec_DataStructure {
   /**
    * Create all custom-groups and -fields if they don't exist.
    */
-  public static function updateCustomGroups() {
-    self::createOptionGroups();
-    self::createOptionValues();
-    self::createCustomGroups();
-    self::createCustomFields();
+  public static function update() {
+    self::updateOptionGroups();
+    self::updateOptionValues();
+    self::updateCustomGroups();
+    self::updateCustomFields();
   }
   /**
    * Create OptionGroups if not already exists.
    */
-  protected static function createOptionGroups() {
+  protected static function updateOptionGroups() {
     foreach (self::$optionGroups as $optionGroup) {
       $params = array_merge($optionGroup, self::$optionGroupDefaults);
-      self::createIfNotExists('OptionGroup', $params);
+      $get_params['name'] = $params['name'];
+      self::createIfNotExists('OptionGroup', $params, $get_params);
     }
   }
 
   /**
    * Create OptionValues if not already exists.
    */
-  protected static function createOptionValues() {
+  protected static function updateOptionValues() {
     foreach (self::$optionValues as $optionValue) {
       $params = array_merge($optionValue, self::$optionValueDefaults);
       $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => $params['option_group_name']));
+      // replace option_group_name with option_group_id
       $params['option_group_id'] = $optionGroup['id'];
       unset($params['option_group_name']);
-      self::createIfNotExists('OptionValue', $params);
+      $get_params['name'] = $params['name'];
+      $get_params['option_group_id'] = $params['option_group_id'];
+      self::createIfNotExists('OptionValue', $params, $get_params);
     }
   }
 
   /**
    * Create CustomGroups if not already exists.
    */
-  protected static function createCustomGroups() {
+  protected static function updateCustomGroups() {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
-      self::createIfNotExists('CustomGroup', $params);
+      $get_params['name'] = $params['name'];
+      self::createIfNotExists('CustomGroup', $params, $get_params);
     }
   }
 
   /**
    * Create CustomFields if not already exists.
    */
-  protected static function createCustomFields() {
+  protected static function updateCustomFields() {
     foreach (self::$customFields as $customField) {
       $params = array_merge($customField, self::$customFieldDefaults);
       if (!empty($params['option_group_name'])) {
         $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => $params['option_group_name']));
+      // replace option_group_name with option_group_id
         $params['option_group_id'] = $optionGroup['id'];
         unset($params['option_group_name']);
       }
       $customGroup = civicrm_api3('CustomGroup', 'getsingle', array('name' => $params['custom_group_name']));
+      // replace custom_group_name with custom_group_id
       $params['custom_group_id'] = $customGroup['id'];
       unset($params['custom_group_name']);
-      // we need extra params for getting the entity, because the api fails on getting
-      // a customField with option_group_id as parameter.
-      $get_params = $params;
-      unset($get_params['option_group_id']);
+      $get_params['name'] = $params['name'];
+      $get_params['custom_group_id'] = $params['custom_group_id'];
       self::createIfNotExists('CustomField', $params, $get_params);
     }
   }
@@ -266,7 +272,10 @@ class CRM_Donrec_DataStructure {
   protected static function createIfNotExists($entity, $params, $get_params = Null) {
     $get_params = $get_params ? $get_params : $params;
     $get = civicrm_api3($entity, 'get', $get_params);
-    if ($get['count']) return;
+    if ($get['count']) {
+      if ($get['count'] > 1) error_log("de.systopia.donrec: warning: $entity exists multiple times: " . print_r($get_params, True));
+      return;
+    }
     civicrm_api3($entity, 'create', $params);
   }
 
