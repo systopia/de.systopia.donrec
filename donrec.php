@@ -32,6 +32,11 @@ function donrec_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function donrec_civicrm_install() {
+  //create database tables
+  $config = CRM_Core_Config::singleton();
+  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
+  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
+
   return _donrec_civix_civicrm_install();
 }
 
