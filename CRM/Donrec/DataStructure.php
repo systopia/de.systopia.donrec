@@ -83,6 +83,7 @@ class CRM_Donrec_DataStructure {
       'label' => 'status',
       'data_type' => 'String',
       'html_type' => 'Select',
+      'option_type' => 0,
     ),
     array(
       'name' => 'type',
@@ -91,6 +92,7 @@ class CRM_Donrec_DataStructure {
       'label' => 'type',
       'data_type' => 'String',
       'html_type' => 'Select',
+      'option_type' => 0,
     ),
     array(
       'name' => 'issued_in',
