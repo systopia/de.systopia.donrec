@@ -45,6 +45,9 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Select',
       'option_type' => 0,
+      'text_length' => 255,
+      'note_columns' => 60,
+      'note_rows' => 4,
     ),
     array(
       'name' => 'type',
@@ -54,6 +57,9 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Select',
       'option_type' => 0,
+      'text_length' => 255,
+      'note_columns' => 60,
+      'note_rows' => 4,
     ),
     array(
       'name' => 'issued_on',
