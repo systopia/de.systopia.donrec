@@ -79,6 +79,7 @@ class CRM_Donrec_Logic_Snapshot {
 							`id` IN %3
 							;"
 		// FIXME: do not copy invalid contributions
+		// FIXME: this fails when there are no contributions 
 
 		// prepare parameters 
 		$params = array(1 => array($new_snapshot_id, 'Integer')
