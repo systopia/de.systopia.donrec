@@ -33,6 +33,9 @@
 			$values = $this->exportValues();
 			$contactIds = $this->_contactIds;
 
-			CRM_Donrec_Logic_Snapshot::create($contactIds, CRM_Core_Session::getLoggedInContactID());
+			// TODO: map contact ids to contributions
+			$contributionIds = array();
+
+			CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
 		}
 	}
