@@ -37,11 +37,18 @@
 			$query = "SELECT 
 							`id` 
 					  FROM `civicrm_contribution` 
-					  WHERE `contact_id`
-					  IN ($contactIds);";
+					  WHERE `contact_id` IN ($contactIds)
+					  AND `contact_id` IN (SELECT `contact_id` FROM `civicrm_contribution` GROUP BY `contact_id` 
+     									   HAVING SUM(`total_amount`) >= %1);";
+			
+			// prepare parameters 
+			$values['donrec_contribution_amount_low'] = 
+			empty($values['donrec_contribution_amount_low']) ? 0.00 : $values['donrec_contribution_amount_low'];
+			
+			$params = array(1 => array($values['donrec_contribution_amount_low'], 'Integer'));
 
 			// execute the query
-			$result = CRM_Core_DAO::executeQuery($query);
+			$result = CRM_Core_DAO::executeQuery($query, $params);
 
 			// build array
 			$contributionIds = array();
