@@ -48,12 +48,7 @@ class CRM_Donrec_Logic_Snapshot {
 		$new_snapshot_id++;
 
 		// build id string from contribution array
-		$id_string = "(";
-		for ($i = 0; $i < count($contributions); $i++) { 
-			$id_string = $id_string . $contributions[$i] . ", ";
-		}
-		$id_string = substr($id_string, 0, -2);
-		$id_string .= ")";
+		$id_string = implode(', ', $contributions);
 
 		// debugging/testing
 		$operator = "+ INTERVAL 1 DAY";
@@ -91,7 +86,7 @@ class CRM_Donrec_Logic_Snapshot {
 					FROM
 							`civicrm_contribution`
 					WHERE
-							`id` IN $id_string
+							`id` IN ($id_string)
 							;";
 		// FIXME: do not copy invalid contributions
 

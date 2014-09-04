@@ -31,10 +31,23 @@
 
 		function postProcess() {
 			$values = $this->exportValues();
-			$contactIds = $this->_contactIds;
+			$contactIds = implode(', ', $this->_contactIds);
 
-			// TODO: map contact ids to contributions
+			// map contact ids to contributions
+			$query = "SELECT 
+							`id` 
+					  FROM `civicrm_contribution` 
+					  WHERE `contact_id`
+					  IN ($contactIds);";
+
+			// execute the query
+			$result = CRM_Core_DAO::executeQuery($query);
+
+			// build array
 			$contributionIds = array();
+			while ($result->fetch()) {
+				$contributionIds[] = $result->id;
+			}
 
 			CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
 		}
