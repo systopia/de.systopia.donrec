@@ -29,4 +29,12 @@
 			{$form.is_test.html} {$form.is_test.label}
 		</td>
 	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<div class="crm-submit-buttons">
+			{include file="CRM/common/formButtons.tpl" location="bottom"}
+			</div>
+		</td>
+	</tr>
 </table>

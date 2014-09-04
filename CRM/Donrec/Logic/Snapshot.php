@@ -102,6 +102,8 @@ class CRM_Donrec_Logic_Snapshot {
 		// execute the query
 		$result = CRM_Core_DAO::executeQuery($insert_query, $params);
 
+		self::hasIntersections();
+
 		// return a new snapshot object
 		return new self($new_snapshot_id);
 	}

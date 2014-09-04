@@ -18,15 +18,21 @@
 			$this->add('text', 'donrec_contribution_amount_low', ts('Minimum amount'), array('size' => 8, 'maxlength' => 8));
 			$resultFormats = array(1 => ts('DUMMY #1'), 2 => ts('DUMMY #2'));
 			$this->addRadio('result_format', ts('Result format'), $resultFormats, NULL, '<br/>');
-			$this->addElement('checkbox', 'is_test', ts('Is this a test run?'));     
+			$this->addElement('checkbox', 'is_test', ts('Is this a test run?'));   
+			$this->addDefaultButtons(ts('Generate donation receipt(s)'));  
+			$this->setDefaults(array('donrec_type' => 1, 'result_format' => 1));
 		}
 		
 		function addRules() {
-			
+			$this->addRule('donrec_type', ts('Please select a donation receipt type'), 'required');
+			$this->addRule('donrec_contribution_amount_low', ts('Please enter a valid money value (e.g. %1).', array(1 => CRM_Utils_Money::format('9.99', ' '))), 'money');
+			$this->addRule('result_format', ts('Please select a result format'), 'required');
 		}
 
 		function postProcess() {
 			$values = $this->exportValues();
-			parent::postProcess();
+			$contactIds = $this->_contactIds;
+
+			CRM_Donrec_Logic_Snapshot::create($contactIds, CRM_Core_Session::getLoggedInContactID());
 		}
 	}

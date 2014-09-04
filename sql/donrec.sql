@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `civicrm_zwb_snapshot` (
   `status` int(10) unsigned NOT NULL,
   `created_by` int(10) NOT NULL,
   `total_amount` decimal(20,2) NOT NULL,
-  `non_deductible_amount` decimal(20,2) NOT NULL,
+  `non_deductible_amount` decimal(20,2) DEFAULT NULL,
   `currency` char(3) COLLATE utf8_unicode_ci NOT NULL,
   `receive_date` datetime NOT NULL,
   PRIMARY KEY (`snapshot_id`,`contribution_id`),
