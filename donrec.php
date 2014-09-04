@@ -97,3 +97,20 @@ function donrec_civicrm_managed(&$entities) {
 function donrec_civicrm_caseTypes(&$caseTypes) {
   _donrec_civix_civicrm_caseTypes($caseTypes);
 }
+
+/**
+* Add an action for creating donation receipts after doing a search
+*
+* @param string $objectType specifies the component
+* @param array $tasks the list of actions
+*
+* @access public
+*/
+function donrec_civicrm_searchTasks($objectType, &$tasks) {
+  if ($objectType == 'contact') {
+    $tasks[] = array(
+    'title' => ts('Generate donation receipt(s)'),
+    'class' => 'CRM_Donrec_Form_Task_DonrecTask',
+    'result' => false);
+  }
+}
