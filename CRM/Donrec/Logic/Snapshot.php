@@ -44,7 +44,7 @@ class CRM_Donrec_Logic_Snapshot {
 
 		// get next snapshot id
 		// FIXME: this might cause race conditions
-		$new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `civicrm_zwb_snapshot`;");
+		$new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `civicrm_donrec_snapshot`;");
 		$new_snapshot_id++;
 
 		// build id string from contribution array
@@ -59,7 +59,7 @@ class CRM_Donrec_Logic_Snapshot {
 		// assemble the query
 		$insert_query = 
 					"INSERT INTO 
-							`civicrm_zwb_snapshot` (
+							`civicrm_donrec_snapshot` (
 							`id`,
 							`snapshot_id`,
 							`contribution_id`, 
@@ -113,7 +113,7 @@ class CRM_Donrec_Logic_Snapshot {
 		self::cleanup();
 		return (bool)CRM_Core_DAO::singleValueQuery(
 			"SELECT `snapshot_id` 
-			   FROM `civicrm_zwb_snapshot` 
+			   FROM `civicrm_donrec_snapshot` 
 			  WHERE `contribution_id` = %1;", array(1 => array($contribution_id, 'Integer')));
 	}
 
@@ -122,7 +122,7 @@ class CRM_Donrec_Logic_Snapshot {
    */
 	public function delete() {
 		return (bool)CRM_Core_DAO::singleValueQuery(
-			"DELETE FROM `civicrm_zwb_snapshot` 
+			"DELETE FROM `civicrm_donrec_snapshot` 
 			 WHERE `snapshot_id` = %1;", array(1 => array($this->Id, 'Integer')));
 	}
 
@@ -131,7 +131,7 @@ class CRM_Donrec_Logic_Snapshot {
    */
 	public static function cleanup() {
 		CRM_Core_DAO::singleValueQuery(
-			"DELETE FROM `civicrm_zwb_snapshot` 
+			"DELETE FROM `civicrm_donrec_snapshot` 
 			 WHERE `expires_timestamp` < NOW();");
 	}
 
@@ -143,7 +143,7 @@ class CRM_Donrec_Logic_Snapshot {
 		$query = "SELECT  
 						   `contribution_id`,
 						   COUNT(*) 
-				  FROM     `civicrm_zwb_snapshot` 
+				  FROM     `civicrm_donrec_snapshot` 
 				  GROUP BY `contribution_id` HAVING COUNT(*) > 1;";
 		$results = CRM_Core_DAO::executeQuery($query);
 		$intersections = array();

@@ -1,14 +1,18 @@
 --
--- `civicrm_zwb_snapshot`
+-- `civicrm_donrec_snapshot`
 --
 
-CREATE TABLE IF NOT EXISTS `civicrm_zwb_snapshot` (
+DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
+
+
+CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `snapshot_id` int(10) NOT NULL,
   `contribution_id` int(10) unsigned NOT NULL,
   `created_timestamp` datetime NOT NULL,
   `expires_timestamp` datetime NOT NULL,
-  `status` int(10) unsigned NOT NULL,
+  `status` char(4) COLLATE utf8_unicode_ci          COMMENT 'NULL, TEST or DONE',
+  `process_data` text                               COMMENT 'json data generated while processing, e.g. files created',
   `created_by` int(10) NOT NULL,
   `total_amount` decimal(20,2) NOT NULL,
   `non_deductible_amount` decimal(20,2) DEFAULT NULL,
@@ -21,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `civicrm_zwb_snapshot` (
   KEY `created_by` (`created_by`),
   KEY `receive_date` (`receive_date`),
   KEY `snapshot_id` (`snapshot_id`),
-  CONSTRAINT `FK_donrec_zwb_snapshot_contribution_id` FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution` (`id`)
+  KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+-- removed: CONSTRAINT `FK_donrec_zwb_snapshot_contribution_id` FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution` (`id`)
