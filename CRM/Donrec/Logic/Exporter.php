@@ -26,10 +26,10 @@ class CRM_Donrec_Logic_Exporter {
 
 	}
 
-	abstract function exportSingle();
+	abstract function exportSingle($engine);
 
-	abstract function exportBulk();
+	abstract function exportBulk($engine);
 
-	abstract function wrapUp();
+	abstract function wrapUp($engine);
 
 }
