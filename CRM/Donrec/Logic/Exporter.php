@@ -61,4 +61,30 @@ abstract class CRM_Donrec_Logic_Exporter {
 	 * generate the final result
 	 */
 	abstract function wrapUp($chunk);
+
+
+	// HELPERS
+
+	/**
+	 * get the process information for this exporter type
+	 *	for the given snapshot item
+	 */
+	protected function getProcessInformation($snapshot_item_id) {
+		$all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
+		if (isset($all_process_information[$this->getID()])) {
+			return $all_process_information[$this->getID()];
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * set the process information for this exporter type
+	 *	for the given snapshot item
+	 */
+	protected function setProcessInformation($snapshot_item_id, $values) {
+		$all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
+		$all_process_information[$this->getID()] = $values;
+		$this->engine->getSnapshot()->setProcessInformation($snapshot_item_id, $all_process_information);
+	}
 }

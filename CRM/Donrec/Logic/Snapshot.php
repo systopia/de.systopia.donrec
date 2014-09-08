@@ -292,4 +292,44 @@ class CRM_Donrec_Logic_Snapshot {
 	public function getId() {
 		return $this->Id;
 	}
+
+  /**
+   * reads and parses the JSON process information field
+   */
+  public function getProcessInformation($snapshot_item_id) {
+    $item_id = (int) $snapshot_item_id;
+    if (!$item_id) return array();
+
+    // read value
+    $raw_value = CRM_Core_DAO::singleValueQuery(
+      "SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `id` = $item_id;");
+    if (empty($raw_value)) return array();
+
+    $value = json_decode($raw_value, TRUE);
+    if ($value==NULL) {
+      error_log("de.systopia.donrec: warning, cannot decode process_data of ID $item_id!");
+      return array();
+    } else {
+      return $value;
+    }
+  }
+
+  /**
+   * sets the JSON process information field
+   */
+  public function setProcessInformation($snapshot_item_id, $value) {
+    $item_id = (int) $snapshot_item_id;
+    if (!$item_id) return;
+
+    $raw_value = json_encode($value);
+    if ($raw_value==FALSE) {
+      error_log("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
+    } else {
+      return (bool) CRM_Core_DAO::singleValueQuery(
+        "UPDATE `civicrm_donrec_snapshot`
+         SET `process_data` = %1
+         WHERE `id` = %2;", 
+        array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));      
+    }
+  }
 }

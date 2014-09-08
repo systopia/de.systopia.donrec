@@ -217,4 +217,11 @@ class CRM_Donrec_Logic_Engine {
 		$stats['status'] = $this->getSnapshotStatus();
 		return $stats;
 	}
+
+  /**
+   * get the retained snapshot object
+   */
+  public function getSnapshot() {
+    return $this->snapshot;
+  }
 }

@@ -40,6 +40,9 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 	 */
 	public function exportSingle($chunk) {
 		error_log('dummy:exportSingle');
+		foreach ($chunk as $chunk_id => $chunk_item) {
+			$this->setProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
+		}
 		usleep(300);
 	}
 
