@@ -46,13 +46,39 @@
 				$query_date_limit .= " AND UNIX_TIMESTAMP(`receive_date`) <= $date_to";
 			}
 
+			// get table- and column name
+			$table_query = "SELECT `cg`.`table_name`,
+								   `cf`.`column_name` 
+						    FROM `civicrm_custom_group` AS cg,
+						         `civicrm_custom_field` AS cf 
+						    WHERE `cg`.`name` = 'zwb_donation_receipt_item' 
+						    AND `cf`.`custom_group_id` = `cg`.`id` 
+						    AND `cf`.`name` = 'status'";
+
+			$results = CRM_Core_DAO::executeQuery($table_query);
+
+			$custom_group_table = NULL;
+			$status_column = NULL;
+			while ($results->fetch()) {
+				$custom_group_table = $results->table_name;
+				$status_column = $results->column_name;
+			}
+
+			if ($custom_group_table == NULL || $status_column == NULL) {
+				// todo: error handling
+				// something went wrong here
+				error_log("custom_group_table or status_column is empty!");
+			}
+
 			// map contact ids to contributions
-			$query = "SELECT `id` 
-					  FROM `civicrm_contribution` 
+			$query = "SELECT `civicrm_contribution`.`id` 
+					  FROM `civicrm_contribution`, `$custom_group_table`
 					  WHERE `contact_id` IN ($contactIds)
 					  $query_date_limit
 					  AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
 					  AND `contribution_status_id` = 1
+					  AND `$custom_group_table`.`entity_id` = `civicrm_contribution`.`id`
+					  AND `$custom_group_table`.`$status_column` IN ('ORIGINAL', 'COPY')
 					  ";
 			
 			// prepare parameters 
