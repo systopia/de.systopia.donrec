@@ -72,14 +72,14 @@
 
 			// map contact ids to contributions
 			$query = "SELECT `civicrm_contribution`.`id` 
-					  FROM `civicrm_contribution`, `$custom_group_table`
-					  LEFT JOIN `$custom_group_table` ON `civicrm_contribution`.`id` = `$custom_group_table`.`entity_id`
+					  FROM (`civicrm_contribution`)
+					  LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id` 
 					  WHERE `contact_id` IN ($contactIds)
 					  $query_date_limit
 					  AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
 					  AND `contribution_status_id` = 1
-					  AND (`$custom_group_table`.`entity_id` IS NULL 
-					  OR `$custom_group_table`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
+					  AND (`b1`.`id` IS NULL 
+					  OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
 					  ";
 			
 			// prepare parameters 
