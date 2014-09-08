@@ -6,4 +6,10 @@
     <title>Creating Donation Reciepts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/donrec/task</path>
+    <page_callback>CRM_Donrec_Form_Task_Stats</page_callback>
+    <title>Issue Donation Receipts</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

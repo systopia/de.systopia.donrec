@@ -67,7 +67,7 @@
 			if ($custom_group_table == NULL || $status_column == NULL) {
 				// todo: error handling
 				// something went wrong here
-				error_log("custom_group_table or status_column is empty!");
+				error_log("de.systopia.donrec: error: custom_group_table or status_column is empty!");
 			}
 
 			// map contact ids to contributions
@@ -94,7 +94,14 @@
 				$contributionIds[] = $result->id;
 			}
 
-			CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+			$result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+			if ($result == NULL) {
+				// todo: error handling
+				error_log("de.systopia.donrec: error: snapshot is null!");
+			}else{
+				CRM_Core_Session::singleton()->pushUserContext( 
+            	CRM_Utils_System::url('civicrm/donrec/task', 'id=' . $result->getId()));
+			}
 		}
 
 		private function convertDate($raw_date) {
