@@ -109,7 +109,7 @@ function donrec_civicrm_caseTypes(&$caseTypes) {
 function donrec_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contact') {
     $tasks[] = array(
-    'title' => ts('Generate donation receipt(s)'),
+    'title' => ts('Issue donation receipt(s)'),
     'class' => 'CRM_Donrec_Form_Task_DonrecTask',
     'result' => false);
   }

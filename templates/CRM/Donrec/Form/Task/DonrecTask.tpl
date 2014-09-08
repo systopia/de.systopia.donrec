@@ -12,24 +12,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="label">{$form.donrec_contribution_amount_low.label}:</td>
-		<td>
-			{$form.donrec_contribution_amount_low.html} EUR
-		</td>
-	</tr>
-	<tr>
-		<td class="label">{$form.result_format.label}:</td>
-		<td>
-			{$form.result_format.html}
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>
-			{$form.is_test.html} {$form.is_test.label}
-		</td>
-	</tr>
-	<tr>
 		<td></td>
 		<td>
 			<div class="crm-submit-buttons">

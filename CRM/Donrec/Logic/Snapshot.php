@@ -77,7 +77,7 @@ class CRM_Donrec_Logic_Snapshot {
 							`id`,
 							NOW() as `created_timestamp`, 
 							NOW() $operator as `expires_timestamp`,
-							`contribution_status_id`,
+							NULL as `status`,
 							'%2' as `created_by`,
 							`total_amount`,
 							`non_deductible_amount`,
