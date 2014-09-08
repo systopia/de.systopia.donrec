@@ -12,19 +12,12 @@
 		}
 
 		function buildQuickForm() {
-			$donrecTypes = array(1 => ts('single'), 2 => ts('multi'));
-			$this->addRadio('donrec_type', ts('Donation receipt type'), $donrecTypes);
-			$this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
-			//$resultFormats = array(1 => ts('DUMMY #1'), 2 => ts('DUMMY #2'));
-			//$this->addRadio('result_format', ts('Result format'), $resultFormats, NULL, '<br/>');
-			//$this->addElement('checkbox', 'is_test', ts('Is this a test run?'));   
+			$this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
 			$this->addDefaultButtons(ts('Continue'));  
-			$this->setDefaults(array('donrec_type' => 1));
 		}
 		
 		function addRules() {
-			$this->addRule('donrec_type', ts('Please select a donation receipt type'), 'required');
-			//$this->addRule('result_format', ts('Please select a result format'), 'required');
+
 		}
 
 		function postProcess() {
@@ -100,7 +93,7 @@
 				error_log("de.systopia.donrec: error: snapshot is null!");
 			}else{
 				CRM_Core_Session::singleton()->pushUserContext( 
-            	CRM_Utils_System::url('civicrm/donrec/task', 'id=' . $result->getId()));
+            	CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));
 			}
 		}
 
