@@ -14,7 +14,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
  * Snapshot Test Suite
  */
 class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
-  private $tablesToTruncate = array('civicrm_zwb_snapshot');
+  private $tablesToTruncate = array('civicrm_donrec_snapshot');
 
   function setUp() {
     parent::setUp();
@@ -26,11 +26,11 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
 
- /**
-  * Test creation of a new snapshot
-  *
-  * @author niko bochan
-  */
+  /**
+   * Test creation of a new snapshot
+   *
+   * @author niko bochan
+   */
   public function testSnapshotCreation() {
     // prerequisites
     $contributions = $this->generateContributions(3);
@@ -40,14 +40,14 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
     $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
 
-    $this->assertDBQuery(3, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(3, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
   }
 
- /**
-  * 
-  *
-  * @author niko bochan
-  */
+  /**
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotQueryMissing() {
     // prerequisites
     $contributions = $this->generateContributions(1);
@@ -61,10 +61,10 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotQueryNoMatch() {
     // prerequisites
     $contributions       = $this->generateContributions(3);
@@ -81,10 +81,10 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotQueryMatch() {
     // prerequisites
     $contributions       = $this->generateContributions(1);
@@ -100,10 +100,10 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotQueryExpired() {
     // prerequisites
     $contributions       = $this->generateContributions(1);
@@ -119,10 +119,10 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotDeletion() {
     // prerequisites
     $contributions = $this->generateContributions(1);
@@ -144,14 +144,14 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertEquals(FALSE, $result);
 
     // check via sql whether the snapshot has been removed completely
-    $this->assertDBQuery(0, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(0, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotMaintenanceMissing() {
     // prerequisites
     $contributions = $this->generateContributions(1);
@@ -165,10 +165,10 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotMaintenanceNoExpired() {
     // prerequisites
     $contributions = $this->generateContributions(5);
@@ -181,14 +181,14 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     // call maintenance method
     $result = CRM_Donrec_Logic_Snapshot::cleanup();
     $this->assertEquals(FALSE, $result);
-    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotMaintenanceMixed() {
     // prerequisites
     $contributions_f = $this->generateContributions(5);
@@ -199,27 +199,27 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     // generate a new snapshot (not expired)
     $snapshot_fresh = CRM_Donrec_Logic_Snapshot::create($contributions_f, 1);
     $this->assertNotNull($snapshot_fresh, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
-    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
 
     // generate an expired snapshot
     $snapshot_expired = CRM_Donrec_Logic_Snapshot::create($contributions_e, 2, -20);
     $this->assertNotNull($snapshot_expired, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
-    $this->assertDBQuery(10, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(10, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
 
     // call maintenance method
     CRM_Donrec_Logic_Snapshot::cleanup();
 
     //result: the expired one should be gone. the fresh snapshot should still be there.
-    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_zwb_snapshot` WHERE `created_by` = 1");
-    $this->assertDBQuery(0, "SELECT count(*) FROM `civicrm_zwb_snapshot` WHERE `created_by` = 2");
-    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_donrec_snapshot` WHERE `created_by` = 1");
+    $this->assertDBQuery(0, "SELECT count(*) FROM `civicrm_donrec_snapshot` WHERE `created_by` = 2");
+    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
   }
 
   /**
-  * 
-  *
-  * @author niko bochan
-  */
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotNoConflict() {
     // prerequisites
     $contributions = $this->generateContributions(5);
@@ -240,11 +240,11 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertEquals(FALSE, $result);
   }
 
-   /**
-  * 
-  *
-  * @author niko bochan
-  */
+  /**
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotConflict() {
     // prerequisites
     $contributions = $this->generateContributions(15);
@@ -265,11 +265,11 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     error_log("--- end of expected warnings ---");
   }
 
-   /**
-  * 
-  *
-  * @author niko bochan
-  */
+  /**
+   * 
+   *
+   * @author niko bochan
+   */
   public function testSnapshotConflictMixed() {
     // prerequisites
     $contributions = $this->generateContributions(5);
@@ -278,12 +278,12 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     // generate a snapshot
     $snapshot1 = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
     $this->assertNotNull($snapshot1, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
-    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(5, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
 
     // generate a second, expired snapshot
     $snapshot2 = CRM_Donrec_Logic_Snapshot::create($contributions, 2, -10);
     $this->assertNotNull($snapshot2, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
-    $this->assertDBQuery(10, "SELECT count(*) FROM `civicrm_zwb_snapshot`");
+    $this->assertDBQuery(10, "SELECT count(*) FROM `civicrm_donrec_snapshot`");
 
     // check if there are intersections between the two snapshots
     error_log("\n--- the following warnings are expected ---");

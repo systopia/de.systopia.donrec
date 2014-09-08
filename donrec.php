@@ -114,3 +114,11 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
     'result' => false);
   }
 }
+
+/**
+ * Set permissions for runner/engine API call
+ */
+function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  // TODO: adjust to correct permission
+  $permissions['donation_receipt_engine']['next'] = array('access CiviCRM');
+}
