@@ -11,25 +11,47 @@
 /**
  * This is the base class for all exporters
  */
-class CRM_Donrec_Logic_Exporter {
+abstract class CRM_Donrec_Logic_Exporter {
+
+	protected $engine = NULL;
 
 	/**
 	 * returns the list of implemented exporters
 	 */
 	static function listExporters() {
-		return array(
-			CRM_Donrec_Exporters_Dummy,
-			CRM_Donrec_Exporters_PDF);
+		return array('Dummy', 'PDF');
 	}
 
-	function init() {
+	/**
+	 * init the exporter with the engine object
+	 * here, all necessary checks for the exporters 'readyness' should be performed
+	 * 
+	 * @return NULL if everything is o.k., an error message string if not
+	 */
+	function init($engine) {
+		$this->engine = $engine;
 
+		// TODO: sanity checks
+		return NULL;
 	}
 
-	abstract function exportSingle($engine);
+	/**
+	 * @return the ID of this importer class
+	 */
+	abstract function getID();
 
-	abstract function exportBulk($engine);
+	/**
+	 * export this chunk of individual items
+	 */
+	abstract function exportSingle($chunk);
 
-	abstract function wrapUp($engine);
+	/**
+	 * bulk-export this chunk of items
+	 */
+	abstract function exportBulk($chunk);
 
+	/**
+	 * generate the final result
+	 */
+	abstract function wrapUp($chunk);
 }

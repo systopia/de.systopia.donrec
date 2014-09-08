@@ -26,4 +26,16 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Logic_Exporter {
 	static function htmlOptions() {
 		return '<p>TEST</p>';
 	}
+
+	public function exportSingle($chunk) {
+		// TODO: implement
+	}
+
+	public function exportBulk($chunk) {
+		// TODO: implement
+	}
+
+	public function wrapUp($chunk) {
+		// TODO: implement
+	}
 }
