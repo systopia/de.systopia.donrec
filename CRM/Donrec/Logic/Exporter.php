@@ -18,8 +18,15 @@ abstract class CRM_Donrec_Logic_Exporter {
 	/**
 	 * returns the list of implemented exporters
 	 */
-	static function listExporters() {
+	public static function listExporters() {
 		return array('Dummy', 'PDF');
+	}
+
+	/**
+	 * get the class name for the given exporter
+	 */
+	public static function getClassForExporter($exporter_id) {
+		return 'CRM_Donrec_Exporters_' . $exporter_id;
 	}
 
 	/**

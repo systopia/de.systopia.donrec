@@ -87,7 +87,7 @@ class CRM_Donrec_Logic_Engine {
 			$exporter_names = explode(',', $this->parameters['exporters']);
 			foreach ($exporter_names as $exporter_name) {
 				// init exporter
-				$exporter_class = 'CRM_Donrec_Exporters_' . $exporter_name;
+				$exporter_class =  CRM_Donrec_Logic_Exporter::getClassForExporter($exporter_name);
 				$exporter = new $exporter_class();
 				$exporter->init($this);
 				$exporters[] = $exporter;
