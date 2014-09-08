@@ -27,4 +27,35 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 		return '<p>TEST</p>';
 	}
 
+	/**
+	 * @return the ID of this importer class
+	 */
+	public function getID() {
+		return 'Dummy';
+	}
+
+
+	/**
+	 * export this chunk of individual items
+	 */
+	public function exportSingle($chunk) {
+		error_log('dummy:exportSingle');
+		usleep(300);
+	}
+
+	/**
+	 * bulk-export this chunk of items
+	 */
+	public function exportBulk($chunk) {
+		error_log('dummy:exportBulk');
+		usleep(300);
+	}
+
+	/**
+	 * generate the final result
+	 */
+	public function wrapUp($chunk) {
+		error_log('dummy:wrapup');
+		usleep(1000);
+	}
 }

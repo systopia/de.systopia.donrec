@@ -27,6 +27,9 @@
 
 <script>
 var sid = {$sid};
+var bulk = "{$bulk}";
+var test = "{$test}";
+var exporters = "{$exporters}";
 var instructions_done = "{ts}The donation receipts have been generated. You can now download the results.{/ts}";
 var instructions_error = "{ts}There was a problem. Please check the log below for more information.{/ts}";
 
@@ -39,11 +42,11 @@ cj(function() {
 });
 
 function runNextChunk() {
-  CRM.api('DonationReceiptEngine', 'next', {'q': 'civicrm/ajax/rest', 'sid': sid},
+  CRM.api('DonationReceiptEngine', 'next', {'q': 'civicrm/ajax/rest', 'sid': sid, 'bulk': bulk, 'test': test, 'exporters': exporters},
     { success: function(data) {
         // TODO: implement
-        console.log("YO");
-        progress += 10;
+        progress = data.values.progress;
+        console.log(progress);
         cj("#progressbar").progressbar({value:progress});
         if (progress < 100) {
           runNextChunk();

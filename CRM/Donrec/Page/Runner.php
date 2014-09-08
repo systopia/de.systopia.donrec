@@ -5,11 +5,11 @@ require_once 'CRM/Core/Page.php';
 class CRM_Donrec_Page_Runner extends CRM_Core_Page {
   function run() {
     // TODO: remove: create snapshot
-    CRM_Core_DAO::executeQuery('TRUNCATE TABLE `civicrm_donrec_snapshot`;');
-    $contributions = array(13495, 13480, 13491);
-    $user_id = CRM_Core_Session::singleton()->get('userID');
-    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, $user_id);
-    $_REQUEST['sid'] = $snapshot->getId();
+    // CRM_Core_DAO::executeQuery('TRUNCATE TABLE `civicrm_donrec_snapshot`;');
+    // $contributions = array(13495, 13480, 13491);
+    // $user_id = CRM_Core_Session::singleton()->get('userID');
+    // $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, $user_id);
+    // $_REQUEST['sid'] = $snapshot->getId();
 
 
 
@@ -35,6 +35,10 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
           // if this is a test-run: restart
           $engine->resetTestRun();
         }
+
+        $this->assign('bulk', $parameters['bulk']);
+        $this->assign('test', $parameters['test']);
+        $this->assign('exporters', implode('', $parameters['exporters']));
       }
     }
 

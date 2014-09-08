@@ -15,6 +15,9 @@ class CRM_Donrec_Logic_Snapshot {
 	// unique snapshot id
 	private $Id;
 
+  // these fields of the table get copied into the chunk
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
+
 	// private constructor to prevent
 	// external instantiation
 	private function __construct($id) {
@@ -70,6 +73,7 @@ class CRM_Donrec_Logic_Snapshot {
 		}
 
 		// assemble the query
+    // remark: if you change this, also adapt the $CHUNK_FIELDS list
 		$insert_query = 
 					"INSERT INTO 
 							`civicrm_donrec_snapshot` (
@@ -163,6 +167,62 @@ class CRM_Donrec_Logic_Snapshot {
 			"SELECT `created_by` FROM `civicrm_donrec_snapshot` 
 			 WHERE `snapshot_id` = %1 LIMIT 1;", array(1 => array($this->Id, 'Integer')));
 	}
+
+  /**
+   * will select a previously unprocessed set of snapshot items
+   *
+   * @return array: <id> => array with values
+   */
+  public function getNextChunk($is_bulk, $is_test) {
+    $chunk_size = 1;     // TODO: get from settings
+    $snapshot_id = $this->getId();
+    $chunk = array();
+    if ($is_test) {
+      $status_clause = "`status` IS NULL";
+    } else {
+      $status_clause = "(`status` IS NULL OR `status`='TEST')";
+    }
+
+    // here, we need a different algorithm for bulk than for single:
+    if (!$is_bulk) {
+      // SINGLE case: just grab $chunk_size items
+      $query = CRM_Core_DAO::executeQuery(
+          "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;");
+      while ($query->fetch()) {
+        $chunk_line = array();
+        foreach (self::$CHUNK_FIELDS as $field) {
+          $chunk_line[$field] = $query->$field;
+        }
+        $chunk[$chunk_line['id']] = $chunk_line;
+      }
+    } else {
+      // BULK case: get items grouped by contact ID until exceeds $chunk_size
+      // TODO:
+    }
+
+    if (count($chunk)==0) {
+      return NULL;
+    } else {
+      return $chunk;
+    }
+  }
+
+  /**
+   * will mark a chunk as produced by getNextChunk() as being processed
+   */
+  public function markChunkProcessed($chunk, $is_test) {
+    if ($chunk==NULL) return;
+
+    $new_status = $is_test?'TEST':'DONE';
+    $ids = implode(',', array_keys($chunk));
+    if (empty($ids)) {
+      error_log('de.systopia.donrec: invalid chunk detected!');
+    } else {
+      CRM_Core_DAO::executeQuery(
+        "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids);");
+    }
+  }
+
 
     /**
      * get the snapshot's state distribution
