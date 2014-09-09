@@ -10,9 +10,6 @@
   <a class="button" href="{$url_back}">
     <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
   </a>
-  <a class="button" href="{$url_file}" download="results.zip">
-    <span align="right"><div class="icon file-icon"></div>{ts}Download{/ts}</span>
-  </a>
 </div>
 
 <!-- the log messages -->
@@ -38,6 +35,7 @@
 var sid = {$sid};
 var bulk = "{$bulk}";
 var test = "{$test}";
+var download_caption = "{ts}Download{/ts}:&nbsp;";
 var exporters = "{$exporters}";
 var instructions_done = "{ts}The donation receipts have been generated. You can now download the results.{/ts}";
 var instructions_error = "{ts}There was a problem. Please check the log below for more information.{/ts}";
@@ -83,13 +81,24 @@ function processReply(reply) {
   if (progress < 100) {
     runNextChunk();
   } else {
-    processDone();
+    processDone(reply);
   }
 }
 
-function processDone(successfully) {
+function processDone(reply) {
   cj('#donrec_buttons').show();
   cj('#donrec_instructions').text(instructions_done);
+
+  // add download buttons for all files
+  for (var exporter in reply.values.files) {
+    var download = reply.values.files[exporter];
+    cj('#donrec_buttons').append("                                                      \
+      <a class='button' href='" + download[1] + "' download='" + download[0] + "'>      \
+        <span align='right'>                                                            \
+          <div class='icon file-icon'></div>" + download_caption + exporter + "                    \
+        </span>                                                                         \
+      </a>");
+  }
 }
 
 // kick off process

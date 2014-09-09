@@ -79,10 +79,17 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 	 * @return array:
 	 *          'is_error': set if there is a fatal error
 	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+	 *          'download_url: URL to download the result
+	 *          'download_name: suggested file name for the download
 	 */
 	public function wrapUp($chunk) {
 		$reply = array();
 
+		$file = $this->createFile('dummy_test.txt', TRUE);
+		if (!empty($file)) {
+			$reply['download_name'] = $file[0];
+			$reply['download_url'] = $file[1];
+		}
 		usleep(1000);
 
 		CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);

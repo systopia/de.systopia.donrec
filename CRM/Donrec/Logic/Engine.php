@@ -110,6 +110,7 @@ class CRM_Donrec_Logic_Engine {
 
 		// container for log messages
 		$logs = array();
+		$files = array();
 
 		// get next chunk
 		$chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
@@ -120,6 +121,9 @@ class CRM_Donrec_Logic_Engine {
 			// select action
 			if ($chunk==NULL) {
 				$result = $exporter->wrapUp();
+				if (!empty($result['download_name']) && !empty($result['download_url'])) {
+					$files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
+				}
 			} else {
 				if ($is_bulk) {
 					$result = $exporter->exportBulk($chunk);
@@ -145,6 +149,7 @@ class CRM_Donrec_Logic_Engine {
 		// compile and return stats
 		$stats = $this->createStats();
 		$stats['log'] = $logs;
+		$stats['files'] = $files;
 		if ($chunk==NULL) {
 			$stats['progress'] = 100.0;
 		} else {

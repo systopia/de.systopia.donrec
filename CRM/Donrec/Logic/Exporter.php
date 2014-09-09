@@ -77,6 +77,8 @@ abstract class CRM_Donrec_Logic_Exporter {
 	 * @return array:
 	 *          'is_error': set if there is a fatal error
 	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+	 *          'download_url: URL to download the result
+	 *          'download_name: suggested file name for the download
 	 */
 	abstract function wrapUp($chunk);
 
@@ -104,6 +106,25 @@ abstract class CRM_Donrec_Logic_Exporter {
 		$all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
 		$all_process_information[$this->getID()] = $values;
 		$this->engine->getSnapshot()->setProcessInformation($snapshot_item_id, $all_process_information);
+	}
+
+	/**
+	 * will create an empty file for the exporter to overwrite
+	 * 
+	 * @return NULL if not possible, e.g. when the name is already taken,
+	 *         or   array(file_path, file_URL)
+	 */
+	protected function createFile($file_name, $is_temp = FALSE) {
+		// TODO: Implement! This is only a stub!
+		$config =  CRM_Core_Config::singleton();
+		error_log(print_r($config, 1));
+		if ($is_temp) {
+			$file = $config->customFileUploadDir . $file_name;
+		} else {
+			$file = $config->customFileUploadDir . $file_name;
+		}
+
+		return array($file, "TODO://file_url.");
 	}
 
 	/**
