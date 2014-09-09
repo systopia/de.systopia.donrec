@@ -20,12 +20,21 @@
 <div class="crm-accordion-wrapper.collapsed crm-donrec-process-log">
 <div class="crm-accordion-header active">{ts}Progress Log{/ts}</div>
 <div class="crm-accordion-body">
-<p>Log messages</p>
+<table>
+  <thead>
+    <tr>
+      <td><strong>{ts}Date{/ts}</strong></td>
+      <td><strong>{ts}Type{/ts}</strong></td>
+      <td><strong>{ts}Message{/ts}</strong></td>
+    </tr>
+  </thead>
+  <tbody id="donrec-logtable-body">
+  </tbody>
+</table>
 </div>
 </div>
 
-
-<script>
+<script type="text/javascript">
 var sid = {$sid};
 var bulk = "{$bulk}";
 var test = "{$test}";
@@ -43,23 +52,39 @@ cj(function() {
 
 function runNextChunk() {
   CRM.api('DonationReceiptEngine', 'next', {'q': 'civicrm/ajax/rest', 'sid': sid, 'bulk': bulk, 'test': test, 'exporters': exporters},
-    { success: function(data) {
-        // TODO: implement
-        progress = data.values.progress;
-        console.log(progress);
-        cj("#progressbar").progressbar({value:progress});
-        if (progress < 100) {
-          runNextChunk();
-        } else {
-          processDone();
-        }
-      },
+    { success: processReply,
       error: function(data) {
         // TODO: implement
         console.log("DAMN");
       }
     }
   );
+}
+
+function processReply(reply) {
+  // add log entry
+  if (reply.values.log) {
+    for (var i = 0; i < reply.values.log.length; i++) {
+      var log_entry = reply.values.log[i];
+      cj("#donrec-logtable-body").append("      \
+        <tr>                                    \
+          <td>" + log_entry.timestamp + "</td>  \
+          <td>" + log_entry.type + "</td>       \
+          <td>" + log_entry.message + "</td>    \
+        </tr>");
+    };
+  }
+
+  // visualize progress
+  progress = reply.values.progress;
+  cj("#progressbar").progressbar({value:progress});
+
+  // kick off the next batch
+  if (progress < 100) {
+    runNextChunk();
+  } else {
+    processDone();
+  }
 }
 
 function processDone(successfully) {

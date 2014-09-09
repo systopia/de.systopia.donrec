@@ -37,28 +37,55 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
 	/**
 	 * export this chunk of individual items
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'timestamp', 'message'
 	 */
 	public function exportSingle($chunk) {
-		error_log('dummy:exportSingle');
+		$reply = array();
+
+		// edit the process information
 		foreach ($chunk as $chunk_id => $chunk_item) {
 			$this->setProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
 		}
+
 		usleep(300);
+		
+		// add a log entry
+		CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+		return $reply;
 	}
 
 	/**
 	 * bulk-export this chunk of items
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
 	 */
 	public function exportBulk($chunk) {
-		error_log('dummy:exportBulk');
+		$reply = array();
+
 		usleep(300);
-	}
+
+		CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy bulk-processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+		return $reply;
+}
 
 	/**
 	 * generate the final result
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
 	 */
 	public function wrapUp($chunk) {
-		error_log('dummy:wrapup');
+		$reply = array();
+
 		usleep(1000);
+
+		CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+		return $reply;
 	}
 }
