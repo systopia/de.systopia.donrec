@@ -108,6 +108,10 @@ class CRM_Donrec_Logic_Engine {
 		$is_bulk = !empty($this->parameters['bulk']);
 		$is_test = !empty($this->parameters['test']);
 
+		// container for log messages
+		$logs = array();
+		$files = array();
+
 		// get next chunk
 		$chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
 
@@ -116,13 +120,19 @@ class CRM_Donrec_Logic_Engine {
 		foreach ($exporters as $exporter) {
 			// select action
 			if ($chunk==NULL) {
-				$exporter->wrapUp();
+				$result = $exporter->wrapUp();
+				if (!empty($result['download_name']) && !empty($result['download_url'])) {
+					$files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
+				}
 			} else {
 				if ($is_bulk) {
-					$exporter->exportBulk($chunk);
+					$result = $exporter->exportBulk($chunk);
 				} else {
-					$exporter->exportSingle($chunk);
+					$result = $exporter->exportSingle($chunk);
 				}
+			}
+			if (isset($result['log'])) {
+				$logs = array_merge($logs, $result['log']);
 			}
 		}
 
@@ -138,6 +148,8 @@ class CRM_Donrec_Logic_Engine {
 
 		// compile and return stats
 		$stats = $this->createStats();
+		$stats['log'] = $logs;
+		$stats['files'] = $files;
 		if ($chunk==NULL) {
 			$stats['progress'] = 100.0;
 		} else {
@@ -217,4 +229,11 @@ class CRM_Donrec_Logic_Engine {
 		$stats['status'] = $this->getSnapshotStatus();
 		return $stats;
 	}
+
+  /**
+   * get the retained snapshot object
+   */
+  public function getSnapshot() {
+    return $this->snapshot;
+  }
 }

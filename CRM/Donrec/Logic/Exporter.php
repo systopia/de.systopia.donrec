@@ -13,6 +13,12 @@
  */
 abstract class CRM_Donrec_Logic_Exporter {
 
+	const LOG_TYPE_DEBUG = 	'DEBUG';
+	const LOG_TYPE_INFO = 	'INFO';
+	const LOG_TYPE_ERROR = 	'ERROR';
+	const LOG_TYPE_FATAL = 	'FATAL';
+
+
 	protected $engine = NULL;
 
 	/**
@@ -49,16 +55,87 @@ abstract class CRM_Donrec_Logic_Exporter {
 
 	/**
 	 * export this chunk of individual items
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
 	 */
 	abstract function exportSingle($chunk);
 
 	/**
 	 * bulk-export this chunk of items
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
 	 */
 	abstract function exportBulk($chunk);
 
 	/**
 	 * generate the final result
+	 * 
+	 * @return array:
+	 *          'is_error': set if there is a fatal error
+	 *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+	 *          'download_url: URL to download the result
+	 *          'download_name: suggested file name for the download
 	 */
 	abstract function wrapUp($chunk);
+
+
+	// HELPERS
+
+	/**
+	 * get the process information for this exporter type
+	 *	for the given snapshot item
+	 */
+	protected function getProcessInformation($snapshot_item_id) {
+		$all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
+		if (isset($all_process_information[$this->getID()])) {
+			return $all_process_information[$this->getID()];
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * set the process information for this exporter type
+	 *	for the given snapshot item
+	 */
+	protected function setProcessInformation($snapshot_item_id, $values) {
+		$all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
+		$all_process_information[$this->getID()] = $values;
+		$this->engine->getSnapshot()->setProcessInformation($snapshot_item_id, $all_process_information);
+	}
+
+	/**
+	 * will create an empty file for the exporter to overwrite
+	 * 
+	 * @return NULL if not possible, e.g. when the name is already taken,
+	 *         or   array(file_path, file_URL)
+	 */
+	protected function createFile($file_name, $is_temp = FALSE) {
+		// TODO: Implement! This is only a stub!
+		$config =  CRM_Core_Config::singleton();
+		error_log(print_r($config, 1));
+		if ($is_temp) {
+			$file = $config->customFileUploadDir . $file_name;
+		} else {
+			$file = $config->customFileUploadDir . $file_name;
+		}
+
+		return array($file, "TODO://file_url.");
+	}
+
+	/**
+	 * create a log entry and add to the give reply
+	 */
+	public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO) {
+		$dateFormat = CRM_Core_Config::singleton()->dateformatDatetime;
+		$reply['log'][] = array(
+				'timestamp' => CRM_Utils_Date::customFormat(date('c'), $dateFormat),
+				'type'  		=> $type,
+				'message'		=> $message
+				);
+	}
 }
