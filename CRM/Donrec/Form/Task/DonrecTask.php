@@ -88,9 +88,9 @@
 			}
 
 			$result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
-			if ($result == NULL) {
-				// todo: error handling
-				error_log("de.systopia.donrec: error: snapshot is null!");
+			if (is_array($result)) {
+				CRM_Core_Session::singleton()->pushUserContext( 
+            	CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1'));
 			}else{
 				CRM_Core_Session::singleton()->pushUserContext( 
             	CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));

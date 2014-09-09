@@ -49,10 +49,13 @@ class CRM_Donrec_Logic_Snapshot {
    *                              expired snapshot if less/greater than 
    *							  zero (-1/1: one day expired, -2/2: two 
    *							  days etc.)
-   * @return snapshot object OR NULL
+   * @return snapshot object OR error array
    */
 	public static function create(&$contributions, $creator_id, $expired = 0) {
-		self::hasIntersections();
+		$error = self::hasIntersections();
+		if ($error) {
+			return $error;
+		}
 
 		if (count($contributions) < 1) {
 			return NULL;
@@ -116,12 +119,13 @@ class CRM_Donrec_Logic_Snapshot {
 		$snapshot = new self($new_snapshot_id);
 
 		// now check for conflicts with other snapshots
-		if (self::hasIntersections($new_snapshot_id)) {
+		$error = self::hasIntersections($new_snapshot_id);
+		if ($error) {
 			// this snapshot conflicts with others, delete
 			// TODO: error handling
 			//$snapshot->delete();
 			//return NULL;
-      return $snapshot;
+      		return $error;
 		} else {
 			return $snapshot;
 		}
@@ -270,21 +274,25 @@ class CRM_Donrec_Logic_Snapshot {
    */
 	public static function hasIntersections($snapshot_id = 0) {
 		// TODO: speed up by looking at one particular snapshot ?
-		$query = "SELECT  
-						   `contribution_id`,
-						   COUNT(*) 
-				  FROM     `civicrm_donrec_snapshot` 
-				  GROUP BY `contribution_id` HAVING COUNT(*) > 1;";
-		$results = CRM_Core_DAO::executeQuery($query);
-		$intersections = array();
+		$query =   "SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
+					FROM `civicrm_donrec_snapshot` AS original
+						INNER JOIN `civicrm_donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
+						LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
+					WHERE original.`snapshot_id` <> copy.`snapshot_id`
+					GROUP BY `snapshot_id`;";
+	
+		$results = CRM_Core_DAO::executeQuery($query);	
+		$intersections = array($snapshot_id);
 
 		while ($results->fetch()) {
-			$cid = $results->contribution_id;
-			error_log("de.systopia.donrec: warning: snapshot conflict - contribution #$cid exists in multiple snapshots!");
-			$intersections[] = $cid;
+			$intersections[] = array($results->snapshot_id, $results->display_name, $results->expires_timestamp);
 		}
-		
-		return count($intersections);
+
+		if (count($intersections) > 1) {
+			return $intersections;
+		}else{
+			return FALSE;
+		}
 	}
 
 	// --- HELPER/GETTER/SETTER METHODS ---

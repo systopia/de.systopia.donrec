@@ -24,7 +24,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 	 * @return a html snippet that defines the options as form elements
 	 */
 	static function htmlOptions() {
-		return '<p>TEST</p>';
+		return '<br/><i>TEST</i>';
 	}
 
 	/**

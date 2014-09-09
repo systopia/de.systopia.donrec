@@ -1,11 +1,31 @@
 <form action="{$formAction}" method="post">
 {if $error}
-<p style="color: #ff0000;">Error: {$error}</p>
+<div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
+	<p style="color: #ffffff;">Error: {$error}</p>
+</div>
 <div id='donrec_buttons' class="crm-submit-buttons">
   <a class="button" href="{$url_back}">
     <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
   </a>
 </div>
+{elseif $conflict_error}
+<h3>Error</h3>
+<div id="error-block" style="color: #ffffff; background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
+	<p>{ts}Sorry, but at least one of the selected contributions is already being processed for a donation receipt:{/ts}</p>
+	<p>{ts}The conflicting other donation receipt process was created by{/ts} <b>{$conflict_error[1]}</b></p>
+	<p>{ts}It will automatically expire on{/ts} <b>{$conflict_error[2]}</b></p>
+</div>
+<div id='donrec_buttons' class="crm-submit-buttons form-item">
+  <a class="button" href="{$url_back}">
+    <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
+  </a>
+</div>
+	{if $is_admin}
+	<div class="form-item">
+		<input name="donrec_abort_by_admin" value="{ts}Delete other process and restart{/ts}" class="form-submit" type="submit">
+		<input type="hidden" name="return_to" value="{$return_to}">
+	</div>
+	{/if}
 {else}
 <div class="form-item">
 <!-- result format radioboxes-->
@@ -17,13 +37,15 @@
 	<tr>
 		<td class="label">{ts}Donation receipt type{/ts}:</td>
 		<td>
-			<input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">single</label>&nbsp;<input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">multi</label>
+			<input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">single</label>&nbsp;<input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">bulk</label>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">{ts}Result formats{/ts}:</td>
 		<td>
-			<input value="1" type="radio" id="result_type" name="result_type" checked="checked" class="form-radio"/><label for="result_type">DUMMY #1</label>&nbsp;<input value="2" type="radio" id="result_type" name="result_type" class="form-radio" /><label for="result_type">DUMMY #2</label>
+			{foreach from=$exporters item=item}
+				<input value="{$item[0]}" type="radio" id="result_type" name="result_type" checked="checked" class="form-radio"/><label for="result_type">{$item[1]}</label>{$item[2]}&nbsp;</br>
+			{/foreach}
 		</td>
 	</tr>
 </table>
@@ -31,7 +53,7 @@
 <!-- the buttons -->
 <div class="form-item">
   <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
-  <input name="donrec_run" value="{ts}Issue donation receipts{/ts}" class="form-submit" type="submit">
+  <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
   <input name="donrec_abort" value="{ts}Abort{/ts}" class="form-submit" type="submit">
 </div>
 {/if}
