@@ -43,8 +43,8 @@
 	<tr>
 		<td class="label">{ts}Result formats{/ts}:</td>
 		<td>
-			{foreach from=$exporters item=item}
-				<input value="{$item[0]}" type="radio" id="result_type" name="result_type" checked="checked" class="form-radio"/><label for="result_type">{$item[1]}</label>{$item[2]}&nbsp;</br>
+			{foreach from=$exporters item=item name=exporters}
+				<input value="{$item[0]}" type="radio" id="result_type" name="result_type" {if $smarty.foreach.exporters.first}checked="checked"{/if} class="form-radio"/><label for="result_type">{$item[1]}</label>{$item[2]}&nbsp;<br />
 			{/foreach}
 		</td>
 	</tr>

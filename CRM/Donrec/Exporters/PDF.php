@@ -28,7 +28,18 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Logic_Exporter {
 	}
 
 	public function exportSingle($chunk) {
-		// TODO: implement
+		$reply = array();
+
+		// edit the process information
+		foreach ($chunk as $chunk_id => $chunk_item) {
+			$this->setProcessInformation($chunk_id, array('test' => 'PDF was here!'));
+		}
+
+		usleep(1300);
+		
+		// add a log entry
+		CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+		return $reply;
 	}
 
 	public function exportBulk($chunk) {

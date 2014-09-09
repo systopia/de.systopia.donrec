@@ -3,7 +3,7 @@
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
-    error_log(print_r($_REQUEST, TRUE));
+
     // check which button was clicked
     if(!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
       $by_admin = !empty($_REQUEST['donrec_abort_by_admin']);
@@ -30,12 +30,27 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         }
       }
     }elseif (!empty($_REQUEST['donrec_testrun'])) {
+      // test run case
       $bulk = (int)($_REQUEST['donrec_type'] == "2");
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporter")); 
+      $exporters = $_REQUEST['result_type'];
+      if (empty($exporters)) {
+        $this->assign('error', ts('Missing exporter!'));
+        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
+      }else{
+        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters")); 
+      }
     }elseif (!empty($_REQUEST['donrec_run'])) {
+      // issue donation receipts case
       $bulk = (int)($_REQUEST['donrec_type'] == "2");
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&final=1&exporters=$exporter"));
+      $exporters = $_REQUEST['result_type'];
+      if (empty($exporters)) {
+        $this->assign('error', ts('Missing exporter!'));
+        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
+      }else{
+        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&final=1&exporters=$exporters"));
+      }
     }elseif (!empty($_REQUEST['conflict'])) {
+      // called when a snapshot conflict has been detected
       $conflict = CRM_Donrec_Logic_Snapshot::hasIntersections();
       if (!$conflict) {
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$id"));
