@@ -31,12 +31,14 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 	      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE),
 	      array('type' => 'cancel', 'name' => ts('Cancel')),
 	    ));
+
+	    $this->registerRule('onlypositive', 'callback', 'onlyPositiveIntegers', 'CRM_Admin_Form_Setting_DonrecSettings');
     }
 
     function addRules() {
     	$this->addRule('draft_text', ts('Draft text can only contain text'), 'lettersonly');
     	$this->addRule('copy_text', ts('Copy text can only contain text'), 'lettersonly');
-    	$this->addRule('packet_size', ts('Packet size can only contain positive integers'), 'nonzero');
+    	$this->addRule('packet_size', ts('Packet size can only contain positive integers'), 'onlypositive');
   	}
 
     function preProcess() {
@@ -78,7 +80,14 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     			CRM_Core_BAO_Setting::setItem('all','Donation Receipt Settings', 'contribution_types');
     		}
     	}
-    	CRM_Core_Session::singleton()->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
+
+    	$session = CRM_Core_Session::singleton();
+        $session->setStatus(ts("Settings successfully saved", ts('Settings'), 'success'));
+    	$session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
     }
+
+    static function onlyPositiveIntegers($value) {
+	    return !($value <= 0);
+  	}
 
 }
