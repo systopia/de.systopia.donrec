@@ -122,3 +122,18 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
   // TODO: adjust to correct permission
   $permissions['donation_receipt_engine']['next'] = array('access CiviCRM');
 }
+
+/**
+ * Set settings
+ */
+function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
+  static $configured = FALSE;
+  if ($configured) return;
+  $configured = TRUE;
+
+  $extRoot = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+  $extDir = $extRoot . 'settings';
+  if(!in_array($extDir, $metaDataFolders)){
+    $metaDataFolders[] = $extDir;
+  }
+}

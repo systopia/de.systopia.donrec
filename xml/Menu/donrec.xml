@@ -12,4 +12,13 @@
     <title>Issue Donation Receipts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+   <item>
+    <path>civicrm/admin/setting/donrec</path>
+    <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>
+    <title>Donation receipts settings</title>
+    <desc>TODO</desc>
+    <access_arguments>administer CiviCRM</access_arguments>
+    <adminGroup>CiviContribute</adminGroup>
+    <icon>admin/small/online_contribution_pages.png</icon>
+  </item>
 </menu>
