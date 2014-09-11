@@ -32,7 +32,7 @@ function donrec_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function donrec_civicrm_install() {
-  //create database tables
+  // create database tables
   $config = CRM_Core_Config::singleton();
   $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
   CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
@@ -53,7 +53,9 @@ function donrec_civicrm_uninstall() {
 function donrec_civicrm_enable() {
   // create/update custom groups
   CRM_Donrec_DataStructure::update();
-  
+  // install default template
+  CRM_Donrec_Logic_Templates::setDefaultTemplate(); 
+
   return _donrec_civix_civicrm_enable();
 }
 

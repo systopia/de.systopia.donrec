@@ -23,26 +23,26 @@ class CRM_Donrec_Logic_Settings {
   	$get_all = ($raw_string == 'all');
 
   	if (!$get_all) {
-		$id_array = explode(',', $raw_string);
-		if ($id_array[0] == NULL) {
-			unset($id_array[0]);
-		}
-	}else{
-		$id_array = array();
-	}
+  		$id_array = explode(',', $raw_string);
+  		if ($id_array[0] == NULL) {
+  			unset($id_array[0]);
+  		}
+  	}else{
+  		$id_array = array();
+  	}
 
-  	// get all deductible ids
-  	$financial_type_ids = array((int)$get_all);
-	$query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
-	$results = CRM_Core_DAO::executeQuery($query);
-	while ($results->fetch()) {
-		$tmp = array($results->id, $results->name, $results->is_deductible, 0);
-		// select all ids that are either deductible or part of our settings array
-		if(($get_all && $results->is_deductible) || in_array($results->id, $id_array)) {
-			$tmp[3] = 1;
-		}
-		$financial_type_ids[] = $tmp;
-	}
+    // get all deductible ids
+    $financial_type_ids = array((int)$get_all);
+  	$query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
+  	$results = CRM_Core_DAO::executeQuery($query);
+  	while ($results->fetch()) {
+  		$tmp = array($results->id, $results->name, $results->is_deductible, 0);
+  		// select all ids that are either deductible or part of our settings array
+  		if(($get_all && $results->is_deductible) || in_array($results->id, $id_array)) {
+  			$tmp[3] = 1;
+  		}
+  		$financial_type_ids[] = $tmp;
+  	}
   	return $financial_type_ids;
   }
 
@@ -52,6 +52,17 @@ class CRM_Donrec_Logic_Settings {
   public static function saveOriginalPDF() {
   	return CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'store_original_pdf');
   }
+
+  /**
+  * @return id
+  */
+  public static function getDefaultTemplate() {
+    return CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'default_template');
+  }
+
+  public static function setDefaultTemplate($id) {
+    CRM_Core_BAO_Setting::setItem($id,'Donation Receipt Settings', 'default_template');
+  }  
 
 
 }
