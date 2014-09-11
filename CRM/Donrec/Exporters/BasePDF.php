@@ -20,32 +20,41 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
 	public function exportSingle($chunk) {
 		$reply = array();
+		$smarty = CRM_Core_Smarty::singleton();
 
-		// prepare tokens
+		// prepare shared tokens
 		$domain = CRM_Core_BAO_Domain::getDomain();
 		$domain_tokens = array();
 		foreach (array('name', 'address') as $token) {
 			$domain_tokens[$token] = CRM_Utils_Token::getDomainTokenReplacement($token, $domain, true, true);
 		}
-		$domain_tokens['address'] = str_replace('> <', '>&nbsp;<', $domain_tokens['address']); /* Hack to work around (yet another) bug in dompdf... */
-		
+
+		// assign all shared template variables
+		$smarty->assign('organisation', $domain_tokens);
+
 		$success = 0;
 		$failures = 0;
 		foreach ($chunk as $chunk_id => $chunk_item) {
 			//$this->setProcessInformation($chunk_id, array('test' => 'PDF was here!'));
-		
-			// assign all template variables
-			$this->template->assign('organisation', $domain_tokens);
 
-			error_log(print_r($this->template, TRUE));
+			// prepare unique template variables
+
+
+			// assign all unique template variables
+			$smarty->assign('total', $chunk_item['total_amount']);
+			$smarty->assign('totaltext', CRM_Donrec_Logic_Templates::num_to_text($chunk_item['total_amount']));
+		
 			// compile template
-			$html = $this->template->fetch(sprintf("string:%s", $this->template->msg_html));
+			$html = $this->template->msg_html;
+			$html = $smarty->fetch("string:$html");
+
 			// set up file names
 			$config = CRM_Core_Config::singleton();
 			$filename = CRM_Utils_File::makeFileName(sprintf("donrec_%d.pdf", $chunk_item['id']));
 			$filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
+
 			// render PDF receipt
-			$written = file_put_contents($filename, $html);//CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->template->pdf_format_id));
+			$written = file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->template->pdf_format_id));
 			if ($written === FALSE) {
 				$failures++;
 			}else{

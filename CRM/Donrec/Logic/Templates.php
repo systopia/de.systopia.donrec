@@ -88,4 +88,88 @@ class CRM_Donrec_Logic_Templates {
     return $template;
   }
 
+/**
+* single digit to text
+*/
+public static function num_to_text_digits($num)
+{
+  $digit_text = array("null","eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun");
+  $digits = array();
+  $num = floor($num);
+  while ($num > 0) {
+    $rest = $num % 10;
+    $num = floor($num / 10);
+    echo "$rest, $num\n";
+    $digits[] = $digit_text[$rest];
+  }
+  $digits = array_reverse($digits);
+  $result = "- ".join(" - ", $digits)." - ";
+  return $result;
+}
+
+/**
+* 0-999 to text
+*/
+public static function _num_to_text($num)
+{
+  $hundert = floor($num / 100);
+  $zehn = floor(($num - $hundert *100 ) / 10);
+  $eins = $num % 10;
+  $digit_1 = array("","ein","zwei","drei","vier","fünf","sechs","sieben","acht","neun");
+  $digit_10 = array("","zehn","zwanzig","dreißig","vierzig","fünfzig","sechzig","siebzig","achtzig","neunzig");
+  $str = "";
+  if ($hundert > 0) {
+    $str .= $digit_1[$hundert]."hundert ";
+  }
+  if ($zehn == 0) {
+    $str .= $digit_1[$eins];
+  } else if ($zehn == 1) {
+  if ($eins == 0) {
+    $str .= "zehn";
+  } else if ($eins == 1) {
+    $str .= "elf";
+  } else if ($eins == 2){
+    $str .= "zwölf";
+  } else {
+    $str .= $digit_1[$eins]."zehn";
+  }
+  } else {
+    if ($eins == 0) {
+      $str .= $digit_10[$zehn];
+    } else {
+      $str .= $digit_1[$eins]."und".$digit_10[$zehn];
+    }
+  }
+  return $str;
+}
+
+/**
+* general number to text conversion
+*/
+public static function num_to_text($num)
+{
+  static $max_len = 1;
+  $strs = array();
+  while ($num > 0) {
+    $strs[] = self::_num_to_text($num % 1000);
+    $num = floor($num / 1000);
+  }
+  $str = "";
+  if (isset($strs[2])) {
+    $str .= $strs[2] . " millionen ";
+  }
+  if (isset($strs[1])) {
+    $str .= $strs[1] . " tausend ";
+  }
+  if (isset($strs[0])) {
+    $str .= $strs[0];
+  }
+  $result = $str == "" ? "null" : trim($str);
+  $len = strlen($result);
+  if ($len > $max_len) {
+    $max_len = $len;
+  }
+  return $result;
+}
+
 }

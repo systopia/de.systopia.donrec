@@ -1,62 +1,48 @@
-<!--
-    Donation receipt template for CiviCRM donationreceipts extension.
-
-    Created in 2011 by digitalcourage e.V. in Germany, based on the official
-    forms published by the tax administration (last updated 2012); reworked in
-    2012, 2013 by Software fuer Engagierte e.V. in Germany.
-
-    To the extent possible under law, digitalcourage e.V. and Software fuer
-    Engagierte e.V. have dedicated all copyright and related and neighboring
-    rights to this template file to the public domain worldwide. This template
-    is distributed without any warranty.
-
-    You should have received a copy of the CC0 Public Domain Dedication along
-    with these files. If not, see
-    <http://creativecommons.org/publicdomain/zero/1.0/>.
--->
-
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
 <style>
 {literal}
-
 body {
-  font-family: Helvetica,sans-serif;
-  font-size: 8pt;
+  font-family: Helvetica,sans-serif !important;
+  font-size: 8pt!important;
   margin: 0;
 }
 
 .box {
-  padding: 0 3pt;
+  padding: 0 0pt;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: inherit;    /* Not sure why this is necessary when testing in Firefox... dompdf seems to work pefectly fine without it for a change. */
+  font-size: inherit!important;    /* Not sure why this is necessary when testing in Firefox... dompdf seems to work pefectly fine without it for a change. */
 }
 
 td, th {
-  border: thin solid;
-  padding: 3pt;
+  border: none;
+  text-align: left;
 }
 
 /* Tables with headers appearing merged into content cells. */
 
 table.merged th {
+  font-size: 7pt!important;
   vertical-align: bottom;
+  text-align: left;
   border-bottom: none;
-  padding-bottom: 0 !important;
+  padding-bottom: 0!important;
 }
 
 table.merged td {
   vertical-align: top;
+  text-align: left;
   border-top: none;
 }
 
 /* Variable content inserted into template. */
 .var {
-  font-size: 10pt;
+  font-size: 10pt!important;
 }
-
 
 .party th {
   font-weight: normal;
@@ -67,22 +53,28 @@ table.merged td {
   padding-top: .5em;
 }
 
-#issuer .country-name {
-  display: none;
-}
-
-
 h1 {
-  font-size: 10pt;
+  font-size: 12pt!important;
+  font-style: normal!important;
+  text-align: left!important;
+  margin: 10px 0 10px 0 !important;
 }
 
-#title h2 {
-  /* Make it look pretty much like a normal paragraph... */
-  /* A simple 'font: inherit' doesn't work in dompdf. */
-  font-size: inherit;
-  font-weight: inherit;
+#crm-container {
+    margin: 0px!important;
+    font-family: Helvetica,sans-serif !important;
 }
 
+h2 {
+  font-size: 10pt!important;    /* Same size as main heading, like in the official forms. */
+}
+
+h3 {
+  font-size: 10pt!important;    /* Same size as main heading, like in the official forms. */
+  text-align: right;
+  margin-top: 1.5em;
+  font-weight: normal;
+}
 
 #amounts {
   margin-top: 2em;
@@ -102,25 +94,12 @@ h1 {
 }
 
 #amounts #total {
-  text-align: right;
+  text-align: left;
 }
-
 
 #checks {
   margin-top: 3em;
 }
-
-ul.radio {
-  display: inline;
-  padding: 1.5em;
-  white-space: nowrap;
-}
-
-ul.radio li {
-  display: inline;
-  padding: 1.5em;
-}
-
 
 #exempt {
   margin-top: 1.5em;
@@ -132,54 +111,55 @@ ul.radio li {
 }
 
 #exempt #text {
-  margin-left: 24px;
+  margin-left: 0px;
   display: block;
 }
 
-
-#pledge {
-  margin-top: 3em;
-  border: thin solid;
-  padding: 3pt;    /* padding also at top/bottom, unlike unbordered boxes */
-}
-
-
-#signature {
-  margin-top: 5em;
-}
-
-#signature hr {
-  color: black;
-  margin: 0;
-}
-
-
-.footnote {
+.signature {
   position: absolute;
-  bottom: 0;
+  top: 725px;
 }
 
-.footnote p {
-  margin-bottom: 0;
+.absenderblock_rechts {
+  margin-left: 46em;
 }
 
 
+.footer {
+  position: absolute;
+  top: 855px;
+  font-size: 7pt!important;
+}
+
+.firstpage {
+    padding-top:0px;
+    height:883px;
+}
+
+.main {
+  position: absolute;
+  top: 75mm;
+}
+
+.sender {
+    font-size: 7pt!important;
+}
+
+.notice {
+    font-size: 90%!important;
+}
 .newpage {
   page-break-before: always;
 }
 
-h2 {
-  font-size: 10pt;    /* Same size as main heading, like in the official forms. */
-}
-
-
 #listing td.amount {
-  text-align: right;
+  text-align: left;
 }
 
 #listing #totals td, #listing #totals th {
   padding-top: 2em;
   border: none;
+  text-align: left;
 }
 
 #listing #totals th {
@@ -191,7 +171,6 @@ h2 {
 }
 
 #listing .unit {
-  visibility: hidden;
 }
 
 #listing #totals .unit {
@@ -201,35 +180,32 @@ h2 {
 {/literal}
 </style>
 
-<section id='page1'>
+<body>
+<div class="firstpage">
+<div class="absenderblock_rechts">{$organisation.address}<br/></div>
+<p class="sender">
+<u>{$organisation.name}, {$organisation.address}</u>
+</p>
 
-<section id='issuer' class='party'>
-<table class='merged'>
-  <tr><th>Aussteller</th></tr>
-  <tr><td class='var'>
-    {$organisation.name}<br />
-    {$organisation.address}
-  </td></tr>
-</table>
-</section>
+<p>
+{$donor.name}<br />
+{$donor.street_address}<br />
+{$donor.postal_code} {$donor.city_plain}
+{if $donor.country ne 'Germany'}<br />{$donor.country_ts}{/if}
+</p>
 
-<hgroup id='title' class='box'>
-  <h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/{if $items}Mitgliedsbeiträge{else}Mitgliedsbeitrag{/if}</h1>
-  <h2>im Sinne des § 10b des Einkommensteuergesetzes an eine der in § 5 Abs. 1 Nr. 9 des Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen oder Vermögensmassen</h2>
-</hgroup>
+<div class="main">
+<h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/ Mitgliedsbeitrag</h1><br />
+<p class="notice">Über Zuwendungen im Sinne des § 10 b des Einkommensteuergesetztes an eine der in § 5 Abs. 1 Nr. 9 des
+Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen und Vermögensmassen</p>
 
-<section id='donor' class='party'>
-<table class='merged'>
-  <tr><th>Name und Anschrift des Zuwendenden:</th></tr>
-  <tr><td class='var'>
+<p>Name und Anschrift des Zuwendenden:<br />
     {$donor.name}<br />
-    {$donor.street_address}<br />
-    {$donor.postal_code} {$donor.city}
-  </td></tr>
-</table>
-</section>
+    {$donor.street_address_plain}<br />
+    {$donor.postal_code} {$donor.city_plain}<br />
+    {if $donor.country ne 'Germany'}{$donor.country_ts}<br />{/if}
+</p>
 
-<section id='amounts'>
 <table class='merged'>
   <tr>
     <th>{if $items}Gesamtbetrag{else}Betrag{/if} der Zuwendung - in Ziffern -</th>
@@ -237,82 +213,68 @@ h2 {
     <th>{if $items}Zeitraum der Sammelbestätigung{else}Tag der Zuwendung{/if}:</th>
   </tr>
   <tr class='var'>
-    <td id='total'>{$total} Euro</td>
+    <td id='total'>**{$total} Euro</td>
     <td>{$totaltext} Euro</td>
     <td>{if $items}{$daterange}{else}{$date}{/if}</td>
   </tr>
 </table>
-</section>
 
-<div><div></div></div>    <!-- Workaround for dompdf being incapable of applying 'margin-top' on a <div> directly following </table>... -->
-
-<section id='checks'>
 
 {if !$items}
-<section id='waiver' class='box'>
-  Es handelt sich um den Verzicht auf Erstattung von Aufwendungen
-  <ul class='radio'>
-    <li>Ja&nbsp;<img alt='box' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAAXNSR0IArs4c6QAAAAZQTFRFAICPAAAAobuvMAAAAAF0Uk5TAEDm2GYAAAASSURBVAjXY/j/n6GBkVj0/z8ADKgLC9bAGB0AAAAASUVORK5CYII=' /></li>
-    <li>Nein&nbsp;<img alt='box mit kreuz' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAAXNSR0IArs4c6QAAAAZQTFRFAOjHAAAAVlnjbgAAAAF0Uk5TAEDm2GYAAAArSURBVAjXY/j/n6GBEYRmSDLMsWToK2Rof8jQfBCEgAwgFygIlIKo+f8fAIrUEGMSLhXuAAAAAElFTkSuQmCC' /></li>
-  </ul>
-</section>
+<h2>
+Es handelt sich nicht um den Verzicht auf Erstattung von Aufwendungen.
+</h2>
 {/if}
 
-<section id='exempt' class='box'>
-  <img alt='box mit kreuz' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAAXNSR0IArs4c6QAAAAZQTFRFAOjHAAAAVlnjbgAAAAF0Uk5TAEDm2GYAAAArSURBVAjXY/j/n6GBEYRmSDLMsWToK2Rof8jQfBCEgAwgFygIlIKo+f8fAIrUEGMSLhXuAAAAAElFTkSuQmCC' />
-  <span id='text'>
-    Wir sind wegen Förderung<br />
-    <span class='var'>...Begründung...</span><br />
-    nach dem letzten uns zugegangenen Freistellungsbescheid bzw. nach der Anlage zum Körperschaftsteuerbescheid des<br />
-    Finanzamtes <span class='var'>...Ort...</span>,
-    StNr <span class='var'>...Nummer...</span>,
-    vom <span class='var'>...Datum...</span><br />
-    nach § 5 Abs. 1 Nr. 9 des Körperschaftsteuergesetzes von der Körperschaftsteuer und nach § 3 Nr. 6 des Gewerbesteuergesetzes von der Gewerbesteuer befreit.
-  </span>
-</section>
-
-</section>    <!-- checks -->
-
-<section id='pledge' class='box'>
-  Es wird bestätigt, dass die Zuwendung nur zur Förderung<br />
-  <span class='var'>...Zweck...</span><br />
-  verwendet wird.
-</section>
+<p class="notice">
+Wir sind wegen [Grund] nach dem letzten uns zugegangenen Freistellungsbescheids des Finanzamts
+[Ort], Aktenzeichen [Aktenzeichen], vom [Datum] nach § 5 Abs. 1 Nr. 9 des Körperschaftsteuergesetzes von der
+Körperschaftsteuer befreit.<br />
+<br />
+Es wird bestätigt, dass die Zuwendung nur für den Zweck zur [Grund] verwendet wird.<br />
+Es wird bestätigt, dass über die in der Gesamtsumme enthaltenen Zuwendungen keine weiteren Bestätigungen, weder formelle Zuwendungsbestätigungen noch Beitragsquittungen oder ähnliches ausgestellt wurden und werden.<br />
 
 {if $items}
-  <section id='affirmation' class='box'>
-    <p>Es wird bestätigt, dass über die in der Gesamtsumme enthaltenen Zuwendungen keine weiteren Bestätigungen, weder formelle Zuwendungsbestätigungen noch Beitragsquittungen oder ähnliches ausgestellt wurden und werden.</p>
-    <p>Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anlage zur Sammelbestätigung zu entnehmen.</p>
-  </section>
+<br />
+Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anlage zur Sammelbestätigung zu entnehmen.
 {/if}
+</p>
 
-<section id='signature' class='box'>
-  <p class='var'>
-    ...Ort...,
-    den {$today}
-  </p>
-  <hr />
-</section>
+</div>
+</div>
 
-<section id='disclaimer' class='box footnote'>
-  <p><strong>Hinweis:</strong><br />Wer vorsätzlich oder grob fahrlässig eine unrichtige Zuwendungsbestätigung erstellt oder wer veranlasst, dass Zuwendungen nicht zu den in der Zuwendungsbestätigung angegebenen steuerbegünstigten Zwecken verwendet werden, haftet für die entgangene Steuer (§ 10b Abs. 4 EStG, § 9 Abs. 3 KStG, § 9 Nr. 5 GewStG).</p>
-  <p>Diese Bestätigung wird nicht als Nachweis für die steuerliche Berücksichtigung der Zuwendung anerkannt, wenn das Datum des Freistellungsbescheides länger als 5 Jahre bzw. das Datum der vorläufigen Bescheinigung länger als 3 Jahre seit Ausstellung der Bestätigung zurückliegt (BMF vom 15.12.1994 - BStBl I S. 884).</p>
-</section>
+<div class="signature">
+  [Ort], den {$today}
+    <p>
+    [Unterschrift]
 
-</section>    <!-- page1 -->
+<br />Maximilian Mustermann,<br />-Geschäftsführer-<br /><b>{$organisation.name}</b></p>
+</div>
 
-<section id='page2' class='newpage'>
+<div class="footer">
+    <p><strong>Hinweis:</strong><br />Hinweis: Wer vorsätzlich oder grob fahrlässig eine unrichtige Zuwendungsbestätigung erstellt oder wer veranlasst, dass Zuwendungen nicht
+zu den in der Zuwendungsbestätigung angegebenen steuerbegünstigten Zwecken verwendet werden, haftet für die Steuer, die dem Fiskus
+durch einen etwaigen Abzug der Zuwendungen beim Zuwendenden entgeht (§ 10b Abs. 4 EStG, § 9 Abs. 3 KStG, § 9 Nr. 5 GewStG).
+Diese Bestätigung wird nicht als Nachweis für die steuerliche Berücksichtigung der Zuwendung anerkannt, wenn das Datum des
+Freistellungsbescheides länger als 5 Jahre bzw. das Datum der vorläufigen Bescheinigung länger als 3 Jahre seit Ausstellung der Bestätigung
+zurückliegt (BMF vom 15.12.1994 – BStBl I S. 884).</p>
+</div>
+
 {if $items}
-<h2 class='box'>Anlage zur Sammelbestätigung vom {$today}</h2>
+<div class="newpage">
 
-<section id='listing'>
+<h2 class='box'>Anlage zur Sammelbestätigung vom {$today} für {$donor.name}</h2>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>
   {foreach from=$items item=item}
     <tr><td>{$item.date}</td><td>{$item.art}</td><td>Nein</td><td class='amount'>{$item.amount}&nbsp;<span class='unit'>&euro;</span></td></tr>
   {/foreach}
-  <tr id='totals'><th colspan='3'>Gesamtsumme</td><td class='amount'><span class='value'>{$total}</span>&nbsp;<span class='unit'>&euro;</span></td></tr>
+  <tr id='totals'><th colspan='3'>Gesamtsumme</th><td class='amount'><span class='value'>**{$total}</span>&nbsp;<span class='unit'>&euro;</span></td></tr>
 </table>
-</section>
+{else}
+  <p style="visibility:hidden">foobar</p>
+
+</div>
 {/if}
-</section>    <!-- page2 -->
+</body>
+</html>
