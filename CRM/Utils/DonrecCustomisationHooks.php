@@ -48,7 +48,7 @@ class CRM_Utils_DonrecCustomisationHooks {
 	* an error message which aborts the operation
 	* @access public
 	*/
-	static function pdf_shared_token(&$template, &$chunk_item) {
+	static function pdf_shared_token(&$template, &$chunk) {
 	return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
 	}
 }

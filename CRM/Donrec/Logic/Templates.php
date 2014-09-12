@@ -89,7 +89,6 @@ class CRM_Donrec_Logic_Templates {
   }
 
   public static function convert_number_to_words($number) {
-   
     $hyphen      = 'und';
     $conjunction = ' ';
     $separator   = ' ';
@@ -176,8 +175,14 @@ class CRM_Donrec_Logic_Templates {
             $numBaseUnits = (int) ($number / $baseUnit);
             $remainder = $number % $baseUnit;
             $string .= self::convert_number_to_words($numBaseUnits);
-            $string .= ($baseUnit == 1000000 && $numBaseUnits == 1) ? 'e ' : ' '; // ein_e_ millionen...
-            $string .= $dictionary[$baseUnit];
+            if ($baseUnit == 1000000 && $numBaseUnits == 1) {
+              $string .= 'e ';                                  // ein_e_
+              $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
+            } else {
+              $string .= ' ';
+              $string .= $dictionary[$baseUnit];
+            }
+
             if ($remainder) {
                 $string .= ($remainder < 100) ? $conjunction : $separator;
                 $string .= self::convert_number_to_words($remainder);

@@ -17,7 +17,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 		$reply = array();
 
 		$smarty = CRM_Core_Smarty::singleton();
-		$template = CRM_Donrec_Logic_Templates::getTemplate(0);
+		$template = CRM_Donrec_Logic_Templates::getTemplate(0); // get the default template
 
 		// get domain
 		$domain = CRM_Core_BAO_Domain::getDomain();
@@ -39,7 +39,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 		$smarty->assign('organisation', $contact);
 
 		// callback for shared tokens
-		CRM_Utils_DonrecCustomisationHooks::pdf_shared_token($smarty);
+		CRM_Utils_DonrecCustomisationHooks::pdf_shared_token($smarty, $chunk);
 
 		$success = 0;
 		$failures = 0;
@@ -83,7 +83,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 			$smarty->assign('date', date("d.m.Y",strtotime($chunk_item['receive_date'])));
 
 			// callback for custom variables
-			CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty);
+			CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $chunk_item);
 
 			// compile template
 			$html = $template->msg_html;
