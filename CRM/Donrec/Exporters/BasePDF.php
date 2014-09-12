@@ -38,6 +38,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 		// assign all shared template variables
 		$smarty->assign('organisation', $contact);
 
+		// callback for shared tokens
 		CRM_Utils_DonrecCustomisationHooks::pdf_shared_token($smarty);
 
 		$success = 0;
@@ -77,7 +78,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 			// assign all unique template variables
 			$smarty->assign('contributor', $contributor_contact);
 			$smarty->assign('total', $chunk_item['total_amount']);
-			$smarty->assign('totaltext', CRM_Donrec_Logic_Templates::num_to_text($chunk_item['total_amount']));
+			$smarty->assign('totaltext', CRM_Donrec_Logic_Templates::convert_number_to_words($chunk_item['total_amount']));
 			$smarty->assign('today', date("j.n.Y", time()));
 			$smarty->assign('date', date("d.m.Y",strtotime($chunk_item['receive_date'])));
 

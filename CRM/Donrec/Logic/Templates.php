@@ -88,88 +88,125 @@ class CRM_Donrec_Logic_Templates {
     return $template;
   }
 
-/**
-* single digit to text
-*/
-public static function num_to_text_digits($num)
-{
-  $digit_text = array("null","eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun");
-  $digits = array();
-  $num = floor($num);
-  while ($num > 0) {
-    $rest = $num % 10;
-    $num = floor($num / 10);
-    echo "$rest, $num\n";
-    $digits[] = $digit_text[$rest];
-  }
-  $digits = array_reverse($digits);
-  $result = "- ".join(" - ", $digits)." - ";
-  return $result;
-}
-
-/**
-* 0-999 to text
-*/
-public static function _num_to_text($num)
-{
-  $hundert = floor($num / 100);
-  $zehn = floor(($num - $hundert *100 ) / 10);
-  $eins = $num % 10;
-  $digit_1 = array("","ein","zwei","drei","vier","fünf","sechs","sieben","acht","neun");
-  $digit_10 = array("","zehn","zwanzig","dreißig","vierzig","fünfzig","sechzig","siebzig","achtzig","neunzig");
-  $str = "";
-  if ($hundert > 0) {
-    $str .= $digit_1[$hundert]."hundert ";
-  }
-  if ($zehn == 0) {
-    $str .= $digit_1[$eins];
-  } else if ($zehn == 1) {
-  if ($eins == 0) {
-    $str .= "zehn";
-  } else if ($eins == 1) {
-    $str .= "elf";
-  } else if ($eins == 2){
-    $str .= "zwölf";
-  } else {
-    $str .= $digit_1[$eins]."zehn";
-  }
-  } else {
-    if ($eins == 0) {
-      $str .= $digit_10[$zehn];
-    } else {
-      $str .= $digit_1[$eins]."und".$digit_10[$zehn];
+  public static function convert_number_to_words($number) {
+   
+    $hyphen      = 'und';
+    $conjunction = ' ';
+    $separator   = ' ';
+    $negative    = 'minus ';
+    $decimal     = ' Euro ';
+    $dictionary  = array(
+        0                   => 'null',
+        1                   => 'ein',
+        2                   => 'zwei',
+        3                   => 'drei',
+        4                   => 'vier',
+        5                   => 'fünf',
+        6                   => 'sechs',
+        7                   => 'sieben',
+        8                   => 'acht',
+        9                   => 'neun',
+        10                  => 'zehn',
+        11                  => 'elf',
+        12                  => 'zwölf',
+        13                  => 'dreizehn',
+        14                  => 'vierzehn',
+        15                  => 'fünfzehn',
+        16                  => 'sechszehn',
+        17                  => 'siebzehn',
+        18                  => 'achtzehn',
+        19                  => 'neunzehn',
+        20                  => 'zwanzig',
+        30                  => 'dreißig',
+        40                  => 'vierzig',
+        50                  => 'fünfzig',
+        60                  => 'sechzig',
+        70                  => 'siebzig',
+        80                  => 'achtzig',
+        90                  => 'neunzig',
+        100                 => 'hundert',
+        1000                => 'tausend',
+        1000000             => 'millionen',
+        1000000000          => 'milliarden',
+        1000000000000       => 'billionen'
+    );
+   
+    if (!is_numeric($number)) {
+        return false;
     }
-  }
-  return $str;
-}
+   
+    if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
+        // overflow
+        return false;
+    }
 
-/**
-* general number to text conversion
-*/
-public static function num_to_text($num)
-{
-  static $max_len = 1;
-  $strs = array();
-  while ($num > 0) {
-    $strs[] = self::_num_to_text($num % 1000);
-    $num = floor($num / 1000);
+    if ($number < 0) {
+        return $negative . self::convert_number_to_words(abs($number));
+    }
+   
+    $string = $fraction = null;
+   
+    if (strpos($number, '.') !== false) {
+        list($number, $fraction) = explode('.', $number);
+    }
+   
+    switch (true) {
+        case $number < 21:
+            $string = $dictionary[$number];
+            break;
+        case $number < 100:
+            $tens   = ((int) ($number / 10)) * 10;
+            $units  = $number % 10;
+            if ($units) {
+                $string = $dictionary[$units] . $hyphen . $dictionary[$tens];
+            }else{
+                $string = $dictionary[$tens];
+            }
+            break;
+        case $number < 1000:
+            $hundreds  = $number / 100;
+            $remainder = $number % 100;
+            $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
+            if ($remainder) {
+                $string .= $conjunction . self::convert_number_to_words($remainder);
+            }
+            break;
+        default:
+            $baseUnit = pow(1000, floor(log($number, 1000)));
+            $numBaseUnits = (int) ($number / $baseUnit);
+            $remainder = $number % $baseUnit;
+            $string .= self::convert_number_to_words($numBaseUnits);
+            $string .= ($baseUnit == 1000000 && $numBaseUnits == 1) ? 'e ' : ' '; // ein_e_ millionen...
+            $string .= $dictionary[$baseUnit];
+            if ($remainder) {
+                $string .= ($remainder < 100) ? $conjunction : $separator;
+                $string .= self::convert_number_to_words($remainder);
+            }
+            break;
+    }
+   
+    if (null !== $fraction) {
+        $string .= $decimal;
+
+        if(is_numeric($fraction) && $fraction != 0.00) {
+          switch (true) {
+            case $fraction < 21:
+                $string .= $dictionary[$fraction];
+                break;
+            case $fraction < 100:
+                $tens   = ((int) ($fraction / 10)) * 10;
+                $units  = $fraction % 10;
+                if ($units) {
+                    $string .= $dictionary[$units] . $hyphen . $dictionary[$tens];
+                }else{
+                    $string .= $dictionary[$tens];
+                }
+                break;
+          }
+        }
+    }
+   
+    return $string;
   }
-  $str = "";
-  if (isset($strs[2])) {
-    $str .= $strs[2] . " millionen ";
-  }
-  if (isset($strs[1])) {
-    $str .= $strs[1] . " tausend ";
-  }
-  if (isset($strs[0])) {
-    $str .= $strs[0];
-  }
-  $result = $str == "" ? "null" : trim($str);
-  $len = strlen($result);
-  if ($len > $max_len) {
-    $max_len = $len;
-  }
-  return $result;
-}
 
 }

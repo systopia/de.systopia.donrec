@@ -214,7 +214,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
   </tr>
   <tr class='var'>
     <td id='total'>**{$total} Euro</td>
-    <td>{$totaltext} Euro</td>
+    <td>{$totaltext}</td>
     <td>{if $items}{$daterange}{else}{$date}{/if}</td>
   </tr>
 </table>

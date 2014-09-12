@@ -29,8 +29,8 @@ class CRM_Utils_DonrecCustomisationHooks {
 	* an error message which aborts the operation
 	* @access public
 	*/
-	static function pdf_unique_token(&$template) {
-	return CRM_Utils_Hook::singleton()->invoke(1, $template, self::$null, self::$null, self::$null, self::$null, 'civicrm_pdf_unique_token');
+	static function pdf_unique_token(&$template, &$chunk_item) {
+	return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_unique_token');
 	}
 
 	/**
@@ -48,7 +48,7 @@ class CRM_Utils_DonrecCustomisationHooks {
 	* an error message which aborts the operation
 	* @access public
 	*/
-	static function pdf_shared_token(&$template) {
-	return CRM_Utils_Hook::singleton()->invoke(1, $template, self::$null, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
+	static function pdf_shared_token(&$template, &$chunk_item) {
+	return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
 	}
 }
