@@ -182,16 +182,16 @@ h3 {
 
 <body>
 <div class="firstpage">
-<div class="absenderblock_rechts">{$organisation.address}<br/></div>
+<div class="absenderblock_rechts">{$organisation.organization_name}<br/> {$organisation.street_address}<br/>{$organisation.postal_code} {$organisation.city}<br/>Telefon: {$organisation.phone}<br/>{$organisation.email}</div>
 <p class="sender">
-<u>{$organisation.name}, {$organisation.address}</u>
+<u>{$organisation.organization_name}, {$organisation.street_address}, {$organisation.postal_code} {$organisation.city}</u>
 </p>
 
 <p>
-{$donor.name}<br />
-{$donor.street_address}<br />
-{$donor.postal_code} {$donor.city_plain}
-{if $donor.country ne 'Germany'}<br />{$donor.country_ts}{/if}
+{$contributor.display_name}<br />
+{$contributor.street_address}<br />
+{$contributor.postal_code} {$contributor.city}
+{if $contributor.country ne 'Germany'}<br />{$contributor.country}{/if}
 </p>
 
 <div class="main">
@@ -200,10 +200,10 @@ h3 {
 Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen und Vermögensmassen</p>
 
 <p>Name und Anschrift des Zuwendenden:<br />
-    {$donor.name}<br />
-    {$donor.street_address_plain}<br />
-    {$donor.postal_code} {$donor.city_plain}<br />
-    {if $donor.country ne 'Germany'}{$donor.country_ts}<br />{/if}
+    {$contributor.display_name}<br />
+    {$contributor.street_address}<br />
+    {$contributor.postal_code} {$contributor.city}<br />
+    {if $contributor.country ne 'Germany'}{$contributor.country}<br />{/if}
 </p>
 
 <table class='merged'>
@@ -244,11 +244,11 @@ Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anla
 </div>
 
 <div class="signature">
-  [Ort], den {$today}
+  {$organisation.city}, den {$today}
     <p>
-    [Unterschrift]
+    [Unterschrift]<br />
 
-<br />Maximilian Mustermann,<br />-Geschäftsführer-<br /><b>{$organisation.name}</b></p>
+<br />Maximilian Mustermann,<br />-Geschäftsführer-<br /><b>{$organisation.organization_name}</b></p>
 </div>
 
 <div class="footer">
@@ -263,7 +263,7 @@ zurückliegt (BMF vom 15.12.1994 – BStBl I S. 884).</p>
 {if $items}
 <div class="newpage">
 
-<h2 class='box'>Anlage zur Sammelbestätigung vom {$today} für {$donor.name}</h2>
+<h2 class='box'>Anlage zur Sammelbestätigung vom {$today} für {$contributor.display_name}</h2>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>
   {foreach from=$items item=item}
