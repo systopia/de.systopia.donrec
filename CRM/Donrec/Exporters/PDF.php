@@ -13,17 +13,17 @@
  */
 class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
-	/**
-	 * @return the display name
-	 */
-	static function name() {
-		return ts('Actually export individual PDFs');
-	}
+  /**
+   * @return the display name
+   */
+  static function name() {
+    return ts('Actually export individual PDFs');
+  }
 
-	/**
-	 * @return a html snippet that defines the options as form elements
-	 */
-	static function htmlOptions() {
-		return '<br/><i>TEST</i>';
-	}
+  /**
+   * @return a html snippet that defines the options as form elements
+   */
+  static function htmlOptions() {
+    return '<br/><i>TEST</i>';
+  }
 }

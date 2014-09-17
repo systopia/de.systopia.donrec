@@ -9,12 +9,20 @@
 +--------------------------------------------------------*/
 
 /**
- * This class holds all settings related functions
+ * TODO: @Niko:  1. Umbenennen in CRM_Donrec_Logic_Template (ohne 's')
+ *               2. getDefaultTemplate sollte ein Objekt zurückgeben
+ *               3. es sollte eine methode generatePDF(values, parameters) geben
+ *
+ * This class holds all template related functions,
+ *  including PDF generation
  */
 class CRM_Donrec_Logic_Templates {
+
+
   /**
-  * @return bool
-  */
+   * TODO: @Niko Doku
+   * @return bool
+   */
   public static function setDefaultTemplate() {
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
 
@@ -61,8 +69,9 @@ class CRM_Donrec_Logic_Templates {
 
 
   /**
-  * @return array or NULL
-  */
+   * TODO: @Niko Doku
+   * @return array or NULL
+   */
   public static function getDefaultTemplate() {
     $params = array('id' => CRM_Donrec_Logic_Settings::getDefaultTemplate());
     $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
@@ -74,9 +83,10 @@ class CRM_Donrec_Logic_Templates {
   }
 
   /**
-  *
-  * @return
-  */
+   * TODO: @Niko Doku
+   *
+   * @return
+   */
   public static function getTemplate($id, $fallback = TRUE) {
     $id = empty($id) ? -1 : $id;
     $params = array('id' => $id);
@@ -88,7 +98,11 @@ class CRM_Donrec_Logic_Templates {
     return $template;
   }
 
-  public static function convert_number_to_words($number) {
+  // TODO: @Niko Doku
+  // TODO: @Niko Orginal verlinken
+  // TODO: @Niko In Utils verschieben
+  public static function convert_number_to_words($number, $lang='de') {
+    if ($lang!='de') return false;
     $hyphen      = 'und';
     $conjunction = ' ';
     $separator   = ' ';
