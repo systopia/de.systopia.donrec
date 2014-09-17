@@ -1,4 +1,15 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*/
+
+// FIXME: @Niko format: indent 2 spaces, NO tabs
+// FIXME: @Niko Dokumentation
 
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {

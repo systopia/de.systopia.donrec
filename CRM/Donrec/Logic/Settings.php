@@ -8,6 +8,8 @@
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
+// FIXME: @Niko format: indent 2 spaces, NO tabs
+
 /**
  * This class holds all settings related functions
  */

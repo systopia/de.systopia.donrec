@@ -1,3 +1,12 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*}
+
 <form action="{$formAction}" method="post">
 {if $error}
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">

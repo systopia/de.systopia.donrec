@@ -1,3 +1,12 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*}
+
 {htxt id='id-contribution-types'}
     <p>{ts}Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.{/ts}</p>
 {/htxt}

@@ -1,18 +1,25 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: B. Endres (endres -at- systopia.de)            |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*/
 
 require_once 'CRM/Core/Page.php';
 
+/**
+ * This class generates the front end controller page for the
+ * donation receipt engine.
+ *
+ * @param (via $_REQUEST)   final      if not set, this is a test run
+ * @param (via $_REQUEST)   bulk       if set, this accumulates contributions by contact
+ * @param (via $_REQUEST)   exporters  cs list of exporter identifiers to run
+ */
 class CRM_Donrec_Page_Runner extends CRM_Core_Page {
   function run() {
-    // TODO: remove: create snapshot
-    // CRM_Core_DAO::executeQuery('TRUNCATE TABLE `civicrm_donrec_snapshot`;');
-    // $contributions = array(13495, 13480, 13491);
-    // $user_id = CRM_Core_Session::singleton()->get('userID');
-    // $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, $user_id);
-    // $_REQUEST['sid'] = $snapshot->getId();
-
-
-
     // extract the parameters
     $parameters = array();
     $parameters['test'] = empty($_REQUEST['final'])?1:0;

@@ -11,6 +11,7 @@
 require_once 'CRM/Admin/Form/Setting.php';
 require_once 'CRM/Core/BAO/CustomField.php';
  
+// TODO: @Niko - brief documentation
 class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
 	function buildQuickForm( ) {
@@ -51,6 +52,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     		));
     }
 
+    // TODO: @Niko - brief documentation
     function postProcess() {
     	$values = $this->exportValues();
 
@@ -90,6 +92,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     	$session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
     }
 
+    // TODO: @Niko - brief documentation
     static function onlyPositiveIntegers($value) {
 	    return !($value <= 0);
   	}

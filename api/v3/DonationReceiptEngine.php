@@ -12,7 +12,7 @@
  * Execute the next chunk/step of the donation receipt run
  */
 function civicrm_api3_donation_receipt_engine_next($params) {
-  // first, check if the engine works
+  // first, check if the snapshot ID is there
   if (empty($params['sid'])) {
     return civicrm_api3_create_error(ts("No 'sid' parameter given."));
   }

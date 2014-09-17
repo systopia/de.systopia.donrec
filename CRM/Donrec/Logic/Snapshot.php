@@ -8,6 +8,8 @@
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
+// FIXME: @Niko format: indent 2 spaces, NO tabs
+
 /**
  * This class represents a single snapshot
  */
