@@ -15,11 +15,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
   public function exportSingle($chunk) {
     $reply = array();
+    $values = array();
 
-    $smarty = CRM_Core_Smarty::singleton();
-    $template = CRM_Donrec_Logic_Templates::getTemplate(0); // get the default template
+    // get the default template
+    $template = CRM_Donrec_Logic_Template::getTemplate(0);
 
-    // TODO: @Nico: \/ das alles muss in CRM_Donrec_Logic_Templates::createPDF(template, variables) oder so ähnlich
     // get domain
     $domain = CRM_Core_BAO_Domain::getDomain();
     $params = array(
@@ -37,16 +37,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $contact = $contact['values'][0];
     
     // assign all shared template variables
-    $smarty->assign('organisation', $contact);
-
-    // callback for shared tokens
-    CRM_Utils_DonrecCustomisationHooks::pdf_shared_token($smarty, $chunk);
+    $values['organisation'] = $contact;
 
     $success = 0;
     $failures = 0;
     foreach ($chunk as $chunk_id => $chunk_item) {
-      //$this->setProcessInformation($chunk_id, array('test' => 'PDF was here!'));
-
       // prepare unique template variables
 
       // get contributor
@@ -77,27 +72,15 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $contributor_contact = $contributor_contact['values'][0];
 
       // assign all unique template variables
-      $smarty->assign('contributor', $contributor_contact);
-      $smarty->assign('total', $chunk_item['total_amount']);
-      $smarty->assign('totaltext', CRM_Donrec_Logic_Templates::convert_number_to_words($chunk_item['total_amount']));
-      $smarty->assign('today', date("j.n.Y", time()));
-      $smarty->assign('date', date("d.m.Y",strtotime($chunk_item['receive_date'])));
+      $values['contributor'] = $contributor_contact;
+      $values['total'] = $chunk_item['total_amount'];
+      $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($chunk_item['total_amount']);
+      $values['today'] = date("j.n.Y", time());
+      $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
 
-      // callback for custom variables
-      CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $chunk_item);
+      $result = CRM_Donrec_Logic_Template::generatePDF($template, $values);
 
-      // compile template
-      $html = $template->msg_html;
-      $html = $smarty->fetch("string:$html");
-
-      // set up file names
-      $config = CRM_Core_Config::singleton();
-      $filename = CRM_Utils_File::makeFileName(sprintf("donrec_%d.pdf", $chunk_item['id']));
-      $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
-
-      // render PDF receipt
-      $written = file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $template->pdf_format_id));
-      if ($written === FALSE) {
+      if ($result === FALSE) {
         $failures++;
       }else{
         $success++;

@@ -9,7 +9,9 @@
 +--------------------------------------------------------*/
 
 
-// TODO: @Niko Doku
+/**
+* This class handles form input for the contribution creation task
+*/
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];

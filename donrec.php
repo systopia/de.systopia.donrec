@@ -54,7 +54,7 @@ function donrec_civicrm_enable() {
   // create/update custom groups
   CRM_Donrec_DataStructure::update();
   // install default template
-  CRM_Donrec_Logic_Templates::setDefaultTemplate();
+  CRM_Donrec_Logic_Template::setDefaultTemplate();
   
   return _donrec_civix_civicrm_enable();
 }

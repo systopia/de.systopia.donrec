@@ -2,105 +2,23 @@
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2014 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)			 |
+| Author: N.Bochan (bochan -at- systopia.de)       |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
 /**
- * TODO: @Niko:  1. Umbenennen in CRM_Donrec_Logic_Template (ohne 's')
- *               2. getDefaultTemplate sollte ein Objekt zurückgeben
- *               3. es sollte eine methode generatePDF(values, parameters) geben
- *
- * This class holds all template related functions,
- *  including PDF generation
+ * This class holds helper functions
  */
-class CRM_Donrec_Logic_Templates {
-
-
+class CRM_Utils_DonrecHelper
+{
   /**
-   * TODO: @Niko Doku
-   * @return bool
-   */
-  public static function setDefaultTemplate() {
-    $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
-
-    $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'msg_title' => $default_template_title,
-    );
-    $result = civicrm_api('MessageTemplate', 'get', $params);
-    if (($result['is_error'] != 0)) {
-      error_log(sprintf("de.systopia.donrec: setDefaultTemplate: error: %s", $result['error_message']));
-      return FALSE;
-    } 
-
-    // the default template has been already set
-    if ($result['count'] != 0) {
-      return TRUE;
-    }
-
-    $default_template_html = file_get_contents(dirname(__DIR__) . '/../../templates/Export/default_template.tpl');
-    if($default_template_html === FALSE) {
-      error_log('de.systopia.donrec: error: could not open default template file!');
-      return FALSE;
-    }
-
-    $params = array(
-      'msg_title' => $default_template_title,
-      'msg_html' => $default_template_html,
-      'is_active' => 1,
-      'workflow_id' => NULL,
-      'is_default' => 0,
-      'is_reserved' => 0,
-    );
-
-    $result = CRM_Core_BAO_MessageTemplate::add($params);
-    if ($result) {
-      CRM_Donrec_Logic_Settings::setDefaultTemplate($result->id);    
-    }else{
-      error_log('de.systopia.donrec: error: could not set default template!');
-      return FALSE;
-    }
-  }
-
-
-  /**
-   * TODO: @Niko Doku
-   * @return array or NULL
-   */
-  public static function getDefaultTemplate() {
-    $params = array('id' => CRM_Donrec_Logic_Settings::getDefaultTemplate());
-    $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
-    if (!$template) {
-      error_log('de.systopia.donrec: error: default template not found');
-      return NULL;
-    }
-    return $template;
-  }
-
-  /**
-   * TODO: @Niko Doku
-   *
-   * @return
-   */
-  public static function getTemplate($id, $fallback = TRUE) {
-    $id = empty($id) ? -1 : $id;
-    $params = array('id' => $id);
-    $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
-    if (!$template && $fallback) {
-      // fallback to default
-      return CRM_Donrec_Logic_Templates::getDefaultTemplate();
-    }
-    return $template;
-  }
-
-  // TODO: @Niko Doku
-  // TODO: @Niko Orginal verlinken
-  // TODO: @Niko In Utils verschieben
+  * @param number any number that should be converted to words
+  * @param lang language - currently only 'de' (German) is supported
+  * @author Karl Rixon (http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/)
+  *         modified by Niko Bochan to support the German language
+  */
   public static function convert_number_to_words($number, $lang='de') {
     if ($lang!='de') return false;
     $hyphen      = 'und';
@@ -125,7 +43,7 @@ class CRM_Donrec_Logic_Templates {
         13                  => 'dreizehn',
         14                  => 'vierzehn',
         15                  => 'fünfzehn',
-        16                  => 'sechszehn',
+        16                  => 'sechzehn',
         17                  => 'siebzehn',
         18                  => 'achtzehn',
         19                  => 'neunzehn',
