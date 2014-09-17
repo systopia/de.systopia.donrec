@@ -18,25 +18,37 @@ class CRM_Donrec_Logic_Receipt {
   private $issued_by;
   private $original_file;
 
-   /**
-   * creates and returns a new donation receipt object from the
-   * given parameters
-   *
-   * @param 
-   * @return receipt object OR error array
-   */
-  public static function create() {
+  protected static $_custom_fields;
 
+  public function __construct() {
+    self::getCustomFields();
   }
 
-   /**
-   * returns a donation receipt object from the
-   * given contact
-   *
-   * @param $contact_id
-   * @param $receipt_id
-   * @return receipt object OR NULL
-   */
+  /**
+  * creates and returns a new donation receipt object from the
+  * given parameters
+  *
+  * @param params associative array of attribute name to value
+  * @return receipt object OR error array
+  */
+  public static function create(&$params) {
+    $receipt = new self();
+    foreach ($params as $key => $value) {
+      $receipt->updateByName($key, $value, $receipt);
+    }
+    return $receipt;
+  }
+
+
+
+  /**
+  * returns a donation receipt object from the
+  * given contact
+  *
+  * @param $contact_id
+  * @param $receipt_id
+  * @return receipt object OR NULL
+  */
   public static function getSingle($contact_id, $receipt_id) {
     if($contact_id === NULL || $receipt_id === NULL) {
       return NULL;
@@ -93,25 +105,7 @@ class CRM_Donrec_Logic_Receipt {
     // filter
     foreach ($custom_values['values'] as $value_group) {
       if(in_array($value_group['id'], $relevant_ids)) {
-        switch ($id_to_name[$value_group['id']]) {
-          case 'status':
-            $receipt->setStatus($value_group[$receipt_id]);
-            break;
-          case 'type':
-            $receipt->setType($value_group[$receipt_id]);
-            break;
-          case 'issued_on':
-            $receipt->setIssuedOn($value_group[$receipt_id]);
-            break;
-          case 'issued_by':
-            $receipt->setIssuedBy($value_group[$receipt_id]);
-            break;
-          case 'original_file':
-            $receipt->setOriginalFile($value_group[$receipt_id]);
-            break;
-          default:
-            break;
-        }
+        $this->updateByName($id_to_name[$value_group['id']], $value_group[$receipt_id], $receipt);
       }
     }
 
@@ -124,7 +118,7 @@ class CRM_Donrec_Logic_Receipt {
    *
    * @param $contact_id
    * @param $receipt_id
-   * @return receipt object OR NULL
+   * @return receipt object, array of receipt objects or NULL
    */
   public static function get($contact_id, $receipt_id) {
     if ($contact_id === NULL) {
@@ -177,6 +171,70 @@ class CRM_Donrec_Logic_Receipt {
       return self::getSingle($entity_id, $receipt_id);
     }
     
+  }
+
+  /**
+  * updates an attribute
+  * @param name name of the attribute
+  * @param value new value for the selected attribute
+  * @param target updates a receipt object or the current one if NULL
+  * @return void
+  */
+  private function updateByName($name, $value, $target = NULL) {
+    $receipt = empty($target) ? $this : $target;
+    switch ($name) {
+      case 'status':
+        $receipt->setStatus($value);
+        break;
+      case 'type':
+        $receipt->setType($value);
+        break;
+      case 'issued_on':
+        $receipt->setIssuedOn($value);
+        break;
+      case 'issued_by':
+        $receipt->setIssuedBy($value);
+        break;
+      case 'original_file':
+        $receipt->setOriginalFile($value);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public static function getCustomFields() {
+    if (self::$_custom_fields === NULL) {
+      // get the ids of all relevant custom fields
+      $params = array(
+        'version' => 3,
+        'q' => 'civicrm/ajax/rest',
+        'sequential' => 1,
+        'name' => 'zwb_donation_receipt',
+      );
+      $custom_group = civicrm_api('CustomGroup', 'getsingle', $params);
+      if (isset($custom_group['is_error'])) {
+        error_log(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_group['error_message']));
+        return NULL;
+      }
+
+      $params = array(
+        'version' => 3,
+        'q' => 'civicrm/ajax/rest',
+        'sequential' => 1,
+        'custom_group_id' => $custom_group['id'],
+      );
+      $custom_fields = civicrm_api('CustomField', 'get', $params);
+      if ($custom_fields['is_error'] != 0) {
+        error_log(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_fields['error_message']));
+        return NULL;
+      }
+
+      self::$_custom_fields = array();
+      foreach ($custom_fields['values'] as $field) {
+        self::$_custom_fields[$field['name']] = $field['column_name'];
+      }
+    }
   }
 
 
