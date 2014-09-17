@@ -40,7 +40,7 @@ class CRM_Donrec_Logic_Engine {
 	 *
 	 * @return string with an error message on fail, FALSE otherwise
 	 */
-	public function init($snapshot_id, $params=array()) {
+	public function init($snapshot_id, $params=array(), $testMode = FALSE) {
 		$this->parameters = $params;
 		$this->snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
 		if ($this->snapshot==NULL) {
@@ -50,7 +50,7 @@ class CRM_Donrec_Logic_Engine {
 		// now, check if it's ours:
 		$user_id = CRM_Core_Session::singleton()->get('userID');
 		$snapshot_creator_id = $this->snapshot->getCreator();
-		if ($user_id != $snapshot_creator_id) {
+		if ($user_id != $snapshot_creator_id && (!$testMode)) {
 			// load creator name
 			$creator = civicrm_api3('Contact', 'getsingle', array('id' => $snapshot_creator_id));
 			return sprintf(ts("Snapshot [%d] belongs to user '%s'[%s]!"), $snapshot_id, $creator['display_name'], $snapshot_creator_id);
