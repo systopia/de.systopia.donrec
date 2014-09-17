@@ -16,106 +16,102 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
-	function preProcess() {
-		parent::preProcess();
-	}
+  function preProcess() {
+    parent::preProcess();
+  }
 
-	function buildQuickForm() {
-		$this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
-		$this->addDefaultButtons(ts('Continue'));  
-	}
-	
-  // FIXME: @Niko kann das weg?
-	function addRules() {
+  function buildQuickForm() {
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
+    $this->addDefaultButtons(ts('Continue'));  
+  }
+  
+  function postProcess() {
+    // process form values and try to build a snapshot with all contributions
+    // that match the specified criteria (i.e. contributions which have been
+    // created between two specific dates)
+    $values = $this->exportValues();
+    $contactIds = implode(', ', $this->_contactIds);
 
-	}
+    // prepare timestamps
+    $raw_from_ts = $values['donrec_contribution_horizon_from'];
+    $raw_to_ts = $values['donrec_contribution_horizon_to'];
+    
+    $date_from = $this->convertDate($raw_from_ts);
+    $date_to = $this->convertDate($raw_to_ts);
 
-  // FIXME: @Niko Dokumentation: was passiert hier?
-	function postProcess() {
-		$values = $this->exportValues();
-		$contactIds = implode(', ', $this->_contactIds);
+    $query_date_limit = "";
+    if ($date_from) {
+      $query_date_limit .= "AND UNIX_TIMESTAMP(`receive_date`) >= $date_from";
+    }
+    if ($date_to) {
+      $query_date_limit .= " AND UNIX_TIMESTAMP(`receive_date`) <= $date_to";
+    }
 
-		// prepare timestamps
-		$raw_from_ts = $values['donrec_contribution_horizon_from'];
-		$raw_to_ts = $values['donrec_contribution_horizon_to'];
-		
-		$date_from = $this->convertDate($raw_from_ts);
-		$date_to = $this->convertDate($raw_to_ts);
+    // get table- and column name
+    $table_query = "SELECT `cg`.`table_name`,
+                 `cf`.`column_name` 
+              FROM `civicrm_custom_group` AS cg,
+                   `civicrm_custom_field` AS cf 
+              WHERE `cg`.`name` = 'zwb_donation_receipt_item' 
+              AND `cf`.`custom_group_id` = `cg`.`id` 
+              AND `cf`.`name` = 'status'";
 
-		$query_date_limit = "";
-		if ($date_from) {
-			$query_date_limit .= "AND UNIX_TIMESTAMP(`receive_date`) >= $date_from";
-		}
-		if ($date_to) {
-			$query_date_limit .= " AND UNIX_TIMESTAMP(`receive_date`) <= $date_to";
-		}
+    $results = CRM_Core_DAO::executeQuery($table_query);
 
-		// get table- and column name
-		$table_query = "SELECT `cg`.`table_name`,
-							   `cf`.`column_name` 
-					    FROM `civicrm_custom_group` AS cg,
-					         `civicrm_custom_field` AS cf 
-					    WHERE `cg`.`name` = 'zwb_donation_receipt_item' 
-					    AND `cf`.`custom_group_id` = `cg`.`id` 
-					    AND `cf`.`name` = 'status'";
+    $custom_group_table = NULL;
+    $status_column = NULL;
+    while ($results->fetch()) {
+      $custom_group_table = $results->table_name;
+      $status_column = $results->column_name;
+    }
 
-		$results = CRM_Core_DAO::executeQuery($table_query);
+    if ($custom_group_table == NULL || $status_column == NULL) {
+      // something went wrong here
+      error_log("de.systopia.donrec: error: custom_group_table or status_column is empty!");
+        return;
+    }
 
-		$custom_group_table = NULL;
-		$status_column = NULL;
-		while ($results->fetch()) {
-			$custom_group_table = $results->table_name;
-			$status_column = $results->column_name;
-		}
+    // map contact ids to contributions
+    $query = "SELECT `civicrm_contribution`.`id` 
+          FROM (`civicrm_contribution`)
+          LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id` 
+          WHERE `contact_id` IN ($contactIds)
+          $query_date_limit
+          AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
+          AND `contribution_status_id` = 1
+          AND (`b1`.`id` IS NULL 
+          OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
+          ";
+    
+    // execute the query
+    $result = CRM_Core_DAO::executeQuery($query);
 
-		if ($custom_group_table == NULL || $status_column == NULL) {
-			// TODO: error handling
-			// something went wrong here
-			error_log("de.systopia.donrec: error: custom_group_table or status_column is empty!");
-		  // FIXME: @Niko sollten wir dann nicht lieber stoppen anstatt weiter zu machen?
-		}
+    // build array
+    $contributionIds = array();
+    while ($result->fetch()) {
+      $contributionIds[] = $result->id;
+    }
 
-		// map contact ids to contributions
-		$query = "SELECT `civicrm_contribution`.`id` 
-				  FROM (`civicrm_contribution`)
-				  LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id` 
-				  WHERE `contact_id` IN ($contactIds)
-				  $query_date_limit
-				  AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
-				  AND `contribution_status_id` = 1
-				  AND (`b1`.`id` IS NULL 
-				  OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
-				  ";
-		
-		// execute the query
-		$result = CRM_Core_DAO::executeQuery($query);
+    // try to create a snapshot and redirect depending on the result (conflict)
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+    if (is_array($result)) {
+      CRM_Core_Session::singleton()->pushUserContext( 
+            CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1'));
+    }else{
+      CRM_Core_Session::singleton()->pushUserContext( 
+            CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));
+    }
+  }
 
-		// build array
-		$contributionIds = array();
-		while ($result->fetch()) {
-			$contributionIds[] = $result->id;
-		}
-
-	  // FIXME: @Niko Dokumentation: Was passiert hier?
-		$result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
-		if (is_array($result)) {
-			CRM_Core_Session::singleton()->pushUserContext( 
-          	CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1'));
-		}else{
-			CRM_Core_Session::singleton()->pushUserContext( 
-          	CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));
-		}
-	}
-
-  // FIXME: @Niko Dokumentation
-	private function convertDate($raw_date) {
-		$date = FALSE;
-		if (!empty($raw_date)) {
-			$date_object = DateTime::createFromFormat('m/d/Y', $raw_date, new DateTimeZone('Europe/Berlin'));
-			if ($date_object) {
-				$date = $date_object->getTimestamp();		
-			}
-		}
-		return $date;
-	}
+  // helper function to convert a string to datetime object
+  private function convertDate($raw_date) {
+    $date = FALSE;
+    if (!empty($raw_date)) {
+      $date_object = DateTime::createFromFormat('m/d/Y', $raw_date, new DateTimeZone('Europe/Berlin'));
+      if ($date_object) {
+        $date = $date_object->getTimestamp();   
+      }
+    }
+    return $date;
+  }
 }

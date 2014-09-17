@@ -8,18 +8,19 @@
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
-// FIXME: @Niko format: indent 2 spaces, NO tabs
-// FIXME: @Niko Dokumentation
 
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
 
     // check which button was clicked
+
+    // called when the 'abort' button was selected
     if(!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
       $by_admin = !empty($_REQUEST['donrec_abort_by_admin']);
       $return_id = $_REQUEST['return_to'];
 
+      // we need a (valid) snapshot id here
       if (empty($id)) {
         $this->assign('error', ts('No snapshot id has been provided!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
@@ -41,9 +42,10 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         }
       }
     }elseif (!empty($_REQUEST['donrec_testrun'])) {
-      // test run case
+      // called when the 'test run' button was selected
       $bulk = (int)($_REQUEST['donrec_type'] == "2");
       $exporters = $_REQUEST['result_type'];
+      // at least one exporter has to be selected
       if (empty($exporters)) {
         $this->assign('error', ts('Missing exporter!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
@@ -54,6 +56,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
       // issue donation receipts case
       $bulk = (int)($_REQUEST['donrec_type'] == "2");
       $exporters = $_REQUEST['result_type'];
+      // at least one exporter has to be selected
       if (empty($exporters)) {
         $this->assign('error', ts('Missing exporter!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
