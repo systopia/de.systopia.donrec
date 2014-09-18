@@ -13,15 +13,17 @@
  */
 class CRM_Donrec_Logic_Receipt {
   // TODO: @Niko: see how may of these attributes we actually need to cache here...
-  private $status;
-  private $type;
-  private $issued_on;
-  private $issued_by;
-  private $original_file;
+  protected $status;
+  protected $type;
+  protected $issued_on;
+  protected $issued_by;
+  protected $original_file;
 
+  // TODO: @Niko document.
   protected static $_custom_fields;
 
-  public function __construct() {
+  // TODO: @Niko document.
+  protected function __construct() {
     self::getCustomFields();
   }
 
@@ -101,7 +103,7 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function getDisplayProperties() {
     // TODO: @Niko implement.
-    return FALSE;
+    return array();
   }
 
   /**
@@ -114,7 +116,7 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function getAllProperties() {
     // TODO: @Niko implement.
-    return FALSE;
+    return array();
   }
 
   /**
@@ -126,7 +128,8 @@ class CRM_Donrec_Logic_Receipt {
    * @return an array of CRM_Donrec_Logic_Receipt instances
    */
   public function getReceiptsForContact($contact_id, &$parameters) {
-
+    // TODO: @Niko implement.
+    return array();
   }
 
   /**
@@ -302,7 +305,7 @@ class CRM_Donrec_Logic_Receipt {
   * @return void
   * @deprecated TODO: @Niko: do we still need this?
   */
-  private function updateByName($name, $value, $target = NULL) {
+  protected function updateByName($name, $value, $target = NULL) {
     $receipt = empty($target) ? $this : $target;
     switch ($name) {
       case 'status':
@@ -327,7 +330,7 @@ class CRM_Donrec_Logic_Receipt {
 
 
   // TODO: @Niko: document
-  public static function getCustomFields() {
+  protected static function getCustomFields() {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = array(
