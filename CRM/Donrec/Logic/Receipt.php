@@ -12,6 +12,7 @@
  * This class represents a single donation receipt
  */
 class CRM_Donrec_Logic_Receipt {
+  // TODO: @Niko: see how may of these attributes we actually need to cache here...
   private $status;
   private $type;
   private $issued_on;
@@ -24,12 +25,130 @@ class CRM_Donrec_Logic_Receipt {
     self::getCustomFields();
   }
 
+
+  /**
+   * Creates a new receipt with the given snapshot line
+   *
+   * @param $snapshot           a snapshot object
+   * @param $snapshot_line_id   the ID of the snapshot line to be used for creation
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Creates a new bulk receipt with the given snapshot lines
+   *
+   * @param $snapshot           a snapshot object
+   * @param $snapshot_line_ids  an array with the IDs of the snapshot lines to be used for creation
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public static function createBulkFromSnapshot($snapshot_line_ids, &$parameters) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }  
+
+  /**
+   * Creates a copy of this receipt. The receipt status will be 'COPY'
+   *
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public function createCopy(&$parameters) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Delete this receipt.
+   *
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public function delete(&$parameters) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Mark this receipt as invalid
+   *
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public function markInvalid(&$parameters) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Get all the properties of this receipt needed for display in the summary tab
+   *
+   * This should only include the display properties, and be performance optimized
+   *
+   * Remark: we should start with a basic set of properties, and gradually extend as we go along
+   *
+   * @return an array of all properties needed for display
+   */
+  public function getDisplayProperties() {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Get all properties of this receipt, so we can e.g. export it or pass the 
+   * properties into the $template->generatePDF() function to create another copy
+   *
+   * Remark: we should start with a basic set of properties, and gradually extend as we go along
+   *
+   * @return an array of all properties
+   */
+  public function getAllProperties() {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+  /**
+   * Find all receipts for the given contact ID
+   *
+   * @param $contact_id    a contact ID
+   * @param $parameters    TODO: to be definied. Maybe for only to restrict search (like 'only copies')
+   *
+   * @return an array of CRM_Donrec_Logic_Receipt instances
+   */
+  public function getReceiptsForContact($contact_id, &$parameters) {
+
+  }
+
+  /**
+   * Checks if there is a VALID donation receipt for the given contribution
+   * 
+   * This method should be HIGHLY optimized
+   *
+   * @return TRUE if there is a VALID donation reciept, FALSE otherwise
+   */
+  public static function isContributionLocked($contribution_id) {
+    // TODO: @Niko implement.
+    return FALSE;
+  }
+
+
   /**
   * creates and returns a new donation receipt object from the
   * given parameters
   *
   * @param params associative array of attribute name to value
   * @return receipt object OR error array
+  * @deprecated TODO: @Niko: do we still need this?
   */
   public static function create(&$params) {
     $receipt = new self();
@@ -48,6 +167,7 @@ class CRM_Donrec_Logic_Receipt {
   * @param $contact_id
   * @param $receipt_id
   * @return receipt object OR NULL
+  * @deprecated TODO: @Niko: do we still need this?
   */
   public static function getSingle($contact_id, $receipt_id) {
     if($contact_id === NULL || $receipt_id === NULL) {
@@ -119,6 +239,7 @@ class CRM_Donrec_Logic_Receipt {
    * @param $contact_id
    * @param $receipt_id
    * @return receipt object, array of receipt objects or NULL
+   * @deprecated TODO: @Niko: do we still need this?
    */
   public static function get($contact_id, $receipt_id) {
     if ($contact_id === NULL) {
@@ -179,6 +300,7 @@ class CRM_Donrec_Logic_Receipt {
   * @param value new value for the selected attribute
   * @param target updates a receipt object or the current one if NULL
   * @return void
+  * @deprecated TODO: @Niko: do we still need this?
   */
   private function updateByName($name, $value, $target = NULL) {
     $receipt = empty($target) ? $this : $target;
@@ -203,6 +325,8 @@ class CRM_Donrec_Logic_Receipt {
     }
   }
 
+
+  // TODO: @Niko: document
   public static function getCustomFields() {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields

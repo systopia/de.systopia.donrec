@@ -121,6 +121,7 @@ class CRM_Donrec_Logic_Template
   * @return bool
   */
   public static function generatePDF($template, $values, $parameters) {
+    // TODO: @Niko: this should NOT be a static function, but rather a method of a template object
     $smarty = CRM_Core_Smarty::singleton();
 
     // assign all values
@@ -142,7 +143,7 @@ class CRM_Donrec_Logic_Template
     $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
 
     // render PDF receipt
-    // TODO: Make the file downloadable
+    // TODO: Make the file downloadable (@Niko: this should happen outside this class.)
     return file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $baoTemplate->pdf_format_id));
   }
 
