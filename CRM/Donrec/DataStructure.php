@@ -289,4 +289,21 @@ class CRM_Donrec_DataStructure {
     civicrm_api3($entity, 'create', $params);
   }
 
+  /**
+  * Find the first available option value id
+  */
+  public static function getFirstUsedOptionValueId() {
+    $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'donrec_status'));
+    if (!empty($optionGroup['is_error'])) {
+      return FALSE;
+    }
+    $id = civicrm_api3('OptionValue', 'get', array('option_group_id' => $optionGroup['id']));
+    if (!empty($id['is_error']) || $id['count'] < 1) {
+      return FALSE;
+    }
+    // return first value
+    $id = array_values($id['values'])[0];
+    return $id['id'];
+  }
+
 }

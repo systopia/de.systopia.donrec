@@ -12,21 +12,20 @@
  * This class represents a single donation receipt
  */
 class CRM_Donrec_Logic_Receipt {
-  // TODO: @Niko: see how may of these attributes we actually need to cache here...
-  protected $status;
-  protected $type;
-  protected $issued_on;
-  protected $issued_by;
-  protected $original_file;
-
-  // TODO: @Niko document.
+  /**
+  * Custom field array to map attribute names to database colums
+  * i.e. self::$_custom_field['status'] == 'status_38'
+  */
   protected static $_custom_fields;
+  protected static $_custom_group_id;
 
-  // TODO: @Niko document.
+  /**
+  * Constructor
+  */
   protected function __construct() {
+    // initialize custom field map
     self::getCustomFields();
   }
-
 
   /**
    * Creates a new receipt with the given snapshot line
@@ -38,8 +37,35 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
-    // TODO: @Niko implement.
-    return FALSE;
+    $line = $snapshot->getLine($snapshot_line_id);
+    if (empty($line)) {
+      $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
+      return FALSE;
+    }
+
+    $params = array('NULL', ); // FIXME: the second parameter has to be filled with the entity_id (contact id)
+    $params['status'] = 'ORIGINAL';
+    $params['type'] = 'SINGLE';
+    $params['issued_on'] = $line['created_timestamp'];
+    $params['issued_by'] = $line['created_by'];
+    $params['original_file'] = -1; //TODO: create pdf?
+
+    $gluedParams = implode(',', $params);
+    
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+                      VALUES (%s);",
+                self::$_custom_group_id,
+                self::$_custom_fields['status'],
+                self::$_custom_fields['type'],
+                self::$_custom_fields['issued_on'],
+                self::$_custom_fields['issued_by'],
+                self::$_custom_fields['original_file'],
+                $gluedParams
+              );
+
+    $result = CRM_Core_DAO::executeQuery($query);
+
+    return TRUE;
   }
 
   /**
@@ -52,8 +78,46 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createBulkFromSnapshot($snapshot_line_ids, &$parameters) {
-    // TODO: @Niko implement.
-    return FALSE;
+    $lines = array();
+    foreach ($snapshot_line_ids as $lid) {
+      $line = $snapshot->getLine($lid);
+      if (!empty($line)) {
+        $lines[] = $line;
+      }
+    }
+
+    if (empty($lines)) {
+      $parameters['is_error'] = "snapshot lines do not exist";
+      return FALSE;
+    }
+
+    $all_params = array('NULL', ); // FIXME: the second parameter has to be filled with the entity_id (contact id)
+    foreach ($lines as $line) {
+      $params = array();
+      $params['status'] = 'ORIGINAL';
+      $params['type'] = 'BULK';
+      $params['issued_on'] = $line['created_timestamp'];
+      $params['issued_by'] = $line['created_by'];
+      $params['original_file'] = -1; //TODO: create pdf?
+
+      $gluedParams = implode(',', $params); 
+      $all_params[] = "($gluedParams)";
+    }
+    $gluedDataString = implode(',', $all_params);
+
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+                        VALUES %s;",
+                  self::$_custom_group_id,
+                  self::$_custom_fields['status'],
+                  self::$_custom_fields['type'],
+                  self::$_custom_fields['issued_on'],
+                  self::$_custom_fields['issued_by'],
+                  self::$_custom_fields['original_file'],
+                  $gluedDataString
+                );
+    $result = CRM_Core_DAO::executeQuery($query);
+    
+    return TRUE;
   }  
 
   /**
@@ -298,38 +362,9 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
-  * updates an attribute
-  * @param name name of the attribute
-  * @param value new value for the selected attribute
-  * @param target updates a receipt object or the current one if NULL
-  * @return void
-  * @deprecated TODO: @Niko: do we still need this?
+  * Updates the class attribute to contain all custom fields of the
+  * donation receipt database table.
   */
-  protected function updateByName($name, $value, $target = NULL) {
-    $receipt = empty($target) ? $this : $target;
-    switch ($name) {
-      case 'status':
-        $receipt->setStatus($value);
-        break;
-      case 'type':
-        $receipt->setType($value);
-        break;
-      case 'issued_on':
-        $receipt->setIssuedOn($value);
-        break;
-      case 'issued_by':
-        $receipt->setIssuedBy($value);
-        break;
-      case 'original_file':
-        $receipt->setOriginalFile($value);
-        break;
-      default:
-        break;
-    }
-  }
-
-
-  // TODO: @Niko: document
   protected static function getCustomFields() {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
@@ -344,6 +379,8 @@ class CRM_Donrec_Logic_Receipt {
         error_log(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_group['error_message']));
         return NULL;
       }
+
+      self::$_custom_group_id = $custom_group['id'];
 
       $params = array(
         'version' => 3,
@@ -362,39 +399,5 @@ class CRM_Donrec_Logic_Receipt {
         self::$_custom_fields[$field['name']] = $field['column_name'];
       }
     }
-  }
-
-
-  public function getStatus() {
-    return $this->status;
-  }
-  public function getType() {
-    return $this->type;
-  }
-  public function getIssuedOn() {
-    return $this->issued_on;
-  }
-  public function getIssuedBy() {
-    return $this->issued_by;
-  }
-  public function getOriginalFile() {
-    return $this->original_file;
-  }
-
-
-  public function setStatus($newStatus) {
-    $this->status = $newStatus;
-  }
-  public function setType($newType) {
-    $this->type = $newType;
-  }
-  public function setIssuedOn($newDate) {
-    $this->issued_on = $newDate;
-  }
-  public function setIssuedBy($newDate) {
-    $this->issued_by = $newDate;
-  }
-  public function setOriginalFile($newFile) {
-    $this->original_file = $newFile;
   }
 }

@@ -12,16 +12,47 @@
  * This class holds all template related functions,
  *  including PDF generation
  */
-class CRM_Donrec_Logic_Template 
+class CRM_Donrec_Logic_Template
 {
-  // CRM_Core_BAO_MessageTemplate object
   private $_template;
 
-  /**
-  * Constructor
-  */
-  public function __construct($template) {
+  private function __construct($template) {
     $this->_template = $template;
+  }
+
+  /**
+  * Returns an array of all templates that can be used
+  * to create donation receipts
+  * @return array of template objects
+  */
+  public static function findAllTemplates() {
+    $messageTemplate = new CRM_Core_BAO_MessageTemplate();
+    $messageTemplate->orderBy('msg_title' . ' asc');
+    $messageTemplate->find();
+    $results = array();
+    $workflowId = CRM_Donrec_DataStructure::getFirstUsedOptionValueId();
+    while ($messageTemplate->fetch()) {
+      if($messageTemplate->workflow_id == $workflowId) {
+        CRM_Core_DAO::storeValues($messageTemplate, $results[$messageTemplate->id]);
+      }
+    }
+    return empty($results) ? NULL : $results;
+  }
+
+  /**
+  * Returns a CRM_Donrec_Logic_Template object that uses
+  * the specified CRM_Core_BAO_MessageTemplate
+  * @param int template id
+  * @return CRM_Donrec_Logic_Template object or NULL
+  */
+  public static function create($template_id) {
+    $params = array('id' => $template_id);
+    $defaults = array();
+    $result = CRM_Core_BAO_MessageTemplate::retrieve($params, $defaults);
+    if (is_null($result)) {
+      return NULL;
+    }
+    return new self($result);
   }
 
    /**
@@ -74,11 +105,13 @@ class CRM_Donrec_Logic_Template
       return FALSE;
     }
 
+    $workflowId = CRM_Donrec_DataStructure::getFirstUsedOptionValueId();
+
     $params = array(
       'msg_title' => $default_template_title,
       'msg_html' => $default_template_html,
       'is_active' => 1,
-      'workflow_id' => NULL,
+      'workflow_id' => $workflowId,
       'is_default' => 0,
       'is_reserved' => 0,
     );
@@ -107,21 +140,15 @@ class CRM_Donrec_Logic_Template
     return new self($template);
   }
 
-  public function getBAOMessageTemplate() {
-    return $this->_template;
-  }
-
   /**
   * Creates a PDF file from the specified values
   *
-  * @param object template object
   * @param array associative array of values that will be
   *        assigned to the template
   * @param array array of configuration parameters
   * @return bool
   */
-  public static function generatePDF($template, $values, $parameters) {
-    // TODO: @Niko: this should NOT be a static function, but rather a method of a template object
+  public function generatePDF($values, &$parameters) {
     $smarty = CRM_Core_Smarty::singleton();
 
     // assign all values
@@ -133,8 +160,7 @@ class CRM_Donrec_Logic_Template
     CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $values);
 
     // compile template
-    $baoTemplate = $template->getBAOMessageTemplate();
-    $html = $baoTemplate->msg_html;
+    $html = $this->_template->msg_html;
     $html = $smarty->fetch("string:$html");
 
     // set up file names
@@ -143,8 +169,13 @@ class CRM_Donrec_Logic_Template
     $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
 
     // render PDF receipt
-    // TODO: Make the file downloadable (@Niko: this should happen outside this class.)
-    return file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $baoTemplate->pdf_format_id));
+    $result = file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
+    if($result) {
+      return $filename;
+    }else{
+      $parameters['error'] = "Could not write file $filename";
+      return FALSE;
+    }
   }
 
 }

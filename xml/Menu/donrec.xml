@@ -12,6 +12,12 @@
     <title>Issue Donation Receipts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/donrec/test</path>
+    <page_callback>CRM_Donrec_Page_Test</page_callback>
+    <title>Donation Receipt Tests</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
    <item>
     <path>civicrm/admin/setting/donrec</path>
     <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>

@@ -79,7 +79,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
 
       $result = CRM_Donrec_Logic_Template::generatePDF($template, $values);
-
+      // TODO: Make the file downloadable
       if ($result === FALSE) {
         $failures++;
       }else{

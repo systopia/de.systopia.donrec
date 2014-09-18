@@ -340,4 +340,21 @@ class CRM_Donrec_Logic_Snapshot {
         array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));      
     }
   }
+
+  /**
+  * Returns a line of this snapshot
+  * @param int line id
+  * @return array or empty array
+  */
+  public function getLine($line_id) {
+    $snapshot_id = $this->Id;
+    $query = "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND id = %1 LIMIT 1;";
+    $params = array(1 => array($line_id, 'Integer'));
+    $result = CRM_Core_DAO::executeQuery($query, $params);
+    $line = array();
+    foreach (self::$CHUNK_FIELDS as $field) {
+      $line[$field] = $query->$field;
+    }
+    return $line;
+  }
 }
