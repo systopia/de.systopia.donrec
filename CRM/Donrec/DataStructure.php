@@ -351,8 +351,8 @@ class CRM_Donrec_DataStructure {
       return FALSE;
     }
     // return first value
-    $id = array_values($id['values'])[0];
-    return $id['id'];
+    $id = array_values($id['values']);
+    return $id[0]['id'];
   }
 
 }
