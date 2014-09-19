@@ -20,50 +20,81 @@ class CRM_Donrec_Logic_Receipt {
   protected static $_custom_group_id;
 
   /**
-  * Constructor
+  * Creates a new receipt with the given snapshot line
+  *
+  * @param $snapshot           a snapshot object
+  * @param $snapshot_line_id   the ID of the snapshot line to be used for creation
+  * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+  *
+  * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
   */
-  protected function __construct() {
+  public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
     // initialize custom field map
     self::getCustomFields();
-  }
 
-  /**
-   * Creates a new receipt with the given snapshot line
-   *
-   * @param $snapshot           a snapshot object
-   * @param $snapshot_line_id   the ID of the snapshot line to be used for creation
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-   *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
-   */
-  public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
     $line = $snapshot->getLine($snapshot_line_id);
     if (empty($line)) {
       $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
       return FALSE;
     }
-
-    $params = array('NULL', ); // FIXME: the second parameter has to be filled with the entity_id (contact id)
-    $params['status'] = 'ORIGINAL';
-    $params['type'] = 'SINGLE';
-    $params['issued_on'] = $line['created_timestamp'];
-    $params['issued_by'] = $line['created_by'];
-    $params['original_file'] = -1; //TODO: create pdf?
-
-    $gluedParams = implode(',', $params);
     
-    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`) 
-                      VALUES (%s);",
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+                      VALUES (NULL, %%1, %%2, %%3, %s, %%5, %%6, %%7, %%8, %%9, %%10, %%11, %%12, %%13);",
                 self::$_custom_group_id,
                 self::$_custom_fields['status'],
                 self::$_custom_fields['type'],
                 self::$_custom_fields['issued_on'],
                 self::$_custom_fields['issued_by'],
                 self::$_custom_fields['original_file'],
-                $gluedParams
+                self::$_custom_fields['street_address'],
+                self::$_custom_fields['supplemental_address_1'],
+                self::$_custom_fields['supplemental_address_2'],
+                self::$_custom_fields['supplemental_address_3'],
+                self::$_custom_fields['postal_code'],
+                self::$_custom_fields['city'],
+                self::$_custom_fields['country'],
+                "'" . $line['created_timestamp'] . "'"
               );
 
-    $result = CRM_Core_DAO::executeQuery($query);
+    $query_params = array(
+        1 => array($line['contact_id'], 'Integer'),
+        2 => array('ORIGINAL', 'String'),
+        3 => array('SINGLE', 'String'),
+        5 => array($line['created_by'], 'Integer'),
+        6 => array(-1, 'Integer'), //TODO: create pdf?
+        7 => array(empty($line['street_address']) ? "": $line['street_address'], 'String'),
+        8 => array(empty($line['supplemental_address_1']) ? "" : $line['supplemental_address_1'], 'String'),
+        9 => array(empty($line['supplemental_address_2']) ? "" : $line['supplemental_address_2'], 'String'),
+        10 => array(empty($line['supplemental_address_3']) ? "" : $line['supplemental_address_3'], 'String'),
+        11 => array($line['postal_code'], 'Integer'),
+        12 => array($line['city'], 'String'),
+        13 => array($line['country'], 'String')
+      );
+
+    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
+
+    // create the donation_receipt_item
+    $item_params = array();
+    $item_params['contribution_id'] = $line['contribution_id']; 
+    $item_params['status'] = 'ORIGINAL';
+    $item_params['type']  = 'SINGLE';
+    $item_params['issued_in'] = $lastId;
+    $item_params['issued_by'] = $line['created_by'];
+    $item_params['total_amount'] = $line['total_amount'];
+    $item_params['non_deductible_amount'] = $line['non_deductible_amount'];
+    $item_params['currency'] = $line['currency'];
+    $item_params['issued_on'] = $line['created_timestamp'];
+    $item_params['receive_date'] = $line['receive_date'];
+
+    // calculate sha1 checksum
+    $contrib_string = "";
+    foreach ($item_params as $key => $value) {
+      $contrib_string .= $value;
+    }
+    $item_params['contribution_hash'] = sha1($contrib_string);
+
+    CRM_Donrec_Logic_ReceiptItem::create($item_params);
 
     return TRUE;
   }
@@ -77,7 +108,7 @@ class CRM_Donrec_Logic_Receipt {
    *
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
-  public static function createBulkFromSnapshot($snapshot_line_ids, &$parameters) {
+  public static function createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
     $lines = array();
     foreach ($snapshot_line_ids as $lid) {
       $line = $snapshot->getLine($lid);
@@ -90,34 +121,81 @@ class CRM_Donrec_Logic_Receipt {
       $parameters['is_error'] = "snapshot lines do not exist";
       return FALSE;
     }
-
-    $all_params = array('NULL', ); // FIXME: the second parameter has to be filled with the entity_id (contact id)
-    foreach ($lines as $line) {
-      $params = array();
-      $params['status'] = 'ORIGINAL';
-      $params['type'] = 'BULK';
-      $params['issued_on'] = $line['created_timestamp'];
-      $params['issued_by'] = $line['created_by'];
-      $params['original_file'] = -1; //TODO: create pdf?
-
-      $gluedParams = implode(',', $params); 
-      $all_params[] = "($gluedParams)";
+    if (count($lines) < 2) {
+      $parameters['is_error'] = "this is no bulk donation receipt";
+      return FALSE;
     }
-    $gluedDataString = implode(',', $all_params);
 
-    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`) 
-                        VALUES %s;",
-                  self::$_custom_group_id,
-                  self::$_custom_fields['status'],
-                  self::$_custom_fields['type'],
-                  self::$_custom_fields['issued_on'],
-                  self::$_custom_fields['issued_by'],
-                  self::$_custom_fields['original_file'],
-                  $gluedDataString
-                );
-    $result = CRM_Core_DAO::executeQuery($query);
+    // initialize custom field map
+    self::getCustomFields();
+
+    $line = $lines[0];
+    if (empty($line)) {
+      $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
+      return FALSE;
+    }
     
-    return TRUE;
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+                      VALUES (NULL, %%1, %%2, %%3, %s, %%5, %%6, %%7, %%8, %%9, %%10, %%11, %%12, %%13);",
+                self::$_custom_group_id,
+                self::$_custom_fields['status'],
+                self::$_custom_fields['type'],
+                self::$_custom_fields['issued_on'],
+                self::$_custom_fields['issued_by'],
+                self::$_custom_fields['original_file'],
+                self::$_custom_fields['street_address'],
+                self::$_custom_fields['supplemental_address_1'],
+                self::$_custom_fields['supplemental_address_2'],
+                self::$_custom_fields['supplemental_address_3'],
+                self::$_custom_fields['postal_code'],
+                self::$_custom_fields['city'],
+                self::$_custom_fields['country'],
+                "'" . $line['created_timestamp'] . "'"
+              );
+
+    $query_params = array(
+        1 => array($line['contact_id'], 'Integer'),
+        2 => array('ORIGINAL', 'String'),
+        3 => array('BULK', 'String'),
+        5 => array($line['created_by'], 'Integer'),
+        6 => array(-1, 'Integer'), //TODO: create pdf?
+        7 => array(empty($line['street_address']) ? "": $line['street_address'], 'String'),
+        8 => array(empty($line['supplemental_address_1']) ? "" : $line['supplemental_address_1'], 'String'),
+        9 => array(empty($line['supplemental_address_2']) ? "" : $line['supplemental_address_2'], 'String'),
+        10 => array(empty($line['supplemental_address_3']) ? "" : $line['supplemental_address_3'], 'String'),
+        11 => array($line['postal_code'], 'Integer'),
+        12 => array($line['city'], 'String'),
+        13 => array($line['country'], 'String')
+      );
+
+    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
+
+    for ($i=0; $i < count($lines); $i++) { 
+      // create the donation_receipt_item
+      $item_params = array();
+      $item_params['contribution_id'] = $lines[$i]['contribution_id']; 
+      $item_params['status'] = 'ORIGINAL';
+      $item_params['type']  = 'BULK';
+      $item_params['issued_in'] = $lastId;
+      $item_params['issued_by'] = $lines[$i]['created_by'];
+      $item_params['total_amount'] = $lines[$i]['total_amount'];
+      $item_params['non_deductible_amount'] = $lines[$i]['non_deductible_amount'];
+      $item_params['currency'] = $lines[$i]['currency'];
+      $item_params['issued_on'] = $lines[$i]['created_timestamp'];
+      $item_params['receive_date'] = $lines[$i]['receive_date'];
+
+      // calculate sha1 checksum
+      $contrib_string = "";
+      foreach ($item_params as $key => $value) {
+        $contrib_string .= $value;
+      }
+      $item_params['contribution_hash'] = sha1($contrib_string);
+
+      CRM_Donrec_Logic_ReceiptItem::create($item_params);
+    }
+
+    return TRUE; 
   }  
 
   /**
@@ -206,159 +284,6 @@ class CRM_Donrec_Logic_Receipt {
   public static function isContributionLocked($contribution_id) {
     // TODO: @Niko implement.
     return FALSE;
-  }
-
-
-  /**
-  * creates and returns a new donation receipt object from the
-  * given parameters
-  *
-  * @param params associative array of attribute name to value
-  * @return receipt object OR error array
-  * @deprecated TODO: @Niko: do we still need this?
-  */
-  public static function create(&$params) {
-    $receipt = new self();
-    foreach ($params as $key => $value) {
-      $receipt->updateByName($key, $value, $receipt);
-    }
-    return $receipt;
-  }
-
-
-
-  /**
-  * returns a donation receipt object from the
-  * given contact
-  *
-  * @param $contact_id
-  * @param $receipt_id
-  * @return receipt object OR NULL
-  * @deprecated TODO: @Niko: do we still need this?
-  */
-  public static function getSingle($contact_id, $receipt_id) {
-    if($contact_id === NULL || $receipt_id === NULL) {
-      return NULL;
-    }
-
-    // get all custom values for the specified contact
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'entity_id' => $contact_id,
-    );
-    $custom_values = civicrm_api('CustomValue', 'get', $params);
-    if ($custom_values['is_error'] != 0) {
-      error_log(sprintf('de.systopia.donrec: receipt: error: %s', $custom_values['error_message']));
-      return NULL;
-    }
-
-    // get the ids of all relevant custom fields
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'name' => 'zwb_donation_receipt',
-    );
-    $custom_group = civicrm_api('CustomGroup', 'getsingle', $params);
-    if (isset($custom_group['is_error'])) {
-      error_log(sprintf('de.systopia.donrec: receipt: error: %s', $custom_group['error_message']));
-      return NULL;
-    }
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'custom_group_id' => $custom_group['id'],
-    );
-    $custom_fields = civicrm_api('CustomField', 'get', $params);
-    if ($custom_fields['is_error'] != 0) {
-      error_log(sprintf('de.systopia.donrec: receipt: error: %s', $custom_fields['error_message']));
-      return NULL;
-    }
-
-    $relevant_ids = array();
-    $id_to_name = array();
-    foreach ($custom_fields['values'] as $field) {
-      $relevant_ids[$field['name']] = $field['id'];
-      $id_to_name[$field['id']] = $field['name'];
-    }
-
-    //error_log("relevant ids " . print_r($relevant_ids, TRUE));
-
-    $receipt = new self();
-    // filter
-    foreach ($custom_values['values'] as $value_group) {
-      if(in_array($value_group['id'], $relevant_ids)) {
-        $this->updateByName($id_to_name[$value_group['id']], $value_group[$receipt_id], $receipt);
-      }
-    }
-
-    return $receipt;
-  }
-
-  /**
-   * returns a donation receipt object from the
-   * given contact
-   *
-   * @param $contact_id
-   * @param $receipt_id
-   * @return receipt object, array of receipt objects or NULL
-   * @deprecated TODO: @Niko: do we still need this?
-   */
-  public static function get($contact_id, $receipt_id) {
-    if ($contact_id === NULL) {
-      return NULL;
-    }
-
-    if ($receipt_id === NULL) {
-      // get all
-      $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'custom_group_name' => 'zwb_donation_receipt',
-      );
-      $result = civicrm_api('CustomGroup', 'get', $params);
-      if ($result['is_error'] != 0) {
-        error_log(sprintf('de.systopia.donrec: receipt: error: %s', $result['error_message']));
-        return NULL;
-      }elseif ($result['count'] < 1) {
-        error_log(sprintf('de.systopia.donrec: receipt: error: custom group not found'));
-        return NULL;
-      }
-
-      $table_name = "";
-      foreach ($result['values'] as $r) {
-        if($r['name'] == 'zwb_donation_receipt') {
-          $table_name = $r['table_name'];
-        }
-      }
-
-      $query = "SELECT `id` FROM `$table_name` WHERE `entity_id` = %1;";
-      // prepare parameters 
-      $params = array(1 => array($contact_id, 'Integer'));
-
-      // execute the query
-      $result = CRM_Core_DAO::executeQuery($query, $params);
-      $ids = array();
-      while ($result->fetch()) {
-        $ids[] = $result->id;
-      }
-
-      $receipts = array();
-      foreach ($ids as $id) {
-        $receipts[] = self::getSingle($contact_id, $id);
-      }
-
-      return $receipts;
-    }else{
-      // get single
-      return self::getSingle($entity_id, $receipt_id);
-    }
-    
   }
 
   /**

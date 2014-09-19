@@ -36,8 +36,8 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $raw_from_ts = $values['donrec_contribution_horizon_from'];
     $raw_to_ts = $values['donrec_contribution_horizon_to'];
     
-    $date_from = $this->convertDate($raw_from_ts);
-    $date_to = $this->convertDate($raw_to_ts);
+    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts);
+    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts);
 
     $query_date_limit = "";
     if ($date_from) {
@@ -101,17 +101,5 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       CRM_Core_Session::singleton()->pushUserContext( 
             CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));
     }
-  }
-
-  // helper function to convert a string to datetime object
-  private function convertDate($raw_date) {
-    $date = FALSE;
-    if (!empty($raw_date)) {
-      $date_object = DateTime::createFromFormat('m/d/Y', $raw_date, new DateTimeZone('Europe/Berlin'));
-      if ($date_object) {
-        $date = $date_object->getTimestamp();   
-      }
-    }
-    return $date;
   }
 }

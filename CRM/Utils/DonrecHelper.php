@@ -146,4 +146,21 @@ class CRM_Utils_DonrecHelper
     return $string;
   }
 
+  /**
+  * Converts a string to datetime object
+  * @param string
+  * @param format
+  * @return DateTime object
+  */
+  public static function convertDate($raw_date, $format = 'm/d/Y') {
+    $date = FALSE;
+    if (!empty($raw_date)) {
+      $date_object = DateTime::createFromFormat($format, $raw_date, new DateTimeZone('Europe/Berlin'));
+      if ($date_object) {
+        $date = $date_object->getTimestamp();   
+      }
+    }
+    return $date;
+  }
+
 }

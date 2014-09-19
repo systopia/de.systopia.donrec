@@ -17,7 +17,8 @@ class CRM_Donrec_Logic_Snapshot {
 
   // these fields of the table get copied into the chunk
   private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
-
+  private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
+  private static $LINE_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
   // private constructor to prevent
   // external instantiation
   private function __construct($id) {
@@ -108,7 +109,7 @@ class CRM_Donrec_Logic_Snapshot {
           WHERE
               `id` IN ($id_string)
               ;";
-    // FIXME: do not copy invalid contributions
+    // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters 
     $params = array(1 => array($new_snapshot_id, 'Integer'),
@@ -351,10 +352,48 @@ class CRM_Donrec_Logic_Snapshot {
     $query = "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND id = %1 LIMIT 1;";
     $params = array(1 => array($line_id, 'Integer'));
     $result = CRM_Core_DAO::executeQuery($query, $params);
+    $result->fetch();
     $line = array();
-    foreach (self::$CHUNK_FIELDS as $field) {
-      $line[$field] = $query->$field;
+    foreach (self::$LINE_FIELDS as $field) {
+      $line[$field] = $result->$field;
     }
+    $contact_info = $this->getContactInformation($line_id);
+    $line = array_merge($line, $contact_info);
     return $line;
+  }
+
+  /**
+  * Returns contact- and address information for a specific line in this snapshot
+  * @param int line id
+  * @return array or empty array
+  */
+  public function getContactInformation($line_id) {
+    $query = "SELECT
+              contact.`id` AS contact_id,
+              contact.`display_name`,
+              address.`street_address`, 
+              address.`supplemental_address_1`,
+              address.`supplemental_address_2`,
+              address.`supplemental_address_3`,
+              address.`postal_code`,
+              address.`city`,
+              country.`name` AS country
+              FROM `civicrm_donrec_snapshot` AS snapshot
+              RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = `snapshot`.`contribution_id`
+              RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id` 
+              RIGHT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
+              RIGHT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
+              WHERE snapshot.`id` = %1
+              AND snapshot.`snapshot_id` = %2
+              LIMIT 1";
+    $params = array(1 => array($line_id, 'Integer'),
+                    2 => array($this->Id, 'Integer'));
+    $result = CRM_Core_DAO::executeQuery($query, $params);
+    $result->fetch();
+    $contact = array();
+    foreach (self::$CONTACT_FIELDS as $field) {
+      $contact[$field] = $result->$field;
+    }
+    return $contact;
   }
 }
