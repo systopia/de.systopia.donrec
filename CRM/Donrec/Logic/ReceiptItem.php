@@ -19,11 +19,6 @@ class CRM_Donrec_Logic_ReceiptItem {
   protected static $_custom_fields;
   protected static $_custom_group_id;
 
-  public function bla() {
-  	self::getCustomFields();
-  	print_r(self::$_custom_fields);
-  }
-
   /**
   * Creates a new receipt item
   * @param array of parameters

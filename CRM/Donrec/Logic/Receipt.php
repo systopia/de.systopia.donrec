@@ -109,6 +109,9 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
+    // initialize custom field map
+    self::getCustomFields();
+
     $lines = array();
     foreach ($snapshot_line_ids as $lid) {
       $line = $snapshot->getLine($lid);
@@ -125,9 +128,6 @@ class CRM_Donrec_Logic_Receipt {
       $parameters['is_error'] = "this is no bulk donation receipt";
       return FALSE;
     }
-
-    // initialize custom field map
-    self::getCustomFields();
 
     $line = $lines[0];
     if (empty($line)) {
