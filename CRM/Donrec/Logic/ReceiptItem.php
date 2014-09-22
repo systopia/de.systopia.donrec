@@ -16,8 +16,8 @@ class CRM_Donrec_Logic_ReceiptItem {
   * Custom field array to map attribute names to database colums
   * i.e. self::$_custom_field['total_amount'] == 10
   */
-  protected static $_custom_fields;
-  protected static $_custom_group_id;
+  public static $_custom_fields; // TODO: set private, but add getters
+  public static $_custom_group_id;
 
   /**
   * Creates a new receipt item
@@ -63,10 +63,106 @@ class CRM_Donrec_Logic_ReceiptItem {
   }
 
   /**
+  * Creates a copy of all donation receipt items of a specific donation receipt
+  * @param int donation receipt id
+  */
+  public static function createCopyAll($donation_receipt_id) {
+    $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
+    $sha1_string = sprintf($sha1_string, 
+                          self::$_custom_fields['type'],
+                          self::$_custom_fields['issued_in'],
+                          self::$_custom_fields['issued_by'],
+                          self::$_custom_fields['total_amount'],
+                          self::$_custom_fields['non_deductible_amount'],
+                          self::$_custom_fields['currency'],
+                          self::$_custom_fields['issued_on'],
+                          self::$_custom_fields['receive_date'],
+                          self::$_custom_group_id);
+
+    $query = "INSERT INTO `civicrm_value_donation_receipt_item_%d`
+    (`id`, 
+      `entity_id`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`, 
+      `%s`) 
+    SELECT NULL as`id`, 
+    `entity_id`, 
+    'COPY' as `%s`, 
+    `%s`, 
+    `%s`, 
+    NOW() as `%s`, 
+    `%s`, 
+    `%s`, 
+    `%s`, 
+    `%s`, 
+    `%s`, 
+   %s as `%s`
+    FROM `civicrm_value_donation_receipt_item_%d` 
+    WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
+    $query = sprintf($query, 
+      self::$_custom_group_id,
+      self::$_custom_fields['status'],
+      self::$_custom_fields['type'],
+      self::$_custom_fields['issued_in'],
+      self::$_custom_fields['issued_on'],
+      self::$_custom_fields['issued_by'],
+      self::$_custom_fields['total_amount'],
+      self::$_custom_fields['non_deductible_amount'],
+      self::$_custom_fields['currency'],
+      self::$_custom_fields['receive_date'],
+      self::$_custom_fields['contribution_hash'],
+      self::$_custom_fields['status'],
+      self::$_custom_fields['type'],
+      self::$_custom_fields['issued_in'],
+      self::$_custom_fields['issued_on'],
+      self::$_custom_fields['issued_by'],
+      self::$_custom_fields['total_amount'],
+      self::$_custom_fields['non_deductible_amount'],
+      self::$_custom_fields['currency'],
+      self::$_custom_fields['receive_date'],
+      $sha1_string,
+      self::$_custom_fields['contribution_hash'],
+      self::$_custom_group_id,
+      self::$_custom_fields['issued_in'],
+      $donation_receipt_id,
+      self::$_custom_fields['status']
+      );
+    $result = CRM_Core_DAO::executeQuery($query);
+  }
+
+  /**
+  * Deletes all contribution items for a specific donation receipt
+  * @param int donation receipt id
+  * @param string filter by status (deletes all including copies if not specified)
+  */
+  public static function deleteAll($donation_receipt_id, $status = NULL) {
+    if (!empty($status)) {
+      $statusString = sprintf(" AND `%s` = '%s'", self::$_custom_fields['status'], $status);
+    }else{
+      $statusString = "";
+    }
+    
+    $query = "DELETE FROM `civicrm_value_donation_receipt_item_%d` WHERE `%s` = %d%s;";
+    $query = sprintf($query, 
+                    self::$_custom_group_id, 
+                    self::$_custom_fields['issued_in'], 
+                    $donation_receipt_id,
+                    $statusString);
+    $result = CRM_Core_DAO::executeQuery($query);
+  }
+
+  /**
   * Updates the class attribute to contain all custom fields of the
   * donation receipt database table.
   */
-  protected static function getCustomFields() {
+  public static function getCustomFields() {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = array(

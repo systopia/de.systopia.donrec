@@ -11,7 +11,9 @@ class CRM_Donrec_Page_Test extends CRM_Core_Page {
   	$snapshot = CRM_Donrec_Logic_Snapshot::get($id);
   	$params = array();
   	$r = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $line_id, $params);
-  	printf("%s<br />", print_r($r, TRUE));
+  	//$r->createCopy($params);
+  	$g = $r->getReceiptsForContact(2, $params);
+  	printf("%s<br />", print_r($g, TRUE));
   	printf("%s<br />", $r === NULL ? "NULL" : "not NULL");
   	printf("%s", $r === TRUE ? "TRUE" : "FALSE");
 

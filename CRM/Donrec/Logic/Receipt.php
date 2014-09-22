@@ -20,13 +20,26 @@ class CRM_Donrec_Logic_Receipt {
   protected static $_custom_group_id;
 
   /**
+  * Receipt id
+  */
+  protected $Id;
+
+  /**
+  * constructor
+  */
+  public function __construct($receipt_id) {
+    self::getCustomFields();
+    $this->Id = $receipt_id;
+  }
+
+  /**
   * Creates a new receipt with the given snapshot line
   *
   * @param $snapshot           a snapshot object
   * @param $snapshot_line_id   the ID of the snapshot line to be used for creation
   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
   *
-  * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+  * @return Receipt object if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
   */
   public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
     // initialize custom field map
@@ -96,7 +109,7 @@ class CRM_Donrec_Logic_Receipt {
 
     CRM_Donrec_Logic_ReceiptItem::create($item_params);
 
-    return TRUE;
+    return new self($lastId);
   }
 
   /**
@@ -195,7 +208,7 @@ class CRM_Donrec_Logic_Receipt {
       CRM_Donrec_Logic_ReceiptItem::create($item_params);
     }
 
-    return TRUE; 
+    return new self($lastId); 
   }  
 
   /**
@@ -206,8 +219,71 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function createCopy(&$parameters) {
-    // TODO: @Niko implement.
-    return FALSE;
+    $query = "INSERT INTO `civicrm_value_donation_receipt_%d`
+              (`id`, 
+               `entity_id`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`, 
+               `%s`) 
+              SELECT 
+              NULL as `id`, 
+              `entity_id`, 
+              'COPY' as `%s`, 
+              `%s`, 
+              NOW() as `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s`, 
+              `%s` 
+              FROM `civicrm_value_donation_receipt_%d` 
+              WHERE `id` = %d AND `%s` = 'ORIGINAL';";
+    $query = sprintf($query, 
+                    self::$_custom_group_id,
+                    self::$_custom_fields['status'],
+                    self::$_custom_fields['type'],
+                    self::$_custom_fields['issued_on'],
+                    self::$_custom_fields['issued_by'],
+                    self::$_custom_fields['original_file'],
+                    self::$_custom_fields['street_address'],
+                    self::$_custom_fields['supplemental_address_1'],
+                    self::$_custom_fields['supplemental_address_2'],
+                    self::$_custom_fields['supplemental_address_3'],
+                    self::$_custom_fields['postal_code'],
+                    self::$_custom_fields['city'],
+                    self::$_custom_fields['country'],
+                    self::$_custom_fields['status'],
+                    self::$_custom_fields['type'],
+                    self::$_custom_fields['issued_on'],
+                    self::$_custom_fields['issued_by'],
+                    self::$_custom_fields['original_file'],
+                    self::$_custom_fields['street_address'],
+                    self::$_custom_fields['supplemental_address_1'],
+                    self::$_custom_fields['supplemental_address_2'],
+                    self::$_custom_fields['supplemental_address_3'],
+                    self::$_custom_fields['postal_code'],
+                    self::$_custom_fields['city'],
+                    self::$_custom_fields['country'],
+                    self::$_custom_group_id,
+                    $this->Id,
+                    self::$_custom_fields['status']
+                    );
+    $result = CRM_Core_DAO::executeQuery($query);
+    CRM_Donrec_Logic_ReceiptItem::createCopyAll($this->Id);
+    return TRUE;
   }
 
   /**
@@ -218,8 +294,14 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function delete(&$parameters) {
-    // TODO: @Niko implement.
-    return FALSE;
+    $status = empty($parameters['status']) ? 'ORIGINAL' : $parameters['status'];
+    $query = "DELETE FROM `civicrm_value_donation_receipt_%d` WHERE `id` = %d";
+    $query = sprintf($query, self::$_custom_group_id, $this->Id);
+    $result = CRM_Core_DAO::executeQuery($query, $status);
+
+    CRM_Donrec_Logic_ReceiptItem::deleteAll($this->Id);
+
+    return TRUE;
   }
 
   /**
@@ -230,8 +312,10 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function markInvalid(&$parameters) {
-    // TODO: @Niko implement.
-    return FALSE;
+    $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'INVALID' WHERE `id` = %d";
+    $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
+    $result = CRM_Core_DAO::executeQuery($query);
+    return TRUE;
   }
 
   /**
@@ -244,8 +328,46 @@ class CRM_Donrec_Logic_Receipt {
    * @return an array of all properties needed for display
    */
   public function getDisplayProperties() {
-    // TODO: @Niko implement.
-    return array();
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+
+    $query = "SELECT 
+              `%s` as `status`, 
+              `%s` as `issued_on`, 
+              SUM(item.`%s`) as `total_amount`,
+              MIN(item.`%s`) as `date_from`, 
+              MAX(item.`%s`) as `date_to` 
+              FROM `civicrm_value_donation_receipt_%d` as receipt
+              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item 
+                ON item.`%s` = receipt.id
+                AND item.`%s` = receipt.`%s`
+              WHERE receipt.id = %d;";
+
+    $query = sprintf($query, 
+      self::$_custom_fields['status'],
+      self::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      self::$_custom_group_id,
+      CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
+      self::$_custom_fields['status'],
+      $this->Id
+      );
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    $display_properties = array();
+
+    while($result->fetch()) {
+      $display_properties['status'] = $result->status;
+      $display_properties['issued_on'] = $result->issued_on;
+      $display_properties['total_amount'] = $result->total_amount;
+      $display_properties['date_from'] = $result->date_from;
+      $display_properties['date_to'] = $result->date_to;
+    }
+
+    return $display_properties;
   }
 
   /**
@@ -257,8 +379,46 @@ class CRM_Donrec_Logic_Receipt {
    * @return an array of all properties
    */
   public function getAllProperties() {
-    // TODO: @Niko implement.
-    return array();
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+
+    $query = "SELECT 
+              `%s` as `status`, 
+              `%s` as `issued_on`, 
+              SUM(item.`%s`) as `total_amount`,
+              MIN(item.`%s`) as `date_from`, 
+              MAX(item.`%s`) as `date_to` 
+              FROM `civicrm_value_donation_receipt_%d` as receipt
+              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item 
+                ON item.`%s` = receipt.id
+                AND item.`%s` = receipt.`%s`
+              WHERE receipt.id = %d;";
+
+    $query = sprintf($query, 
+      self::$_custom_fields['status'],
+      self::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      self::$_custom_group_id,
+      CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
+      self::$_custom_fields['status'],
+      $this->Id
+      );
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    $display_properties = array();
+    
+    while($result->fetch()) {
+      $display_properties['status'] = $result->status;
+      $display_properties['issued_on'] = $result->issued_on;
+      $display_properties['total_amount'] = $result->total_amount;
+      $display_properties['date_from'] = $result->date_from;
+      $display_properties['date_to'] = $result->date_to;
+    }
+
+    return $display_properties;
   }
 
   /**
@@ -270,8 +430,16 @@ class CRM_Donrec_Logic_Receipt {
    * @return an array of CRM_Donrec_Logic_Receipt instances
    */
   public function getReceiptsForContact($contact_id, &$parameters) {
-    // TODO: @Niko implement.
-    return array();
+    $query = "SELECT `id` FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d";
+    $query = sprintf($query, self::$_custom_group_id, $contact_id);
+    $results = CRM_Core_DAO::executeQuery($query);
+    $receipts = array();
+
+    while($results->fetch()) {
+      $receipts[] = new self($results->id);
+    }
+
+    return $receipts;
   }
 
   /**
@@ -282,8 +450,37 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if there is a VALID donation reciept, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
-    // TODO: @Niko implement.
-    return FALSE;
+    self::getCustomFields();
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+
+    $query = "SELECT count(receipt.`id`)
+              FROM `civicrm_value_donation_receipt_%d` as receipt
+              INNER JOIN `civicrm_value_donation_receipt_item_%d` as item 
+              ON item.`%s` = receipt.`id`
+              AND SHA1(CONCAT(item.`entity_id`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`)) = item.`%s`
+              AND item.`%s` <> 'INVALID'
+              WHERE item.`entity_id` = %d
+              AND receipt.`%s` <> 'INVALID'";
+
+    $query = sprintf($query, 
+                    self::$custom_group_id,
+                    CRM_Donrec_Logic_ReceiptItem::$custom_group_id,
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_in'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['status'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['type'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_in'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_by'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['total_amount'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['non_deductible_amount'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['currency'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_on'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['receive_date'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['contribution_hash'],
+                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['status'],
+                    $contribution_id
+                    self::$custom_fields['status'],
+                    );
+    return CRM_Core_DAO::singleValueQuery($query);
   }
 
   /**
