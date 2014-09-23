@@ -331,11 +331,13 @@ class CRM_Donrec_Logic_Receipt {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
 
     $query = "SELECT 
+              `%s` as `type`,
               `%s` as `status`, 
               `%s` as `issued_on`, 
               SUM(item.`%s`) as `total_amount`,
               MIN(item.`%s`) as `date_from`, 
-              MAX(item.`%s`) as `date_to` 
+              MAX(item.`%s`) as `date_to`,
+              item.`%s` as `currency` 
               FROM `civicrm_value_donation_receipt_%d` as receipt
               RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item 
                 ON item.`%s` = receipt.id
@@ -343,11 +345,13 @@ class CRM_Donrec_Logic_Receipt {
               WHERE receipt.id = %d;";
 
     $query = sprintf($query, 
+      self::$_custom_fields['type'],
       self::$_custom_fields['status'],
       self::$_custom_fields['issued_on'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['currency'],
       self::$_custom_group_id,
       CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
@@ -360,11 +364,13 @@ class CRM_Donrec_Logic_Receipt {
     $display_properties = array();
 
     while($result->fetch()) {
+      $display_properties['type'] = $result->type;
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
       $display_properties['total_amount'] = $result->total_amount;
       $display_properties['date_from'] = $result->date_from;
       $display_properties['date_to'] = $result->date_to;
+      $display_properties['currency'] = $result->currency;
     }
 
     return $display_properties;
@@ -429,9 +435,10 @@ class CRM_Donrec_Logic_Receipt {
    *
    * @return an array of CRM_Donrec_Logic_Receipt instances
    */
-  public function getReceiptsForContact($contact_id, &$parameters) {
-    $query = "SELECT `id` FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d";
-    $query = sprintf($query, self::$_custom_group_id, $contact_id);
+  public static function getReceiptsForContact($contact_id, &$parameters) {
+    self::getCustomFields();
+    $query = "SELECT `id` FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d ORDER BY `%s` DESC;";
+    $query = sprintf($query, self::$_custom_group_id, $contact_id, self::$_custom_fields['issued_on']);
     $results = CRM_Core_DAO::executeQuery($query);
     $receipts = array();
 
@@ -440,6 +447,20 @@ class CRM_Donrec_Logic_Receipt {
     }
 
     return $receipts;
+  }
+
+   /**
+   * Get number of all receipts for the given contact ID
+   *
+   * @param $contact_id    a contact ID
+   *
+   * @return int
+   */
+  public static function getReceiptCountForContact($contact_id) {
+    self::getCustomFields();
+    $query = "SELECT COUNT(`id`) FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d";
+    $query = sprintf($query, self::$_custom_group_id, $contact_id);
+    return CRM_Core_DAO::singleValueQuery($query);
   }
 
   /**
@@ -477,10 +498,18 @@ class CRM_Donrec_Logic_Receipt {
                     CRM_Donrec_Logic_ReceiptItem::$custom_fields['receive_date'],
                     CRM_Donrec_Logic_ReceiptItem::$custom_fields['contribution_hash'],
                     CRM_Donrec_Logic_ReceiptItem::$custom_fields['status'],
-                    $contribution_id
-                    self::$custom_fields['status'],
+                    $contribution_id,
+                    self::$custom_fields['status']
                     );
     return CRM_Core_DAO::singleValueQuery($query);
+  }
+
+  /**
+  * Returns the id of this receipt
+  * @return int
+  */
+  public function getId() {
+    return $this->Id;
   }
 
   /**

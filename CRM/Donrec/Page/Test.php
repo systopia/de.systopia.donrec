@@ -6,7 +6,7 @@ class CRM_Donrec_Page_Test extends CRM_Core_Page {
   function run() {
 
   	$id = 1;
-  	$line_id = array(1, 2, 3);
+  	$line_id = array(1, 2, 3,4,5,6,7,8,9,10);
 
   	$snapshot = CRM_Donrec_Logic_Snapshot::get($id);
   	$params = array();

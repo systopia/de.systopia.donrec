@@ -139,3 +139,13 @@ function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
     $metaDataFolders[] = $extDir;
   }
 }
+
+function donrec_civicrm_tabs(&$tabs, $contactID) {
+    $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
+                                  "reset=1&snippet=1&force=1&cid=$contactID" );
+    $tabs[] = array( 'id'    => 'donation_receipts',
+                     'url'   => $url,
+                     'title' => ts('Donation receipts'),
+                     'count' => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($contactID),
+                     'weight' => 300);
+}
