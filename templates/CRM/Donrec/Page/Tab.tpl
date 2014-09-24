@@ -6,7 +6,7 @@
     {foreach from=$display_receipts key=receipt_id item=receipt name=receipt_items}
     <tr class="{if $smarty.foreach.receipt_items.index % 2 == 0}even{else}odd{/if}">
       <td>
-        <div class="donrec-stats">
+        <div class="donrec-stats" name="donrec_stats_{$receipt_id}">
           <ul>
             <li><u><b>{ts}{$receipt.type} receipt{/ts}</b></u></li>
             <li>{ts}Status{/ts}: <b>{$receipt.status}</b></li>
@@ -17,7 +17,7 @@
           </ul>
         </div>
       </td>
-      <td><a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a><a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a><a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+      <td><a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>{if $is_admin}<a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>{/if}<a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
       </td>
     </tr>
     {/foreach}
@@ -85,6 +85,7 @@
         }
       
     });
+    {/literal}{if $is_admin}{literal}
     // called for every delete-button
     cj('.donrec-stats-block a[id^="delete_receipt_"]').click(function() {
         // calculate receipt id
@@ -92,6 +93,10 @@
         if (rid != null) {
           rid = rid[2];
           // delete this donation receipt
+          var msgExt = "";
+          if(/original/i.test(cj("div[name='donrec_stats_" + rid +"'] ul li:nth-child(2)").text())) {
+            msgExt = "<br/>" + {/literal}"{ts}You could also just withdraw it.{/ts}"{literal};
+          }
           CRM.confirm(function() {
             CRM.api('DonationReceipt', 'delete', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid, 'id': 0},
             {success: function(data) {
@@ -106,10 +111,10 @@
           );
           },
           {
-            message: {/literal}"{ts}Are you sure you want to delete this donation receipt?{/ts}"{literal}
+            message: {/literal}"{ts}Are you sure you want to delete this donation receipt?{/ts}"{literal} + msgExt
           });
         }
-    });
+    });{/literal}{/if}{literal}
   });
 </script>
 {/literal}

@@ -74,7 +74,6 @@ class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
     foreach ($templates as $key => $value) {
       $t = CRM_Donrec_Logic_Template::create($key);
       $this->assertNotNULL($t);
-      error_log(print_r($key));
       foreach ($values as $k => $v) {
         $values_copy = $values;
         unset($values_copy[$k]);

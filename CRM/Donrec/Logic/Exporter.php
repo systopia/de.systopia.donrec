@@ -117,7 +117,6 @@ abstract class CRM_Donrec_Logic_Exporter {
   protected function createFile($file_name, $is_temp = FALSE) {
     // TODO: Implement! This is only a stub!
     $config =  CRM_Core_Config::singleton();
-    error_log(print_r($config, 1));
     if ($is_temp) {
       $file = $config->customFileUploadDir . $file_name;
     } else {

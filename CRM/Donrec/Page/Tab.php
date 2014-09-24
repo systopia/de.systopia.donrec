@@ -17,6 +17,9 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       $this->assign('display_receipts', $display_receipts);
     }
 
+    // admin only
+    $this->assign('is_admin', CRM_Core_Permission::check('administer CiviCRM'));
+
   	parent::run();
   }
 }
