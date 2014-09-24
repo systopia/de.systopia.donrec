@@ -13,6 +13,7 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       foreach ($receipts as $rec) {
         $display_receipts[$rec->getId()] = $rec->getDisplayProperties();
       }
+      $this->assign('cid', $contact_id);
       $this->assign('display_receipts', $display_receipts);
     }
 

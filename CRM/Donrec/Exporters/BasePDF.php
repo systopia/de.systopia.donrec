@@ -18,7 +18,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $values = array();
 
     // get the default template
-    $template = CRM_Donrec_Logic_Template::getTemplate(0);
+    $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
 
     // get domain
     $domain = CRM_Core_BAO_Domain::getDomain();
@@ -78,7 +78,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['today'] = date("j.n.Y", time());
       $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
 
-      $result = CRM_Donrec_Logic_Template::generatePDF($template, $values);
+      $tpl_param = array();
+      $result = $template->generatePDF($values, $tpl_param);
       // TODO: Make the file downloadable
       if ($result === FALSE) {
         $failures++;

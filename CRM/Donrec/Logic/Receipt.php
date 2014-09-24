@@ -33,6 +33,19 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
+  * get an existing receipt
+  */
+  public static function get($receipt_id) {
+    self::getCustomFields();
+    $receipt = new self($receipt_id);
+    if ($receipt->exists()) {
+      return $receipt;
+    } else {
+      return NULL;
+    }
+  }
+
+  /**
   * Creates a new receipt with the given snapshot line
   *
   * @param $snapshot           a snapshot object
@@ -138,7 +151,7 @@ class CRM_Donrec_Logic_Receipt {
       return FALSE;
     }
     if (count($lines) < 2) {
-      $parameters['is_error'] = "this is no bulk donation receipt";
+      $parameters['is_error'] = "this is not a bulk donation receipt";
       return FALSE;
     }
 
@@ -294,6 +307,7 @@ class CRM_Donrec_Logic_Receipt {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function delete(&$parameters) {
+    self::getCustomFields();
     $status = empty($parameters['status']) ? 'ORIGINAL' : $parameters['status'];
     $query = "DELETE FROM `civicrm_value_donation_receipt_%d` WHERE `id` = %d";
     $query = sprintf($query, self::$_custom_group_id, $this->Id);
@@ -313,6 +327,21 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function markInvalid(&$parameters) {
     $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'INVALID' WHERE `id` = %d";
+    $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
+    $result = CRM_Core_DAO::executeQuery($query);
+    return TRUE;
+  }
+
+  /**
+   * Mark this receipt as withdrawn
+   *
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public function markWithdrawn(&$parameters) {
+    CRM_Donrec_Logic_ReceiptItem::setStatusAll($this->Id,"WITHDRAWN");
+    $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'WITHDRAWN' WHERE `id` = %d";
     $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
     $result = CRM_Core_DAO::executeQuery($query);
     return TRUE;
@@ -510,6 +539,28 @@ class CRM_Donrec_Logic_Receipt {
   */
   public function getId() {
     return $this->Id;
+  }
+
+  /**
+   * checks if the receipt exists, i.e. if there is at least one item
+   */
+  private function exists() {
+    $gid = self::$_custom_group_id;
+    return (bool)CRM_Core_DAO::singleValueQuery(
+      "SELECT EXISTS(SELECT 1 FROM `civicrm_value_donation_receipt_$gid`
+       WHERE `id` = %1);", array(1 => array($this->Id, 'Integer')));
+  }
+
+  /**
+  * Checks whether this receipt is an original
+  * @return bool TRUE if the receipt is an original otherwise FALSE
+  */
+  public function isOriginal() {
+    $gid = self::$_custom_group_id;
+    $status = self::$_custom_fields['status'];
+    return (bool)CRM_Core_DAO::singleValueQuery(
+      "SELECT EXISTS(SELECT 1 FROM `civicrm_value_donation_receipt_$gid`
+       WHERE `id` = %1 AND `$status` = 'ORIGINAL');", array(1 => array($this->Id, 'Integer')));
   }
 
   /**

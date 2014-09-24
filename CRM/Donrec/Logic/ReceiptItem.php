@@ -67,6 +67,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   * @param int donation receipt id
   */
   public static function createCopyAll($donation_receipt_id) {
+    self::getCustomFields();
     $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     $sha1_string = sprintf($sha1_string, 
                           self::$_custom_fields['type'],
@@ -143,6 +144,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   * @param string filter by status (deletes all including copies if not specified)
   */
   public static function deleteAll($donation_receipt_id, $status = NULL) {
+    self::getCustomFields();
     if (!empty($status)) {
       $statusString = sprintf(" AND `%s` = '%s'", self::$_custom_fields['status'], $status);
     }else{
@@ -156,6 +158,24 @@ class CRM_Donrec_Logic_ReceiptItem {
                     $donation_receipt_id,
                     $statusString);
     $result = CRM_Core_DAO::executeQuery($query);
+  }
+
+   /**
+  * Sets status of all contribution items for a specific donation receipt
+  * @param int donation receipt id
+  * @param string status
+  */
+  public static function setStatusAll($donation_receipt_id, $status = "WITHDRAWN") {  
+    self::getCustomFields();  
+    $query = "UPDATE `civicrm_value_donation_receipt_item_%d` SET `%s` = %%1 WHERE `%s` = %d;";
+    $query = sprintf($query, 
+                    self::$_custom_group_id, 
+                    self::$_custom_fields['status'],
+                    self::$_custom_fields['issued_in'],
+                    $donation_receipt_id
+                    );
+    $params = array(1 => array($status,'String'));
+    $result = CRM_Core_DAO::executeQuery($query, $params);
   }
 
   /**

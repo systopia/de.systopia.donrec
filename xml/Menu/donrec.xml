@@ -26,7 +26,7 @@
   </item>
   <item>
     <path>civicrm/donrec/create</path>
-    <page_callback>CRM_Donrec_Page_Task_Create</page_callback>
+    <page_callback>CRM_Donrec_Form_Task_Create</page_callback>
     <title>Issue Donation Receipts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>

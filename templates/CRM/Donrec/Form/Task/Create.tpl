@@ -17,6 +17,7 @@
 	<tr>
 		<td></td>
 		<td>
+			<input type="hidden" name="cid" value="{$cid}">
 			<div class="crm-submit-buttons">
 			{include file="CRM/common/formButtons.tpl" location="bottom"}
 			</div>

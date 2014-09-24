@@ -138,7 +138,14 @@ class CRM_Donrec_Logic_Engine {
 
     // create donation receipt items
     if (!$is_test) {
-      // TODO: create donation receipts
+      if($is_bulk) {
+        // TODO: save bulk receipts
+      }else{
+        $receipt_params = array();
+        foreach ($chunk as $chunk_id => $chunk_item) {
+          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_id, $receipt_params);
+        }
+      }
     }
 
     // mark the chunk as processed

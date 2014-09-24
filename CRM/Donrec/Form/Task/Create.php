@@ -15,12 +15,16 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Donrec_Page_TaskCreate extends CRM_Core_Form {
+class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function preProcess() {
     parent::preProcess();
+
+    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+    $this->assign('cid', $contactId);
   }
 
   function buildQuickForm() {
+    $this->addElement('hidden', 'cid');
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
     $this->addDefaultButtons(ts('Continue'));  
   }
@@ -29,7 +33,8 @@ class CRM_Donrec_Page_TaskCreate extends CRM_Core_Form {
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)
-    $contactId = empty($_GET['cid']) ? NULL : $_GET['cid'];
+    $values = $this->exportValues();
+    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
 
     if ($contactId === NULL) {
       error_log("de.systopia.donrec: error: contact id is empty!");
@@ -79,7 +84,7 @@ class CRM_Donrec_Page_TaskCreate extends CRM_Core_Form {
     $query = "SELECT `civicrm_contribution`.`id` 
           FROM (`civicrm_contribution`)
           LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id` 
-          WHERE `contact_id` IN ($contactIds)
+          WHERE `contact_id` IN ($contactId)
           $query_date_limit
           AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
           AND `contribution_status_id` = 1
@@ -98,9 +103,13 @@ class CRM_Donrec_Page_TaskCreate extends CRM_Core_Form {
 
     // try to create a snapshot and redirect depending on the result (conflict)
     $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+
     if (is_array($result)) {
       CRM_Core_Session::singleton()->pushUserContext( 
             CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1'));
+    }elseif (is_null($result)) {
+      CRM_Core_Session::setStatus(ts('There are no contributions for this contact that can be used to issue donation receipts.'), ts('Warning'), 'warning');
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext( 
             CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result->getId()));
