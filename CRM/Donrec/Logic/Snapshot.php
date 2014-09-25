@@ -179,7 +179,7 @@ class CRM_Donrec_Logic_Snapshot {
    * @return array: <id> => array with values
    */
   public function getNextChunk($is_bulk, $is_test) {
-    $chunk_size = 1;     // TODO: get from settings
+    $chunk_size = 5;     // TODO: get from settings
     $snapshot_id = $this->getId();
     $chunk = array();
     if ($is_test) {
@@ -202,7 +202,21 @@ class CRM_Donrec_Logic_Snapshot {
       }
     } else {
       // BULK case: get items grouped by contact ID until exceeds $chunk_size
-      // TODO:
+      $query = CRM_Core_DAO::executeQuery(
+         "SELECT contact.id as `contact_id`, snapshot.* FROM `civicrm_donrec_snapshot` as snapshot
+          RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = snapshot.`contribution_id`
+          RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
+          WHERE snapshot.`snapshot_id` = $snapshot_id
+          AND $status_clause
+          ORDER BY contact.id ASC
+          LIMIT $chunk_size;");
+      while ($query->fetch()) {
+        $chunk_line = array();
+        foreach (self::$CHUNK_FIELDS as $field) {
+          $chunk_line[$field] = $query->$field;
+        }
+        $chunk[$chunk_line['id']] = $chunk_line;
+      }
     }
 
     if (count($chunk)==0) {
