@@ -20,7 +20,7 @@ class CRM_Utils_DonrecHelper
   *         modified by Niko Bochan to support the German language
   */
   public static function convert_number_to_words($number, $lang='de') {
-    // FIXME: @Nico bitte etwas mehr Doku im Code
+    // FIXME: @Niko bitte etwas mehr Doku im Code
     if ($lang!='de') return false;
     $hyphen      = 'und';
     $conjunction = ' ';

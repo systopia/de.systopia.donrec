@@ -2,7 +2,7 @@
 
 require_once 'CRM/Core/Page.php';
 
-// FIXME: @Nico Kann das weg?
+// FIXME: @Niko Kann das weg?
 class CRM_Donrec_Page_Test extends CRM_Core_Page {
   function run() {
 
