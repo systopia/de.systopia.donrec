@@ -9,7 +9,7 @@
 +--------------------------------------------------------*/
 
 /**
- * This is a dummy exporter, for testing purposes
+ * Exporter for ZIPPED PDF files
  */
 class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 

@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Default Template                                       |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------+
+
+*}<?xml version="1.0" encoding="UTF-8"?>
 <html>
 <style>
 {literal}

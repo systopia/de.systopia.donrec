@@ -94,11 +94,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   }
 
   public function exportBulk($chunk) {
-    
+    // FIXME: @Nico Dokumentation oder raus (falls nicht benutzt)
   }
 
   public function wrapUp($chunk) {
-    
+    // FIXME: @Nico Dokumentation oder raus (falls nicht benutzt)
   }
 
   /**

@@ -9,7 +9,7 @@
 +--------------------------------------------------------*/
 
 /**
- * This is a dummy exporter, for testing purposes
+ * This is a second dummy exporter, for testing purposes
  */
 class CRM_Donrec_Exporters_SecondDummy extends CRM_Donrec_Logic_Exporter {
 
