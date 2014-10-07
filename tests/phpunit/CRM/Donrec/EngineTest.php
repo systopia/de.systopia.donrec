@@ -34,7 +34,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
   public function testEngineSetupWithValidSnapshot() {
     // create a new snapshot
     $contributions = $this->generateContributions(6);
-    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $result = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $snapshot = $result['snapshot'];
 
     // engine setup parameters
     $sid = $snapshot->getId();
@@ -62,7 +63,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
   public function testEngineSetupWithValidSnapshotSingle() {
     // create a new snapshot
     $contributions = $this->generateContributions(1);
-    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $result = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $snapshot = $result['snapshot'];
 
     // engine setup parameters
     $sid = $snapshot->getId();
@@ -90,7 +92,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     public function testEngineWithOverlappingEngines() {
     // create a new snapshot
     $contributionsA = $this->generateContributions(5);
-    $snapshotA = CRM_Donrec_Logic_Snapshot::create($contributionsA, 1);
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionsA, 1);
+    $snapshotA = $result['snapshot'];
 
     // engine setup parameters
     $sid = $snapshotA->getId();
@@ -118,7 +121,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     unset($engineA);
 
     $contributionsB = $this->generateContributions(3);
-    $snapshotB = CRM_Donrec_Logic_Snapshot::create($contributionsB, 1);
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionsB, 1);
+    $snapshotB = $result['snapshot'];
 
     $sid = $snapshotB->getId();
     $parameters = array();
@@ -181,7 +185,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
   public function testEngineMultiExport() {
     // create a new snapshot
     $contributions = $this->generateContributions(6);
-    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $result = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $snapshot = $result['snapshot'];
 
     // engine setup parameters
     $sid = $snapshot->getId();

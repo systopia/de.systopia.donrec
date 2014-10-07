@@ -50,16 +50,27 @@ class CRM_Donrec_Logic_Snapshot {
   *                              expired snapshot if less/greater than 
   *                zero (-1/1: one day expired, -2/2: two 
   *                days etc.)
-  * @return snapshot object OR error array
+  * @return array(
+        'snapshot' => snapshot-object or NULL,
+        'intersection_error' => intersection-error-object or NULL
+        )
   */
   public static function create(&$contributions, $creator_id, $expired = 0) {
+  
+    $return = array(
+      'snapshot' => NULL,
+      'intersection_error' => NULL,
+    );
+
+    //TODO: special handling for this case?
     $error = self::hasIntersections();
     if ($error) {
-      return $error;
+      $return['intersection_error'] = $error;
+      return $return;
     }
 
     if (count($contributions) < 1) {
-      return NULL;
+      return $return;
     }
 
     // get next snapshot id
@@ -117,18 +128,19 @@ class CRM_Donrec_Logic_Snapshot {
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
-    $snapshot = new self($new_snapshot_id);
+    $return['snapshot'] = new self($new_snapshot_id);
 
     // now check for conflicts with other snapshots
     $error = self::hasIntersections($new_snapshot_id);
     if ($error) {
+      $return['intersection_error'] = $error;
       // this snapshot conflicts with others, delete
       // TODO: error handling
       //$snapshot->delete();
       //return NULL;
-          return $error;
+      return $return;
     } else {
-      return $snapshot;
+      return $return;
     }
   }
 
