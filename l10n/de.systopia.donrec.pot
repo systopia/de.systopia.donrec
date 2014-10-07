@@ -1,0 +1,330 @@
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "From:"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Continue"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Task/Stats.php
+msgid "Warning"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts - Settings"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Draft text"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Copy text"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Save"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Cancel"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Draft text can only contain text"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Copy text can only contain text"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size can only contain positive integers"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Settings"
+msgstr ""
+
+#: CRM/Donrec/Exporters/Dummy.php
+msgid "Dummy Exporter"
+msgstr ""
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "Actually export individual PDFs"
+msgstr ""
+
+#: CRM/Donrec/Exporters/SecondDummy.php
+msgid "Dummy Exporter #2"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php
+msgid ""
+"There are no contributions for this contact that can be used to issue "
+"donation receipts."
+msgstr ""
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] does not exist (any more)!"
+msgstr ""
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] belongs to user '%s'[%s]!"
+msgstr ""
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] is already processing!"
+msgstr ""
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] is already completed!"
+msgstr ""
+
+#: CRM/Donrec/Logic/Template.php
+msgid "Donation Receipts"
+msgstr ""
+
+#: CRM/Donrec/Logic/Template.php
+msgid "Default template"
+msgstr ""
+
+#: CRM/Donrec/Page/Runner.php
+msgid "No snapshot ID given. Please call this page from a proper selection."
+msgstr ""
+
+#: CRM/Donrec/Page/Task/Stats.php
+msgid "No snapshot id has been provided!"
+msgstr ""
+
+#: CRM/Donrec/Page/Task/Stats.php
+msgid "Invalid snapshot id!"
+msgstr ""
+
+#: CRM/Donrec/Page/Task/Stats.php
+msgid "The older snapshot has been deleted. You can now proceed."
+msgstr ""
+
+#: CRM/Donrec/Page/Task/Stats.php
+msgid "The previously created snapshot has been deleted."
+msgstr ""
+
+#: CRM/Donrec/Page/Task/Stats.php
+msgid "Missing exporter!"
+msgstr ""
+
+#: api/v3/DonationReceipt.php
+msgid "No 'rid' parameter given."
+msgstr ""
+
+#: api/v3/DonationReceipt.php
+msgid "Receipt with id %d does not exist."
+msgstr ""
+
+#: api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be copied."
+msgstr ""
+
+#: api/v3/DonationReceiptEngine.php
+msgid "No 'sid' parameter given."
+msgstr ""
+
+#: donrec.php templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Issue donation receipt(s)"
+msgstr ""
+
+#: donrec.php
+msgid "Donation receipts"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Settings successfully saved"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy "
+"eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam "
+"voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet "
+"clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit "
+"amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam "
+"nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed "
+"diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet "
+"clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Contribution types"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "All deductible contribution types"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Draft Text"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Help"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "deductible"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Copy Text"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Store original *.pdf files"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Contribution horizon"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "creation in progress, please wait..."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "PLEASE DO NOT CLOSE THIS PAGE!"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Back"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Progress Log"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Date"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Type"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Message"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Download"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid ""
+"The donation receipts have been generated. You can now download the results."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "There was a problem. Please check the log below for more information."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Create new donation receipt"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Status"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Creation date"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Receipt horizon"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Total amount"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Details"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Create copy"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Delete"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Withdraw"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully withdrawn"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Success"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Error"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully copied"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "You could also just withdraw it."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully deleted"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Are you sure you want to delete this donation receipt?"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid ""
+"Sorry, but at least one of the selected contributions is already being "
+"processed for a donation receipt:"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "The conflicting other donation receipt process was created by"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "It will automatically expire on"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Delete other process and restart"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Donation receipt type"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Result formats"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Test run"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Abort"
+msgstr ""
