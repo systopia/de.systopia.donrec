@@ -422,4 +422,37 @@ class CRM_Donrec_Logic_Snapshot {
     }
     return $contact;
   }
+
+  /**
+  * Returns an array with statistic values of the snapshot
+  * @return array
+  */
+  public function getStatistic() {
+    $id = $this->getId();
+    $query1 = "SELECT
+      COUNT(*) AS contribution_count,
+      SUM(total_amount) AS total_amount
+      FROM civicrm_donrec_snapshot
+      WHERE snapshot_id = $id";
+
+    $query2 = "SELECT COUNT(*)
+      FROM (
+        SELECT contact_id
+        FROM civicrm_donrec_snapshot
+        LEFT JOIN civicrm_contribution C
+        ON contribution_id = C.id
+        WHERE snapshot_id = $id
+        GROUP BY contact_id
+      ) A";
+
+    $result1 = CRM_Core_DAO::executeQuery($query1);
+    $result1->fetch();
+    $statistic = array(
+      'id' => $id,
+      'contribution_count' => $result1->contribution_count,
+      'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
+      'total_amount' => $result1->total_amount,
+    );
+    return $statistic;
+  }
 }
