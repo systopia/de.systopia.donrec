@@ -2,7 +2,7 @@
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2014 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | TODO: License                                          |
@@ -20,6 +20,7 @@ class CRM_Utils_DonrecHelper
   *         modified by Niko Bochan to support the German language
   */
   public static function convert_number_to_words($number, $lang='de') {
+    // FIXME: @Niko bitte etwas mehr Doku im Code
     if ($lang!='de') return false;
     $hyphen      = 'und';
     $conjunction = ' ';
