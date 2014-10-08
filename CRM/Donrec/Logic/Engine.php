@@ -150,7 +150,7 @@ class CRM_Donrec_Logic_Engine {
 
     // mark the chunk as processed
     if ($chunk) {
-      $this->snapshot->markChunkProcessed($chunk, $is_test);
+      $this->snapshot->markChunkProcessed($chunk, $is_test, $is_bulk);
     }
 
     // compile and return stats

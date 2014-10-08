@@ -67,7 +67,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   public function exportBulk($chunk) {
     $reply = array();
 
-    usleep(300);
+    usleep(500);
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy bulk-processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;

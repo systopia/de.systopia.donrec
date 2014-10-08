@@ -16,7 +16,7 @@ class CRM_Donrec_Logic_Snapshot {
   private $Id;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
   private static $LINE_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
   // private constructor to prevent
@@ -201,23 +201,53 @@ class CRM_Donrec_Logic_Snapshot {
         $chunk[$chunk_line['id']] = $chunk_line;
       }
     } else {
-      // BULK case: get items grouped by contact ID until exceeds $chunk_size
+      // BULK case: get items grouped by contact ID until it exceeds $chunk_size
+
+      // get all lines
       $query = CRM_Core_DAO::executeQuery(
          "SELECT contact.id as `contact_id`, snapshot.* FROM `civicrm_donrec_snapshot` as snapshot
           RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = snapshot.`contribution_id`
           RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
           WHERE snapshot.`snapshot_id` = $snapshot_id
           AND $status_clause
-          ORDER BY contact.id ASC
-          LIMIT $chunk_size;");
+          ORDER BY contact.id ASC;");
+      $chunk_lines = array();
       while ($query->fetch()) {
-        $chunk_line = array();
+        $tmp = array();
         foreach (self::$CHUNK_FIELDS as $field) {
-          $chunk_line[$field] = $query->$field;
+          $tmp[$field] = $query->$field;
         }
-        $chunk[$chunk_line['id']] = $chunk_line;
+        $chunk_lines[] = $tmp;
       }
-    }
+
+      // group them by contact id
+      foreach ($chunk_lines as $key => $value) {
+        if (!array_key_exists($value['contact_id'], $chunk)) {
+          $chunk[$value['contact_id']] = array();
+          $chunk[$value['contact_id']][] = $value;
+        }else{
+          $chunk[$value['contact_id']][] = $value;
+        }
+      }
+
+      $force_processing = FALSE;
+      if(count($chunk) == 1) {
+        $force_processing = TRUE;
+      }
+      
+      $return_chunk = array();
+      $processed = 0;
+
+      // pick line groups until the line count exceeds $chunk_size
+      foreach ($chunk as $key => $value) {
+        $n = count($value);
+        if ( (($processed + $n) <= $chunk_size) || $force_processing){
+          $return_chunk[$key] = $value;
+          $processed += $n;
+        }
+      }
+
+      $chunk = $return_chunk;
 
     if (count($chunk)==0) {
       return NULL;
@@ -225,18 +255,32 @@ class CRM_Donrec_Logic_Snapshot {
       return $chunk;
     }
   }
+}
 
   /**
   * will mark a chunk as produced by getNextChunk() as being processed
   */
-  public function markChunkProcessed($chunk, $is_test) {
+  public function markChunkProcessed($chunk, $is_test, $is_bulk=FALSE) {
     if ($chunk==NULL) return;
 
     $new_status = $is_test?'TEST':'DONE';
-    $ids = implode(',', array_keys($chunk));
+    if (!$is_bulk) {
+      $ids = implode(',', array_keys($chunk));  
+    }else{
+      // get all second level ids
+      $ids = "";
+      foreach($chunk as $ck => $cv) {
+          foreach ($cv as $lk => $lv) {
+            $ids .= $lv['id'] . ',';
+          }
+      }
+      $ids = rtrim($ids, ',');
+    }
+    
     if (empty($ids)) {
       error_log('de.systopia.donrec: invalid chunk detected!');
     } else {
+      //error_log("de.systopia.donrec: lines $ids are now processed");
       CRM_Core_DAO::executeQuery(
         "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids);");
     }

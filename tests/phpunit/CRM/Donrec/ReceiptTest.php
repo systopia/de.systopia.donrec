@@ -14,7 +14,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
  * Engine Test Suite
  */
 class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
-  private $tablesToTruncate = array();
+  private $tablesToTruncate = array('civicrm_donrec_snapshot');
 
   function setUp() {
     parent::setUp();
@@ -25,9 +25,67 @@ class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
     //parent::tearDown();
   }
 
-  public function testGetReceipt() {
-    $r = CRM_Donrec_Logic_Receipt::getSingle(117, 1);
-    $this->assertNotNull($r);
+  function testCreateSingle() {
+    // prerequisites
+    $contributions       = $this->generateContributions(3);
+    $this->assertEquals(3, count($contributions));
+
+    // generate a new snapshot
+    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
+
+    // create a receipt
+    $snapshot_line_id = 1;
+    $params = array();
+    $result = CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $snapshot_line_id, $params);
+    $this->assertEquals(TRUE, $result, "CRM_Donrec_Logic_Receipt::createSingleFromSnapshot returned FALSE");
+  }
+
+  function testCreateBulk() {
+    // prerequisites
+    $contributions       = $this->generateContributions(3);
+    $this->assertEquals(3, count($contributions));
+
+    // generate a new snapshot
+    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
+
+    // create a receipt
+    $snapshot_line_ids = array(1,2,3);
+    $params = array();
+    $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters);
+    $this->assertEquals(TRUE, $result, "CRM_Donrec_Logic_Receipt::createSingleFromSnapshot returned FALSE");
+  }
+
+  function testCopy() {
+    // prerequisites
+    $contributions       = $this->generateContributions(3);
+    $this->assertEquals(3, count($contributions));
+
+    // generate a new snapshot
+    $snapshot = CRM_Donrec_Logic_Snapshot::create($contributions, 1);
+    $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
+
+    // create a receipt
+    $snapshot_line_id = 1;
+    $params = array();
+    $result = CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $snapshot_line_id, $params);
+    $this->assertEquals(TRUE, $result, "CRM_Donrec_Logic_Receipt::createSingleFromSnapshot returned FALSE");
+
+    // clone it
+    
+  }
+
+  function testMarkInvalid() {
+
+  }
+
+  function testGetDisplayProperties() {
+
+  }
+
+  function testGetAllProperties() {
+
   }
 
 
