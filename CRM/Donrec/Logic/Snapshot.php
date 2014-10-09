@@ -50,16 +50,27 @@ class CRM_Donrec_Logic_Snapshot {
   *                              expired snapshot if less/greater than 
   *                zero (-1/1: one day expired, -2/2: two 
   *                days etc.)
-  * @return snapshot object OR error array
+  * @return array(
+        'snapshot' => snapshot-object or NULL,
+        'intersection_error' => intersection-error-object or NULL
+        )
   */
   public static function create(&$contributions, $creator_id, $expired = 0) {
+  
+    $return = array(
+      'snapshot' => NULL,
+      'intersection_error' => NULL,
+    );
+
+    //TODO: special handling for this case?
     $error = self::hasIntersections();
     if ($error) {
-      return $error;
+      $return['intersection_error'] = $error;
+      return $return;
     }
 
     if (count($contributions) < 1) {
-      return NULL;
+      return $return;
     }
 
     // get next snapshot id
@@ -117,18 +128,19 @@ class CRM_Donrec_Logic_Snapshot {
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
-    $snapshot = new self($new_snapshot_id);
+    $return['snapshot'] = new self($new_snapshot_id);
 
     // now check for conflicts with other snapshots
     $error = self::hasIntersections($new_snapshot_id);
     if ($error) {
+      $return['intersection_error'] = $error;
       // this snapshot conflicts with others, delete
       // TODO: error handling
       //$snapshot->delete();
       //return NULL;
-          return $error;
+      return $return;
     } else {
-      return $snapshot;
+      return $return;
     }
   }
 
@@ -453,5 +465,38 @@ class CRM_Donrec_Logic_Snapshot {
       $contact[$field] = $result->$field;
     }
     return $contact;
+  }
+
+  /**
+  * Returns an array with statistic values of the snapshot
+  * @return array
+  */
+  public function getStatistic() {
+    $id = $this->getId();
+    $query1 = "SELECT
+      COUNT(*) AS contribution_count,
+      SUM(total_amount) AS total_amount
+      FROM civicrm_donrec_snapshot
+      WHERE snapshot_id = $id";
+
+    $query2 = "SELECT COUNT(*)
+      FROM (
+        SELECT contact_id
+        FROM civicrm_donrec_snapshot
+        LEFT JOIN civicrm_contribution C
+        ON contribution_id = C.id
+        WHERE snapshot_id = $id
+        GROUP BY contact_id
+      ) A";
+
+    $result1 = CRM_Core_DAO::executeQuery($query1);
+    $result1->fetch();
+    $statistic = array(
+      'id' => $id,
+      'contribution_count' => $result1->contribution_count,
+      'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
+      'total_amount' => $result1->total_amount,
+    );
+    return $statistic;
   }
 }

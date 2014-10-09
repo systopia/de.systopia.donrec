@@ -96,6 +96,8 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
           $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions());
         }
 
+        $snapshot = CRM_Donrec_Logic_Snapshot::get($id);
+        $this->assign('statistic', $snapshot->getStatistic());
         $this->assign('exporters', $exp_array);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
                                 "sid=$id",

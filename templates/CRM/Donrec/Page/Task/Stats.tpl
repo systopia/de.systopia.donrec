@@ -7,6 +7,15 @@
 | TODO: License                                          |
 +--------------------------------------------------------*}
 
+{if $statistic}
+  <table id="statistic">
+    <caption>{ts}Statistic{/ts}</caption>
+    <tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
+    <tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
+    <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
+  </table>
+{/if}
+
 <form action="{$formAction}" method="post">
 {if $error}
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
