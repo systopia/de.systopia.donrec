@@ -15,6 +15,10 @@
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
+    $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
+    $statistic = empty($id)?NULL:CRM_Donrec_Logic_Snapshot::getStatistic($id, $ccount);
+    $this->assign('statistic', $statistic);
+
 
     // check which button was clicked
 
@@ -37,7 +41,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
           $snapshot->delete();
           if ($by_admin) {
             CRM_Core_Session::setStatus(ts('The older snapshot has been deleted. You can now proceed.'), ts('Warning'), 'warning');
-            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id"));
+            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount"));
           }else{
             CRM_Core_Session::setStatus(ts('The previously created snapshot has been deleted.'), ts('Warning'), 'warning');
             CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search'));
@@ -70,7 +74,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
       // called when a snapshot conflict has been detected
       $conflict = CRM_Donrec_Logic_Snapshot::hasIntersections();
       if (!$conflict) {
-        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$id"));
+        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount"));
       }
 
       $this->assign('conflict_error', $conflict[1]);
@@ -80,7 +84,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         $this->assign('is_admin', CRM_Utils_System::url('civicrm/contact/search'));
         $this->assign('return_to', $conflict[2][0]);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
-                                "sid=" . $conflict[1][0],
+                                "sid=" . $conflict[1][0] . "&ccount=$ccount",
                                 false, null, false,true ));
       }
     }else{
@@ -96,8 +100,6 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
           $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions());
         }
 
-        $snapshot = CRM_Donrec_Logic_Snapshot::get($id);
-        $this->assign('statistic', $snapshot->getStatistic());
         $this->assign('exporters', $exp_array);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
                                 "sid=$id",

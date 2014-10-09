@@ -10,8 +10,11 @@
 {if $statistic}
   <table id="statistic">
     <caption>{ts}Statistic{/ts}</caption>
-    <tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
+    {if $statistic.requested_contacts}
+      <tr><td class="statskey">{ts}requested contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
+    {/if}
     <tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
+    <tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
     <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
   </table>
 {/if}

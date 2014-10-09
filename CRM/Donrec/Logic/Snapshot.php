@@ -471,8 +471,7 @@ class CRM_Donrec_Logic_Snapshot {
   * Returns an array with statistic values of the snapshot
   * @return array
   */
-  public function getStatistic() {
-    $id = $this->getId();
+  public static function getStatistic($id, $ccount) {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount
@@ -493,8 +492,9 @@ class CRM_Donrec_Logic_Snapshot {
     $result1->fetch();
     $statistic = array(
       'id' => $id,
-      'contribution_count' => $result1->contribution_count,
+      'requested_contacts' => $ccount,
       'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
+      'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
     );
     return $statistic;
