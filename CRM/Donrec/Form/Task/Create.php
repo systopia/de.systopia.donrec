@@ -25,8 +25,16 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
   function buildQuickForm() {
     $this->addElement('hidden', 'cid');
+    $options = array(
+       'current_year' => ts('current year'),
+       'last_year' => ts('last year'),
+       'last_two_years' => ts('last two years'),
+       'unlimited' => ts('unlimited'),
+       'customized_period' => ts('choose a period')
+    );
+    $this->addElement('select', 'time_period', 'Time Period:', $options);
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
-    $this->addDefaultButtons(ts('Continue'));  
+    $this->addDefaultButtons(ts('Continue'));
   }
   
   function postProcess() {

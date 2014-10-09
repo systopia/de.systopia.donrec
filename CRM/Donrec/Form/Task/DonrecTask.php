@@ -21,8 +21,16 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   }
 
   function buildQuickForm() {
+    $options = array(
+       'current_year' => ts('current year'),
+       'last_year' => ts('last year'),
+       'last_two_years' => ts('last two years'),
+       'unlimited' => ts('unlimited'),
+       'customized_period' => ts('choose a period')
+    );
+    $this->addElement('select', 'time_period', 'Time Period:', $options);
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
-    $this->addDefaultButtons(ts('Continue'));  
+    $this->addDefaultButtons(ts('Continue'));
   }
   
   function postProcess() {
@@ -99,8 +107,8 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(ts('There are no contributions for this contact that can be used to issue donation receipts.'), ts('Warning'), 'warning');
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId"));
+      CRM_Core_Session::setStatus(ts('There are no contributions for these contacts that can be used to issue donation receipts.'), ts('Warning'), 'warning');
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', 'reset=1'));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds))
