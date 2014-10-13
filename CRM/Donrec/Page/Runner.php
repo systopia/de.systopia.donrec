@@ -26,6 +26,10 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
     $parameters['bulk'] = empty($_REQUEST['bulk'])?0:1;
     $parameters['exporters'] = empty($_REQUEST['exporters'])?array('Dummy'):explode(',', $_REQUEST['exporters']);
 
+    //get session-vars
+    $session = CRM_Core_Session::singleton();
+    $this->assign('url_back', $session->get('url_back'));
+
     // get the snapshot_id
     if (empty($_REQUEST['sid'])) {
       $this->assign('error', ts("No snapshot ID given. Please call this page from a proper selection."));

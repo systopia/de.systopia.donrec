@@ -109,6 +109,10 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       $contributionIds[] = $result->id;
     }
 
+    //set url_back as session-variable
+    $session = CRM_Core_Session::singleton();
+    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
+
     // try to create a snapshot and redirect depending on the result (conflict)
     $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
     $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();

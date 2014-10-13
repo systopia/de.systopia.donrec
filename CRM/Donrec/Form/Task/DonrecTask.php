@@ -100,6 +100,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       $contributionIds[] = $result->id;
     }
 
+    //set url_back as session-variable
+    $session = CRM_Core_Session::singleton();
+    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
+
     // try to create a snapshot and redirect depending on the result (conflict)
     $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
 
