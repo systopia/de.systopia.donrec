@@ -103,7 +103,7 @@ function processDone(reply) {
     cj('#donrec_buttons').append("                                                      \
       <a class='button' href='" + download[1] + "' download='" + download[0] + "'>      \
         <span align='right'>                                                            \
-          <div class='icon file-icon'></div>" + download_caption + exporter + "                    \
+          <div class='icon check-icon'></div>" + download_caption + exporter + "                    \
         </span>                                                                         \
       </a>");
   }
