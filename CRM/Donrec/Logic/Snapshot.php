@@ -385,6 +385,17 @@ class CRM_Donrec_Logic_Snapshot {
     return $this->Id;
   }
 
+  public function getIds() {
+    $snapshot_id = $this->Id;
+    $query = "SELECT `id` FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id;";
+    $result = CRM_Core_DAO::executeQuery($query);
+    $ids = array();
+    while ($result->fetch()) {
+      $ids[] = $result->id;
+    }
+    return $ids;
+  }
+
   /**
   * reads and parses the JSON process information field
   */

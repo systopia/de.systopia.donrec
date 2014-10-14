@@ -127,9 +127,9 @@ class CRM_Donrec_Logic_Engine {
         }
       } else {
         if ($is_bulk) {
-          $result = $exporter->exportBulk($chunk, $this->snapshot->getId());
+          $result = $exporter->exportBulk($chunk, $this->snapshot->getId(), $is_test);
         } else {
-          $result = $exporter->exportSingle($chunk, $this->snapshot->getId());
+          $result = $exporter->exportSingle($chunk, $this->snapshot->getId(), $is_test);
         }
       }
       if (isset($result['log'])) {
@@ -138,7 +138,7 @@ class CRM_Donrec_Logic_Engine {
     }
 
     // create donation receipt items
-    /*if (!$is_test) {
+    if (!$is_test) {
       if($is_bulk) {
         $receipt_params = array();
         $snapshot_ids = array();
@@ -152,7 +152,7 @@ class CRM_Donrec_Logic_Engine {
           CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
         }
       }
-    }*/
+    }
 
     // mark the chunk as processed
     if ($chunk) {

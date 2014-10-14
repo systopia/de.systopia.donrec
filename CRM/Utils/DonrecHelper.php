@@ -163,5 +163,19 @@ class CRM_Utils_DonrecHelper
     }
     return $date;
   }
+  /**
+  * Returns a unique file name. This is basically the same function
+  * as CiviCRM's makeFileName without the test for safe extensions.
+  * @param string filename
+  * @return string unique filename
+  */
+  public static function makeFileName($name) {
+    $uniqID   = md5(uniqid(rand(), TRUE));
+    $info     = pathinfo($name);
+    $basename = substr($info['basename'],
+      0, -(strlen(CRM_Utils_Array::value('extension', $info)) + (CRM_Utils_Array::value('extension', $info) == '' ? 0 : 1))
+    );
+    return CRM_Utils_String::munge("{$basename}_{$uniqID}", '_', 240) . "." . CRM_Utils_Array::value('extension', $info);
+  }
 
 }
