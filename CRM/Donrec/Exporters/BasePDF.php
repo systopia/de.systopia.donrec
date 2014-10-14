@@ -80,10 +80,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
       $tpl_param = array();
       $result = $template->generatePDF($values, $tpl_param);
-      // TODO: Make the file downloadable
       if ($result === FALSE) {
         $failures++;
       }else{
+        $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
+        $snapshot->setProcessInformation($chunk_item['id'], $result);
         $success++;
       }
     }
@@ -119,23 +120,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     // assign all shared template variables
     $values['organisation'] = $contact;
 
-    // add zip file
-    $config = CRM_Core_Config::singleton();
-
-    $fileName = "donrec_$snapshotId.zip";
-    $fileURL = $config->customFileUploadDir . $fileName;
-    $zip = new ZipArchive;
-
-    if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
-      // ok
-    }else{
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::FATAL);
-      return $reply;
-    }
-
     $success = 0;
     $failures = 0;
-    $added = 0;
     foreach ($chunk as $contact_chunk_id => $chunk_items) {
       // prepare unique template variables
 
@@ -183,18 +169,13 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       if ($result === FALSE) {
         $failures++;
       }else{
+        $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
+        $snapshot->setProcessInformation($chunk_items[0]['id'], $result);
         $success++;
-        error_log($config->customFileUploadDir . $result);
-        $result = $zip->addFile($config->customFileUploadDir . $result);
-        if($result) {
-          $added++;
-        }
       }
     }
-    // close zip file for now
-    $zip->close();
     // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded, %d failed, %d added to zip file', count($chunk), $success, $failures, $added), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded', count($chunk), $success, $failures), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
   }
 
@@ -209,6 +190,31 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    */
   public function wrapUp($snapshot_id) {
     $reply = array();
+
+    // create the zip file
+    $config = CRM_Core_Config::singleton();
+
+    $archiveFileName = "donrec_$snapshot_id.zip";
+    $fileURL = $config->customFileUploadDir . $archiveFileName;
+    $zip = new ZipArchive;
+    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
+    $ids = $snapshot->getIds();
+
+    if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
+      foreach($ids as $id) {
+        $filename = $snapshot->getProcessInformation($id);
+        if(!empty($filename)) {
+          $opResult = $zip->addFile($filename, basename($filename)) ;
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        }
+      }
+      if(!$zip->close()) {
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+      }
+    }else{
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::FATAL);
+      return $reply;
+    }
 
     $file = $this->createFile("donrec_$snapshot_id.zip");
     if (!empty($file)) {

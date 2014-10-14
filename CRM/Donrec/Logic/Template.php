@@ -61,7 +61,7 @@ class CRM_Donrec_Logic_Template
    * @param int id of the template to retrieve
    * @param bool defines whether the function should return the
    *        default template if it cannot find a template with the
-   *        specified id 
+   *        specified id
    * @return template object or NULL
    */
   public static function getTemplate($id, $fallback = TRUE) {
@@ -92,7 +92,7 @@ class CRM_Donrec_Logic_Template
     if (($result['is_error'] != 0)) {
       error_log(sprintf("de.systopia.donrec: setDefaultTemplate: error: %s", $result['error_message']));
       return FALSE;
-    } 
+    }
 
     // the default template has been already set
     if ($result['count'] != 0) {
@@ -118,7 +118,7 @@ class CRM_Donrec_Logic_Template
 
     $result = CRM_Core_BAO_MessageTemplate::add($params);
     if ($result) {
-      CRM_Donrec_Logic_Settings::setDefaultTemplate($result->id);    
+      CRM_Donrec_Logic_Settings::setDefaultTemplate($result->id);
     }else{
       error_log('de.systopia.donrec: error: could not set default template!');
       return FALSE;
@@ -155,7 +155,7 @@ class CRM_Donrec_Logic_Template
     foreach ($values as $token => $value) {
        $smarty->assign($token, $value);
     }
-    
+
     // callback for custom variables
     CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $values);
 
