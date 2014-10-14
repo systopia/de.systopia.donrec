@@ -51,7 +51,7 @@ class CRM_Donrec_Logic_Snapshot {
   *                zero (-1/1: one day expired, -2/2: two
   *                days etc.)
   * @return array(
-  *     'snapshot' => snapshot-object or NULL,
+  *      'snapshot' => snapshot-object or NULL,
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
@@ -201,14 +201,14 @@ class CRM_Donrec_Logic_Snapshot {
     }
 
     // here, we need a different algorithm for bulk than for single:
-    if (!$is_bulk) {
+    if (empty($is_bulk)) {
       // SINGLE case: just grab $chunk_size items
-      $query = CRM_Core_DAO::executeQuery(
-          "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;");
-      while ($query->fetch()) {
+      $query = "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;";
+      $result = CRM_Core_DAO::executeQuery($query);
+      while ($result->fetch()) {
         $chunk_line = array();
         foreach (self::$CHUNK_FIELDS as $field) {
-          $chunk_line[$field] = $query->$field;
+          $chunk_line[$field] = $result->$field;
         }
         $chunk[$chunk_line['id']] = $chunk_line;
       }
@@ -273,13 +273,14 @@ class CRM_Donrec_Logic_Snapshot {
       }
 
       $chunk = $return_chunk;
+    }
+
+    if (count($chunk)==0) {
+      return NULL;
+    } else {
+      return $chunk;
+    }
   }
-  if (count($chunk)==0) {
-    return NULL;
-  } else {
-    return $chunk;
-  }
-}
 
   /**
   * will mark a chunk as produced by getNextChunk() as being processed

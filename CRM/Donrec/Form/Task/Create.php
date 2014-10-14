@@ -109,18 +109,23 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       $contributionIds[] = $result->id;
     }
 
+    //set url_back as session-variable
+    $session = CRM_Core_Session::singleton();
+    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
+
     // try to create a snapshot and redirect depending on the result (conflict)
     $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+    $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $result['snapshot']->getId() . '&ccount=1'));
+        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $sid . '&ccount=1'));
     }elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(ts('There are no contributions for this contact that can be used to issue donation receipts.'), ts('Warning'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=1')
+        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $sid . '&ccount=1')
       );
     }
   }

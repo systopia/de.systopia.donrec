@@ -73,6 +73,7 @@
         to.val('01/01/' + current_year);
         break;
       case "unlimited":
+        custom_period.hide();
         from.val("");
         from_display.val("");
         to.val("");

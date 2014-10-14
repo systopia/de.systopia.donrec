@@ -57,6 +57,11 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         $this->assign('error', ts('Missing exporter!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
       }else{
+        //on testrun we want to return to the stats-page instead of the contact-search-page
+        //but we must not overwrite the url_back-var
+        $session = CRM_Core_Session::singleton();
+        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount"));
+
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters")); 
       }
     }elseif (!empty($_REQUEST['donrec_run'])) {
@@ -102,7 +107,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
 
         $this->assign('exporters', $exp_array);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
-                                "sid=$id",
+                                "sid=$id&ccount=$ccount",
                                 false, null, false,true ));
       }
     }
