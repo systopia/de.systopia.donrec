@@ -200,7 +200,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $archiveFileName = CRM_Utils_File::makeFileName("donrec.zip");
+    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName("donrec.zip");
     $fileURL = $config->customFileUploadDir . $archiveFileName;
     $zip = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);

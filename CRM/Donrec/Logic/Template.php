@@ -165,7 +165,7 @@ class CRM_Donrec_Logic_Template
 
     // set up file names
     $config = CRM_Core_Config::singleton();
-    $filename = CRM_Utils_File::makeFileName("donrec.pdf");
+    $filename = CRM_Utils_DonrecHelper::makeFileName("donrec.pdf");
     $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
 
     // render PDF receipt
