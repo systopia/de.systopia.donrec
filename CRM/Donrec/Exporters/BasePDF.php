@@ -199,11 +199,13 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $zip = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
+    $toRemove = array();
 
     if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
       foreach($ids as $id) {
         $filename = $snapshot->getProcessInformation($id);
         if(!empty($filename)) {
+          $toRemove[] = $filename;
           $opResult = $zip->addFile($filename, basename($filename)) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
@@ -220,6 +222,12 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     if (!empty($file)) {
       $reply['download_name'] = $file[0];
       $reply['download_url'] = $file[1];
+    }
+
+    // remove loose pdf files
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+    foreach($toRemove as $file) {
+      unlink($file);
     }
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
