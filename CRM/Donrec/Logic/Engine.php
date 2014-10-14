@@ -12,7 +12,7 @@
  * This class represents the engine for donation receipt runs
  */
 class CRM_Donrec_Logic_Engine {
-  
+
   /**
    * stores the related snapshot object
    */
@@ -20,7 +20,7 @@ class CRM_Donrec_Logic_Engine {
 
   /**
    * stores the parameters as given by the user
-   * 
+   *
    * known parameters:
    *  exporters  array(exporter_classes)
    *  bulk       1 or 0 - if 1, accumulative (='bulk') donation receipts should be issued
@@ -34,7 +34,7 @@ class CRM_Donrec_Logic_Engine {
   protected $_exporters = NULL;
 
   /**
-   * Will try to initialize the engine with a snapshot 
+   * Will try to initialize the engine with a snapshot
    * and the given parameters. If anything is wrong,
    * an error message will be returned.
    *
@@ -100,10 +100,11 @@ class CRM_Donrec_Logic_Engine {
 
   /**
    * execute the next step of a donation receipt run
-   * 
+   *
    * @return array of stats:
    */
   public function nextStep() {
+
     // check status
     $is_bulk = !empty($this->parameters['bulk']);
     $is_test = !empty($this->parameters['test']);
@@ -120,15 +121,15 @@ class CRM_Donrec_Logic_Engine {
     foreach ($exporters as $exporter) {
       // select action
       if ($chunk==NULL) {
-        $result = $exporter->wrapUp();
+        $result = $exporter->wrapUp($this->snapshot->getId());
         if (!empty($result['download_name']) && !empty($result['download_url'])) {
           $files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
         }
       } else {
         if ($is_bulk) {
-          $result = $exporter->exportBulk($chunk);
+          $result = $exporter->exportBulk($chunk, $this->snapshot->getId());
         } else {
-          $result = $exporter->exportSingle($chunk);
+          $result = $exporter->exportSingle($chunk, $this->snapshot->getId());
         }
       }
       if (isset($result['log'])) {
@@ -137,16 +138,21 @@ class CRM_Donrec_Logic_Engine {
     }
 
     // create donation receipt items
-    if (!$is_test) {
+    /*if (!$is_test) {
       if($is_bulk) {
-        // TODO: save bulk receipts
+        $receipt_params = array();
+        $snapshot_ids = array();
+        foreach ($chunk as $chunk_id => $chunk_item) {
+          $snapshot_ids[] = $chunk_item['id'];
+        }
+        CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $snapshot_ids, $receipt_params);
       }else{
         $receipt_params = array();
         foreach ($chunk as $chunk_id => $chunk_item) {
-          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_id, $receipt_params);
+          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
         }
       }
-    }
+    }*/
 
     // mark the chunk as processed
     if ($chunk) {
@@ -175,7 +181,7 @@ class CRM_Donrec_Logic_Engine {
 
   /**
    * check what state the snapshot is in
-   * 
+   *
    * @return possible results:
    *  'INIT':     freshly created snapshot
    *  'TESTING':  there is a test ongoing
@@ -217,7 +223,7 @@ class CRM_Donrec_Logic_Engine {
   public function createStats() {
     $stats = array();
     $states = $this->snapshot->getStates();
-    
+
     // TODO: Implement settings or dynamics
     $chunk_proportion = 80.0;  // the other 20% are wrap up
 

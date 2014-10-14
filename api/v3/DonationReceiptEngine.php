@@ -31,7 +31,7 @@ function civicrm_api3_donation_receipt_engine_next($params) {
   // and return the result
   return civicrm_api3_create_success($result);
 }
-  
+
 /**
  * Adjust Metadata for donation receipt run
  */

@@ -38,7 +38,7 @@ abstract class CRM_Donrec_Logic_Exporter {
   /**
    * init the exporter with the engine object
    * here, all necessary checks for the exporters 'readyness' should be performed
-   * 
+   *
    * @return NULL if everything is o.k., an error message string if not
    */
   function init($engine) {
@@ -55,32 +55,32 @@ abstract class CRM_Donrec_Logic_Exporter {
 
   /**
    * export this chunk of individual items
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
-  abstract function exportSingle($chunk);
+  abstract function exportSingle($chunk, $snapshotId);
 
   /**
    * bulk-export this chunk of items
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
-  abstract function exportBulk($chunk);
+  abstract function exportBulk($chunk, $snapshotId);
 
   /**
    * generate the final result
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    *          'download_url: URL to download the result
    *          'download_name: suggested file name for the download
    */
-  abstract function wrapUp($chunk);
+  abstract function wrapUp($snapshotId);
 
 
   // HELPERS
@@ -110,20 +110,43 @@ abstract class CRM_Donrec_Logic_Exporter {
 
   /**
    * will create an empty file for the exporter to overwrite
-   * 
+   *
    * @return NULL if not possible, e.g. when the name is already taken,
    *         or   array(file_path, file_URL)
    */
   protected function createFile($file_name, $is_temp = FALSE) {
-    // TODO: Implement! This is only a stub!
     $config =  CRM_Core_Config::singleton();
     if ($is_temp) {
-      $file = $config->customFileUploadDir . $file_name;
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
     } else {
-      $file = $config->customFileUploadDir . $file_name;
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
     }
 
-    return array($file, "TODO://file_url.");
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'get', $params);
+
+    if($result['is_error'] == 1 || $result['count'] > 0) {
+      return NULL;
+    }
+
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'create', $params);
+
+    if($result['is_error'] == 1) {
+      return NULL;
+    }
+
+    return array($file, $file);
   }
 
   /**

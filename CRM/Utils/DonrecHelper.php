@@ -62,11 +62,11 @@ class CRM_Utils_DonrecHelper
         1000000000          => 'milliarden',
         1000000000000       => 'billionen'
     );
-   
+
     if (!is_numeric($number)) {
         return false;
     }
-   
+
     if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
         // overflow
         return false;
@@ -75,13 +75,13 @@ class CRM_Utils_DonrecHelper
     if ($number < 0) {
         return $negative . self::convert_number_to_words(abs($number));
     }
-   
+
     $string = $fraction = null;
-   
+
     if (strpos($number, '.') !== false) {
         list($number, $fraction) = explode('.', $number);
     }
-   
+
     switch (true) {
         case $number < 21:
             $string = $dictionary[$number];
@@ -122,7 +122,7 @@ class CRM_Utils_DonrecHelper
             }
             break;
     }
-   
+
     if (null !== $fraction) {
         $string .= $decimal;
 
@@ -143,7 +143,7 @@ class CRM_Utils_DonrecHelper
           }
         }
     }
-   
+
     return $string;
   }
 
@@ -158,7 +158,7 @@ class CRM_Utils_DonrecHelper
     if (!empty($raw_date)) {
       $date_object = DateTime::createFromFormat($format, $raw_date, new DateTimeZone('Europe/Berlin'));
       if ($date_object) {
-        $date = $date_object->getTimestamp();   
+        $date = $date_object->getTimestamp();
       }
     }
     return $date;

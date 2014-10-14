@@ -37,12 +37,12 @@ class CRM_Donrec_Exporters_SecondDummy extends CRM_Donrec_Logic_Exporter {
 
   /**
    * export this chunk of individual items
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'timestamp', 'message'
    */
-  public function exportSingle($chunk) {
+  public function exportSingle($chunk, $snapshotId) {
     $reply = array();
 
     // edit the process information
@@ -51,7 +51,7 @@ class CRM_Donrec_Exporters_SecondDummy extends CRM_Donrec_Logic_Exporter {
     }
 
     usleep(600);
-    
+
     // add a log entry
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, '2nd Dummy processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
@@ -59,7 +59,7 @@ class CRM_Donrec_Exporters_SecondDummy extends CRM_Donrec_Logic_Exporter {
 
   /**
    * bulk-export this chunk of items
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
@@ -75,7 +75,7 @@ class CRM_Donrec_Exporters_SecondDummy extends CRM_Donrec_Logic_Exporter {
 
   /**
    * generate the final result
-   * 
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'

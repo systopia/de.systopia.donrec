@@ -63,8 +63,8 @@ class CRM_Donrec_Logic_Receipt {
       $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
       return FALSE;
     }
-    
-    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
                       VALUES (NULL, %%1, %%2, %%3, %s, %%5, %%6, %%7, %%8, %%9, %%10, %%11, %%12, %%13);",
                 self::$_custom_group_id,
                 self::$_custom_fields['status'],
@@ -102,7 +102,7 @@ class CRM_Donrec_Logic_Receipt {
 
     // create the donation_receipt_item
     $item_params = array();
-    $item_params['contribution_id'] = $line['contribution_id']; 
+    $item_params['contribution_id'] = $line['contribution_id'];
     $item_params['status'] = 'ORIGINAL';
     $item_params['type']  = 'SINGLE';
     $item_params['issued_in'] = $lastId;
@@ -160,8 +160,8 @@ class CRM_Donrec_Logic_Receipt {
       $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
       return FALSE;
     }
-    
-    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) 
+
+    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
                       VALUES (NULL, %%1, %%2, %%3, %s, %%5, %%6, %%7, %%8, %%9, %%10, %%11, %%12, %%13);",
                 self::$_custom_group_id,
                 self::$_custom_fields['status'],
@@ -197,10 +197,10 @@ class CRM_Donrec_Logic_Receipt {
     $result = CRM_Core_DAO::executeQuery($query, $query_params);
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
 
-    for ($i=0; $i < count($lines); $i++) { 
+    for ($i=0; $i < count($lines); $i++) {
       // create the donation_receipt_item
       $item_params = array();
-      $item_params['contribution_id'] = $lines[$i]['contribution_id']; 
+      $item_params['contribution_id'] = $lines[$i]['contribution_id'];
       $item_params['status'] = 'ORIGINAL';
       $item_params['type']  = 'BULK';
       $item_params['issued_in'] = $lastId;
@@ -221,8 +221,8 @@ class CRM_Donrec_Logic_Receipt {
       CRM_Donrec_Logic_ReceiptItem::create($item_params);
     }
 
-    return new self($lastId); 
-  }  
+    return new self($lastId);
+  }
 
   /**
    * Creates a copy of this receipt. The receipt status will be 'COPY'
@@ -233,38 +233,38 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function createCopy(&$parameters) {
     $query = "INSERT INTO `civicrm_value_donation_receipt_%d`
-              (`id`, 
-               `entity_id`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`, 
-               `%s`) 
-              SELECT 
-              NULL as `id`, 
-              `entity_id`, 
-              'COPY' as `%s`, 
-              `%s`, 
-              NOW() as `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s`, 
-              `%s` 
-              FROM `civicrm_value_donation_receipt_%d` 
+              (`id`,
+               `entity_id`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`,
+               `%s`)
+              SELECT
+              NULL as `id`,
+              `entity_id`,
+              'COPY' as `%s`,
+              `%s`,
+              NOW() as `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`,
+              `%s`
+              FROM `civicrm_value_donation_receipt_%d`
               WHERE `id` = %d AND `%s` = 'ORIGINAL';";
-    $query = sprintf($query, 
+    $query = sprintf($query,
                     self::$_custom_group_id,
                     self::$_custom_fields['status'],
                     self::$_custom_fields['type'],
@@ -359,21 +359,21 @@ class CRM_Donrec_Logic_Receipt {
   public function getDisplayProperties() {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
 
-    $query = "SELECT 
+    $query = "SELECT
               `%s` as `type`,
-              `%s` as `status`, 
-              `%s` as `issued_on`, 
+              `%s` as `status`,
+              `%s` as `issued_on`,
               SUM(item.`%s`) as `total_amount`,
-              MIN(item.`%s`) as `date_from`, 
+              MIN(item.`%s`) as `date_from`,
               MAX(item.`%s`) as `date_to`,
-              item.`%s` as `currency` 
+              item.`%s` as `currency`
               FROM `civicrm_value_donation_receipt_%d` as receipt
-              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item 
+              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
                 ON item.`%s` = receipt.id
                 AND item.`%s` = receipt.`%s`
               WHERE receipt.id = %d;";
 
-    $query = sprintf($query, 
+    $query = sprintf($query,
       self::$_custom_fields['type'],
       self::$_custom_fields['status'],
       self::$_custom_fields['issued_on'],
@@ -406,7 +406,7 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
-   * Get all properties of this receipt, so we can e.g. export it or pass the 
+   * Get all properties of this receipt, so we can e.g. export it or pass the
    * properties into the $template->generatePDF() function to create another copy
    *
    * Remark: we should start with a basic set of properties, and gradually extend as we go along
@@ -416,19 +416,19 @@ class CRM_Donrec_Logic_Receipt {
   public function getAllProperties() {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
 
-    $query = "SELECT 
-              `%s` as `status`, 
-              `%s` as `issued_on`, 
+    $query = "SELECT
+              `%s` as `status`,
+              `%s` as `issued_on`,
               SUM(item.`%s`) as `total_amount`,
-              MIN(item.`%s`) as `date_from`, 
-              MAX(item.`%s`) as `date_to` 
+              MIN(item.`%s`) as `date_from`,
+              MAX(item.`%s`) as `date_to`
               FROM `civicrm_value_donation_receipt_%d` as receipt
-              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item 
+              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
                 ON item.`%s` = receipt.id
                 AND item.`%s` = receipt.`%s`
               WHERE receipt.id = %d;";
 
-    $query = sprintf($query, 
+    $query = sprintf($query,
       self::$_custom_fields['status'],
       self::$_custom_fields['issued_on'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
@@ -444,7 +444,7 @@ class CRM_Donrec_Logic_Receipt {
 
     $result = CRM_Core_DAO::executeQuery($query);
     $display_properties = array();
-    
+
     while($result->fetch()) {
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
@@ -494,7 +494,7 @@ class CRM_Donrec_Logic_Receipt {
 
   /**
    * Checks if there is a VALID donation receipt for the given contribution
-   * 
+   *
    * This method should be HIGHLY optimized
    *
    * @return TRUE if there is a VALID donation reciept, FALSE otherwise
@@ -505,14 +505,14 @@ class CRM_Donrec_Logic_Receipt {
 
     $query = "SELECT count(receipt.`id`)
               FROM `civicrm_value_donation_receipt_%d` as receipt
-              INNER JOIN `civicrm_value_donation_receipt_item_%d` as item 
+              INNER JOIN `civicrm_value_donation_receipt_item_%d` as item
               ON item.`%s` = receipt.`id`
               AND SHA1(CONCAT(item.`entity_id`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`)) = item.`%s`
               AND item.`%s` <> 'INVALID'
               WHERE item.`entity_id` = %d
               AND receipt.`%s` <> 'INVALID'";
 
-    $query = sprintf($query, 
+    $query = sprintf($query,
                     self::$custom_group_id,
                     CRM_Donrec_Logic_ReceiptItem::$custom_group_id,
                     CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_in'],
