@@ -13,7 +13,7 @@
  */
 class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
-  public function exportSingle($chunk, $snapshotId) {
+  public function exportSingle($chunk, $snapshotId, $is_test) {
     $reply = array();
     $values = array();
 
@@ -77,7 +77,10 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($chunk_item['total_amount']);
       $values['today'] = date("j.n.Y", time());
       $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
-
+      if($is_test) {
+        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+      }
+      
       $tpl_param = array();
       $result = $template->generatePDF($values, $tpl_param);
       if ($result === FALSE) {
@@ -94,7 +97,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     return $reply;
   }
 
-  public function exportBulk($chunk, $snapshotId) {
+  public function exportBulk($chunk, $snapshotId, $is_test) {
     $reply = array();
     $values = array();
 
@@ -163,6 +166,9 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($total_amount);
       $values['today'] = date("j.n.Y", time());
       $values['items'] = $chunk_items;
+      if($is_test) {
+        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+      }
 
       $tpl_param = array();
       $result = $template->generatePDF($values, $tpl_param);

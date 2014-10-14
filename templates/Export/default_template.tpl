@@ -187,10 +187,37 @@ h3 {
   visibility: inherit;
 }
 
+#watermark {
+  position: fixed;
+  opacity: 0.45;
+  left: 60px;
+  top: 600px;
+  z-index: 999;
+  color: #808080;
+  -ms-transform: rotate(-45deg); /* IE 9 */
+  -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+  transform: rotate(-45deg);
+  font-size: 100pt!important;
+}
+
+#watermarktop {
+  position: fixed;
+  opacity: 0.45;
+  left: 60px;
+  top: 180px;
+  z-index: 999;
+  color: #808080;
+  -ms-transform: rotate(-45deg); /* IE 9 */
+  -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+  transform: rotate(-45deg);
+  font-size: 100pt!important;
+}
+
 {/literal}
 </style>
 
 <body>
+<div id="watermark">{if $watermark}$watermark{/if}</div>
 <div class="firstpage">
 <div class="absenderblock_rechts">{$organisation.organization_name}<br/> {$organisation.street_address}<br/>{$organisation.postal_code} {$organisation.city}<br/>Telefon: {$organisation.phone}<br/>{$organisation.email}</div>
 <p class="sender">
@@ -272,7 +299,7 @@ zurückliegt (BMF vom 15.12.1994 – BStBl I S. 884).</p>
 
 {if $items}
 <div class="newpage">
-
+<div id="watermarktop">{if $watermark}$watermark{/if}</div>
 <h2 class='box'>Anlage zur Sammelbestätigung vom {$today} für {$contributor.display_name}</h2>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>

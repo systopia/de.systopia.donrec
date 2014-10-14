@@ -60,7 +60,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
-  abstract function exportSingle($chunk, $snapshotId);
+  abstract function exportSingle($chunk, $snapshotId, $is_test);
 
   /**
    * bulk-export this chunk of items
@@ -69,7 +69,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
-  abstract function exportBulk($chunk, $snapshotId);
+  abstract function exportBulk($chunk, $snapshotId, $is_test);
 
   /**
    * generate the final result

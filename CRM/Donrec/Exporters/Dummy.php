@@ -42,7 +42,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'timestamp', 'message'
    */
-  public function exportSingle($chunk, $snapshotId) {
+  public function exportSingle($chunk, $snapshotId, $is_test) {
     $reply = array();
 
     // edit the process information
@@ -64,7 +64,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
-  public function exportBulk($chunk, $snapshotId) {
+  public function exportBulk($chunk, $snapshotId, $is_test) {
     $reply = array();
 
     usleep(500);
