@@ -23,7 +23,7 @@ class CRM_Donrec_Logic_Snapshot {
   // external instantiation
   private function __construct($id) {
     $this->Id = $id;
-  } 
+  }
 
   /**
   * get an existing snapshot
@@ -47,16 +47,16 @@ class CRM_Donrec_Logic_Snapshot {
   * @param $creator_id           civicrm id of the contact which creates
   *                              the snapshot
   * @param $expired              just for debugging purposes: creates an
-  *                              expired snapshot if less/greater than 
-  *                zero (-1/1: one day expired, -2/2: two 
+  *                              expired snapshot if less/greater than
+  *                zero (-1/1: one day expired, -2/2: two
   *                days etc.)
   * @return array(
-        'snapshot' => snapshot-object or NULL,
-        'intersection_error' => intersection-error-object or NULL
-        )
+  *      'snapshot' => snapshot-object or NULL,
+  *      'intersection_error' => intersection-error-object or NULL
+  *      )
   */
   public static function create(&$contributions, $creator_id, $expired = 0) {
-  
+
     $return = array(
       'snapshot' => NULL,
       'intersection_error' => NULL,
@@ -89,25 +89,25 @@ class CRM_Donrec_Logic_Snapshot {
 
     // assemble the query
     // remark: if you change this, also adapt the $CHUNK_FIELDS list
-    $insert_query = 
-          "INSERT INTO 
+    $insert_query =
+          "INSERT INTO
               `civicrm_donrec_snapshot` (
               `id`,
               `snapshot_id`,
-              `contribution_id`, 
-              `created_timestamp`, 
-              `expires_timestamp`, 
-              `status`, 
-              `created_by`, 
-              `total_amount`, 
-              `non_deductible_amount`, 
-              `currency`, 
-              `receive_date`) 
-          SELECT 
+              `contribution_id`,
+              `created_timestamp`,
+              `expires_timestamp`,
+              `status`,
+              `created_by`,
+              `total_amount`,
+              `non_deductible_amount`,
+              `currency`,
+              `receive_date`)
+          SELECT
               NULL as `id`,
               '%1' as `snapshot_id`,
               `id`,
-              NOW() as `created_timestamp`, 
+              NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
               '%2',
@@ -122,7 +122,7 @@ class CRM_Donrec_Logic_Snapshot {
               ;";
     // FIXME: do not include contributions with valued issued don. rec.
 
-    // prepare parameters 
+    // prepare parameters
     $params = array(1 => array($new_snapshot_id, 'Integer'),
             2 => array($creator_id, 'Integer'));
 
@@ -153,8 +153,8 @@ class CRM_Donrec_Logic_Snapshot {
   public static function query($contribution_id) {
     self::cleanup();
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT `snapshot_id` 
-         FROM `civicrm_donrec_snapshot` 
+      "SELECT `snapshot_id`
+         FROM `civicrm_donrec_snapshot`
         WHERE `contribution_id` = %1;", array(1 => array($contribution_id, 'Integer')));
   }
 
@@ -163,7 +163,7 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function delete() {
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `civicrm_donrec_snapshot` 
+      "DELETE FROM `civicrm_donrec_snapshot`
        WHERE `snapshot_id` = %1;", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -181,7 +181,7 @@ class CRM_Donrec_Logic_Snapshot {
    */
   public function getCreator() {
     return (int) CRM_Core_DAO::singleValueQuery(
-      "SELECT `created_by` FROM `civicrm_donrec_snapshot` 
+      "SELECT `created_by` FROM `civicrm_donrec_snapshot`
        WHERE `snapshot_id` = %1 LIMIT 1;", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -246,7 +246,7 @@ class CRM_Donrec_Logic_Snapshot {
       if(count($chunk) == 1) {
         $force_processing = TRUE;
       }
-      
+
       $return_chunk = array();
       $processed = 0;
 
@@ -277,7 +277,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     $new_status = $is_test?'TEST':'DONE';
     if (!$is_bulk) {
-      $ids = implode(',', array_keys($chunk));  
+      $ids = implode(',', array_keys($chunk));
     }else{
       // get all second level ids
       $ids = "";
@@ -288,7 +288,7 @@ class CRM_Donrec_Logic_Snapshot {
       }
       $ids = rtrim($ids, ',');
     }
-    
+
     if (empty($ids)) {
       error_log('de.systopia.donrec: invalid chunk detected!');
     } else {
@@ -301,14 +301,14 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
   * get the snapshot's state distribution
-  * 
+  *
   * @return an array <state> => <count>
   */
   public function getStates() {
     $states = array('NULL' => 0, 'TEST' => 0, 'DONE' => 0);
     $result = CRM_Core_DAO::executeQuery(
-      "SELECT COUNT(`id`) AS count, `status` AS status 
-       FROM `civicrm_donrec_snapshot` 
+      "SELECT COUNT(`id`) AS count, `status` AS status
+       FROM `civicrm_donrec_snapshot`
        WHERE `snapshot_id` = %1 GROUP BY `status`;", array(1 => array($this->Id, 'Integer')));
     while ($result->fetch()) {
       if ($result->status==NULL) {
@@ -325,8 +325,8 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function resetTestRun() {
     CRM_Core_DAO::executeQuery(
-      "UPDATE `civicrm_donrec_snapshot` 
-       SET `status`=NULL, `process_data`=NULL 
+      "UPDATE `civicrm_donrec_snapshot`
+       SET `status`=NULL, `process_data`=NULL
        WHERE `status`='TEST';");
   }
 
@@ -335,13 +335,13 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public static function cleanup() {
     CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `civicrm_donrec_snapshot` 
+      "DELETE FROM `civicrm_donrec_snapshot`
        WHERE `expires_timestamp` < NOW();");
   }
 
   /**
   * checks whether there are intersections in snapshots
-  * @return zero when no error occured, 
+  * @return zero when no error occured,
   */
   public static function hasIntersections($snapshot_id = 0) {
     // TODO: speed up by looking at one particular snapshot ?
@@ -351,8 +351,8 @@ class CRM_Donrec_Logic_Snapshot {
             LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
           WHERE original.`snapshot_id` <> copy.`snapshot_id`
           GROUP BY `snapshot_id`;";
-  
-    $results = CRM_Core_DAO::executeQuery($query);  
+
+    $results = CRM_Core_DAO::executeQuery($query);
     $intersections = array($snapshot_id);
 
     while ($results->fetch()) {
@@ -407,8 +407,8 @@ class CRM_Donrec_Logic_Snapshot {
       return (bool) CRM_Core_DAO::singleValueQuery(
         "UPDATE `civicrm_donrec_snapshot`
          SET `process_data` = %1
-         WHERE `id` = %2;", 
-        array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));      
+         WHERE `id` = %2;",
+        array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));
     }
   }
 
@@ -441,7 +441,7 @@ class CRM_Donrec_Logic_Snapshot {
     $query = "SELECT
               contact.`id` AS contact_id,
               contact.`display_name`,
-              address.`street_address`, 
+              address.`street_address`,
               address.`supplemental_address_1`,
               address.`supplemental_address_2`,
               address.`supplemental_address_3`,
@@ -450,7 +450,7 @@ class CRM_Donrec_Logic_Snapshot {
               country.`name` AS country
               FROM `civicrm_donrec_snapshot` AS snapshot
               RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = `snapshot`.`contribution_id`
-              RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id` 
+              RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
               RIGHT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
               RIGHT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
               WHERE snapshot.`id` = %1
