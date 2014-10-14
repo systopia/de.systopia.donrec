@@ -78,9 +78,9 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['today'] = date("j.n.Y", time());
       $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
       if($is_test) {
-        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');;
       }
-      
+
       $tpl_param = array();
       $result = $template->generatePDF($values, $tpl_param);
       if ($result === FALSE) {
@@ -200,7 +200,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $archiveFileName = "donrec_$snapshot_id.zip";
+    $archiveFileName = CRM_Utils_File::makeFileName("donrec.zip");
     $fileURL = $config->customFileUploadDir . $archiveFileName;
     $zip = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
@@ -224,7 +224,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       return $reply;
     }
 
-    $file = $this->createFile("donrec_$snapshot_id.zip");
+
+    $file = $this->createFile($archiveFileName);
     if (!empty($file)) {
       $reply['download_name'] = $file[0];
       $reply['download_url'] = $file[1];
