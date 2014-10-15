@@ -8,6 +8,17 @@
 +--------------------------------------------------------*}
 
 <table>
+	{if $remaining_snapshot}
+	<tr>
+		<td class="label">
+			{ts}You have still an unfinished snapshot. Do you want to work on with it?{/ts}:
+		</td>
+		<td>
+			{$form.use_remaining_snapshot.html}
+		</td>
+	</tr>
+	{/if}
+
 	<tr>
 		<td class="label">
 		  {ts}Contribution horizon{/ts}:
@@ -28,7 +39,6 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="hidden" name="cid" value="{$cid}">
 			<div class="crm-submit-buttons">
 			{include file="CRM/common/formButtons.tpl" location="bottom"}
 			</div>

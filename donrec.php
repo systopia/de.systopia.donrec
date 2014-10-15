@@ -153,6 +153,8 @@ function donrec_civicrm_tabs(&$tabs, $contactID) {
 /*
  * return errors if a receipted contribution is going to be changed
  */
+ //TODO: the pre-hook need the same informations than this one and is called
+ // afterwards. Is it possible to make these informations available for it?
 function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
   if ($formName == 'CRM_Contribute_Form_Contribution') {
     // do we have a contribution id?

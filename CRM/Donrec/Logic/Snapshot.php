@@ -523,4 +523,26 @@ class CRM_Donrec_Logic_Snapshot {
     );
     return $statistic;
   }
+
+  /**
+  * Returns an array with ids of already existing snapshots of a specific
+  * user.
+  * @return array
+  */
+  public static function getUserSnapshots($creator_id) {
+    $remaining_snapshots = array();
+
+    $query = "
+      SELECT snapshot_id
+      FROM civicrm_donrec_snapshot
+      WHERE status IS NULL
+      AND created_by = $creator_id
+      GROUP BY snapshot_id";
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    while ($result->fetch()) {
+      array_push($remaining_snapshots, $result->snapshot_id);
+    }
+    return $remaining_snapshots;
+  }
 }

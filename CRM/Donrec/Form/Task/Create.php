@@ -18,13 +18,12 @@ require_once 'CRM/Core/Form.php';
 class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function preProcess() {
     parent::preProcess();
-
-    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-    $this->assign('cid', $contactId);
   }
 
   function buildQuickForm() {
     $this->addElement('hidden', 'cid');
+    $this->addElement('hidden', 'rsid');
+    $this->addElement('checkbox', 'use_remaining_snapshot', 'use remaining snapshot');
     $options = array(
        'current_year' => ts('current year'),
        'last_year' => ts('last year'),
@@ -37,6 +36,19 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $this->addDefaultButtons(ts('Continue'));
   }
 
+  function setDefaultValues() {
+    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+    $this->getElement('cid')->setValue($contactId);
+
+    $uid = CRM_Core_Session::getLoggedInContactID();
+    $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
+    if (!empty($remaining_snapshots)) {
+      $this->assign('remaining_snapshot', TRUE);
+      $remaining_snapshot = array_pop($remaining_snapshots);
+      $this->getElement('rsid')->setValue($remaining_snapshot);
+    }
+  }
+
   function postProcess() {
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
@@ -46,6 +58,17 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     if ($contactId === NULL) {
       error_log("de.systopia.donrec: error: contact id is empty!");
+      return;
+    }
+
+    // work on with an existing snapshot
+    $remaining_snapshot = $_REQUEST['use_remaining_snapshot'];
+    if (!empty($remaining_snapshot)) {
+      $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
+      error_log($rsid);
+      CRM_Core_Session::singleton()->pushUserContext(
+        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
+      );
       return;
     }
 
@@ -100,7 +123,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
           AND (`b1`.`id` IS NULL
           OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
           ";
-          
+
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);
 
