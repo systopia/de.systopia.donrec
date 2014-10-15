@@ -148,17 +148,26 @@ class CRM_Utils_DonrecHelper
   }
 
   /**
-  * Converts a string to datetime object
-  * @param string
+  * Converts a string to unix timestamp
+  * @param string Raw date string (i.e. '10/15/2014')
+  * @param int If $clamp is less than 0 the function will return a unix timestamp
+  *            set to 00:00 of the given date. If it is greater than 1, it will
+  *            return a value clamped to 23:59:59 of the same day.
   * @param format
-  * @return DateTime object
+  * @return string timestamp
   */
-  public static function convertDate($raw_date, $format = 'm/d/Y') {
+  public static function convertDate($raw_date, $clamp=0, $format = 'm/d/Y') {
     $date = FALSE;
     if (!empty($raw_date)) {
       $date_object = DateTime::createFromFormat($format, $raw_date, new DateTimeZone('Europe/Berlin'));
       if ($date_object) {
-        $date = $date_object->getTimestamp();
+        if($clamp < 0) {
+          // set to [date format] 00:00:00
+          $date = mktime(0, 0, 0, $date_object->format('n'), $date_object->format('j'));
+        }else if($clamp > 0) {
+          // set to [date format] 23:59:59
+          $date = mktime(23, 59, 59, $date_object->format('n'), $date_object->format('j'));
+        }
       }
     }
     return $date;

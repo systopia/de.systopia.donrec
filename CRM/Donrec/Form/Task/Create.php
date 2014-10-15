@@ -33,10 +33,10 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
        'customized_period' => ts('choose a period')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);  
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
     $this->addDefaultButtons(ts('Continue'));
   }
-  
+
   function postProcess() {
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
@@ -52,9 +52,9 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     // prepare timestamps
     $raw_from_ts = $values['donrec_contribution_horizon_from'];
     $raw_to_ts = $values['donrec_contribution_horizon_to'];
-    
-    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts);
-    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts);
+
+    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
+    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
 
     $query_date_limit = "";
     if ($date_from) {
@@ -66,11 +66,11 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     // get table- and column name
     $table_query = "SELECT `cg`.`table_name`,
-                 `cf`.`column_name` 
+                 `cf`.`column_name`
               FROM `civicrm_custom_group` AS cg,
-                   `civicrm_custom_field` AS cf 
-              WHERE `cg`.`name` = 'zwb_donation_receipt_item' 
-              AND `cf`.`custom_group_id` = `cg`.`id` 
+                   `civicrm_custom_field` AS cf
+              WHERE `cg`.`name` = 'zwb_donation_receipt_item'
+              AND `cf`.`custom_group_id` = `cg`.`id`
               AND `cf`.`name` = 'status'";
 
     $results = CRM_Core_DAO::executeQuery($table_query);
@@ -89,17 +89,18 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     }
 
     // map contact ids to contributions
-    $query = "SELECT `civicrm_contribution`.`id` 
+    $query = "SELECT `civicrm_contribution`.`id`
           FROM (`civicrm_contribution`)
-          LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id` 
+          LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id`
           WHERE `contact_id` IN ($contactId)
           $query_date_limit
           AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
           AND `contribution_status_id` = 1
-          AND (`b1`.`id` IS NULL 
+          AND `is_test` = 0
+          AND (`b1`.`id` IS NULL
           OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
           ";
-    
+          
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);
 
