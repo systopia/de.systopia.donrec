@@ -23,7 +23,6 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function buildQuickForm() {
     $this->addElement('hidden', 'cid');
     $this->addElement('hidden', 'rsid');
-    $this->addElement('checkbox', 'use_remaining_snapshot', 'use remaining snapshot');
     $options = array(
        'current_year' => ts('current year'),
        'last_year' => ts('last year'),
@@ -43,9 +42,10 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $uid = CRM_Core_Session::getLoggedInContactID();
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
-      $this->assign('remaining_snapshot', TRUE);
       $remaining_snapshot = array_pop($remaining_snapshots);
       $this->getElement('rsid')->setValue($remaining_snapshot);
+      $this->assign('statistic', CRM_Donrec_Logic_Snapshot::getStatistic($remaining_snapshot));
+      $this->assign('remaining_snapshot', TRUE);
     }
   }
 
@@ -60,16 +60,22 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       error_log("de.systopia.donrec: error: contact id is empty!");
       return;
     }
+    // process remaining snapshots
+    $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
+    if (!empty($rsid)) {
 
-    // work on with an existing snapshot
-    $remaining_snapshot = $_REQUEST['use_remaining_snapshot'];
-    if (!empty($remaining_snapshot)) {
-      $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
-      error_log($rsid);
-      CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
-      );
-      return;
+      //work on with a remaining snapshot...
+      if (!empty(CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL))) {
+        CRM_Core_Session::singleton()->pushUserContext(
+          CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
+        );
+        return;
+
+      // or delete all remaining snapshots of this user
+      } else {
+        $uid = CRM_Core_Session::getLoggedInContactID();
+        CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
+      }
     }
 
     // prepare timestamps

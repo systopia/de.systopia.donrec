@@ -358,12 +358,13 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public static function hasIntersections($snapshot_id = 0) {
     // TODO: speed up by looking at one particular snapshot ?
-    $query =   "SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
-          FROM `civicrm_donrec_snapshot` AS original
-            INNER JOIN `civicrm_donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
-            LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
-          WHERE original.`snapshot_id` <> copy.`snapshot_id`
-          GROUP BY `snapshot_id`;";
+    $query =   "
+      SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
+      FROM `civicrm_donrec_snapshot` AS original
+      INNER JOIN `civicrm_donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
+      LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
+      WHERE original.`snapshot_id` <> copy.`snapshot_id`
+      GROUP BY `snapshot_id`;";
 
     $results = CRM_Core_DAO::executeQuery($query);
     $intersections = array($snapshot_id);
@@ -495,10 +496,11 @@ class CRM_Donrec_Logic_Snapshot {
   * Returns an array with statistic values of the snapshot
   * @return array
   */
-  public static function getStatistic($id, $ccount) {
+  public static function getStatistic($id) {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
-      SUM(total_amount) AS total_amount
+      SUM(total_amount) AS total_amount,
+      created_timestamp AS creation_date
       FROM civicrm_donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -516,10 +518,10 @@ class CRM_Donrec_Logic_Snapshot {
     $result1->fetch();
     $statistic = array(
       'id' => $id,
-      'requested_contacts' => $ccount,
       'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
+      'creation_date' => $result1->creation_date,
     );
     return $statistic;
   }
@@ -535,7 +537,7 @@ class CRM_Donrec_Logic_Snapshot {
     $query = "
       SELECT snapshot_id
       FROM civicrm_donrec_snapshot
-      WHERE status IS NULL
+      WHERE (status IS NULL OR status != 'DONE')
       AND created_by = $creator_id
       GROUP BY snapshot_id";
 
@@ -544,5 +546,18 @@ class CRM_Donrec_Logic_Snapshot {
       array_push($remaining_snapshots, $result->snapshot_id);
     }
     return $remaining_snapshots;
+  }
+
+  public static function deleteUserSnapshots($creator_id) {
+    $remaining_snapshots = array();
+
+    $query = "
+      DELETE
+      FROM civicrm_donrec_snapshot
+      WHERE (status IS NULL OR status != 'DONE')
+      AND created_by = $creator_id";
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    return $result;
   }
 }

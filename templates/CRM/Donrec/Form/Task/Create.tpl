@@ -6,19 +6,26 @@
 +--------------------------------------------------------+
 | TODO: License                                          |
 +--------------------------------------------------------*}
+{if $remaining_snapshot}
+<div id="remaining_snapshot" style="background-color:red">
+<p>{ts}You have still an unfinished snapshot. Do you want to use it?{/ts}</br>
+	Otherwise the snapshot will be removed!</p></br>
+{if $statistic}
+	<table id="statistic">
+		<caption>{ts}Statistic{/ts}</caption>
+		<tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
+		<tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
+		<tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
+		<tr><td class="statskey">{ts}created at{/ts}</td><td class="statsvalue">{$statistic.creation_date}</td></tr>
+	</table>
+{/if}
+
+<input class="form-submit" type="submit" name='use_remaining_snapshot' value='Use remaining snapshot'/>
+
+</div>
+{/if}
 
 <table>
-	{if $remaining_snapshot}
-	<tr>
-		<td class="label">
-			{ts}You have still an unfinished snapshot. Do you want to work on with it?{/ts}:
-		</td>
-		<td>
-			{$form.use_remaining_snapshot.html}
-		</td>
-	</tr>
-	{/if}
-
 	<tr>
 		<td class="label">
 		  {ts}Contribution horizon{/ts}:

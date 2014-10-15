@@ -16,9 +16,11 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
-    $statistic = empty($id)?NULL:CRM_Donrec_Logic_Snapshot::getStatistic($id, $ccount);
-    $this->assign('statistic', $statistic);
-
+    if (!empty($id)) {
+      $statistic = CRM_Donrec_Logic_Snapshot::getStatistic($id);
+      $statistic['requested_contacts'] = $ccount;
+      $this->assign('statistic', $statistic);
+    }
 
     // check which button was clicked
 
@@ -62,7 +64,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         $session = CRM_Core_Session::singleton();
         $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount"));
 
-        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters")); 
+        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters"));
       }
     }elseif (!empty($_REQUEST['donrec_run'])) {
       // issue donation receipts case
