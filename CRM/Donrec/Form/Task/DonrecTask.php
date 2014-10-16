@@ -68,6 +68,11 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $values = $this->exportValues();
     $contactIds = implode(', ', $this->_contactIds);
 
+    if (empty($contactIds)) {
+      error_log("de.systopia.donrec: error: contact ids is empty!");
+      return;
+    }
+
     // prepare timestamps
     $raw_from_ts = $values['donrec_contribution_horizon_from'];
     $raw_to_ts = $values['donrec_contribution_horizon_to'];

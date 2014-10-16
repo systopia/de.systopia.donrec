@@ -47,16 +47,6 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   }
 
   function postProcess() {
-    // process form values and try to build a snapshot with all contributions
-    // that match the specified criteria (i.e. contributions which have been
-    // created between two specific dates)
-    $values = $this->exportValues();
-    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-
-    if ($contactId === NULL) {
-      error_log("de.systopia.donrec: error: contact id is empty!");
-      return;
-    }
     // process remaining snapshots
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
@@ -73,6 +63,17 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
         $uid = CRM_Core_Session::getLoggedInContactID();
         CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
       }
+    }
+
+    // process form values and try to build a snapshot with all contributions
+    // that match the specified criteria (i.e. contributions which have been
+    // created between two specific dates)
+    $values = $this->exportValues();
+    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+
+    if ($contactId === NULL) {
+      error_log("de.systopia.donrec: error: contact id is empty!");
+      return;
     }
 
     // prepare timestamps
