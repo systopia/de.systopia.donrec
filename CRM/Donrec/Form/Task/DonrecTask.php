@@ -16,11 +16,9 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
-  function preProcess() {
-    parent::preProcess();
-  }
 
   function buildQuickForm() {
+    $this->addElement('hidden', 'rsid');
     $options = array(
        'current_year' => ts('current year'),
        'last_year' => ts('last year'),
@@ -33,7 +31,37 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $this->addDefaultButtons(ts('Continue'));
   }
 
+  function setDefaultValues() {
+    $uid = CRM_Core_Session::getLoggedInContactID();
+    $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
+    if (!empty($remaining_snapshots)) {
+      $remaining_snapshot = array_pop($remaining_snapshots);
+      $this->getElement('rsid')->setValue($remaining_snapshot);
+      $this->assign('statistic', CRM_Donrec_Logic_Snapshot::getStatistic($remaining_snapshot));
+      $this->assign('remaining_snapshot', TRUE);
+    }
+  }
+
   function postProcess() {
+
+    // process remaining snapshots if exsisting
+    $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
+    if (!empty($rsid)) {
+
+      //work on with a remaining snapshot...
+      if (!empty(CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL))) {
+        CRM_Core_Session::singleton()->pushUserContext(
+          CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
+        );
+        return;
+
+      // or delete all remaining snapshots of this user
+      } else {
+        $uid = CRM_Core_Session::getLoggedInContactID();
+        CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
+      }
+    }
+
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)

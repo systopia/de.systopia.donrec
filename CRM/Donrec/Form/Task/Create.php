@@ -16,9 +16,6 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
-  function preProcess() {
-    parent::preProcess();
-  }
 
   function buildQuickForm() {
     $this->addElement('hidden', 'cid');
