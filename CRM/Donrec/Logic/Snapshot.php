@@ -358,10 +358,15 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public static function hasIntersections($snapshot_id = 0) {
     // TODO: speed up by looking at one particular snapshot ?
+    // We do not check snapshots with status DONE: If we delete a receipt but
+    // the snapshot still exists, we get an intersection-error on trying to
+    // produce the receipt again.
     $query =   "
       SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
       FROM `civicrm_donrec_snapshot` AS original
       INNER JOIN `civicrm_donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
+      AND (original.`status` != 'DONE' OR original.`status` IS NULL)
+      AND (copy.`status` != 'DONE' OR copy.`status` IS NULL)
       LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
       WHERE original.`snapshot_id` <> copy.`snapshot_id`
       GROUP BY `snapshot_id`;";
