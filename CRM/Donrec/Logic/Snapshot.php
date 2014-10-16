@@ -481,8 +481,8 @@ class CRM_Donrec_Logic_Snapshot {
               FROM `civicrm_donrec_snapshot` AS snapshot
               RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = `snapshot`.`contribution_id`
               RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
-              RIGHT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
-              RIGHT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
+              LEFT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
+              LEFT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
               WHERE snapshot.`id` = %1
               AND snapshot.`snapshot_id` = %2
               LIMIT 1";
