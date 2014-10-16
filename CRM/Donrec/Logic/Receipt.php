@@ -157,7 +157,7 @@ class CRM_Donrec_Logic_Receipt {
     }
 
     $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
-                      VALUES (NULL, %%1, %%2, %%3, %s, %%5, %%6, %%7, %%8, %%9, %%10, %%11, %%12, %%13);",
+                      VALUES (NULL, %%d, %%s, %%s, %s, %%d, %%d, %%s, %%s, %%s, %%s, %%d, %%s, %%s);",
                 self::$_custom_group_id,
                 self::$_custom_fields['status'],
                 self::$_custom_fields['type'],
@@ -174,22 +174,22 @@ class CRM_Donrec_Logic_Receipt {
                 "'" . $line['created_timestamp'] . "'"
               );
 
-    $query_params = array(
-        1 => array($line['contact_id'], 'Integer'),
-        2 => array('ORIGINAL', 'String'),
-        3 => array('BULK', 'String'),
-        5 => array($line['created_by'], 'Integer'),
-        6 => array(-1, 'Integer'), //TODO: create pdf?
-        7 => array(empty($line['street_address']) ? "": $line['street_address'], 'String'),
-        8 => array(empty($line['supplemental_address_1']) ? "" : $line['supplemental_address_1'], 'String'),
-        9 => array(empty($line['supplemental_address_2']) ? "" : $line['supplemental_address_2'], 'String'),
-        10 => array(empty($line['supplemental_address_3']) ? "" : $line['supplemental_address_3'], 'String'),
-        11 => array($line['postal_code'], 'Integer'),
-        12 => array($line['city'], 'String'),
-        13 => array($line['country'], 'String')
-      );
+    $query = sprintf($query,
+                    $line['contact_id'],
+                    "'ORIGINAL'",
+                    "'BULK'",
+                    $line['created_by'],
+                    -1,
+                    empty($line['street_address']) ? "NULL": "'" . $line['street_address'] . "'",
+                    empty($line['supplemental_address_1']) ? "NULL" : "'" . $line['supplemental_address_1'] . "'" ,
+                    empty($line['supplemental_address_2']) ? "NULL" : "'" . $line['supplemental_address_2'] . "'" ,
+                    empty($line['supplemental_address_3']) ? "NULL" : "'" . $line['supplemental_address_3'] . "'" ,
+                    empty($line['postal_code']) ? "NULL" : "'" . $line['postal_code'] . "'",
+                    empty($line['city']) ? "NULL" : "'" . $line['city'] . "'" ,
+                    empty($line['country']) ? "NULL" : "'" . $line['country'] . "'"
+                    );
 
-    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+    $result = CRM_Core_DAO::executeQuery($query);
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
 
     for ($i=0; $i < count($lines); $i++) {

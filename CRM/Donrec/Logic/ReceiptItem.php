@@ -27,9 +27,9 @@ class CRM_Donrec_Logic_ReceiptItem {
   public static function create(&$params) {
   	self::getCustomFields();
 
-  	$query = sprintf("INSERT INTO `civicrm_value_donation_receipt_item_%d` 
-  		(`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) 
-  		VALUES (NULL, %%1, %%2, %%3, %%4, %s, %%5, %%6, %%7, %%8, %s, %%9);",
+  	$query = sprintf("INSERT INTO `civicrm_value_donation_receipt_item_%d`
+  		(`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
+  		VALUES (NULL, %%d, %%s, %%s, %%d, %s, %%d, %%f, %%f, %%s, %s, %%s);",
 	  		self::$_custom_group_id,
 	        self::$_custom_fields['status'],
         	self::$_custom_fields['type'],
@@ -45,19 +45,20 @@ class CRM_Donrec_Logic_ReceiptItem {
         	"'" . $params['receive_date'] . "'"
         );
 
-  	$query_params = array(
-        1 => array($params['contribution_id'], 'Integer'),
-        2 => array($params['status'], 'String'),
-        3 => array($params['type'], 'String'),
-        4 => array($params['issued_in'], 'Integer'),
-        5 => array($params['issued_by'], 'Integer'),
-        6 => array($params['total_amount'], 'Float'),
-        7 => array($params['non_deductible_amount'], 'Float'),
-        8 => array($params['currency'], 'String'),
-        9 => array($params['contribution_hash'], 'String'),
-    );
+    $query = sprintf($query,
+                     $params['contribution_id'],
+                     empty($params['status']) ? "NULL" : "'" . $params['status']. "'",
+                     empty($params['type']) ? "NULL" : "'" . $params['type'] . "'",
+                     $params['issued_in'],
+                     $params['issued_by'],
+                     is_null($params['total_amount']) ? 0.00 : $params['total_amount'],
+                     is_null($params['non_deductible_amount']) ? 0.00 : $params['non_deductible_amount'],
+                     empty($params['currency']) ? "NULL" : "'" . $params['currency'] . "'" ,
+                     empty($params['contribution_hash']) ? "NULL" : "'" . $params['contribution_hash']. "'"
+                     );
 
-    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+
+    $result = CRM_Core_DAO::executeQuery($query);
 
     return FALSE;
   }
@@ -69,7 +70,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   public static function createCopyAll($donation_receipt_id) {
     self::getCustomFields();
     $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
-    $sha1_string = sprintf($sha1_string, 
+    $sha1_string = sprintf($sha1_string,
                           self::$_custom_fields['type'],
                           self::$_custom_fields['issued_in'],
                           self::$_custom_fields['issued_by'],
@@ -81,33 +82,33 @@ class CRM_Donrec_Logic_ReceiptItem {
                           self::$_custom_group_id);
 
     $query = "INSERT INTO `civicrm_value_donation_receipt_item_%d`
-    (`id`, 
-      `entity_id`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`, 
-      `%s`) 
-    SELECT NULL as`id`, 
-    `entity_id`, 
-    'COPY' as `%s`, 
-    `%s`, 
-    `%s`, 
-    NOW() as `%s`, 
-    `%s`, 
-    `%s`, 
-    `%s`, 
-    `%s`, 
-    `%s`, 
+    (`id`,
+      `entity_id`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`,
+      `%s`)
+    SELECT NULL as`id`,
+    `entity_id`,
+    'COPY' as `%s`,
+    `%s`,
+    `%s`,
+    NOW() as `%s`,
+    `%s`,
+    `%s`,
+    `%s`,
+    `%s`,
+    `%s`,
    %s as `%s`
-    FROM `civicrm_value_donation_receipt_item_%d` 
+    FROM `civicrm_value_donation_receipt_item_%d`
     WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
-    $query = sprintf($query, 
+    $query = sprintf($query,
       self::$_custom_group_id,
       self::$_custom_fields['status'],
       self::$_custom_fields['type'],
@@ -150,11 +151,11 @@ class CRM_Donrec_Logic_ReceiptItem {
     }else{
       $statusString = "";
     }
-    
+
     $query = "DELETE FROM `civicrm_value_donation_receipt_item_%d` WHERE `%s` = %d%s;";
-    $query = sprintf($query, 
-                    self::$_custom_group_id, 
-                    self::$_custom_fields['issued_in'], 
+    $query = sprintf($query,
+                    self::$_custom_group_id,
+                    self::$_custom_fields['issued_in'],
                     $donation_receipt_id,
                     $statusString);
     $result = CRM_Core_DAO::executeQuery($query);
@@ -165,11 +166,11 @@ class CRM_Donrec_Logic_ReceiptItem {
   * @param int donation receipt id
   * @param string status
   */
-  public static function setStatusAll($donation_receipt_id, $status = "WITHDRAWN") {  
-    self::getCustomFields();  
+  public static function setStatusAll($donation_receipt_id, $status = "WITHDRAWN") {
+    self::getCustomFields();
     $query = "UPDATE `civicrm_value_donation_receipt_item_%d` SET `%s` = %%1 WHERE `%s` = %d;";
-    $query = sprintf($query, 
-                    self::$_custom_group_id, 
+    $query = sprintf($query,
+                    self::$_custom_group_id,
                     self::$_custom_fields['status'],
                     self::$_custom_fields['issued_in'],
                     $donation_receipt_id

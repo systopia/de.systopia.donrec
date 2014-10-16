@@ -205,6 +205,9 @@ class CRM_Donrec_Logic_Template
       if (count($matches) == 1) {
         $head_offset = $matches[0][1];
         $html = substr_replace($html, $watermark_css, $head_offset, 0);
+      }else{
+        error_log('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
+        return FALSE;
       }
     }
 
@@ -215,7 +218,8 @@ class CRM_Donrec_Logic_Template
       $body_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_site1, $body_offset + 8, 0);
     }else if (count($matches) < 1) {
-      error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found).');
+      error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
+      return FALSE;
     }
 
     // find <div class="newpage"> element
@@ -225,7 +229,8 @@ class CRM_Donrec_Logic_Template
       $newpage_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_site2, $newpage_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
-      error_log('de.systopia.donrec: watermark could not be created for site two (<div id="newpage"> not found). possible manipulation of the template file?');
+      error_log('de.systopia.donrec: watermark could not be created for site two (<div id="newpage"> not found). possible manipulation of the template file? pdf rendering cancelled.');
+      return FALSE;
     }
 
     // --- watermark injection end ---
