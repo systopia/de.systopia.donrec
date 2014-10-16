@@ -20,14 +20,18 @@ function civicrm_api3_donation_receipt_withdraw($params) {
   $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
 
   if(!empty($receipt)) {
-    $result = $receipt->markWithdrawn();
+    if($receipt->isOriginal()) {
+      $result = $receipt->markWithdrawn();
+    }else{
+      return civicrm_api3_create_error(sprintf(ts("Only original donation receipts can be withdrawn."), $params['rid']));
+    }
   }else{
     return civicrm_api3_create_error(sprintf(ts("Receipt with id %d does not exist."), $params['rid']));
   }
   // and return the result
   return civicrm_api3_create_success($result);
 }
-  
+
 /**
  * Adjust Metadata for donation receipt withdraw
  */
@@ -58,7 +62,7 @@ function civicrm_api3_donation_receipt_copy($params) {
   // and return the result
   return civicrm_api3_create_success($result);
 }
-  
+
 /**
  * Adjust Metadata for donation receipt copy
  */
@@ -86,7 +90,7 @@ function civicrm_api3_donation_receipt_delete($params) {
   // and return the result
   return civicrm_api3_create_success($result);
 }
-  
+
 /**
  * Adjust Metadata for donation receipt delete
  */

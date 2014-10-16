@@ -26,7 +26,12 @@
           </ul>
         </div>
       </td>
-      <td><a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>{if $is_admin}<a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>{/if}<a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+      <td>
+        {if $receipt.status == 'ORIGINAL'}
+        <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
+        <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+        {/if}
+        {if $is_admin}<a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>{/if}
       </td>
     </tr>
     {/foreach}
@@ -71,7 +76,7 @@
             }
           );
         }
-      
+
     });
     // called for every copy-button
     cj('.donrec-stats-block a[id^="copy_receipt_"]').click(function() {
@@ -92,7 +97,7 @@
             }
           );
         }
-      
+
     });
     {/literal}{if $is_admin}{literal}
     // called for every delete-button
