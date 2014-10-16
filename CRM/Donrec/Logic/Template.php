@@ -159,8 +159,78 @@ class CRM_Donrec_Logic_Template
     // callback for custom variables
     CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $values);
 
-    // compile template
+    // get template
     $html = $this->_template->msg_html;
+
+    // --- watermark injection ---
+    // prepare watermark
+    $watermark_css = '<style>
+                      {literal}
+                      .watermark {
+                        position: fixed;
+                        opacity: 0.45;
+                        z-index: 999;
+                        color: #808080;
+                        -ms-transform: rotate(-45deg); /* IE 9 */
+                        -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+                        transform: rotate(-45deg);
+                        font-size: 100pt!important;
+                      }
+
+                      .watermark-center {
+                        left: 60px;
+                        top: 600px;
+                      }
+
+                      .watermark-top {
+                        left: 60px;
+                        top: 180px;
+                      }
+                      {/literal}
+                      </style>
+                      ';
+    $watermark_site1 = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
+    $watermark_site2 = '<div class="watermark watermark-top">{if $watermark}{$watermark}{/if}</div>';
+
+    // find </style> element
+    $matches = array();
+    preg_match('/<\/style>/', $html, $matches, PREG_OFFSET_CAPTURE);
+    if (count($matches) == 1) {
+      $head_offset = $matches[0][1];
+      $html = substr_replace($html, $watermark_css, $head_offset + strlen($matches[0][0]), 0);
+    }else if (count($matches) < 1) {
+      error_log('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
+      $matches = array();
+      preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
+      if (count($matches) == 1) {
+        $head_offset = $matches[0][1];
+        $html = substr_replace($html, $watermark_css, $head_offset, 0);
+      }
+    }
+
+    // find <body> element
+    $matches = array();
+    preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
+    if (count($matches) == 1) {
+      $body_offset = $matches[0][1];
+      $html = substr_replace($html, $watermark_site1, $body_offset + 8, 0);
+    }else if (count($matches) < 1) {
+      error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found).');
+    }
+
+    // find <div class="newpage"> element
+    $matches = array();
+    preg_match('/<div\s*class=["\']newpage["\']\s*>/', $html, $matches, PREG_OFFSET_CAPTURE);
+    if (count($matches) == 1) {
+      $newpage_offset = $matches[0][1];
+      $html = substr_replace($html, $watermark_site2, $newpage_offset + strlen($matches[0][0]), 0);
+    }else if (count($matches) < 1) {
+      error_log('de.systopia.donrec: watermark could not be created for site two (<div id="newpage"> not found). possible manipulation of the template file?');
+    }
+
+    // --- watermark injection end ---
+
+    // compile template
     $html = $smarty->fetch("string:$html");
 
     // set up file names
