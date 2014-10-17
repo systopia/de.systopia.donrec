@@ -71,7 +71,7 @@ class CRM_Donrec_Logic_Receipt {
       self::$_custom_fields['type'] => "'SINGLE'",
       self::$_custom_fields['issued_on'] => "'$line[created_timestamp]'",
       self::$_custom_fields['issued_by'] => $line[created_by],
-      self::$_custom_fields['original_file'] => -1,
+      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? -1 : $parameters['file_id'],
       self::$_custom_fields['street_address'] => empty($line['street_address']) ? 'NULL': "'$line[street_address]'",
       self::$_custom_fields['supplemental_address_1'] => empty($line['supplemental_address_1']) ? 'NULL': "'$line[supplemental_address_1]'",
       self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_1]'",
@@ -145,10 +145,6 @@ class CRM_Donrec_Logic_Receipt {
       $parameters['is_error'] = "snapshot lines do not exist";
       return FALSE;
     }
-    if (count($lines) < 2) {
-      $parameters['is_error'] = "this is not a bulk donation receipt";
-      return FALSE;
-    }
 
     $line = $lines[0];
     if (empty($line)) {
@@ -179,7 +175,7 @@ class CRM_Donrec_Logic_Receipt {
                     "'ORIGINAL'",
                     "'BULK'",
                     $line['created_by'],
-                    -1,
+                    empty($parameters['file_id']) ? -1 : $parameters['file_id'],
                     empty($line['street_address']) ? "NULL": "'" . $line['street_address'] . "'",
                     empty($line['supplemental_address_1']) ? "NULL" : "'" . $line['supplemental_address_1'] . "'" ,
                     empty($line['supplemental_address_2']) ? "NULL" : "'" . $line['supplemental_address_2'] . "'" ,
@@ -290,7 +286,8 @@ class CRM_Donrec_Logic_Receipt {
                     self::$_custom_fields['status']
                     );
     $result = CRM_Core_DAO::executeQuery($query);
-    CRM_Donrec_Logic_ReceiptItem::createCopyAll($this->Id);
+    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
+    CRM_Donrec_Logic_ReceiptItem::createCopyAll($this->Id, $lastId);
     return TRUE;
   }
 
@@ -358,6 +355,7 @@ class CRM_Donrec_Logic_Receipt {
               `%s` as `type`,
               `%s` as `status`,
               `%s` as `issued_on`,
+              file.`uri` as `original_file`,
               SUM(item.`%s`) as `total_amount`,
               MIN(item.`%s`) as `date_from`,
               MAX(item.`%s`) as `date_to`,
@@ -366,6 +364,8 @@ class CRM_Donrec_Logic_Receipt {
               RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
                 ON item.`%s` = receipt.id
                 AND item.`%s` = receipt.`%s`
+              RIGHT JOIN `civicrm_file` as file
+                ON file.`id` = receipt.`%s`
               WHERE receipt.id = %d;";
 
     $query = sprintf($query,
@@ -381,6 +381,7 @@ class CRM_Donrec_Logic_Receipt {
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
       self::$_custom_fields['status'],
+      self::$_custom_fields['original_file'],
       $this->Id
       );
 
@@ -391,6 +392,8 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['type'] = $result->type;
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
+      $display_properties['original_file'] = $config->userFrameworkBaseURL
+      . "sites/default/files/civicrm/custom/" . basename($result->original_file);
       $display_properties['total_amount'] = $result->total_amount;
       $display_properties['date_from'] = $result->date_from;
       $display_properties['date_to'] = $result->date_to;

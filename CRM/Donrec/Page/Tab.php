@@ -19,6 +19,8 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
 
     // admin only
     $this->assign('is_admin', CRM_Core_Permission::check('administer CiviCRM'));
+    // do we keep original pdf files?
+    $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 
   	parent::run();
   }

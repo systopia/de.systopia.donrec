@@ -256,7 +256,8 @@ class CRM_Donrec_Logic_Snapshot {
           $tbcount++;
         }
       }
-      if ($tbcount == count($chunk)) {
+      $chunksize = count($chunk);
+      if ($tbcount == $chunksize) {
         $force_processing = TRUE;
       }
 
@@ -305,9 +306,9 @@ class CRM_Donrec_Logic_Snapshot {
     if (empty($ids)) {
       error_log('de.systopia.donrec: invalid chunk detected!');
     } else {
-      //error_log("de.systopia.donrec: lines $ids are now processed");
-      CRM_Core_DAO::executeQuery(
-        "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids);");
+      $query = "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids);";
+      CRM_Core_DAO::executeQuery($query);
+      // error_log("de.systopia.donrec: lines $ids are now processed ($query)");
     }
   }
 
@@ -428,7 +429,10 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function setProcessInformation($snapshot_item_id, $value) {
     $item_id = (int) $snapshot_item_id;
-    if (!$item_id) return;
+    if (!$item_id) {
+      error_log("de.systopia.donrec: invalid snapshot id detected! ($item_id)");
+      return;
+    }
 
     $raw_value = json_encode($value);
     if ($raw_value==FALSE) {

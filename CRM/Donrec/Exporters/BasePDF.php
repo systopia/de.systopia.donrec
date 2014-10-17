@@ -87,7 +87,16 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $failures++;
       }else{
         $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
+        // save file names for wrapup()
         $snapshot->setProcessInformation($chunk_item['id'], $result);
+        // create receipt
+        if (!$is_test && CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+          $file = $this->createFile($result);
+          if (!empty($file)) {
+            $receipt_params['file_id'] = $file[1];
+          }
+        }
+        CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $chunk_item['id'], $receipt_params);
         $success++;
       }
     }
@@ -176,7 +185,26 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $failures++;
       }else{
         $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
-        $snapshot->setProcessInformation($chunk_items[0]['id'], $result);
+        $line_ids = array();
+        $receipt_params = array();
+        // create receipts
+        if (!$is_test && CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+          $file = $this->createFile($result);
+          if (!empty($file)) {
+            $receipt_params['file_id'] = $file[1];
+          }
+        }
+        // save file names for wrapup()
+        foreach($chunk_items as $key => $item) {
+          $snapshot->setProcessInformation($item['id'], $result);
+          $line_ids[] = $item['id'];
+        }
+
+        $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $line_ids, $receipt_params);
+        if(!$result) {
+          error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
+        }
+
         $success++;
       }
     }
@@ -194,7 +222,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    *          'download_url: URL to download the result
    *          'download_name: suggested file name for the download
    */
-  public function wrapUp($snapshot_id) {
+  public function wrapUp($snapshot_id, $is_test, $is_bulk) {
     $reply = array();
 
     // create the zip file
@@ -211,7 +239,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       foreach($ids as $id) {
         $filename = $snapshot->getProcessInformation($id);
         if(!empty($filename)) {
-          $toRemove[] = $filename;
+          $toRemove[$id] = $filename;
           $opResult = $zip->addFile($filename, basename($filename)) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
@@ -231,10 +259,12 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $reply['download_url'] = $file[1];
     }
 
-    // remove loose pdf files
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-    foreach($toRemove as $file) {
-      unlink($file);
+    // remove loose pdf files or store them
+    if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      foreach($toRemove as $file) {
+        unlink($file);
+      }
     }
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);

@@ -28,6 +28,9 @@
       </td>
       <td>
         {if $receipt.status == 'ORIGINAL'}
+        {if $store_pdf}
+        <a id="view_receipt_{$receipt_id}" class="button" href="{$receipt.original_file}"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {/if}
         <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
         {/if}

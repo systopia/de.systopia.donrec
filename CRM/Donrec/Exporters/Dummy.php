@@ -82,7 +82,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *          'download_url: URL to download the result
    *          'download_name: suggested file name for the download
    */
-  public function wrapUp($chunk) {
+  public function wrapUp($chunk, $is_test, $is_bulk) {
     $reply = array();
 
     $file = $this->createFile('dummy_test.txt', TRUE);

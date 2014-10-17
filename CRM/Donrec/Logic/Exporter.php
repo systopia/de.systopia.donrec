@@ -80,7 +80,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    *          'download_url: URL to download the result
    *          'download_name: suggested file name for the download
    */
-  abstract function wrapUp($snapshotId);
+  abstract function wrapUp($snapshotId, $is_test, $is_bulk);
 
 
   // HELPERS
@@ -112,7 +112,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    * will create an empty file for the exporter to overwrite
    *
    * @return NULL if not possible, e.g. when the name is already taken,
-   *         or   array(file_path, file_URL)
+   *         or   array(file_URL, file_id)
    */
   protected function createFile($file_name, $is_temp = FALSE) {
     $config =  CRM_Core_Config::singleton();
@@ -146,7 +146,7 @@ abstract class CRM_Donrec_Logic_Exporter {
       return NULL;
     }
 
-    return array($file, $file);
+    return array($file, $result['id']);
   }
 
   /**

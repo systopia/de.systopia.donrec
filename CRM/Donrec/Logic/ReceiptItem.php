@@ -66,10 +66,11 @@ class CRM_Donrec_Logic_ReceiptItem {
   /**
   * Creates a copy of all donation receipt items of a specific donation receipt
   * @param int donation receipt id
+  * @param int id of the copy
   */
-  public static function createCopyAll($donation_receipt_id) {
+  public static function createCopyAll($donation_receipt_id, $donation_receipt_copy_id) {
     self::getCustomFields();
-    $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
+    $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     $sha1_string = sprintf($sha1_string,
                           self::$_custom_fields['type'],
                           self::$_custom_fields['issued_in'],
@@ -98,7 +99,7 @@ class CRM_Donrec_Logic_ReceiptItem {
     `entity_id`,
     'COPY' as `%s`,
     `%s`,
-    `%s`,
+    $donation_receipt_copy_id as `%s`,
     NOW() as `%s`,
     `%s`,
     `%s`,
