@@ -32,7 +32,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   }
 
   function setDefaultValues() {
-    $uid = CRM_Core_Session::getLoggedInContactID();
+    $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
       $remaining_snapshot = array_pop($remaining_snapshots);
@@ -57,7 +57,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
       // or delete all remaining snapshots of this user
       } else {
-        $uid = CRM_Core_Session::getLoggedInContactID();
+        $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
         CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
       }
     }
@@ -139,7 +139,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
