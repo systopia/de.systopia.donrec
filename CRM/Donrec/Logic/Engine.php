@@ -136,6 +136,43 @@ class CRM_Donrec_Logic_Engine {
         $logs = array_merge($logs, $result['log']);
       }
     }
+    // create donation receipts
+    if (!$is_test) {
+      if(!$is_bulk) {
+      $receipt_params = array();
+        foreach ($chunk as $chunk_id => $chunk_item) {
+          if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+            // todo: get pdf file name from snapshot line
+            $result = TODO;
+            $file = $this->createFile($result);
+            if (!empty($file)) {
+              $receipt_params['file_id'] = $file[1];
+            }
+          }
+          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
+        }
+      } else {
+         $receipt_params = array();
+         $line_ids = array();
+         foreach ($chunk as $chunk_id => $chunk_items) {
+          foreach ($chunk_items as $key => $chunk_item) {
+           $line_ids[] = $chunk_item['id'];
+           if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+             // todo: get pdf file name from snapshot line
+             $result = TODO;
+             $file = $this->createFile($result);
+             if (!empty($file)) {
+               $receipt_params['file_id'] = $file[1];
+             }
+           }
+         }
+        }
+        $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $line_ids, $receipt_params);
+        if(!$result) {
+          error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
+        }
+      }
+    }
 
     // mark the chunk as processed
     if ($chunk) {
@@ -231,5 +268,16 @@ class CRM_Donrec_Logic_Engine {
    */
   public function getSnapshot() {
     return $this->snapshot;
+  }
+
+
+  /**
+  * get or create a pdf file for the line
+  */
+  public function getPDF($snapshot_line_id) {
+    // todo implement
+    $proc_info = $snapshot->getProcessInformation($snapshot_line_id);
+    $filename = isset($proc_info['pdf']) ? $proc_info['pdf'] : FALSE;
+    return $filename;
   }
 }

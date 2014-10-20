@@ -86,17 +86,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       if ($result === FALSE) {
         $failures++;
       }else{
-        $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
         // save file names for wrapup()
         $snapshot->setProcessInformation($chunk_item['id'], $result);
-        // create receipt
-        if (!$is_test && CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-          $file = $this->createFile($result);
-          if (!empty($file)) {
-            $receipt_params['file_id'] = $file[1];
-          }
-        }
-        CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $chunk_item['id'], $receipt_params);
         $success++;
       }
     }
@@ -169,44 +160,27 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $total_amount += $lineval['total_amount'];
       }
 
-      // assign all unique template variables
-      $values['contributor'] = $contributor_contact;
-      $values['total'] = $total_amount;
-      $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($total_amount);
-      $values['today'] = date("j.n.Y", time());
-      $values['items'] = $chunk_items;
-      if($is_test) {
-        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+    // assign all unique template variables
+    $values['contributor'] = $contributor_contact;
+    $values['total'] = $total_amount;
+    $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($total_amount);
+    $values['today'] = date("j.n.Y", time());
+    $values['items'] = $chunk_items;
+    if($is_test) {
+      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+    }
+
+    $tpl_param = array();
+    $result = $template->generatePDF($values, $tpl_param);
+    if ($result === FALSE) {
+      $failures++;
+    }else{
+      // save file names for wrapup()
+      foreach($chunk_items as $key => $item) {
+        $snapshot->setProcessInformation($item['id'], $result);
       }
-
-      $tpl_param = array();
-      $result = $template->generatePDF($values, $tpl_param);
-      if ($result === FALSE) {
-        $failures++;
-      }else{
-        $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
-        $line_ids = array();
-        $receipt_params = array();
-        // create receipts
-        if (!$is_test && CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-          $file = $this->createFile($result);
-          if (!empty($file)) {
-            $receipt_params['file_id'] = $file[1];
-          }
-        }
-        // save file names for wrapup()
-        foreach($chunk_items as $key => $item) {
-          $snapshot->setProcessInformation($item['id'], $result);
-          $line_ids[] = $item['id'];
-        }
-
-        $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $line_ids, $receipt_params);
-        if(!$result) {
-          error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
-        }
-
-        $success++;
-      }
+      $success++;
+    }
     }
     // add a log entry
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded', count($chunk), $success, $failures), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
