@@ -159,9 +159,8 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
 
   // Validate contribution_form for already existing contributions.
   // Therefore we need a contribution-id.
-  $id = $form->_id;
-  if ($formName == 'CRM_Contribute_Form_Contribution' && !empty($id)) {
-
+  if ($formName == 'CRM_Contribute_Form_Contribution' && !empty($form->_id)) {
+    $id = $form->_id;
     $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
     $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($id);
 
