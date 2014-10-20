@@ -509,7 +509,8 @@ class CRM_Donrec_Logic_Snapshot {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount,
-      created_timestamp AS creation_date
+      created_timestamp AS creation_date,
+      status      #we want the status of the first entry; that's what we get.
       FROM civicrm_donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -531,6 +532,7 @@ class CRM_Donrec_Logic_Snapshot {
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
       'creation_date' => $result1->creation_date,
+      'status' => $result1->status
     );
     return $statistic;
   }

@@ -37,6 +37,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $this->getElement('cid')->setValue($contactId);
 
     $uid = CRM_Core_Session::getLoggedInContactID();
+    //TODO: what if we have more than 1 remaining snapshot (what should not happen at all)?
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
       $remaining_snapshot = array_pop($remaining_snapshots);

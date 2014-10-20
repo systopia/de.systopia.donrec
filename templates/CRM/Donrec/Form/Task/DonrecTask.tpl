@@ -9,9 +9,18 @@
 
 {if $remaining_snapshot}
 <div id="remaining_snapshot" style="background-color:red">
-<p>{ts}You have still an unfinished snapshot. Do you want to use it?{/ts}</br>
-	Otherwise the snapshot will be removed!</p></br>
 {if $statistic}
+{if !statistic.status}
+<p>{ts}You have still an unprocessed selection. Do you want to use it?{/ts}</br>
+	Otherwise it will be removed!</p></br>
+{elseif statistic.status == 'TEST'}
+<p>{ts}You have still an unfinished test-run for receipt-creation. Do you want to continue?{/ts}</br>
+	Otherwise the selection will be removed!</p></br>
+{elseif statistic.status == 'DONE'}
+<p>{ts}You have still an unfinished run for receipts-creation. Do you want to continue?{/ts}</br>
+	Otherwise the selection will be removed!</p>
+<p><b>Mind that receipts were already created. It's up to you to delete them.</b></p></br>
+{/if}
 	<table id="statistic">
 		<caption>{ts}Statistic{/ts}</caption>
 		<tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
