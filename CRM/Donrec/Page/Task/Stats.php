@@ -16,11 +16,16 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
+
+    // add statistic
     if (!empty($id)) {
       $statistic = CRM_Donrec_Logic_Snapshot::getStatistic($id);
       $statistic['requested_contacts'] = $ccount;
       $this->assign('statistic', $statistic);
     }
+
+    // when we come from a test-run...
+    $this->assign('from_test', empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test']);
 
     // check which button was clicked
 
@@ -62,7 +67,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         //on testrun we want to return to the stats-page instead of the contact-search-page
         //but we must not overwrite the url_back-var
         $session = CRM_Core_Session::singleton();
-        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount"));
+        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount&from_test=1"));
 
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters"));
       }

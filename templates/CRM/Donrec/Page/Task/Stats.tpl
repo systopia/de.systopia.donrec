@@ -73,11 +73,11 @@
 </div>
 <!-- the buttons -->
 <div class="form-item">
-  {if $statistic.status == 'TEST' || !$statistic.status}
-  <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
+  {if $statistic.status == 'TEST' && !$from_test || !$statistic.status}
+    <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
   {/if}
-  {if $statistic.status == 'DONE' || !$statistic.status}
-  <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
+  {if $statistic.status == 'DONE' || !$statistic.status || $from_test}
+    <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
   {/if}
   <input name="donrec_abort" value="{ts}Abort{/ts}" class="form-submit" type="submit">
 </div>
