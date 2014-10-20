@@ -557,6 +557,10 @@ class CRM_Donrec_Logic_Snapshot {
     return $remaining_snapshots;
   }
 
+  /**
+  * Deletes all not processed snapshots of a given user.
+  * @return return-value from CRM_Core_DAO::executeQuery()
+  */
   public static function deleteUserSnapshots($creator_id) {
     $remaining_snapshots = array();
 
@@ -568,5 +572,20 @@ class CRM_Donrec_Logic_Snapshot {
 
     $result = CRM_Core_DAO::executeQuery($query);
     return $result;
+  }
+
+  /**
+  * Checks if there is a snapshot-entry for a non-processed snapshot for
+  * a given contribution.
+  * @return boolean
+  */
+  public static function isInOpenSnapshot($contribution_id) {
+    $query = "
+      SELECT COUNT(*)
+      FROM `civicrm_donrec_snapshot`
+      WHERE contribution_id = $contribution_id
+      AND (status IS NULL OR status != 'DONE')
+    ";
+    return (bool) CRM_Core_DAO::singleValueQuery($query);
   }
 }

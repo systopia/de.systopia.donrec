@@ -156,48 +156,16 @@ function donrec_civicrm_tabs(&$tabs, $contactID) {
  //TODO: the pre-hook need the same informations than this one and is called
  // afterwards. Is it possible to make these informations available for it?
 function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
-  if ($formName == 'CRM_Contribute_Form_Contribution') {
-    // do we have a contribution id?
-    $id = $form->_id;
-    if (empty($id)) {
-      return;
-    }
 
-    // get the name of the custom-value-table for receipt-items
-    $query = "
-      SELECT id, table_name
-      FROM civicrm_custom_group
-      WHERE name = 'zwb_donation_receipt_item'";
-    $result = CRM_Core_DAO::executeQuery($query);
-    $result->fetch();
-    $custom_group_id = $result->id;
-    $table_name = $result->table_name;
+  // Validate contribution_form for already existing contributions.
+  // Therefore we need a contribution-id.
+  $id = $form->_id;
+  if ($formName == 'CRM_Contribute_Form_Contribution' && !empty($id)) {
 
-    // get the column-name for the receipt-status
-    $query = "
-      SELECT column_name
-      FROM civicrm_custom_field
-      WHERE custom_group_id = $custom_group_id
-      AND name = 'status'";
-    $status_column_name = CRM_Core_DAO::singleValueQuery($query);
+    $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
+    $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($id);
 
-    // check if there is a original receipt for the contribution
-    $query = "
-      SELECT count(*)
-      FROM (
-        SELECT *
-        FROM $table_name
-        WHERE entity_id = $id
-        AND $status_column_name = 'ORIGINAL'
-      ) A";
-    $receipt_count = (int) CRM_Core_DAO::singleValueQuery($query);
-
-    // do nothing if no receipt with status ORIGINAL was found
-    if (empty($receipt_count)) {
-      return;
-
-    // If a forbidden value was changed return an error
-    } else {
+    if ($has_item || $in_snapshot) {
       $forbidden = array(
         'financial_type_id',
         'total_amount',
@@ -220,7 +188,7 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
               continue;
             }
           }
-          $errors[$col] = ts("This contribution was already receipted. You must not change the value for $col.");
+          $errors[$col] = ts("This contribution has a valid receipt or is going to be receipted. You must not change the value for $col.");
         }
       }
     }
@@ -233,76 +201,45 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
  */
 function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
   if ($objectName == 'Contribution' && ($op == 'edit' || $op == 'delete')) {
-    // get the name of the custom-value-table for receipt-items
-    $query = "
-      SELECT id, table_name
-      FROM civicrm_custom_group
-      WHERE name = 'zwb_donation_receipt_item'";
-    $result = CRM_Core_DAO::executeQuery($query);
-    $result->fetch();
-    $custom_group_id = $result->id;
-    $table_name = $result->table_name;
 
-    // get the column-name for the receipt-status
-    $query = "
-      SELECT column_name
-      FROM civicrm_custom_field
-      WHERE custom_group_id = $custom_group_id
-      AND name = 'status'";
-    $status_column_name = CRM_Core_DAO::singleValueQuery($query);
+    $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
+    $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($id);
 
-    // check if there is a original receipt for the contribution
-    $query = "
-      SELECT count(*)
-      FROM (
-        SELECT *
-        FROM $table_name
-        WHERE entity_id = $id
-        AND $status_column_name = 'ORIGINAL'
-      ) A";
-    $receipt_count = (int) CRM_Core_DAO::singleValueQuery($query);
+    if ($has_item || $in_snapshot) {
+      if ($op == 'edit') {
+        // columns that must not be changed
+        $forbidden = array(
+          'financial_type_id',
+          'total_amount',
+          'receive_date',
+          'currency',
+          'contribution_status_id',
+          'payment_instrument_id'
+        );
 
-    // do nothing if no receipt with status ORIGINAL was found
-    if (empty($receipt_count)) {
-      return;
+        // get the contribution
+        $query = "
+          SELECT *
+          FROM civicrm_contribution
+          WHERE id = $id";
+        $result = CRM_Core_DAO::executeQuery($query);
+        $result->fetch();
 
-    // Check on the values that are going to be changed.
-    // Die if relevant values are going to be changed
-    } elseif ($op == 'edit'){
-      // columns that must not be changed
-      $forbidden = array(
-        'financial_type_id',
-        'total_amount',
-        'receive_date',
-        'currency',
-        'contribution_status_id',
-        'payment_instrument_id'
-      );
-
-      // get the contribution
-      $query = "
-        SELECT *
-        FROM civicrm_contribution
-        WHERE id = $id";
-      $result = CRM_Core_DAO::executeQuery($query);
-      $result->fetch();
-
-      // check if forbidden values are going to be changed.
-      foreach ($forbidden as $col) {
-        if ($result->$col != $params[$col]) {
-          // we need a extra-check for dates (which are not in the same format)
-          if (!empty(strpos($col, 'date')) && preg_replace('/[-: ]/', '', $result->$col) == $params[$col]) {
-              continue;
+        // check if forbidden values are going to be changed.
+        foreach ($forbidden as $col) {
+          if ($result->$col != $params[$col]) {
+            // we need a extra-check for dates (which are not in the same format)
+            if (!empty(strpos($col, 'date')) && preg_replace('/[-: ]/', '', $result->$col) == $params[$col]) {
+                continue;
+            }
+            error_log("The column $col of this contribution ($id) must not be changed because it has a receipt or is going to be receipted!");
+            die;
           }
-          error_log("The column $col of this contribution ($id) must not be changed because the contribution was already receipted!");
-          die;
         }
+      } elseif ($op == 'delete') {
+        error_log("This contribution ($id) must not be deleted because it has a receipt or is going to be receipted!");
+        die;
       }
-
-    // contribution must not be deleted! So die here!
-    } else {
-      error_log("This contribution ($id) must not be deleted because it was already receipted!");
-      die;
     }
   }
   return;

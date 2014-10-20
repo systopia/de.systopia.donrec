@@ -490,6 +490,7 @@ class CRM_Donrec_Logic_Receipt {
     return CRM_Core_DAO::singleValueQuery($query);
   }
 
+  //TODO: for what do we need this method?
   /**
    * Checks if there is a VALID donation receipt for the given contribution
    *
