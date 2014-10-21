@@ -364,7 +364,7 @@ class CRM_Donrec_Logic_Receipt {
               RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
                 ON item.`%s` = receipt.id
                 AND item.`%s` = receipt.`%s`
-              RIGHT JOIN `civicrm_file` as file
+              LEFT JOIN `civicrm_file` as file
                 ON file.`id` = receipt.`%s`
               WHERE receipt.id = %d;";
 
