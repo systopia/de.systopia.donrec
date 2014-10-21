@@ -210,7 +210,7 @@ msgstr "Zurück"
 msgid "Progress Log"
 msgstr "Ausführungs-Log"
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
 msgid "Date"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr "Die Zuwendungsbescheinigung wurde zurückgesetzt"
 msgid "Success"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Error"
 msgstr ""
 
@@ -355,9 +355,8 @@ msgid "There are no selectable contributions for these contacts in the selected 
 msgstr "Diese Kontakte haben keine zu bestätigenden Zuwendungen in der angegebene Zeitspanne."
 
 #: api/v3/DonationReceipt.php
-#, fuzzy
 msgid "Only original donation receipts can be withdrawn."
-msgstr "Nur Zuwendungsbescheinigungen im Status \"Original\" können kopiert werde."
+msgstr "Es können nur Kopien von Originalen angefertigt werden."
 
 #: donrec.php
 msgid "A donation reciept has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."
@@ -404,18 +403,21 @@ msgstr "<b>Achtung!</b> Es wurden bereits einige Zuwendungsbescheinigungen erste
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Statistics"
 msgstr "Übersicht"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "contact count"
 msgstr "Anzahl Kontakte"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "contribution count"
 msgstr "Anzahl Zuwendungen"
 
@@ -443,19 +445,7 @@ msgid "View"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "Statistic"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "requested contacts"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "count of contacts"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "count of contributions"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
@@ -470,4 +460,24 @@ msgstr "Einzelbescheinigungen"
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "bulk receipts"
 msgstr "Sammelbescheinigungen"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "bulk receipt"
+msgstr "Sammelbescheinigung"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "single receipt"
+msgstr "Einzelbescheinigung"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn"
+msgstr "zurückgesetzt"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "original"
+msgstr "Original"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "copy"
+msgstr "Kopie"
 
