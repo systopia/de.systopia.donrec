@@ -392,8 +392,12 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['type'] = $result->type;
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
-      $display_properties['original_file'] = $config->userFrameworkBaseURL
-      . "sites/default/files/civicrm/custom/" . basename($result->original_file);
+      if ($result->original_file) {
+        $display_properties['original_file'] = $config->userFrameworkBaseURL
+          . "sites/default/files/civicrm/custom/" . basename($result->original_file);        
+      } else {
+        $display_properties['original_file'] = '';
+      }
       $display_properties['total_amount'] = $result->total_amount;
       $display_properties['date_from'] = $result->date_from;
       $display_properties['date_to'] = $result->date_to;
