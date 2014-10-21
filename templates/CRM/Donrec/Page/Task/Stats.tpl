@@ -73,7 +73,7 @@
 </div>
 <!-- the buttons -->
 <div class="form-item">
-  {if $statistic.status == 'TEST' && !$from_test || !$statistic.status}
+  {if $statistic.status == 'TEST' || !$statistic.status}
     <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
   {/if}
   {if $statistic.status == 'DONE' || !$statistic.status || $from_test}
