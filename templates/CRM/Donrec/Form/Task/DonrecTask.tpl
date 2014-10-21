@@ -59,14 +59,14 @@
         break;
       case "current_year":
         custom_period.hide();
-        from.val('01/01/' + current_year);
-        to.val('01/01/' + (current_year + 1));
+        from.val(new Date(current_year, 1, 1));
+        to.val(new Date(current_year + 1, 1, 1));
         to_display.val("");
         break;
       case "last_year":
         custom_period.hide();
-        from.val('01/01/' + (current_year - 1));
-        to.val('01/01/' + current_year);
+        from.val(new Date(current_year - 1, 1, 1));
+        to.val(new Date(current_year, 1, 1));
         break;
       // case "last_two_years":
       //   custom_period.hide();
