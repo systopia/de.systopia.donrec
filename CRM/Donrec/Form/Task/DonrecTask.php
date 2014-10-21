@@ -18,13 +18,16 @@ require_once 'CRM/Core/Form.php';
 class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
   function buildQuickForm() {
+    CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
+    
     $this->addElement('hidden', 'rsid');
+    // TODO: instead of 'last year',.. we should have '2013', '2012', '2011'
     $options = array(
        'current_year' => ts('current year'),
        'last_year' => ts('last year'),
-       'last_two_years' => ts('last two years'),
-       'unlimited' => ts('unlimited'),
-       'customized_period' => ts('choose a period')
+       //'last_two_years' => ts('last two years'),
+       //'unlimited' => ts('unlimited'),
+       'customized_period' => ts('specify period')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
@@ -32,7 +35,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   }
 
   function setDefaultValues() {
-    $uid = CRM_Core_Session::getLoggedInContactID();
+    $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
       $remaining_snapshot = array_pop($remaining_snapshots);
@@ -48,8 +51,9 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
 
-      //work on with a remaining snapshot...
-      if (!empty(CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL))) {
+      //work on with a remaining snapshot...      
+      $use_remaining_snapshot = CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL);
+      if (!empty($use_remaining_snapshot)) {
         CRM_Core_Session::singleton()->pushUserContext(
           CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
         );
@@ -57,7 +61,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
       // or delete all remaining snapshots of this user
       } else {
-        $uid = CRM_Core_Session::getLoggedInContactID();
+        $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
         CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
       }
     }
@@ -139,13 +143,13 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(ts('There are no contributions for these contacts that can be used to issue donation receipts.'), ts('Warning'), 'warning');
+      CRM_Core_Session::setStatus(ts('There are no selectable contributions for these contacts in the selected time period.'), ts('Warning'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', 'reset=1'));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(

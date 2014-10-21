@@ -509,7 +509,8 @@ class CRM_Donrec_Logic_Snapshot {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount,
-      created_timestamp AS creation_date
+      created_timestamp AS creation_date,
+      status      #we want the status of the first entry; that's what we get.
       FROM civicrm_donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -531,6 +532,7 @@ class CRM_Donrec_Logic_Snapshot {
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
       'creation_date' => $result1->creation_date,
+      'status' => $result1->status
     );
     return $statistic;
   }
@@ -557,6 +559,10 @@ class CRM_Donrec_Logic_Snapshot {
     return $remaining_snapshots;
   }
 
+  /**
+  * Deletes all not processed snapshots of a given user.
+  * @return return-value from CRM_Core_DAO::executeQuery()
+  */
   public static function deleteUserSnapshots($creator_id) {
     $remaining_snapshots = array();
 
@@ -568,5 +574,20 @@ class CRM_Donrec_Logic_Snapshot {
 
     $result = CRM_Core_DAO::executeQuery($query);
     return $result;
+  }
+
+  /**
+  * Checks if there is a snapshot-entry for a non-processed snapshot for
+  * a given contribution.
+  * @return boolean
+  */
+  public static function isInOpenSnapshot($contribution_id) {
+    $query = "
+      SELECT COUNT(*)
+      FROM `civicrm_donrec_snapshot`
+      WHERE contribution_id = $contribution_id
+      AND (status IS NULL OR status != 'DONE')
+    ";
+    return (bool) CRM_Core_DAO::singleValueQuery($query);
   }
 }

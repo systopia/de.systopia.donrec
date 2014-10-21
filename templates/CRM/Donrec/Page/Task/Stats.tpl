@@ -58,7 +58,9 @@
 	<tr>
 		<td class="label">{ts}Donation receipt type{/ts}:</td>
 		<td>
-			<input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">single</label>&nbsp;<input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">bulk</label>
+      <input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">{ts}single receipts{/ts}</label>
+      &nbsp;
+      <input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">{ts}bulk receipts{/ts}</label>
 		</td>
 	</tr>
 	<tr>
@@ -73,8 +75,12 @@
 </div>
 <!-- the buttons -->
 <div class="form-item">
-  <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
-  <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
+  {if $statistic.status == 'TEST' || !$statistic.status}
+    <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
+  {/if}
+  {if $statistic.status == 'DONE' || !$statistic.status || $from_test}
+    <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
+  {/if}
   <input name="donrec_abort" value="{ts}Abort{/ts}" class="form-submit" type="submit">
 </div>
 {/if}

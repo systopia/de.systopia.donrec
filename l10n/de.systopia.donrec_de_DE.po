@@ -20,6 +20,7 @@ msgid "Continue"
 msgstr "Weiter"
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Warning"
 msgstr "Warnung"
 
@@ -65,7 +66,7 @@ msgstr "Einstellungen"
 
 #: CRM/Donrec/Exporters/Dummy.php
 msgid "Dummy Exporter"
-msgstr ""
+msgstr "Test Exporter"
 
 #: CRM/Donrec/Exporters/PDF.php
 msgid "Actually export individual PDFs"
@@ -328,4 +329,145 @@ msgstr "Testlauf"
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Abort"
 msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "current year"
+msgstr "aktuelles Jahr"
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last year"
+msgstr "letztes Jahr"
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "specify period"
+msgstr "Zeitspanne angeben"
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "Individual PDFs"
+msgstr "Einzelne PDFs"
+
+#: CRM/Donrec/Form/Task/Create.php
+msgid "This contact has no selectable contributions in the selected time period."
+msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in die gewählten Zeitspanne."
+
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "There are no selectable contributions for these contacts in the selected time period."
+msgstr "Diese Kontakte haben keine zu bestätigenden Zuwendungen in der angegebene Zeitspanne."
+
+#: api/v3/DonationReceipt.php
+#, fuzzy
+msgid "Only original donation receipts can be withdrawn."
+msgstr "Nur Zuwendungsbescheinigungen im Status \"Original\" können kopiert werde."
+
+#: donrec.php
+msgid "A donation reciept has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."
+msgstr "Diese Zuwendung wurde bereits bestätigt, oder sie wird aktuell für eine Bestätigung vorbereitet. Sie dürfen den Wert '%1' nicht ändern, solange die Zuwendungsbescheinigung besteht."
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last two years"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "unlimited"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "You have an unfinished run, do you want to continue with it?"
+msgstr "Sie haben einen nicht abgeschlossenen Lauf, wollen Sie den fortsetzen?"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise it will be deleted!"
+msgstr "Falls nicht, wird er gelöscht."
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Interrupted run detected, do you want to continue with it?"
+msgstr "Es wurde ein unterbrochener Lauf gefunden. Wollen Sie den fortsetzen?"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise the selection will be deleted!"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually."
+msgstr "<b>Achtung!</b> Es wurden bereits einige Zuwendungsbescheinigungen erstellt. Falls Sie den Lauf nicht fortsetzen, sollten sie diese manuell löschen."
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Statistics"
+msgstr "Übersicht"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "contact count"
+msgstr "Anzahl Kontakte"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "contribution count"
+msgstr "Anzahl Zuwendungen"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#, fuzzy
+msgid "total amount"
+msgstr "Gesamtbetrag"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "created on"
+msgstr "Erstellt am"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Select time span"
+msgstr "Zeitraum wählen"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "View"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Statistic"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "requested contacts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "count of contacts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "count of contributions"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+#, fuzzy
+msgid "Issue Donation Receipts"
+msgstr "Zuwendungsbescheinigungen erstellen"
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "single receipts"
+msgstr "Einzelbescheinigungen"
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "bulk receipts"
+msgstr "Sammelbescheinigungen"
 
