@@ -188,7 +188,7 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
               continue;
             }
           }
-          $errors[$col] = ts("This contribution has a valid receipt or is going to be receipted. You must not change the value for $col.");
+          $errors[$col] = sprintf(ts("A donation reciept has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."), ts($col));
         }
       }
     }
@@ -197,7 +197,7 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
 }
 
 /*
- * die hard if a receipted contribution is going to be changed
+ * die() if a receipted contribution is going to be changed
  */
 function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
   if ($objectName == 'Contribution' && ($op == 'edit' || $op == 'delete')) {

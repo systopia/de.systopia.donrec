@@ -10,24 +10,24 @@
 {if $remaining_snapshot}
 <div id="remaining_snapshot" style="background-color:red">
 {if $statistic}
-{if !statistic.status}
-<p>{ts}You have still an unprocessed selection. Do you want to use it?{/ts}</br>
-	Otherwise it will be removed!</p></br>
-{elseif statistic.status == 'TEST'}
-<p>{ts}You have still an unfinished test-run for receipt-creation. Do you want to continue?{/ts}</br>
-	Otherwise the selection will be removed!</p></br>
-{elseif statistic.status == 'DONE'}
-<p>{ts}You have still an unfinished run for receipts-creation. Do you want to continue?{/ts}</br>
-	Otherwise the selection will be removed!</p>
-<p><b>Mind that receipts were already created. It's up to you to delete them.</b></p></br>
+{if !$statistic.status}
+<p><b>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
+    {ts}Otherwise it will be deleted!{/ts}</b></p></br>
+{elseif $statistic.status == 'TEST'}
+<p><b>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
+    {ts}Otherwise it will be deleted!{/ts}</b></p></br>
+{elseif $statistic.status == 'DONE'}
+<p><b>{ts}Interrupted run detected, do you want to continue with it?{/ts}</br>
+    {ts}Otherwise the selection will be deleted!{/ts}</br>
+    {ts}<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually.{/ts}</b></p></br>
 {/if}
-	<table id="statistic">
-		<caption>{ts}Statistic{/ts}</caption>
-		<tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
-		<tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
-		<tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
-		<tr><td class="statskey">{ts}created at{/ts}</td><td class="statsvalue">{$statistic.creation_date}</td></tr>
-	</table>
+  <table id="statistic">
+    <caption>{ts}Statistics{/ts}</caption>
+    <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
+    <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
+    <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
+    <tr><td class="statskey">{ts}created on{/ts}</td><td class="statsvalue">{$statistic.creation_date}</td></tr>
+  </table>
 {/if}
 
 <input class="form-submit" type="submit" name='use_remaining_snapshot' value='Use remaining snapshot'/>
@@ -38,7 +38,7 @@
 <table>
 	<tr>
 		<td class="label">
-		  {ts}Contribution horizon{/ts}:
+      {ts}Select time span{/ts}:
 		</td>
 		<td>
 		  {$form.time_period.html}
