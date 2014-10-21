@@ -241,10 +241,10 @@ class CRM_Donrec_Logic_Template
     // set up file names
     $config = CRM_Core_Config::singleton();
     $filename = CRM_Utils_DonrecHelper::makeFileName("donrec.pdf");
-    $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
+    $filename_export = sprintf("%s%s", $config->customFileUploadDir, $filename);
 
     // render PDF receipt
-    $result = file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
+    $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
     if($result) {
       return $filename;
     }else{

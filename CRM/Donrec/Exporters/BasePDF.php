@@ -216,8 +216,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         if(!empty($proc_info)) {
           $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
           if ($filename) {
-            $toRemove[$id] = $filename;
-            $opResult = $zip->addFile($filename, basename($filename)) ;
+            $toRemove[$id] = $config->customFileUploadDir . $filename;
+            $opResult = $zip->addFile($config->customFileUploadDir . $filename, basename($filename)) ;
             CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
           }
         }
