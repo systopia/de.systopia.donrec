@@ -20,9 +20,9 @@
             <li><u><b>{ts}{$receipt.type} receipt{/ts}</b></u></li>
             <li>{ts}Status{/ts}: <b>{$receipt.status}</b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
-            <li>{ts}Receipt horizon{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
+            <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
-            <li><a href="#"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
+            <li><a href="#"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
           </ul>
         </div>
       </td>
