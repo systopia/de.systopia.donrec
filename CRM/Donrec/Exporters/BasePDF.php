@@ -95,8 +95,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
           if (!empty($file)) {
             $receipt_params['file_id'] = $file[1];
           }
+          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $chunk_item['id'], $receipt_params);
         }
-        CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($snapshot, $chunk_item['id'], $receipt_params);
         $success++;
       }
     }
