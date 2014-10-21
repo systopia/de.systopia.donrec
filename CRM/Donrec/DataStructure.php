@@ -22,12 +22,12 @@ class CRM_Donrec_DataStructure {
   public static $customGroups = array(
     array(
       'name' => 'zwb_donation_receipt',
-      'title' => ts('donation-receipt'),
+      'title' => 'donation-receipt',
       'extends' => 'Contact',
     ),
     array(
       'name' => 'zwb_donation_receipt_item',
-      'title' => ts('donation-receipt-item'),
+      'title' => 'donation-receipt-item',
       'extends' => 'Contribution',
     )
   );
@@ -298,6 +298,7 @@ class CRM_Donrec_DataStructure {
   protected static function updateCustomGroups() {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
+      $params['title'] = ts($params['title']);
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
     }
@@ -354,5 +355,4 @@ class CRM_Donrec_DataStructure {
     $id = array_values($id['values']);
     return $id[0]['id'];
   }
-
 }
