@@ -620,14 +620,16 @@ class CRM_Donrec_Logic_Receipt {
   * Get the pdf-file-name. If no pdf exists, create one
   * @return file-name
   */
-  public function getFile($tmp = False) {
+  public function getFile($tmp = True) {
     $display = self::getDisplayProperties(); //TODO: safe properties in obj.
     if (!empty($display['original_file'])) {
-      $file = $display['original_file'];
+      $file_url = $display['original_file'];
     } elseif (!$tmp) {
       //create pdf and civicrm-file
       $pdf = self::createPdf();
       $result = CRM_Utils_DonrecHelper::createFile($pdf);
+      //TODO
+      $file_url = 'fixme'
 
       //update the receipt
       $file_id = $result[1];
@@ -640,9 +642,11 @@ class CRM_Donrec_Logic_Receipt {
       $result = CRM_Core_DAO::executeQuery($query);
       //TODO: error-handling
     } else {
-      //TODO
+      $pdf = self::createPdf();
+      //TODO: move $pdf into a tmp-folder
+      $file_url = $fixme;
     }
-    return $display['original_file'];
+    return $file_url;
   }
 
   /**
