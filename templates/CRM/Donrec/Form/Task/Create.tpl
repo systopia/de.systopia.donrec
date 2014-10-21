@@ -12,7 +12,7 @@
 <table>
 	<tr>
 		<td class="label">
-		  {ts}Contribution horizon{/ts}:
+		  {ts}Select time span{/ts}:
 		</td>
 		<td>
 		  {$form.time_period.html}
@@ -60,7 +60,7 @@
       case "current_year":
         custom_period.hide();
         from.val('01/01/' + current_year);
-        to.val("");
+        to.val('01/01/' + (current_year + 1));
         to_display.val("");
         break;
       case "last_year":
@@ -68,17 +68,17 @@
         from.val('01/01/' + (current_year - 1));
         to.val('01/01/' + current_year);
         break;
-      case "last_two_years":
-        custom_period.hide();
-        from.val('01/01/' + (current_year - 2));
-        to.val('01/01/' + current_year);
-        break;
-      case "unlimited":
-        custom_period.hide();
-        from.val("");
-        from_display.val("");
-        to.val("");
-        to_display.val("");
+      // case "last_two_years":
+      //   custom_period.hide();
+      //   from.val('01/01/' + (current_year - 2));
+      //   to.val('01/01/' + current_year);
+      //   break;
+      // case "unlimited":
+      //   custom_period.hide();
+      //   from.val("");
+      //   from_display.val("");
+      //   to.val("");
+      //   to_display.val("");
       }
     }
 

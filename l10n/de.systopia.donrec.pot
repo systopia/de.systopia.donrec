@@ -7,6 +7,7 @@ msgid "Continue"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Warning"
 msgstr ""
 
@@ -327,4 +328,128 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Abort"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "current year"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last year"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "specify period"
+msgstr ""
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "Individual PDFs"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php
+msgid ""
+"This contact has no selectable contributions in the selected time period."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid ""
+"There are no selectable contributions for these contacts in the selected "
+"time period."
+msgstr ""
+
+#: api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be withdrawn."
+msgstr ""
+
+#: donrec.php
+msgid ""
+"A donation reciept has been issued for this contribution, or is being "
+"processed for a receipt right now. You are not allowed to change the value "
+"for '%1'."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last two years"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "unlimited"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "You have an unfinished run, do you want to continue with it?"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Otherwise it will be deleted!"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Interrupted run detected, do you want to continue with it?"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Otherwise the selection will be deleted!"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid ""
+"<b>Caution!</b> Some receipts have already been created. If you do not "
+"continue with this run, you should probably delete them manually."
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Statistics"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "contact count"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "contribution count"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "total amount"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "created on"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Select time span"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "View"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "Statistic"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "requested contacts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "count of contacts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "count of contributions"
 msgstr ""
