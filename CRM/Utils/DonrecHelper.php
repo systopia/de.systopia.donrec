@@ -193,13 +193,9 @@ class CRM_Utils_DonrecHelper
    * @return NULL if not possible, e.g. when the name is already taken,
    *         or   array(file_URL, file_id)
    */
-  public static function createFile($file_name, $is_temp = FALSE) {
+  public static function createFile($file_name) {
     $config =  CRM_Core_Config::singleton();
-    if ($is_temp) {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
-    } else {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
-    }
+    $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
 
     $params = array(
       'version' => 3,

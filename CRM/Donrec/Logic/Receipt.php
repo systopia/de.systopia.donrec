@@ -386,6 +386,7 @@ class CRM_Donrec_Logic_Receipt {
       );
 
     $result = CRM_Core_DAO::executeQuery($query);
+    $config =  CRM_Core_Config::singleton();
     $display_properties = array();
 
     while($result->fetch()) {
@@ -397,8 +398,7 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['date_to'] = $result->date_to;
       $display_properties['currency'] = $result->currency;
       if (!empty($result->original_file)) {
-        $display_properties['original_file'] = $config->userFrameworkBaseURL
-          . "sites/default/files/civicrm/custom/" . basename($result->original_file);
+        $display_properties['original_file'] = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($result->original_file);
       } else {
         $display_properties['original_file'] = NULL;
       }
@@ -611,23 +611,23 @@ class CRM_Donrec_Logic_Receipt {
   * @return array
   */
   public function getPdfProperties() {
+    //TODO: get every values
     $values = array();
-    return $values
+    return $values;
   }
 
   /**
-  * Get the file-name if it exists, otherwise create the file first...
+  * Get the pdf-file-name. If no pdf exists, create one
   * @return file-name
   */
   public function getFile($tmp = False) {
     $display = self::getDisplayProperties(); //TODO: safe properties in obj.
-    if !empty($display['original_file']) {
-      $file = $display['original_file']
+    if (!empty($display['original_file'])) {
+      $file = $display['original_file'];
     } elseif (!$tmp) {
       //create pdf and civicrm-file
       $pdf = self::createPdf();
       $result = CRM_Utils_DonrecHelper::createFile($pdf);
-      $file = $result[0];
 
       //update the receipt
       $file_id = $result[1];
@@ -639,8 +639,10 @@ class CRM_Donrec_Logic_Receipt {
       ";
       $result = CRM_Core_DAO::executeQuery($query);
       //TODO: error-handling
+    } else {
+      //TODO
     }
-    return $file;
+    return $display['original_file'];
   }
 
   /**
@@ -652,7 +654,7 @@ class CRM_Donrec_Logic_Receipt {
 
     // assign all unique template variables
     $values['contributor'] = $values['contact'];
-    $values['total'] = $values['total_amount']
+    $values['total'] = $values['total_amount'];
     $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($values['total_amount']);
     $values['today'] = date("j.n.Y", time());
     $values['date'] = date("d.m.Y",strtotime($values['receive_date']));
@@ -668,7 +670,7 @@ class CRM_Donrec_Logic_Receipt {
     if (!$file) {
       //TODO: ERROR
     } else {
-      retunr $file;
+      return $file;
     }
   }
 }

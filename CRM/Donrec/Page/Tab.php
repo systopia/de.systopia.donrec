@@ -5,6 +5,7 @@ require_once 'CRM/Core/Page.php';
 class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
 
+
     if (CRM_Utils_Array::value('view', $_REQUEST, False)) {
       $rid = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
       if (empty($rid)) {
@@ -12,7 +13,9 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       }
       $receipt = new CRM_Donrec_Logic_Receipt($rid);
       $file_url = $receipt->getFile();
-      CRM_Utils_System::redirect(CRM_Utils_System::url($file));
+
+      //redirect to the pdf
+      CRM_Utils_System::redirect($file_url);
     } else {
       $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
 
@@ -20,11 +23,15 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
         $params = array();
         $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
         $display_receipts = array();
+        $view_url = array();
         foreach ($receipts as $rec) {
-          $display_receipts[$rec->getId()] = $rec->getDisplayProperties();
+          $rid = $rec->getId();
+          $display_receipts[$rid] = $rec->getDisplayProperties();
+          $display_receipts[$rid]['view_url'] = CRM_Utils_System::url('civicrm/donrec/tab', "view=1&rid=$rid");
         }
         $this->assign('cid', $contact_id);
         $this->assign('display_receipts', $display_receipts);
+        $this->assign('view_url', $view_url);
       }
 
       // admin only

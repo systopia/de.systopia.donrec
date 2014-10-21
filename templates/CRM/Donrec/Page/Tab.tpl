@@ -20,16 +20,14 @@
             <li><u><b>{ts}{$receipt.type} receipt{/ts}</b></u></li>
             <li>{ts}Status{/ts}: <b>{$receipt.status}</b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
-            <li>{ts}Receipt horizon{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
+            <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
-            <li><a href="#"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
+            <li><a href="#"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
           </ul>
         </div>
       </td>
       <td>
-        {if $store_pdf}
-        <a id="view_receipt_{$receipt_id}" class="button" href="{$receipt.original_file}"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
-        {/if}
+        <a id="view_receipt_{$receipt_id}" class="button" href="{$receipt.view_url}"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
         {if $receipt.status == 'ORIGINAL'}
         <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
