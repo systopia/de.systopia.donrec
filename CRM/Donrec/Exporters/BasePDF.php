@@ -133,7 +133,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         'version' => 3,
         'q' => 'civicrm/ajax/rest',
         'sequential' => 1,
-        'id' => $chunk_item[0]['contribution_id'],
+        'id' => $chunk_items[0]['contribution_id'],
       );
       $contrib = civicrm_api('Contribution', 'get', $params);
       if ($contrib['is_error'] != 0 || $contrib['count'] < 1) {
@@ -154,6 +154,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         return $reply;
       }
       $contributor_contact = $contributor_contact['values'][0];
+
 
       $total_amount = 0.00;
       foreach ($chunk_items as $lineid => $lineval) {
