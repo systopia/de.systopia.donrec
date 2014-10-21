@@ -71,7 +71,7 @@ class CRM_Donrec_Logic_Receipt {
       self::$_custom_fields['type'] => "'SINGLE'",
       self::$_custom_fields['issued_on'] => "'$line[created_timestamp]'",
       self::$_custom_fields['issued_by'] => $line[created_by],
-      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? -1 : $parameters['file_id'],
+      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? NULL : $parameters['file_id'],
       self::$_custom_fields['street_address'] => empty($line['street_address']) ? 'NULL': "'$line[street_address]'",
       self::$_custom_fields['supplemental_address_1'] => empty($line['supplemental_address_1']) ? 'NULL': "'$line[supplemental_address_1]'",
       self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_1]'",
@@ -175,7 +175,7 @@ class CRM_Donrec_Logic_Receipt {
                     "'ORIGINAL'",
                     "'BULK'",
                     $line['created_by'],
-                    empty($parameters['file_id']) ? -1 : $parameters['file_id'],
+                    empty($parameters['file_id']) ? NULL : $parameters['file_id'],
                     empty($line['street_address']) ? "NULL": "'" . $line['street_address'] . "'",
                     empty($line['supplemental_address_1']) ? "NULL" : "'" . $line['supplemental_address_1'] . "'" ,
                     empty($line['supplemental_address_2']) ? "NULL" : "'" . $line['supplemental_address_2'] . "'" ,
@@ -392,12 +392,16 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['type'] = $result->type;
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
-      $display_properties['original_file'] = $config->userFrameworkBaseURL
-      . "sites/default/files/civicrm/custom/" . basename($result->original_file);
       $display_properties['total_amount'] = $result->total_amount;
       $display_properties['date_from'] = $result->date_from;
       $display_properties['date_to'] = $result->date_to;
       $display_properties['currency'] = $result->currency;
+      if (!empty($result->original_file)) {
+        $display_properties['original_file'] = $config->userFrameworkBaseURL
+          . "sites/default/files/civicrm/custom/" . basename($result->original_file);
+      } else {
+        $display_properties['original_file'] = NULL;
+      }
     }
 
     return $display_properties;
@@ -599,6 +603,72 @@ class CRM_Donrec_Logic_Receipt {
       foreach ($custom_fields['values'] as $field) {
         self::$_custom_fields[$field['name']] = $field['column_name'];
       }
+    }
+  }
+
+  /**
+  * Get all Values needed to create a pdf for a receipt
+  * @return array
+  */
+  public function getPdfProperties() {
+    $values = array();
+    return $values
+  }
+
+  /**
+  * Get the file-name if it exists, otherwise create the file first...
+  * @return file-name
+  */
+  public function getFile($tmp = False) {
+    $display = self::getDisplayProperties(); //TODO: safe properties in obj.
+    if !empty($display['original_file']) {
+      $file = $display['original_file']
+    } elseif (!$tmp) {
+      //create pdf and civicrm-file
+      $pdf = self::createPdf();
+      $result = CRM_Utils_DonrecHelper::createFile($pdf);
+      $file = $result[0];
+
+      //update the receipt
+      $file_id = $result[1];
+      $custom_group_id = self::$_custom_group_id;
+      $file_field = self::$_custom_fields['original_file'];
+      $query = "
+        UPDATE `civicrm_value_donation_receipt_$custom_group_id`
+        SET `$file_field` = $file_id
+      ";
+      $result = CRM_Core_DAO::executeQuery($query);
+      //TODO: error-handling
+    }
+    return $file;
+  }
+
+  /**
+  * Create a PDF for a receipt.
+  * @return boolean
+  */
+  public function createPdf() {
+    $values = self::getPdfProperties();
+
+    // assign all unique template variables
+    $values['contributor'] = $values['contact'];
+    $values['total'] = $values['total_amount']
+    $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($values['total_amount']);
+    $values['today'] = date("j.n.Y", time());
+    $values['date'] = date("d.m.Y",strtotime($values['receive_date']));
+    if($values['status'] == 'COPY') {
+      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');;
+    } elseif ($values['status'] == 'COPY') {
+      //TODO
+    }
+
+    $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+    $file = $template->generatePDF($values, array());
+
+    if (!$file) {
+      //TODO: ERROR
+    } else {
+      retunr $file;
     }
   }
 }

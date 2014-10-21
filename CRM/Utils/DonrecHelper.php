@@ -187,4 +187,43 @@ class CRM_Utils_DonrecHelper
     return CRM_Utils_String::munge("{$basename}_{$uniqID}", '_', 240) . "." . CRM_Utils_Array::value('extension', $info);
   }
 
+  /**
+   * Create civicrm_file
+   *
+   * @return NULL if not possible, e.g. when the name is already taken,
+   *         or   array(file_URL, file_id)
+   */
+  public static function createFile($file_name, $is_temp = FALSE) {
+    $config =  CRM_Core_Config::singleton();
+    if ($is_temp) {
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
+    } else {
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
+    }
+
+    $params = array(
+      'version' => 3,
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'get', $params);
+
+    if($result['is_error'] == 1 || $result['count'] > 0) {
+      return NULL;
+    }
+
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'create', $params);
+
+    if($result['is_error'] == 1) {
+      return NULL;
+    }
+
+    return array($file, $result['id']);
+  }
 }

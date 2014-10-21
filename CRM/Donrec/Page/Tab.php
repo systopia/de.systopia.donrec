@@ -4,24 +4,34 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
-    $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
 
-    if($contact_id) {
-      $params = array();
-      $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
-      $display_receipts = array();
-      foreach ($receipts as $rec) {
-        $display_receipts[$rec->getId()] = $rec->getDisplayProperties();
+    if (CRM_Utils_Array::value('view', $_REQUEST, False)) {
+      $rid = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
+      if (empty($rid)) {
+        //TODO: ERROR
       }
-      $this->assign('cid', $contact_id);
-      $this->assign('display_receipts', $display_receipts);
+      $receipt = new CRM_Donrec_Logic_Receipt($rid);
+      $file_url = $receipt->getFile();
+      CRM_Utils_System::redirect(CRM_Utils_System::url($file));
+    } else {
+      $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+
+      if($contact_id) {
+        $params = array();
+        $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
+        $display_receipts = array();
+        foreach ($receipts as $rec) {
+          $display_receipts[$rec->getId()] = $rec->getDisplayProperties();
+        }
+        $this->assign('cid', $contact_id);
+        $this->assign('display_receipts', $display_receipts);
+      }
+
+      // admin only
+      $this->assign('is_admin', CRM_Core_Permission::check('administer CiviCRM'));
+      // do we keep original pdf files?
+      $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
     }
-
-    // admin only
-    $this->assign('is_admin', CRM_Core_Permission::check('administer CiviCRM'));
-    // do we keep original pdf files?
-    $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
-
   	parent::run();
   }
 }
