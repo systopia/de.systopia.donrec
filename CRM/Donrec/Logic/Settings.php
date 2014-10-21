@@ -63,4 +63,16 @@ class CRM_Donrec_Logic_Settings {
   public static function setDefaultTemplate($id) {
     CRM_Core_BAO_Setting::setItem($id,'Donation Receipt Settings', 'default_template');
   }
+
+  /**
+   * Retrieve contact id of the logged in user
+   * @return integer | NULL contact ID of logged in user
+   */
+  static function getLoggedInContactID() {
+    $session = CRM_Core_Session::singleton();
+    if (!is_numeric($session->get('userID'))) {
+      return NULL;
+    }
+    return $session->get('userID');
+  }  
 }

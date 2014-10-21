@@ -35,8 +35,8 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function setDefaultValues() {
     $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
     $this->getElement('cid')->setValue($contactId);
+    $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
-    $uid = CRM_Core_Session::getLoggedInContactID();
     //TODO: what if we have more than 1 remaining snapshot (what should not happen at all)?
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
@@ -53,7 +53,8 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     if (!empty($rsid)) {
 
       //work on with a remaining snapshot...
-      if (!empty(CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL))) {
+      $use_remaining_snapshot = CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL);
+      if (!empty($use_remaining_snapshot)) {
         CRM_Core_Session::singleton()->pushUserContext(
           CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
         );
@@ -61,7 +62,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
       // or delete all remaining snapshots of this user
       } else {
-        $uid = CRM_Core_Session::getLoggedInContactID();
+        $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
         CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
       }
     }
@@ -143,7 +144,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Core_Session::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
     $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();
 
     if (!empty($result['intersection_error'])) {

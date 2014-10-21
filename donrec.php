@@ -178,7 +178,8 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
       foreach ($forbidden as $col) {
         if ($form->_values[$col] != $fields[$col]) {
           // we need a special check for dates
-          if (!empty(strpos($col, 'date'))) {
+
+          if (strpos($col, 'date')) {
             // this approach does not considers seconds!
             // (some input-formats does not allow the input of seconds at all)
             $new_date = date('d/m/Y H:i', strtotime($fields['receive_date'] . ' ' . $fields['receive_date_time']));
@@ -228,7 +229,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
         foreach ($forbidden as $col) {
           if ($result->$col != $params[$col]) {
             // we need a extra-check for dates (which are not in the same format)
-            if (!empty(strpos($col, 'date')) && preg_replace('/[-: ]/', '', $result->$col) == $params[$col]) {
+            if (strpos($col, 'date') && preg_replace('/[-: ]/', '', $result->$col) == $params[$col]) {
                 continue;
             }
             error_log("The column $col of this contribution ($id) must not be changed because it has a receipt or is going to be receipted!");
