@@ -9,7 +9,7 @@
 
 {if $statistic}
   <table id="statistic">
-    <caption>{ts}Statistic{/ts}</caption>
+    <caption>{ts}Statistics{/ts}</caption>
     {if $statistic.requested_contacts}
       <tr><td class="statskey">{ts}requested contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
     {/if}

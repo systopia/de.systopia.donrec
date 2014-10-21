@@ -17,8 +17,15 @@
       <td>
         <div class="donrec-stats" name="donrec_stats_{$receipt_id}">
           <ul>
-            <li><u><b>{ts}{$receipt.type} receipt{/ts}</b></u></li>
-            <li>{ts}Status{/ts}: <b>{$receipt.status}</b></li>
+            <li><u><b>
+              {if $receipt.type eq 'BULK'}{ts}bulk receipt{/ts}{/if}
+              {if $receipt.type eq 'SINGLE'}{ts}single receipt{/ts}{/if}
+            </b></u></li>
+            <li>{ts}Status{/ts}: <b>
+              {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
+              {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
+              {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
+            </b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
