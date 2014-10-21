@@ -188,7 +188,7 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
               continue;
             }
           }
-          $errors[$col] = sprintf(ts("A donation reciept has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."), ts($col));
+          $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."), ts($col));
         }
       }
     }

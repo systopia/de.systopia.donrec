@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/donrec/runner</path>
     <page_callback>CRM_Donrec_Page_Runner</page_callback>
-    <title>Creating Donation Reciepts</title>
+    <title>Creating Donation Receipts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

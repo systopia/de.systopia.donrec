@@ -24,7 +24,7 @@ class CRM_Donrec_Logic_Engine {
    * known parameters:
    *  exporters  array(exporter_classes)
    *  bulk       1 or 0 - if 1, accumulative (='bulk') donation receipts should be issued
-   *  test       1 or 0 - if 0, the contributions will not actually be marked as 'reciept_issued'
+   *  test       1 or 0 - if 0, the contributions will not actually be marked as 'receipt_issued'
    */
   protected $parameters = array();
 

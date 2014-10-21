@@ -22,12 +22,12 @@ class CRM_Donrec_DataStructure {
   public static $customGroups = array(
     array(
       'name' => 'zwb_donation_receipt',
-      'title' => 'donation-receipt',
+      'title' => ts('donation-receipt'),
       'extends' => 'Contact',
     ),
     array(
       'name' => 'zwb_donation_receipt_item',
-      'title' => 'donation-receipt-item',
+      'title' => ts('donation-receipt-item'),
       'extends' => 'Contribution',
     )
   );

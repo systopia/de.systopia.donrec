@@ -500,7 +500,7 @@ class CRM_Donrec_Logic_Receipt {
    *
    * This method should be HIGHLY optimized
    *
-   * @return TRUE if there is a VALID donation reciept, FALSE otherwise
+   * @return TRUE if there is a VALID donation receipt, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
     self::getCustomFields();
