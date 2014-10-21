@@ -78,7 +78,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       $values['today'] = date("j.n.Y", time());
       $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
       if($is_test) {
-        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');;
+        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
       }
 
       $tpl_param = array();
@@ -87,7 +87,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $failures++;
       }else{
         // save file names for wrapup()
-        $snapshot->setProcessInformation($chunk_item['id'], $result);
+        $this->setProcessInformation($chunk_item['id'], $result);
         $success++;
       }
     }
@@ -133,7 +133,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         'version' => 3,
         'q' => 'civicrm/ajax/rest',
         'sequential' => 1,
-        'id' => $chunk_item[0]['contribution_id'],
+        'id' => $chunk_items[0]['contribution_id'],
       );
       $contrib = civicrm_api('Contribution', 'get', $params);
       if ($contrib['is_error'] != 0 || $contrib['count'] < 1) {
@@ -154,6 +154,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         return $reply;
       }
       $contributor_contact = $contributor_contact['values'][0];
+
 
       $total_amount = 0.00;
       foreach ($chunk_items as $lineid => $lineval) {
@@ -177,7 +178,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     }else{
       // save file names for wrapup()
       foreach($chunk_items as $key => $item) {
-        $snapshot->setProcessInformation($item['id'], $result);
+        $this->setProcessInformation($item['id'], $result);
       }
       $success++;
     }
@@ -211,11 +212,14 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
     if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
       foreach($ids as $id) {
-        $filename = $snapshot->getProcessInformation($id);
-        if(!empty($filename)) {
-          $toRemove[$id] = $filename;
-          $opResult = $zip->addFile($filename, basename($filename)) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        $proc_info = $snapshot->getProcessInformation($id);
+        if(!empty($proc_info)) {
+          $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
+          if ($filename) {
+            $toRemove[$id] = $filename;
+            $opResult = $zip->addFile($filename, basename($filename)) ;
+            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          }
         }
       }
       if(!$zip->close()) {
