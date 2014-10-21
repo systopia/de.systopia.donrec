@@ -58,7 +58,9 @@
 	<tr>
 		<td class="label">{ts}Donation receipt type{/ts}:</td>
 		<td>
-			<input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">single</label>&nbsp;<input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">bulk</label>
+      <input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">{ts}single receipts{/ts}</label>
+      &nbsp;
+      <input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">{ts}bulk receipts{/ts}</label>
 		</td>
 	</tr>
 	<tr>

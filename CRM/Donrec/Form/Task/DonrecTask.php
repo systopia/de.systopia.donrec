@@ -18,6 +18,8 @@ require_once 'CRM/Core/Form.php';
 class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
   function buildQuickForm() {
+    CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
+    
     $this->addElement('hidden', 'rsid');
     // TODO: instead of 'last year',.. we should have '2013', '2012', '2011'
     $options = array(
