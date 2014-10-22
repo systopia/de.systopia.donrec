@@ -213,10 +213,10 @@ class CRM_Donrec_Logic_Template
 
     // find <body> element
     $matches = array();
-    preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
+    preg_match('/<body[^>]*>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $body_offset = $matches[0][1];
-      $html = substr_replace($html, $watermark_site1, $body_offset + 8, 0);
+      $html = substr_replace($html, $watermark_site1, $body_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
       error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
       return FALSE;
