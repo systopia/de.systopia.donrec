@@ -298,7 +298,8 @@ class CRM_Donrec_DataStructure {
   protected static function updateCustomGroups() {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
-      $params['title'] = ts($params['title']);
+      // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE: 
+      //$params['title'] = ts($params['title']);
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
     }
