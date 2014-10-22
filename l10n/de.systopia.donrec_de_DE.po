@@ -492,3 +492,7 @@ msgstr "Zuwendungsbescheinigungen Generierern"
 msgid "Donation Receipts Settings"
 msgstr "Einstellungen Zuwendungsbescheinigungen"
 
+#: CRM/Donrec/Exporters/Dummy.php
+msgid "Don't generate files"
+msgstr "Keine Dateien erzeugen"
+

@@ -17,14 +17,14 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    * @return the display name
    */
   static function name() {
-    return ts('Dummy Exporter');
+    return ts("Don't generate files");
   }
 
   /**
    * @return a html snippet that defines the options as form elements
    */
   static function htmlOptions() {
-    return '<br/><i>TEST</i>';
+    return '';
   }
 
   /**

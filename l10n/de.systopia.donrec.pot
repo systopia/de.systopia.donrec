@@ -499,3 +499,7 @@ msgstr ""
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Donation Receipts Settings"
 msgstr ""
+
+#: CRM/Donrec/Exporters/Dummy.php
+msgid "Don't generate files"
+msgstr ""
