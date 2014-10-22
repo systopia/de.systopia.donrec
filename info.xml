@@ -2,13 +2,13 @@
 <extension key="de.systopia.donrec" type="module">
   <file>donrec</file>
   <name>Donation Receipts</name>
-  <description></description>
+  <description>This extensions can generate and manage donation receipts for tax deductions.</description>
   <license></license>
   <maintainer>
     <author>B. Endres</author>
     <email>endres@systopia.de</email>
   </maintainer>
-  <releaseDate></releaseDate>
+  <releaseDate>2014-10-22</releaseDate>
   <version>0.2.1</version>
   <develStage>alpha</develStage>
   <compatibility>
