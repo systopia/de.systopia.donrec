@@ -20,6 +20,8 @@ require_once 'CRM/Core/Page.php';
  */
 class CRM_Donrec_Page_Runner extends CRM_Core_Page {
   function run() {
+    CRM_Utils_System::setTitle(ts('Creating Donation Receipts'));
+
     // extract the parameters
     $parameters = array();
     $parameters['test'] = empty($_REQUEST['final'])?1:0;

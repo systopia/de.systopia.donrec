@@ -33,7 +33,7 @@
    <item>
     <path>civicrm/admin/setting/donrec</path>
     <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>
-    <title>Donation receipts settings</title>
+    <title>Donation Receipts Settings</title>
     <desc>TODO</desc>
     <access_arguments>administer CiviCRM</access_arguments>
     <adminGroup>CiviContribute</adminGroup>

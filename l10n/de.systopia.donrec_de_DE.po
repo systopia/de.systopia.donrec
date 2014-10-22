@@ -413,7 +413,6 @@ msgstr "Anzahl Zuwendungen"
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#, fuzzy
 msgid "total amount"
 msgstr "Gesamtbetrag"
 
@@ -433,7 +432,7 @@ msgid "View"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
-#, fuzzy
+#: CRM/Donrec/Page/Task/Stats.php
 msgid "Issue Donation Receipts"
 msgstr "Zuwendungsbescheinigungen erstellen"
 
@@ -484,4 +483,12 @@ msgstr ""
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "selected contacts"
 msgstr "Ausgewählte Kontakte"
+
+#: CRM/Donrec/Page/Runner.php
+msgid "Creating Donation Receipts"
+msgstr "Zuwendungsbescheinigungen Generierern"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts Settings"
+msgstr "Einstellungen Zuwendungsbescheinigungen"
 

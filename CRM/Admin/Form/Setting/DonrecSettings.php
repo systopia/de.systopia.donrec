@@ -15,7 +15,7 @@ require_once 'CRM/Core/BAO/CustomField.php';
 class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
   function buildQuickForm( ) {
-    CRM_Utils_System::setTitle(ts('Donation Receipts - Settings'));
+    CRM_Utils_System::setTitle(ts('Donation Receipts Settings'));
     
     // add all required elements
     $this->addElement('text', 'draft_text', ts('Draft text'));

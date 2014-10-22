@@ -440,6 +440,7 @@ msgid "View"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+#: CRM/Donrec/Page/Task/Stats.php
 msgid "Issue Donation Receipts"
 msgstr ""
 
@@ -489,4 +490,12 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "selected contacts"
+msgstr ""
+
+#: CRM/Donrec/Page/Runner.php
+msgid "Creating Donation Receipts"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts Settings"
 msgstr ""
