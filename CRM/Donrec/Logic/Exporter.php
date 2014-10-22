@@ -25,8 +25,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    * returns the list of implemented exporters
    */
   public static function listExporters() {
-    //return array('Dummy', 'PDF');
-    return array('PDF');
+    return array('Dummy', 'PDF');
   }
 
   /**
