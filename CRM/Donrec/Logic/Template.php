@@ -145,8 +145,8 @@ class CRM_Donrec_Logic_Template
   *
   * @param array associative array of values that will be
   *        assigned to the template
-  * @param array array of configuration parameters
-  * @return bool
+  * @param array of configuration parameters
+  * @return filename or False
   */
   public function generatePDF($values, &$parameters) {
     $smarty = CRM_Core_Smarty::singleton();

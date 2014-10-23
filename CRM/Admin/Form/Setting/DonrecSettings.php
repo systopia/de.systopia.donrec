@@ -16,7 +16,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
   function buildQuickForm( ) {
     CRM_Utils_System::setTitle(ts('Donation Receipts - Settings'));
-    
+
     // add all required elements
     $this->addElement('text', 'draft_text', ts('Draft text'));
     $this->addElement('text', 'copy_text', ts('Copy text'));
@@ -26,7 +26,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // add a checkbox for every contribution type
     $ct = CRM_Donrec_Logic_Settings::getContributionTypes();
-    for ($i=1; $i <= count($ct); $i++) { 
+    for ($i=1; $i <= count($ct); $i++) {
       $this->addElement('checkbox', "financial_types$i");
     }
 
@@ -61,7 +61,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // save text fields
     if ($values['draft_text']){
-      CRM_Core_BAO_Setting::setItem($values['draft_text'],'Donation Receipt Settings', 'draft_text'); 
+      CRM_Core_BAO_Setting::setItem($values['draft_text'],'Donation Receipt Settings', 'draft_text');
     }
     if ($values['copy_text']){
       CRM_Core_BAO_Setting::setItem($values['copy_text'],'Donation Receipt Settings', 'copy_text');

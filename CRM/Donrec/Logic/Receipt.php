@@ -417,45 +417,44 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function getAllProperties() {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $receipt_fields = self::$_custom_fields;
+    $receipt_group_id = self::$_custom_group_id;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
+    $receipt_id = $this->Id;
 
     $query = "SELECT
-              `%s` as `status`,
-              `%s` as `issued_on`,
-              SUM(item.`%s`) as `total_amount`,
-              MIN(item.`%s`) as `date_from`,
-              MAX(item.`%s`) as `date_to`
-              FROM `civicrm_value_donation_receipt_%d` as receipt
-              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
-                ON item.`%s` = receipt.id
-                AND item.`%s` = receipt.`%s`
-              WHERE receipt.id = %d;";
+                `$receipt_fields[status]` as `status`,
+                `$receipt_fields[issued_on]` as `issued_on`,
+                SUM(item.`$item_fields[total_amount]`) as `total_amount`,
+                MIN(item.`$item_fields[issued_on]`) as `date_from`,
+                MAX(item.`$item_fields[issued_on]`) as `date_to`
+              FROM `civicrm_value_donation_receipt_$receipt_group_id` as receipt
+              LEFT JOIN `civicrm_contact` as contact
+                ON item.`$item_fields[issued_in]` = receipt.id
+                AND item.`$item_fields[status]` = receipt.`$receipt_fields[status]`
+              RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` as item
+                ON `receipt.entity_id` = `contact.id`
+              WHERE `receipt.id` = $receipt_id";
 
-    $query = sprintf($query,
-      self::$_custom_fields['status'],
-      self::$_custom_fields['issued_on'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
-      self::$_custom_group_id,
-      CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
-      self::$_custom_fields['status'],
-      $this->Id
-      );
-
+    error_log($query);
     $result = CRM_Core_DAO::executeQuery($query);
-    $display_properties = array();
+    $properties = array();
 
-    while($result->fetch()) {
-      $display_properties['status'] = $result->status;
-      $display_properties['issued_on'] = $result->issued_on;
-      $display_properties['total_amount'] = $result->total_amount;
-      $display_properties['date_from'] = $result->date_from;
-      $display_properties['date_to'] = $result->date_to;
+    $result->fetch();
+    $properties['status'] = $result->status;
+    $properties['issued_on'] = $result->issued_on;
+    $properties['total_amount'] = $result->total_amount;
+    $properties['date_from'] = $result->date_from;
+    $properties['date_to'] = $result->date_to;
+    if($properties['status'] == 'COPY') {
+      $properties['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');
+    } elseif ($properties['status'] == 'WITHDRAW') {
+      //TODO
+      //$properties['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'withdraw_text');
     }
 
-    return $display_properties;
+    return $properties;
   }
 
   /**
@@ -607,74 +606,29 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
-  * Get all Values needed to create a pdf for a receipt
-  * @return array
+  * Convert file-path to url (maybe there is a better place for this method...)
+  * @return file-url
   */
-  public function getPdfProperties() {
-    //TODO: get every values
-    $values = array();
-    return $values;
+  public static function pathToUrl($path) {
+    $config =  CRM_Core_Config::singleton();
+    $url = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($pdf);
+    return $url;
   }
 
   /**
-  * Get the pdf-file-name. If no pdf exists, create one
+  * Get url to pdf. If no pdf exists, create a tmp-file.
   * @return file-name
   */
-  public function getFile($tmp = True) {
-    $display = self::getDisplayProperties(); //TODO: safe properties in obj.
-    if (!empty($display['original_file'])) {
-      $file_url = $display['original_file'];
-    } elseif (!$tmp) {
-      //create pdf and civicrm-file
-      $pdf = self::createPdf();
-      $result = CRM_Utils_DonrecHelper::createFile($pdf);
-      //TODO
-      $file_url = 'fixme'
-
-      //update the receipt
-      $file_id = $result[1];
-      $custom_group_id = self::$_custom_group_id;
-      $file_field = self::$_custom_fields['original_file'];
-      $query = "
-        UPDATE `civicrm_value_donation_receipt_$custom_group_id`
-        SET `$file_field` = $file_id
-      ";
-      $result = CRM_Core_DAO::executeQuery($query);
-      //TODO: error-handling
+  public function viewPdf() {
+    $values = self::getAllProperties();
+    if (!empty($values['original_file'])) {
+      $file_url = self::pathToUrl($values['original_file']);
     } else {
-      $pdf = self::createPdf();
-      //TODO: move $pdf into a tmp-folder
-      $file_url = $fixme;
+      //create a pdf
+      $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+      $pdf = $template->generatePDF($values, array());
+      $file_url = self::pathToUrl($pdf);
     }
     return $file_url;
-  }
-
-  /**
-  * Create a PDF for a receipt.
-  * @return boolean
-  */
-  public function createPdf() {
-    $values = self::getPdfProperties();
-
-    // assign all unique template variables
-    $values['contributor'] = $values['contact'];
-    $values['total'] = $values['total_amount'];
-    $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($values['total_amount']);
-    $values['today'] = date("j.n.Y", time());
-    $values['date'] = date("d.m.Y",strtotime($values['receive_date']));
-    if($values['status'] == 'COPY') {
-      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');;
-    } elseif ($values['status'] == 'COPY') {
-      //TODO
-    }
-
-    $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-    $file = $template->generatePDF($values, array());
-
-    if (!$file) {
-      //TODO: ERROR
-    } else {
-      return $file;
-    }
   }
 }

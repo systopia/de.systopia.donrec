@@ -5,14 +5,13 @@ require_once 'CRM/Core/Page.php';
 class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
 
-
     if (CRM_Utils_Array::value('view', $_REQUEST, False)) {
       $rid = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
       if (empty($rid)) {
         //TODO: ERROR
       }
       $receipt = new CRM_Donrec_Logic_Receipt($rid);
-      $file_url = $receipt->getFile();
+      $file_url = $receipt->viewPdf();
 
       //redirect to the pdf
       CRM_Utils_System::redirect($file_url);
