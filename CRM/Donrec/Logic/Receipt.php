@@ -364,7 +364,7 @@ class CRM_Donrec_Logic_Receipt {
               RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
                 ON item.`%s` = receipt.id
                 AND item.`%s` = receipt.`%s`
-              RIGHT JOIN `civicrm_file` as file
+              LEFT JOIN `civicrm_file` as file
                 ON file.`id` = receipt.`%s`
               WHERE receipt.id = %d;";
 
@@ -373,8 +373,8 @@ class CRM_Donrec_Logic_Receipt {
       self::$_custom_fields['status'],
       self::$_custom_fields['issued_on'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
+      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
       CRM_Donrec_Logic_ReceiptItem::$_custom_fields['currency'],
       self::$_custom_group_id,
       CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,

@@ -68,17 +68,6 @@
         from.val(new Date(current_year - 1, 1, 1));
         to.val(new Date(current_year, 1, 1));
         break;
-      // case "last_two_years":
-      //   custom_period.hide();
-      //   from.val('01/01/' + (current_year - 2));
-      //   to.val('01/01/' + current_year);
-      //   break;
-      // case "unlimited":
-      //   custom_period.hide();
-      //   from.val("");
-      //   from_display.val("");
-      //   to.val("");
-      //   to_display.val("");
       }
     }
 

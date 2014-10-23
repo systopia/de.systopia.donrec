@@ -136,6 +136,50 @@ class CRM_Donrec_Logic_Engine {
         $logs = array_merge($logs, $result['log']);
       }
     }
+    // create donation receipts
+    if (!$is_test) {
+      if(!$is_bulk) {
+      $receipt_params = array();
+        foreach ($chunk as $chunk_id => $chunk_item) {
+          if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+            // get pdf file name from snapshot line
+            $result = $this->getPDF($chunk_item['id']);
+            if($result) {
+              $file = $this->createFile($result);
+              if (!empty($file)) {
+                $receipt_params['file_id'] = $file[1];
+              }
+            }
+          }
+          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
+        }
+      } else {
+         $receipt_params = array();
+         $line_ids = array();
+         foreach ($chunk as $chunk_id => $chunk_items) {
+          foreach ($chunk_items as $key => $chunk_item) {
+           $line_ids[] = $chunk_item['id'];
+          }
+         if(!empty($line_ids)) {
+           if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+             // get pdf file name from snapshot line
+             $result = $this->getPDF($chunk_items[0]['id']);
+             if($result) {
+               $file = $this->createFile($result);
+               if (!empty($file)) {
+                 $receipt_params['file_id'] = $file[1];
+               }
+             }
+           }
+           $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $line_ids, $receipt_params);
+           if(!$result) {
+             error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
+           }
+           $line_ids = array();
+         }
+        }
+      }
+    }
 
     // mark the chunk as processed
     if ($chunk) {
@@ -231,5 +275,56 @@ class CRM_Donrec_Logic_Engine {
    */
   public function getSnapshot() {
     return $this->snapshot;
+  }
+
+
+  /**
+  * get or create a pdf file for the snapshot line
+  */
+  public function getPDF($snapshot_line_id) {
+    $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
+    $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
+    return $filename;
+  }
+
+  /**
+   * will save the file name to reference it from an integer
+   *
+   * @return NULL if not possible, e.g. when the name is already taken,
+   *         or   array(file_URL, file_id)
+   */
+  protected function createFile($file_name, $is_temp = FALSE) {
+    $config =  CRM_Core_Config::singleton();
+    if ($is_temp) {
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
+    } else {
+      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
+    }
+
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'get', $params);
+
+    if($result['is_error'] == 1 || $result['count'] > 0) {
+      return NULL;
+    }
+
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'uri' => $file_name
+    );
+    $result = civicrm_api('File', 'create', $params);
+
+    if($result['is_error'] == 1) {
+      return NULL;
+    }
+
+    return array($file, $result['id']);
   }
 }

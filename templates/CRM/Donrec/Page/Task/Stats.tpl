@@ -13,8 +13,8 @@
     {if $statistic.requested_contacts}
       <tr><td class="statskey">{ts}requested contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
     {/if}
-    <tr><td class="statskey">{ts}count of contacts{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
-    <tr><td class="statskey">{ts}count of contributions{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
+    <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
+    <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
     <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
   </table>
 {/if}
@@ -22,7 +22,7 @@
 <form action="{$formAction}" method="post">
 {if $error}
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
-	<p style="color: #ffffff;">Error: {$error}</p>
+	<p style="color: #ffffff;">{ts}Error{/ts}: {$error}</p>
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons">
   <a class="button" href="{$url_back}">
@@ -58,7 +58,9 @@
 	<tr>
 		<td class="label">{ts}Donation receipt type{/ts}:</td>
 		<td>
-			<input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">single</label>&nbsp;<input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">bulk</label>
+      <input value="1" type="radio" id="donrec_type" name="donrec_type" checked="checked" class="form-radio"/><label for="donrec_type">{ts}single receipts{/ts}</label>
+      &nbsp;
+      <input value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">{ts}bulk receipts{/ts}</label>
 		</td>
 	</tr>
 	<tr>

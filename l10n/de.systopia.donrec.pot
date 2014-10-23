@@ -378,26 +378,31 @@ msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "You have an unfinished run, do you want to continue with it?"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Otherwise it will be deleted!"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Interrupted run detected, do you want to continue with it?"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Otherwise the selection will be deleted!"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid ""
 "<b>Caution!</b> Some receipts have already been created. If you do not "
 "continue with this run, you should probably delete them manually."
@@ -405,27 +410,32 @@ msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Statistics"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "contact count"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "contribution count"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "total amount"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "created on"
 msgstr ""
 
@@ -452,4 +462,16 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "count of contributions"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Issue Donation Receipts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "single receipts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "bulk receipts"
 msgstr ""
