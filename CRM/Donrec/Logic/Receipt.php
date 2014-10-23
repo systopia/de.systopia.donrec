@@ -71,7 +71,7 @@ class CRM_Donrec_Logic_Receipt {
       self::$_custom_fields['type'] => "'SINGLE'",
       self::$_custom_fields['issued_on'] => "'$line[created_timestamp]'",
       self::$_custom_fields['issued_by'] => $line[created_by],
-      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? NULL : $parameters['file_id'],
+      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? 'NULL' : $parameters['file_id'],
       self::$_custom_fields['street_address'] => empty($line['street_address']) ? 'NULL': "'$line[street_address]'",
       self::$_custom_fields['supplemental_address_1'] => empty($line['supplemental_address_1']) ? 'NULL': "'$line[supplemental_address_1]'",
       self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_1]'",
@@ -394,9 +394,7 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
       if ($result->original_file) {
-        $display_properties['original_file'] =
-          CRM_Utils_System::url("civicrm/file", "reset=1&id=" .
-          $result->original_file . "&eid=1");
+        $display_properties['original_file'] = self::fileIdToUrl($result->original_file);
       } else {
         $display_properties['original_file'] = NULL;
       }
@@ -425,21 +423,22 @@ class CRM_Donrec_Logic_Receipt {
     $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
     $receipt_id = $this->Id;
 
+    //TODO: get really all values needed to generate a pdf!
     $query = "SELECT
                 `$receipt_fields[status]` as `status`,
                 `$receipt_fields[issued_on]` as `issued_on`,
+                `$receipt_fields[original_file]` as `original_file`,
                 SUM(item.`$item_fields[total_amount]`) as `total_amount`,
                 MIN(item.`$item_fields[issued_on]`) as `date_from`,
                 MAX(item.`$item_fields[issued_on]`) as `date_to`
               FROM `civicrm_value_donation_receipt_$receipt_group_id` as receipt
-              LEFT JOIN `civicrm_contact` as contact
+              RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` as item
                 ON item.`$item_fields[issued_in]` = receipt.id
                 AND item.`$item_fields[status]` = receipt.`$receipt_fields[status]`
-              RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` as item
-                ON `receipt.entity_id` = `contact.id`
-              WHERE `receipt.id` = $receipt_id";
+              LEFT JOIN `civicrm_contact` as contact
+                ON receipt.`entity_id` = contact.`id`
+              WHERE receipt.`id` = $receipt_id";
 
-    error_log($query);
     $result = CRM_Core_DAO::executeQuery($query);
     $properties = array();
 
@@ -608,12 +607,21 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
+  * Convert file-id to url (maybe there is a better place for this method...)
+  * @return file-url
+  */
+  public static function fileIdToUrl($id) {
+    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $id . "&eid=1");
+    return $url;
+  }
+
+  /**
   * Convert file-path to url (maybe there is a better place for this method...)
   * @return file-url
   */
   public static function pathToUrl($path) {
     $config =  CRM_Core_Config::singleton();
-    $url = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($pdf);
+    $url = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($path);
     return $url;
   }
 
@@ -624,11 +632,12 @@ class CRM_Donrec_Logic_Receipt {
   public function viewPdf() {
     $values = self::getAllProperties();
     if (!empty($values['original_file'])) {
-      $file_url = self::pathToUrl($values['original_file']);
+      $file_url = self::fileIdToUrl($values['original_file']);
     } else {
       //create a pdf
       $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-      $pdf = $template->generatePDF($values, array());
+      $parameter = array();
+      $pdf = $template->generatePDF($values, $parameter);
       $file_url = self::pathToUrl($pdf);
     }
     return $file_url;
