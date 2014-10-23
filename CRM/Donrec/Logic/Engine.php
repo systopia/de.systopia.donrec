@@ -24,7 +24,7 @@ class CRM_Donrec_Logic_Engine {
    * known parameters:
    *  exporters  array(exporter_classes)
    *  bulk       1 or 0 - if 1, accumulative (='bulk') donation receipts should be issued
-   *  test       1 or 0 - if 0, the contributions will not actually be marked as 'reciept_issued'
+   *  test       1 or 0 - if 0, the contributions will not actually be marked as 'receipt_issued'
    */
   protected $parameters = array();
 
@@ -295,11 +295,6 @@ class CRM_Donrec_Logic_Engine {
    */
   protected function createFile($file_name, $is_temp = FALSE) {
     $config =  CRM_Core_Config::singleton();
-    if ($is_temp) {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
-    } else {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
-    }
 
     $params = array(
       'version' => 3,
@@ -308,7 +303,6 @@ class CRM_Donrec_Logic_Engine {
       'uri' => $file_name
     );
     $result = civicrm_api('File', 'get', $params);
-
     if($result['is_error'] == 1 || $result['count'] > 0) {
       return NULL;
     }
@@ -320,11 +314,18 @@ class CRM_Donrec_Logic_Engine {
       'uri' => $file_name
     );
     $result = civicrm_api('File', 'create', $params);
-
     if($result['is_error'] == 1) {
       return NULL;
     }
 
-    return array($file, $result['id']);
+    $entityFile = new CRM_Core_DAO_EntityFile();
+    $entityFile->file_id = $result['id'];
+    $entityFile->entity_id = 1;
+    $entityFile->entity_table = 'civicrm_contact';
+    $entityFile->save();
+
+    $dl_url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $entityFile->file_id . "&eid=1");
+    $result = array($dl_url, $entityFile->file_id);
+    return $result;
   }
 }

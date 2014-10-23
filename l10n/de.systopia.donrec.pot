@@ -207,7 +207,7 @@ msgstr ""
 msgid "Progress Log"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
 msgid "Date"
 msgstr ""
 
@@ -245,10 +245,6 @@ msgid "Creation date"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Receipt horizon"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Total amount"
 msgstr ""
 
@@ -276,7 +272,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Error"
 msgstr ""
 
@@ -363,17 +359,9 @@ msgstr ""
 
 #: donrec.php
 msgid ""
-"A donation reciept has been issued for this contribution, or is being "
+"A donation receipt has been issued for this contribution, or is being "
 "processed for a receipt right now. You are not allowed to change the value "
 "for '%1'."
-msgstr ""
-
-#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
-msgid "last two years"
-msgstr ""
-
-#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
-msgid "unlimited"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
@@ -411,18 +399,21 @@ msgstr ""
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "Statistics"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "contact count"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "contribution count"
 msgstr ""
 
@@ -448,23 +439,8 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "Statistic"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "requested contacts"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "count of contacts"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
-msgid "count of contributions"
-msgstr ""
-
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+#: CRM/Donrec/Page/Task/Stats.php
 msgid "Issue Donation Receipts"
 msgstr ""
 
@@ -474,4 +450,56 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Task/Stats.tpl
 msgid "bulk receipts"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "bulk receipt"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "single receipt"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "original"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "copy"
+msgstr ""
+
+#: CRM/Donrec/DataStructure.php
+msgid "donation-receipt"
+msgstr ""
+
+#: CRM/Donrec/DataStructure.php
+msgid "donation-receipt-item"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last two years"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "unlimited"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Task/Stats.tpl
+msgid "selected contacts"
+msgstr ""
+
+#: CRM/Donrec/Page/Runner.php
+msgid "Creating Donation Receipts"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts Settings"
+msgstr ""
+
+#: CRM/Donrec/Exporters/Dummy.php
+msgid "Don't generate files"
 msgstr ""

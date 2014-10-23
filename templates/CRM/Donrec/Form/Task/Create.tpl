@@ -60,13 +60,13 @@
       case "current_year":
         custom_period.hide();
         from.val(new Date(current_year, 1, 1));
-        to.val(new Date(current_year + 1, 1, 1));
+        to.val(new Date(current_year, 12, 31));
         to_display.val("");
         break;
       case "last_year":
         custom_period.hide();
         from.val(new Date(current_year - 1, 1, 1));
-        to.val(new Date(current_year, 1, 1));
+        to.val(new Date(current_year - 1, 12, 31));
         break;
       }
     }

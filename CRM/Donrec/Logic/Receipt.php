@@ -355,7 +355,7 @@ class CRM_Donrec_Logic_Receipt {
               `%s` as `type`,
               `%s` as `status`,
               `%s` as `issued_on`,
-              file.`uri` as `original_file`,
+              file.`id` as `original_file`,
               SUM(item.`%s`) as `total_amount`,
               MIN(item.`%s`) as `date_from`,
               MAX(item.`%s`) as `date_to`,
@@ -393,15 +393,17 @@ class CRM_Donrec_Logic_Receipt {
       $display_properties['type'] = $result->type;
       $display_properties['status'] = $result->status;
       $display_properties['issued_on'] = $result->issued_on;
+      if ($result->original_file) {
+        $display_properties['original_file'] =
+          CRM_Utils_System::url("civicrm/file", "reset=1&id=" .
+          $result->original_file . "&eid=1");
+      } else {
+        $display_properties['original_file'] = NULL;
+      }
       $display_properties['total_amount'] = $result->total_amount;
       $display_properties['date_from'] = $result->date_from;
       $display_properties['date_to'] = $result->date_to;
       $display_properties['currency'] = $result->currency;
-      if (!empty($result->original_file)) {
-        $display_properties['original_file'] = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($result->original_file);
-      } else {
-        $display_properties['original_file'] = NULL;
-      }
     }
 
     return $display_properties;
@@ -499,7 +501,7 @@ class CRM_Donrec_Logic_Receipt {
    *
    * This method should be HIGHLY optimized
    *
-   * @return TRUE if there is a VALID donation reciept, FALSE otherwise
+   * @return TRUE if there is a VALID donation receipt, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
     self::getCustomFields();

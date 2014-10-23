@@ -25,8 +25,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    * returns the list of implemented exporters
    */
   public static function listExporters() {
-    //return array('Dummy', 'PDF');
-    return array('PDF');
+    return array('Dummy', 'PDF');
   }
 
   /**
@@ -117,11 +116,6 @@ abstract class CRM_Donrec_Logic_Exporter {
    */
   protected function createFile($file_name, $is_temp = FALSE) {
     $config =  CRM_Core_Config::singleton();
-    if ($is_temp) {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . "tmp_" . $file_name;
-    } else {
-      $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
-    }
 
     $params = array(
       'version' => 3,
@@ -147,7 +141,16 @@ abstract class CRM_Donrec_Logic_Exporter {
       return NULL;
     }
 
-    return array($file, $result['id']);
+    $entityFile = new CRM_Core_DAO_EntityFile();
+    $entityFile->file_id = $result['id'];
+    $entityFile->entity_id = 1;
+    $entityFile->entity_table = 'civicrm_contact';
+    $entityFile->save();
+
+    $dl_url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $entityFile->file_id . "&eid=1");
+    $result = array($dl_url, $entityFile->file_id);
+
+    return $result;
   }
 
   /**

@@ -14,6 +14,8 @@
 */
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
   function run() {
+    CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
+    
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
 

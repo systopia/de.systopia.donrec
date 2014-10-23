@@ -17,8 +17,15 @@
       <td>
         <div class="donrec-stats" name="donrec_stats_{$receipt_id}">
           <ul>
-            <li><u><b>{ts}{$receipt.type} receipt{/ts}</b></u></li>
-            <li>{ts}Status{/ts}: <b>{$receipt.status}</b></li>
+            <li><u><b>
+              {if $receipt.type eq 'BULK'}{ts}bulk receipt{/ts}{/if}
+              {if $receipt.type eq 'SINGLE'}{ts}single receipt{/ts}{/if}
+            </b></u></li>
+            <li>{ts}Status{/ts}: <b>
+              {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
+              {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
+              {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
+            </b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
@@ -33,6 +40,19 @@
         <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
         {/if}
         {if $is_admin}<a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>{/if}
+
+        {*ALTERNATIVELY: CiviCRM List style: if $receipt.original_file}
+          <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts}View{/ts}</a>
+        {else}
+          <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="#">{ts}View{/ts}</a>
+        {/if}
+        {if $receipt.status == 'ORIGINAL'}
+          <a id="copy_receipt_{$receipt_id}" title="{ts}Create copy{/ts}" class="action-item" href="#">{ts}Create copy{/ts}</a>
+          <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
+        {/if}
+        {if $is_admin}
+          <a id="delete_receipt_{$receipt_id}" title="{ts}Delete{/ts}" class="action-item" href="#">{ts}Delete{/ts}</a>
+        {/if*}
       </td>
     </tr>
     {/foreach}
@@ -69,7 +89,8 @@
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully withdrawn{/ts}", "{ts}Success{/ts}{literal}", "success");
-                   cj('#Donation_receipts').load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  var contentId = cj('#tab_donation_receipts').attr('aria-controls');
+                  cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
                 }
@@ -90,7 +111,9 @@
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully copied{/ts}", "{ts}Success{/ts}{literal}", "success");
-                  cj('#Donation_receipts').load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  var contentId = cj('#tab_donation_receipts').attr('aria-controls');
+                  cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  console.log('done');
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
                 }
@@ -117,7 +140,8 @@
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully deleted{/ts}", "{ts}Success{/ts}{literal}", "success");
-                  cj('#Donation_receipts').load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  var contentId = cj('#tab_donation_receipts').attr('aria-controls');
+                  cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
                 }

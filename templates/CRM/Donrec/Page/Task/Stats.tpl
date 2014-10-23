@@ -9,9 +9,9 @@
 
 {if $statistic}
   <table id="statistic">
-    <caption>{ts}Statistic{/ts}</caption>
+    <caption>{ts}Statistics{/ts}</caption>
     {if $statistic.requested_contacts}
-      <tr><td class="statskey">{ts}requested contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
+      <tr><td class="statskey">{ts}selected contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
     {/if}
     <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
     <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>

@@ -168,7 +168,6 @@ class CRM_Donrec_Logic_Template
                       {literal}
                       .watermark {
                         position: fixed;
-                        opacity: 0.45;
                         z-index: 999;
                         color: #808080;
                         -ms-transform: rotate(-45deg); /* IE 9 */
@@ -213,10 +212,10 @@ class CRM_Donrec_Logic_Template
 
     // find <body> element
     $matches = array();
-    preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
+    preg_match('/<body[^>]*>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $body_offset = $matches[0][1];
-      $html = substr_replace($html, $watermark_site1, $body_offset + 8, 0);
+      $html = substr_replace($html, $watermark_site1, $body_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
       error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
       return FALSE;
@@ -241,10 +240,10 @@ class CRM_Donrec_Logic_Template
     // set up file names
     $config = CRM_Core_Config::singleton();
     $filename = CRM_Utils_DonrecHelper::makeFileName("donrec.pdf");
-    $filename = sprintf("%s%s", $config->customFileUploadDir, $filename);
+    $filename_export = sprintf("%s%s", $config->customFileUploadDir, $filename);
 
     // render PDF receipt
-    $result = file_put_contents($filename, CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
+    $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
     if($result) {
       return $filename;
     }else{

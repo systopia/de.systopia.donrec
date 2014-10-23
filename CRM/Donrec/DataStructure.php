@@ -14,7 +14,7 @@
 class CRM_Donrec_DataStructure {
 
   public static $customGroupDefaults = array(
-    'style' => 'Inline',
+    'style' => 0,
     'collapse_display' => 1,
     'is_active' => 1,
     'is_multiple' => 1,
@@ -298,6 +298,8 @@ class CRM_Donrec_DataStructure {
   protected static function updateCustomGroups() {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
+      // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE: 
+      //$params['title'] = ts($params['title']);
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
     }
@@ -354,5 +356,4 @@ class CRM_Donrec_DataStructure {
     $id = array_values($id['values']);
     return $id[0]['id'];
   }
-
 }
