@@ -34,7 +34,7 @@
         </div>
       </td>
       <td>
-        <a id="view_receipt_{$receipt_id}" class="button" href="{$receipt.view_url}"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
         {if $receipt.status == 'ORIGINAL'}
         <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
@@ -76,8 +76,28 @@
 </style>
 
 <script type="text/javascript">
-  var re = /^(copy|withdraw|delete)_receipt_([0-9]+)/;
   cj(function() {
+    var re = /^(view|copy|withdraw|delete)_receipt_([0-9]+)/;
+    // called for every view-button
+    cj('.donrec-stats-block a[id^="view_receipt_"]').click(function() {
+        // calculate receipt id
+        var rid = re.exec(this.id);
+        if (rid != null) {
+          rid = rid[2];
+          // view this donation receipt
+          CRM.api('DonationReceipt', 'view', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
+            {success: function(data) {
+                if (data['is_error'] == 0) {
+                  window.location.href = data.values;
+                }else{
+                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                }
+              }
+            }
+          );
+        }
+
+    });
     // called for every withdraw-button
     cj('.donrec-stats-block a[id^="withdraw_receipt_"]').click(function() {
         // calculate receipt id
