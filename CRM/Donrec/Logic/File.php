@@ -42,8 +42,19 @@ class CRM_Donrec_Logic_File {
    * @return a CRM_Core_BAO_File object
    */
   public static function makePermanent($filepath, $deleteSource = true, $mimetype = null) {
-
     // TODO: Implement
     return null;
-  }  
+  }
+
+  /**
+   * Creates a new file path (and an empty file) to be used as temp file.
+   * 
+   * @param    preferred name, if null a generic name will be chosen
+   *
+   * @return   a filepath to a writeable empty file, exclusive to the caller
+   */
+  public static function getTempFile($name = null) {
+    // TODO: Implement
+    return null;
+  }
 }
