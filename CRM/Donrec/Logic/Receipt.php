@@ -416,6 +416,23 @@ class CRM_Donrec_Logic_Receipt {
    * @return an array of all properties
    */
   public function getAllProperties() {
+    $values = array();
+
+    // get default organisation
+    $domain = CRM_Core_BAO_Domain::getDomain();
+    $params = array(
+      'version' => 3,
+      'q' => 'civicrm/ajax/rest',
+      'sequential' => 1,
+      'id' => $domain->contact_id,
+    );
+    $contact = civicrm_api('Contact', 'get', $params);
+    if ($contact['is_error'] != 0 || $contact['count'] != 1) {
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid contact'), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+      return $reply;
+    }
+    $values['organisation'] = $contact['values'][0];
+
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_fields = self::$_custom_fields;
     $receipt_group_id = self::$_custom_group_id;
@@ -423,7 +440,6 @@ class CRM_Donrec_Logic_Receipt {
     $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
     $receipt_id = $this->Id;
 
-    //TODO: get the sender-organisation!
     $query = "SELECT
                 receipt.`$receipt_fields[status]` AS `status`,
                 receipt.`$receipt_fields[issued_on]` AS `issued_on`,
@@ -448,7 +464,6 @@ class CRM_Donrec_Logic_Receipt {
               WHERE receipt.`id` = $receipt_id";
 
     $result = CRM_Core_DAO::executeQuery($query);
-    $values = array();
     $result->fetch();
     foreach($result as $key => $value) {
       if ($key[0] != '_' && $key != 'N') {
