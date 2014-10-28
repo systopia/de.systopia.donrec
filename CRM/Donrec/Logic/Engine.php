@@ -154,6 +154,7 @@ class CRM_Donrec_Logic_Engine {
           CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
         }
       } else {
+        // TODO: Niko - Doku
          $receipt_params = array();
          $line_ids = array();
          foreach ($chunk as $chunk_id => $chunk_items) {
