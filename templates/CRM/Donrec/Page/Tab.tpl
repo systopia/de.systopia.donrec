@@ -97,10 +97,10 @@
   .donrec-stats-block tr td, tr th {
     border: none;
   }
-  .donrec-stats ul {
+  .donrec-stats-block ul {
     list-style-type: none;
   }
-  .donrec-stats a {
+  .donrec-stats-block a {
     cursor: pointer;
   }
 </style>
