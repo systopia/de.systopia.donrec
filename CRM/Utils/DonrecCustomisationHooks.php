@@ -13,7 +13,7 @@
 */
 class CRM_Utils_DonrecCustomisationHooks {
 	static $null = NULL;
-	
+
 	/**
 	* This hook is called once for every chunk item before the pdf template is rendered.
 	* You should use this when the token cannot be shared between chunk items (for example a
@@ -30,7 +30,12 @@ class CRM_Utils_DonrecCustomisationHooks {
 	* @access public
 	*/
 	static function pdf_unique_token(&$template, &$chunk_item) {
-	return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_unique_token');
+		if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
+		{
+			return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_unique_token');
+		} else {
+			return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, self::$null, 'civicrm_pdf_unique_token');
+		}
 	}
 
 	/**
@@ -49,6 +54,11 @@ class CRM_Utils_DonrecCustomisationHooks {
 	* @access public
 	*/
 	static function pdf_shared_token(&$template, &$chunk) {
-	return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
+		if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
+		{
+			return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
+		}else{
+			return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, self::$null, 'civicrm_pdf_shared_token');
+		}
 	}
 }
