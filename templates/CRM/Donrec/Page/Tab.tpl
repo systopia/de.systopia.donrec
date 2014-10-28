@@ -29,7 +29,7 @@
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
-            <li><a href="#"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
+            <li><a href="#" id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
           </ul>
         </div>
       </td>
@@ -77,7 +77,27 @@
 
 <script type="text/javascript">
   cj(function() {
-    var re = /^(view|copy|withdraw|delete)_receipt_([0-9]+)/;
+    var re = /^(details|view|copy|withdraw|delete)_receipt_([0-9]+)/;
+    // called for every detail-view-link
+    cj('.donrec-stats-block a[id^="details_receipt_"]').click(function() {
+        // calculate receipt id
+        var rid = re.exec(this.id);
+        if (rid != null) {
+          rid = rid[2];
+          // view this donation receipt
+          CRM.api('DonationReceipt', 'details', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
+            {success: function(data) {
+                if (data['is_error'] == 0) {
+                  console.log(data);
+                }else{
+                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                }
+              }
+            }
+          );
+        }
+
+    });
     // called for every view-button
     cj('.donrec-stats-block a[id^="view_receipt_"]').click(function() {
         // calculate receipt id

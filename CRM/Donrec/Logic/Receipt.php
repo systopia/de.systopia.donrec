@@ -411,9 +411,7 @@ class CRM_Donrec_Logic_Receipt {
    * Get all properties of this receipt, so we can e.g. export it or pass the
    * properties into the $template->generatePDF() function to create another copy
    *
-   * Remark: we should start with a basic set of properties, and gradually extend as we go along
-   *
-   * @return an array of all properties
+   * @return array of properties
    */
   public function getAllProperties() {
     $values = array();
@@ -443,7 +441,6 @@ class CRM_Donrec_Logic_Receipt {
     $query = "SELECT
                 receipt.`$receipt_fields[status]` AS `status`,
                 receipt.`$receipt_fields[issued_on]` AS `issued_on`,
-                receipt.`$receipt_fields[original_file]` AS `original_file`,
                 receipt.`$receipt_fields[street_address]` AS `contributor__street_address`,
                 receipt.`$receipt_fields[supplemental_address_1]` AS `contributor__supplemental_address_1`,
                 receipt.`$receipt_fields[supplemental_address_2]` AS `contributor__supplemental_address_2`,
@@ -486,6 +483,83 @@ class CRM_Donrec_Logic_Receipt {
       //$properties['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'withdraw_text');
     }
 
+    return $values;
+  }
+
+  /**
+   * Get the properties used for the details-view
+   *
+   * @return array of properties
+   */
+  public function getDetails() {
+    $values = array();
+
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $receipt_fields = self::$_custom_fields;
+    $receipt_group_id = self::$_custom_group_id;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
+    $receipt_id = $this->Id;
+
+    // get receipt-infos
+    $query = "
+      SELECT
+        receipt.`$receipt_fields[street_address]` AS `receipt__street_address`,
+        receipt.`$receipt_fields[supplemental_address_1]` AS `receipt__supplemental_address_1`,
+        receipt.`$receipt_fields[supplemental_address_2]` AS `receipt__supplemental_address_2`,
+        receipt.`$receipt_fields[supplemental_address_3]` AS `receipt__supplemental_address_3`,
+        receipt.`$receipt_fields[postal_code]` AS `receipt__postal_code`,
+        receipt.`$receipt_fields[city]` AS `receipt__city`,
+        receipt.`$receipt_fields[country]` AS `receipt__country`,
+        address.`street_address` AS `contact__street_address`,
+        address.`supplemental_address_1` AS `contact__supplemental_address_1`,
+        address.`supplemental_address_2` AS `contact__supplemental_address_2`,
+        address.`supplemental_address_3` AS `contact__supplemental_address_3`,
+        address.`postal_code` AS `contact__postal_code`,
+        address.`city` AS `contact__city`,
+        country.`name` AS `contact__country`
+      FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
+      INNER JOIN `civicrm_contact` AS contact ON contact.`id` = receipt.`entity_id`
+      LEFT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
+      LEFT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
+      WHERE receipt.`id` = $receipt_id";
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    $result->fetch();
+    foreach($result as $key => $value) {
+      if ($key[0] != '_' && $key != 'N') {
+        $keys = split('__', $key);
+        if (count($keys) == 1) {
+          $values[$keys[0]] = $result->$key;
+        } else {
+          $values[$keys[0]][$keys[1]] = $result->$key;
+        }
+      }
+    }
+
+    // get receipt-item-infos
+    $query = "
+      SELECT
+        item.`id` AS `id`,
+        item.`$item_fields[receive_date]` AS `receive_date`,
+        item.`$item_fields[total_amount]` AS `total_amount`,
+        type.`name` AS `type`
+      FROM `civicrm_value_donation_receipt_item_$item_group_id` AS item
+      INNER JOIN `civicrm_contribution` AS contrib
+        ON item.`entity_id` = contrib.`id`
+      INNER JOIN `civicrm_financial_type` AS type
+        ON type.`id` = contrib.`financial_type_id`
+      WHERE item.`$item_fields[issued_in]` = $receipt_id";
+
+    $result = CRM_Core_DAO::executeQuery($query);
+    while ($result->fetch()) {
+      foreach($result as $key => $value) {
+        if ($key[0] != '_' && $key != 'N') {
+          $values['items'][$result->id][$key] = $result->$key;
+        }
+      }
+    }
+    error_log(print_r($values, True));
     return $values;
   }
 
