@@ -423,7 +423,7 @@ class CRM_Donrec_Logic_Receipt {
     $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
     $receipt_id = $this->Id;
 
-    //TODO: get really all values needed to generate a pdf!
+    //TODO: get the sender-organisation!
     $query = "SELECT
                 receipt.`$receipt_fields[status]` AS `status`,
                 receipt.`$receipt_fields[issued_on]` AS `issued_on`,
@@ -449,13 +449,12 @@ class CRM_Donrec_Logic_Receipt {
 
     $result = CRM_Core_DAO::executeQuery($query);
     $values = array();
-
     $result->fetch();
     foreach($result as $key => $value) {
       if ($key[0] != '_' && $key != 'N') {
         $keys = split('__', $key);
         if (count($keys) == 1) {
-          $values[$keys[0]][] = $result->$key;
+          $values[$keys[0]] = $result->$key;
         } else {
           $values[$keys[0]][$keys[1]] = $result->$key;
         }
@@ -641,7 +640,6 @@ class CRM_Donrec_Logic_Receipt {
       WHERE receipt.`id` = $receipt_id
     ";
     $pdf = CRM_Core_DAO::singleValueQuery($query);
-
     if (!empty($pdf)) {
       $file_url = CRM_Utils_DonrecHelper::pathToUrl($pdf);
     } else {
