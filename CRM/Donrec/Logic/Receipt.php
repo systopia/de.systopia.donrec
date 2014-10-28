@@ -340,74 +340,6 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
-   * Get all the properties of this receipt needed for display in the summary tab
-   *
-   * This should only include the display properties, and be performance optimized
-   *
-   * Remark: we should start with a basic set of properties, and gradually extend as we go along
-   *
-   * @return an array of all properties needed for display
-   */
-  public function getDisplayProperties() {
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-
-    $query = "SELECT
-              `%s` as `type`,
-              `%s` as `status`,
-              `%s` as `issued_on`,
-              file.`uri` as `original_file`,
-              SUM(item.`%s`) as `total_amount`,
-              MIN(item.`%s`) as `date_from`,
-              MAX(item.`%s`) as `date_to`,
-              item.`%s` as `currency`
-              FROM `civicrm_value_donation_receipt_%d` as receipt
-              RIGHT JOIN `civicrm_value_donation_receipt_item_%d` as item
-                ON item.`%s` = receipt.id
-                AND item.`%s` = receipt.`%s`
-              LEFT JOIN `civicrm_file` as file
-                ON file.`id` = receipt.`%s`
-              WHERE receipt.id = %d;";
-
-    $query = sprintf($query,
-      self::$_custom_fields['type'],
-      self::$_custom_fields['status'],
-      self::$_custom_fields['issued_on'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['currency'],
-      self::$_custom_group_id,
-      CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
-      CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
-      self::$_custom_fields['status'],
-      self::$_custom_fields['original_file'],
-      $this->Id
-      );
-
-    $result = CRM_Core_DAO::executeQuery($query);
-    $config =  CRM_Core_Config::singleton();
-    $display_properties = array();
-
-    while($result->fetch()) {
-      $display_properties['type'] = $result->type;
-      $display_properties['status'] = $result->status;
-      $display_properties['issued_on'] = $result->issued_on;
-      if ($result->original_file) {
-        $display_properties['original_file'] = CRM_Utils_DonrecHelper::fileUriToUrl($result->original_file);
-      } else {
-        $display_properties['original_file'] = NULL;
-      }
-      $display_properties['total_amount'] = $result->total_amount;
-      $display_properties['date_from'] = $result->date_from;
-      $display_properties['date_to'] = $result->date_to;
-      $display_properties['currency'] = $result->currency;
-    }
-
-    return $display_properties;
-  }
-
-  /**
    * Get all properties of this receipt, so we can e.g. export it or pass the
    * properties into the $template->generatePDF() function to create another copy
    *
@@ -439,26 +371,28 @@ class CRM_Donrec_Logic_Receipt {
     $receipt_id = $this->Id;
 
     $query = "SELECT
-                receipt.`$receipt_fields[status]` AS `status`,
-                receipt.`$receipt_fields[issued_on]` AS `issued_on`,
-                receipt.`$receipt_fields[street_address]` AS `contributor__street_address`,
-                receipt.`$receipt_fields[supplemental_address_1]` AS `contributor__supplemental_address_1`,
-                receipt.`$receipt_fields[supplemental_address_2]` AS `contributor__supplemental_address_2`,
-                receipt.`$receipt_fields[supplemental_address_3]` AS `contributor__supplemental_address_3`,
-                receipt.`$receipt_fields[postal_code]` AS `contributor__postal_code`,
-                receipt.`$receipt_fields[city]` AS `contributor__city`,
-                receipt.`$receipt_fields[country]` AS `country`,
-                contact.`display_name` AS `contributor__display_name`,
-                SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
-                MIN(item.`$item_fields[issued_on]`) AS `date_from`,
-                MAX(item.`$item_fields[issued_on]`) AS `date_to`
-              FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
-              RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
-                ON item.`$item_fields[issued_in]` = receipt.`id`
-                AND item.`$item_fields[status]` = receipt.`$receipt_fields[status]`
-              LEFT JOIN `civicrm_contact` AS contact
-                ON contact.`id` = receipt.`entity_id`
-              WHERE receipt.`id` = $receipt_id";
+        receipt.`$receipt_fields[type]` AS `type`,
+        receipt.`$receipt_fields[status]` AS `status`,
+        receipt.`$receipt_fields[issued_on]` AS `issued_on`,
+        receipt.`$receipt_fields[street_address]` AS `contributor__street_address`,
+        receipt.`$receipt_fields[supplemental_address_1]` AS `contributor__supplemental_address_1`,
+        receipt.`$receipt_fields[supplemental_address_2]` AS `contributor__supplemental_address_2`,
+        receipt.`$receipt_fields[supplemental_address_3]` AS `contributor__supplemental_address_3`,
+        receipt.`$receipt_fields[postal_code]` AS `contributor__postal_code`,
+        receipt.`$receipt_fields[city]` AS `contributor__city`,
+        receipt.`$receipt_fields[country]` AS `country`,
+        contact.`display_name` AS `contributor__display_name`,
+        SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
+        MIN(item.`$item_fields[issued_on]`) AS `date_from`,
+        MAX(item.`$item_fields[issued_on]`) AS `date_to`,
+        item.`$item_fields[issued_on]` AS `currency`
+      FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
+      RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
+        ON item.`$item_fields[issued_in]` = receipt.`id`
+        AND item.`$item_fields[status]` = receipt.`$receipt_fields[status]`
+      LEFT JOIN `civicrm_contact` AS contact
+        ON contact.`id` = receipt.`entity_id`
+      WHERE receipt.`id` = $receipt_id";
 
     $result = CRM_Core_DAO::executeQuery($query);
     $result->fetch();
@@ -487,11 +421,13 @@ class CRM_Donrec_Logic_Receipt {
   }
 
   /**
-   * Get the properties used for the details-view
+   * Get all the properties of this receipt needed for display in the summary tab
    *
-   * @return array of properties
+   * This should only include the display properties, and be performance optimized
+   *
+   * @return an array of all properties needed for display
    */
-  public function getDetails() {
+  public function getDisplayProperties() {
     $values = array();
 
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
@@ -504,21 +440,30 @@ class CRM_Donrec_Logic_Receipt {
     // get receipt-infos
     $query = "
       SELECT
-        receipt.`$receipt_fields[street_address]` AS `receipt__street_address`,
-        receipt.`$receipt_fields[supplemental_address_1]` AS `receipt__supplemental_address_1`,
-        receipt.`$receipt_fields[supplemental_address_2]` AS `receipt__supplemental_address_2`,
-        receipt.`$receipt_fields[supplemental_address_3]` AS `receipt__supplemental_address_3`,
-        receipt.`$receipt_fields[postal_code]` AS `receipt__postal_code`,
-        receipt.`$receipt_fields[city]` AS `receipt__city`,
-        receipt.`$receipt_fields[country]` AS `receipt__country`,
-        address.`street_address` AS `contact__street_address`,
-        address.`supplemental_address_1` AS `contact__supplemental_address_1`,
-        address.`supplemental_address_2` AS `contact__supplemental_address_2`,
-        address.`supplemental_address_3` AS `contact__supplemental_address_3`,
-        address.`postal_code` AS `contact__postal_code`,
-        address.`city` AS `contact__city`,
-        country.`name` AS `contact__country`
+        receipt.`$receipt_fields[type]` AS `type`,
+        receipt.`$receipt_fields[status]` AS `status`,
+        receipt.`$receipt_fields[issued_on]` AS `issued_on`,
+        SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
+        MIN(item.`$item_fields[issued_on]`) AS `date_from`,
+        MAX(item.`$item_fields[issued_on]`) AS `date_to`,
+        item.`$item_fields[currency]` AS `currency`,
+        receipt.`$receipt_fields[street_address]` AS `receipt_address__street_address`,
+        receipt.`$receipt_fields[supplemental_address_1]` AS `receipt_address__supplemental_address_1`,
+        receipt.`$receipt_fields[supplemental_address_2]` AS `receipt_address__supplemental_address_2`,
+        receipt.`$receipt_fields[supplemental_address_3]` AS `receipt_address__supplemental_address_3`,
+        receipt.`$receipt_fields[postal_code]` AS `receipt_address__postal_code`,
+        receipt.`$receipt_fields[city]` AS `receipt_address__city`,
+        receipt.`$receipt_fields[country]` AS `receipt_address__country`,
+        address.`street_address` AS `contact_address__street_address`,
+        address.`supplemental_address_1` AS `contact_address__supplemental_address_1`,
+        address.`supplemental_address_2` AS `contact_address__supplemental_address_2`,
+        address.`supplemental_address_3` AS `contact_address__supplemental_address_3`,
+        address.`postal_code` AS `contact_address__postal_code`,
+        address.`city` AS `contact_address__city`,
+        country.`name` AS `contact_address__country`
       FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
+      INNER JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
+        ON item.`$item_fields[issued_in]` = receipt.`id`
       INNER JOIN `civicrm_contact` AS contact ON contact.`id` = receipt.`entity_id`
       LEFT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
       LEFT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
@@ -543,6 +488,7 @@ class CRM_Donrec_Logic_Receipt {
         item.`id` AS `id`,
         item.`$item_fields[receive_date]` AS `receive_date`,
         item.`$item_fields[total_amount]` AS `total_amount`,
+        item.`$item_fields[issued_on]` AS `currency`,
         type.`name` AS `type`
       FROM `civicrm_value_donation_receipt_item_$item_group_id` AS item
       INNER JOIN `civicrm_contribution` AS contrib
@@ -559,7 +505,6 @@ class CRM_Donrec_Logic_Receipt {
         }
       }
     }
-    error_log(print_r($values, True));
     return $values;
   }
 

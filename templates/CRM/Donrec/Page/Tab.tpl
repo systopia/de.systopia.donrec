@@ -29,7 +29,31 @@
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
-            <li><a href="#" id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
+            <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts} (funktioniert noch nicht)</span></a></li>
+          </ul>
+        </div>
+        <div id="donrec_details_block_{$receipt_id}" class="donrec-details-block">
+          <ul class="donrec-details">
+            <li><b>{ts}shipping-address{/ts}</b></li>
+            <li>{ts}street{/ts}: {$receipt.receipt_address.street_address}</li>
+            <li>{ts}city{/ts}: {$receipt.receipt_address.city}</li>
+            <li>{ts}country{/ts}: {$receipt.receipt_address.country}</li>
+          </ul>
+          <ul class="donrec-details">
+            <li><b>{ts}contact-address{/ts}</b></li>
+            <li>{ts}street{/ts}: {$receipt.contact_address.street_address}</li>
+            <li>{ts}city{/ts}: {$receipt.contact_address.city}</li>
+            <li>{ts}country{/ts}: {$receipt.contact_address.country}</li>
+          </ul>
+          <ul class="donrec-details">
+            <li><b>{ts}contributions{/ts}</b></li>
+            {foreach from=$receipt.items key=id item=item}
+            <li><ul>
+              <li>{ts}total amount{/ts}: {$item.total_amount}</li>
+              <li>{ts}receive date{/ts}: {$item.receive_date}</li>
+              <li>{ts}financial type{/ts}: {$item.type}</li>
+            </ul></li>
+            {/foreach}
           </ul>
         </div>
       </td>
@@ -64,6 +88,9 @@
   .action-link .button {
     margin-bottom: 0;
   }
+  .donrec-details-block {
+    display: none;
+  }
   .donrec-stats-block table {
     border-collapse: collapse;
   }
@@ -72,6 +99,9 @@
   }
   .donrec-stats ul {
     list-style-type: none;
+  }
+  .donrec-stats a {
+    cursor: pointer;
   }
 </style>
 
@@ -83,18 +113,7 @@
         // calculate receipt id
         var rid = re.exec(this.id);
         if (rid != null) {
-          rid = rid[2];
-          // view this donation receipt
-          CRM.api('DonationReceipt', 'details', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
-            {success: function(data) {
-                if (data['is_error'] == 0) {
-                  console.log(data);
-                }else{
-                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
-                }
-              }
-            }
-          );
+          cj('#donrec_details_block_' + rid[2]).toggle();
         }
 
     });
