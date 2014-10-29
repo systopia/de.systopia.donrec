@@ -147,12 +147,15 @@
         var rid = re.exec(this.id);
         if (rid != null) {
           rid = rid[2];
+          {/literal}
+          var filename = "{ts}DonationReceipt{/ts}-{$cid}-" + rid + ".pdf";
+          {literal}
           // view this donation receipt
-          CRM.api('DonationReceipt', 'view', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
+          CRM.api('DonationReceipt', 'view', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid, name: filename},
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   // use the following to urldecode the link url
-                  view_url = cj("<div/>").html(data.values).text();
+                  var view_url = cj("<div/>").html(data.values).text();
                   location.href = view_url;
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");

@@ -110,11 +110,14 @@ function civicrm_api3_donation_receipt_view($params) {
   $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
 
   if(!empty($receipt)) {
-    // TODO: use temporary files here, remove all of this
-    $file_url = $receipt->viewPdf2();
-    $exporter = new CRM_Donrec_Exporters_PDF();
-    $file = $exporter->createFile($file_url);
-    $result = $file[0];
+    if (empty($params['name'])) {
+      $name = 'View.pdf';
+    } else {
+      $name = $params['name'];
+    }
+    $file = $receipt->viewPdf2();
+    $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file;
+    $result = CRM_Donrec_Logic_File::createTemporaryFile($file, $name);
   }else{
     return civicrm_api3_create_error(sprintf(ts("Receipt with id %d does not exist."), $params['rid']));
   }

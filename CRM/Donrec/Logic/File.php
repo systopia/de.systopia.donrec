@@ -18,18 +18,17 @@ class CRM_Donrec_Logic_File {
    * This function will take any file and make it temporarily available
    * for download
    * 
-   * @param filepath      where to find the file
+   * @param path          where to find the file
+   * @param name          end-user name of the file
    * @param deleteSource  if true, the file will be moved to another place rather than copied
    * @param mimetype      the document's MIME type. Autodetect if null
    * 
    * @return a string with an URL where to download the file
    */
-  public static function makeTemporary($filepath, $deleteSource = true, $mimetype = null) {
-    // TODO: Björn - TTL?
-
-    // TODO: Implement
-    return null;
+  public static function createTemporaryFile($path, $name = null, $deleteSource = true, $mimetype = null) {
+    return CRM_Donrec_Page_Tempfile::createFromFile($path, $name, $deleteSource, $mimetype);
   }
+
 
   /**
    * This function will take any file and make it permanently 
@@ -41,19 +40,7 @@ class CRM_Donrec_Logic_File {
    * 
    * @return a CRM_Core_BAO_File object
    */
-  public static function makePermanent($filepath, $deleteSource = true, $mimetype = null) {
-    // TODO: Implement
-    return null;
-  }
-
-  /**
-   * Creates a new file path (and an empty file) to be used as temp file.
-   * 
-   * @param    preferred name, if null a generic name will be chosen
-   *
-   * @return   a filepath to a writeable empty file, exclusive to the caller
-   */
-  public static function getTempFile($name = null) {
+  public static function createPermanentFile($filepath, $deleteSource = true, $mimetype = null) {
     // TODO: Implement
     return null;
   }

@@ -30,7 +30,7 @@
     <title>Issue Donation Receipts</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
-   <item>
+  <item>
     <path>civicrm/admin/setting/donrec</path>
     <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>
     <title>Donation Receipts Settings</title>
@@ -38,5 +38,11 @@
     <access_arguments>administer CiviCRM</access_arguments>
     <adminGroup>CiviContribute</adminGroup>
     <icon>admin/small/online_contribution_pages.png</icon>
+  </item>
+  <item>
+    <path>civicrm/donrec/showfile</path>
+    <page_callback>CRM_Donrec_Page_Tempfile</page_callback>
+    <title>Tempfile</title>
+    <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
