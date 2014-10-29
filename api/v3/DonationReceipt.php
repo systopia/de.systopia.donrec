@@ -110,8 +110,11 @@ function civicrm_api3_donation_receipt_view($params) {
   $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
 
   if(!empty($receipt)) {
-    $file_url = $receipt->viewPdf();
-    $result = $file_url;
+    // TODO: use temporary files here, remove all of this
+    $file_url = $receipt->viewPdf2();
+    $exporter = new CRM_Donrec_Exporters_PDF();
+    $file = $exporter->createFile($file_url);
+    $result = $file[0];
   }else{
     return civicrm_api3_create_error(sprintf(ts("Receipt with id %d does not exist."), $params['rid']));
   }
@@ -128,7 +131,9 @@ function _civicrm_api3_donation_receipt_view_spec(&$params) {
 
 /**
  * View Receipts
+ * @deprecated
  */
+// TODO: Thomas: kann das nicht weg?
 function civicrm_api3_donation_receipt_details($params) {
   // check for missing receipt id parameter
   if (empty($params['rid'])) {

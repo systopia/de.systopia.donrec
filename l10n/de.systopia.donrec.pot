@@ -503,3 +503,47 @@ msgstr ""
 #: CRM/Donrec/Exporters/Dummy.php
 msgid "Don't generate files"
 msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued To"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Name"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Postal Code"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Street"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "City"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Country"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Current Address"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Contributions"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Total Amount"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Received Date"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Financial Type"
+msgstr ""
