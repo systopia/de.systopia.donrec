@@ -519,6 +519,42 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
+  * Checks if a snapshot is marked as bulk or single
+  * @return string bulk|single or null
+  */
+  public static function singleOrBulk($id) {
+    $query = "
+      SELECT `process_data`
+      FROM civicrm_donrec_snapshot
+      WHERE `process_data` IS NOT NULL
+        AND `snapshot_id` = $id
+      LIMIT 1";
+    $raw_value = CRM_Core_DAO::singleValueQuery($query);
+
+    // no process_data set: abort
+    if (!$raw_value) {
+      return;
+    }
+    // decode process-data
+    $info = json_decode($raw_value, TRUE);
+
+    // if it could not be decoded: abort
+    if ($info==NULL) {
+      error_log("de.systopia.donrec: warning, cannot decode process_data!");
+      return;
+    }
+
+    // is_bulk was not set: abort
+    if (!array_key_exists('is_bulk', $info)) {
+      return;
+    } elseif ($info['is_bulk']) {
+      return 'bulk';
+    } else {
+      return 'single';
+    }
+  }
+
+  /**
   * Returns an array with statistic values of the snapshot
   * @return array
   */
@@ -549,7 +585,8 @@ class CRM_Donrec_Logic_Snapshot {
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
       'creation_date' => $result1->creation_date,
-      'status' => $result1->status
+      'status' => $result1->status, // TODO: use existing method here!
+      'singleOrBulk' => self::singleOrBulk($id)
     );
     return $statistic;
   }
