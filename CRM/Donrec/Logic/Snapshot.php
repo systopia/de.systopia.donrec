@@ -328,10 +328,12 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function getStates() {
     $states = array('NULL' => 0, 'TEST' => 0, 'DONE' => 0);
-    $result = CRM_Core_DAO::executeQuery(
-      "SELECT COUNT(`id`) AS count, `status` AS status
-       FROM `civicrm_donrec_snapshot`
-       WHERE `snapshot_id` = %1 GROUP BY `status`;", array(1 => array($this->Id, 'Integer')));
+    $id = $this->Id;
+    $query = "
+      SELECT COUNT(`id`) AS count, `status` AS status
+      FROM `civicrm_donrec_snapshot`
+      WHERE `snapshot_id` = $id GROUP BY `status`";
+    $result = CRM_Core_DAO::executeQuery($query);
     while ($result->fetch()) {
       if ($result->status==NULL) {
         $states['NULL'] = $result->count;
@@ -562,8 +564,7 @@ class CRM_Donrec_Logic_Snapshot {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount,
-      created_timestamp AS creation_date,
-      status      #we want the status of the first entry; that's what we get.
+      created_timestamp AS creation_date
       FROM civicrm_donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -579,13 +580,32 @@ class CRM_Donrec_Logic_Snapshot {
 
     $result1 = CRM_Core_DAO::executeQuery($query1);
     $result1->fetch();
+
+    // get status of the snapshot
+    // TODO: we need to create a snapshot-object because getStates is not a
+    // static function. Therefore it would make sense to rewrite getStatistic
+    // as a object-method as well.
+    $snapshot = self::get($id);
+    $states = $snapshot->getStates();
+
+    // if we have TEST- and DONE-states we have a problem
+    if ($states['TEST'] && $states['DONE']) {
+      error_log("Snapshot with id $id has entries with both TEST and DONE states!");
+    } elseif ($states['TEST']) {
+      $status = 'TEST';
+    } elseif ($states['DONE']) {
+      $status = 'DONE';
+    } else {
+      $status = null;
+    }
+
     $statistic = array(
       'id' => $id,
       'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
       'creation_date' => $result1->creation_date,
-      'status' => $result1->status, // TODO: use existing method here!
+      'status' => $status,
       'singleOrBulk' => self::singleOrBulk($id)
     );
     return $statistic;
