@@ -496,3 +496,48 @@ msgstr "Einstellungen Zuwendungsbescheinigungen"
 msgid "Don't generate files"
 msgstr "Keine Dateien erzeugen"
 
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued To"
+msgstr "Versandt an"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Name"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Postal Code"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Street"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "City"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Country"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Current Address"
+msgstr "Aktuelle Adresse"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Contributions"
+msgstr "Zuwendungen"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+#, fuzzy
+msgid "Total Amount"
+msgstr "Gesamtbetrag"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Received Date"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Financial Type"
+msgstr ""
+
