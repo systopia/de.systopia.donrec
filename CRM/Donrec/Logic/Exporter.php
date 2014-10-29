@@ -114,7 +114,8 @@ abstract class CRM_Donrec_Logic_Exporter {
    * @return NULL if not possible, e.g. when the name is already taken,
    *         or   array(file_URL, file_id)
    */
-  protected function createFile($file_name, $is_temp = FALSE) {
+  function createFile($file_name, $is_temp = FALSE) {
+    // TODO: make protected again
     $config =  CRM_Core_Config::singleton();
 
     $params = array(

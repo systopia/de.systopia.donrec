@@ -151,7 +151,9 @@
           CRM.api('DonationReceipt', 'view', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
             {success: function(data) {
                 if (data['is_error'] == 0) {
-                  window.location.href = data.values;
+                  // use the following to urldecode the link url
+                  view_url = cj("<div/>").html(data.values).text();
+                  location.href = view_url;
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
                 }
