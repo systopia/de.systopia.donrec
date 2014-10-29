@@ -291,22 +291,30 @@ class CRM_Donrec_Logic_Snapshot {
 
     $new_status = $is_test?'TEST':'DONE';
     if (!$is_bulk) {
-      $ids = implode(',', array_keys($chunk));
+      $ids = array_keys($chunk);
     }else{
       // get all second level ids
-      $ids = "";
+      $ids = array();
       foreach($chunk as $ck => $cv) {
           foreach ($cv as $lk => $lv) {
-            $ids .= $lv['id'] . ',';
+            array_push($ids, $lv['id']);
           }
       }
-      $ids = rtrim($ids, ',');
     }
 
     if (empty($ids)) {
       error_log('de.systopia.donrec: invalid chunk detected!');
     } else {
-      $query = "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids);";
+      $ids_str = implode(',', $ids);
+
+      // update process-info-field
+      $proc_info['is_bulk'] = $is_bulk;
+      foreach ($ids as $id) {
+        $this->updateProcessInformation($id, $proc_info);
+      }
+
+      // update status-field
+      $query = "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
       // error_log("de.systopia.donrec: lines $ids are now processed ($query)");
     }
@@ -444,6 +452,15 @@ class CRM_Donrec_Logic_Snapshot {
          WHERE `id` = %2;",
         array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));
     }
+  }
+
+  /**
+  * updates the JSON process information field
+  */
+  public function updateProcessInformation($snapshot_item_id, $array) {
+    $infos = $this->getProcessInformation($snapshot_item_id);
+    $merged_infos = array_merge($infos, $array);
+    $this->setProcessInformation($snapshot_item_id, $merged_infos);
   }
 
   /**

@@ -102,6 +102,8 @@ abstract class CRM_Donrec_Logic_Exporter {
    * set the process information for this exporter type
    *  for the given snapshot item
    */
+   // TODO: rename to updateProcessInformations
+   // TODO: use $snapshot->updateProcessInformations()
   protected function setProcessInformation($snapshot_item_id, $values) {
     $all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
     $all_process_information[$this->getID()] = $values;
