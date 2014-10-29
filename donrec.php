@@ -127,6 +127,17 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
 }
 
 /**
+ * Custom permissions
+ */
+ function donrec_civicrm_permission(&$permissions) {
+  $prefix = ts('DonationReceipts') . ': ';
+
+  $permissions['view receipts'] = $prefix . ts('view and create copies of receipts');
+  $permissions['edit receipts'] = $prefix . ts('edit, reset or correct receipts');
+  $permissions['administer receipts'] = $prefix . ts('delete receipts');
+ }
+
+/**
  * Set settings
  */
 function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
