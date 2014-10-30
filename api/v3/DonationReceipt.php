@@ -115,7 +115,7 @@ function civicrm_api3_donation_receipt_view($params) {
     } else {
       $name = $params['name'];
     }
-    $file = $receipt->viewPdf2();
+    $file = $receipt->viewPdf();
     $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file;
     $result = CRM_Donrec_Logic_File::createTemporaryFile($file, $name);
   }else{
