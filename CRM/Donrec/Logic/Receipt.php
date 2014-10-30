@@ -300,6 +300,10 @@ class CRM_Donrec_Logic_Receipt {
    */
   public function delete(&$parameters) {
     self::getCustomFields();
+
+    // delete pdf file if exists
+
+
     $status = empty($parameters['status']) ? 'ORIGINAL' : $parameters['status'];
     $query = "DELETE FROM `civicrm_value_donation_receipt_%d` WHERE `id` = %d";
     $query = sprintf($query, self::$_custom_group_id, $this->Id);

@@ -255,4 +255,22 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   public function getID() {
     return 'PDF';
   }
+
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  public function checkRequirements() {
+    $result = array();
+
+    $result['is_error'] => FALSE;
+    $result['message'] => '';
+
+    //TODO
+
+    return $result;
+  }
 }

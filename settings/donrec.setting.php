@@ -75,4 +75,16 @@ return array(
     'description' => 'Copy text',
     'help_text' => 'TODO',
   ),
+  'pdfinfo_path' => array(
+    'group_name' => 'Donation Receipt Settings',
+    'group' => 'de.systopia',
+    'name' => 'pdfinfo_path',
+    'type' => 'String',
+    'default' => "/usr/bin/pdfinfo",
+    'add' => '4.3',
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'pdfinfo binary path',
+    'help_text' => 'TODO',
+  ),
  );

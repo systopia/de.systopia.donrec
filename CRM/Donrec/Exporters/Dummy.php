@@ -87,4 +87,15 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
   }
+
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  public function checkRequirements() {
+    return array('is_error' => FALSE);
+  }
 }

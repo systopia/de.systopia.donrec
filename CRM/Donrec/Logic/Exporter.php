@@ -83,6 +83,16 @@ abstract class CRM_Donrec_Logic_Exporter {
   abstract function wrapUp($snapshotId, $is_test, $is_bulk);
 
 
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  abstract function checkRequirements();
+
+
   // HELPERS
 
   /**

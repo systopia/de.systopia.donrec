@@ -113,7 +113,18 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
         $exporters = CRM_Donrec_Logic_Exporter::listExporters();
         foreach ($exporters as $exporter) {
           $classname = CRM_Donrec_Logic_Exporter::getClassForExporter($exporter);
-          $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions());
+          // check requirements
+          $instance = new $classname();
+          $result = $instance->checkRequirements();
+          $is_usable = TRUE;
+          $error_msg = "";
+
+          if ($result['is_error']) {
+            $is_usable = FALSE;
+            $error_msg = $result['message'];
+          }
+
+          $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions(), $is_usable, $error_msg);
         }
 
         $this->assign('exporters', $exp_array);
