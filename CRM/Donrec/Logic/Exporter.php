@@ -111,52 +111,6 @@ abstract class CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * will create an empty file for the exporter to overwrite
-   *
-   * @return NULL if not possible, e.g. when the name is already taken,
-   *         or   array(file_URL, file_id)
-   */
-  function createFile($file_name, $is_temp = FALSE) {
-    // TODO: make protected again
-    $config =  CRM_Core_Config::singleton();
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'get', $params);
-
-    if($result['is_error'] == 1 || $result['count'] > 0) {
-      return NULL;
-    }
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'create', $params);
-
-    if($result['is_error'] == 1) {
-      return NULL;
-    }
-
-    $entityFile = new CRM_Core_DAO_EntityFile();
-    $entityFile->file_id = $result['id'];
-    $entityFile->entity_id = 1;
-    $entityFile->entity_table = 'civicrm_contact';
-    $entityFile->save();
-
-    $dl_url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $entityFile->file_id . "&eid=1");
-    $result = array($dl_url, $entityFile->file_id);
-
-    return $result;
-  }
-
-  /**
    * create a log entry and add to the give reply
    */
   public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO) {

@@ -40,7 +40,6 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
 
         // set content type
         if (empty($_REQUEST['type'])) {
-          error_log(mime_content_type($filename));
           header('Content-Type: ' . mime_content_type($filename));
         } else {
           header('Content-Type: ' . $_REQUEST['type']);

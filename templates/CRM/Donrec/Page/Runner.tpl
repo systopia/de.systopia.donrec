@@ -101,7 +101,7 @@ function processDone(reply) {
   for (var exporter in reply.values.files) {
     var download = reply.values.files[exporter];
     cj('#donrec_buttons').append("                                                      \
-      <a class='button' href='" + download[0] + "' download='" + download[0] + "'>      \
+      <a class='button' href='" + download[1] + "' download='" + download[0] + "'>      \
         <span align='right'>                                                            \
           <div class='icon check-icon'></div>" + download_caption + exporter + "                    \
         </span>                                                                         \

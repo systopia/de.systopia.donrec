@@ -201,7 +201,6 @@
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully copied{/ts}", "{ts}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
                   cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
-                  console.log('done');
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
                 }

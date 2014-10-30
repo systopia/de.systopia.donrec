@@ -139,45 +139,51 @@ class CRM_Donrec_Logic_Engine {
     // create donation receipts
     if (!$is_test) {
       if(!$is_bulk) {
-      $receipt_params = array();
+        // THIS IS SINGLE PROCESSING
+        $receipt_params = array();
         foreach ($chunk as $chunk_id => $chunk_item) {
           if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
             // get pdf file name from snapshot line
-            $result = $this->getPDF($chunk_item['id']);
-            if($result) {
-              $file = $this->createFile($result);
+            $pdf_file = $this->getPDF($chunk_item['id']);
+            if ($pdf_file) {
+              // get contact Id from chunk item
+              $contact_id = 1; // TODO: get contact_id
+              $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
               if (!empty($file)) {
-                $receipt_params['file_id'] = $file[1];
+                $receipt_params['file_id'] = $file['id'];
               }
             }
           }
           CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
         }
+
       } else {
-        // TODO: Niko - Doku
-         $receipt_params = array();
-         $line_ids = array();
-         foreach ($chunk as $chunk_id => $chunk_items) {
+        // THIS IS BULK PROCESSING
+        $receipt_params = array();
+        $line_ids = array();
+        foreach ($chunk as $chunk_id => $chunk_items) {
           foreach ($chunk_items as $key => $chunk_item) {
-           $line_ids[] = $chunk_item['id'];
+            $line_ids[] = $chunk_item['id'];
           }
-         if(!empty($line_ids)) {
-           if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-             // get pdf file name from snapshot line
-             $result = $this->getPDF($chunk_items[0]['id']);
-             if($result) {
-               $file = $this->createFile($result);
-               if (!empty($file)) {
-                 $receipt_params['file_id'] = $file[1];
-               }
-             }
-           }
-           $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $line_ids, $receipt_params);
-           if(!$result) {
-             error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
-           }
-           $line_ids = array();
-         }
+          if (!empty($line_ids)) {
+            if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+              // get pdf file name from snapshot line
+              $pdf_file = $this->getPDF($chunk_items[0]['id']);
+              if ($pdf_file) {
+                // get contact Id from chunk item
+                $contact_id = 1; // TODO: get contact_id
+                $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
+                if (!empty($file)) {
+                  $receipt_params['file_id'] = $file['id'];
+                }
+              }
+            }
+            $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $line_ids, $receipt_params);
+            if(!$result) {
+              error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
+            }
+            $line_ids = array();
+          }
         }
       }
     }
@@ -286,47 +292,5 @@ class CRM_Donrec_Logic_Engine {
     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
     $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
     return $filename;
-  }
-
-  /**
-   * will save the file name to reference it from an integer
-   *
-   * @return NULL if not possible, e.g. when the name is already taken,
-   *         or   array(file_URL, file_id)
-   */
-  protected function createFile($file_name, $is_temp = FALSE) {
-    $config =  CRM_Core_Config::singleton();
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'get', $params);
-    if($result['is_error'] == 1 || $result['count'] > 0) {
-      return NULL;
-    }
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'create', $params);
-    if($result['is_error'] == 1) {
-      return NULL;
-    }
-
-    $entityFile = new CRM_Core_DAO_EntityFile();
-    $entityFile->file_id = $result['id'];
-    $entityFile->entity_id = 1;
-    $entityFile->entity_table = 'civicrm_contact';
-    $entityFile->save();
-
-    $dl_url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $entityFile->file_id . "&eid=1");
-    $result = array($dl_url, $entityFile->file_id);
-    return $result;
   }
 }

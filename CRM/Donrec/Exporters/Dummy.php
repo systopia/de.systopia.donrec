@@ -84,14 +84,6 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    */
   public function wrapUp($chunk, $is_test, $is_bulk) {
     $reply = array();
-
-    $file = $this->createFile('dummy_test.txt', TRUE);
-    if (!empty($file)) {
-      $reply['download_name'] = $file[0];
-      $reply['download_url'] = $file[1];
-    }
-    usleep(1000);
-
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
   }

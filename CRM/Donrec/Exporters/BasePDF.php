@@ -203,7 +203,8 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName("donrec.zip");
+    $preferredFileName = ts("donation_receipts.zip");
+    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
     $fileURL = $config->customFileUploadDir . $archiveFileName;
     $zip = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
@@ -230,11 +231,10 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       return $reply;
     }
 
-
-    $file = $this->createFile($archiveFileName);
+    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName);
     if (!empty($file)) {
-      $reply['download_name'] = $file[0];
-      $reply['download_url'] = $file[1];
+      $reply['download_name'] = $preferredFileName;
+      $reply['download_url'] = $file;
     }
 
     // remove loose pdf files or store them

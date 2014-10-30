@@ -188,45 +188,9 @@ class CRM_Utils_DonrecHelper
   }
 
   /**
-   * Create civicrm_file
-   *
-   * @return NULL if not possible, e.g. when the name is already taken,
-   *         or   array(file_URL, file_id)
+   * Convert file-id to url (maybe there is a better place for this method...)
+   * @return file-url
    */
-  public static function createFile($file_name) {
-    $config =  CRM_Core_Config::singleton();
-    $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file_name;
-
-    $params = array(
-      'version' => 3,
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'get', $params);
-
-    if($result['is_error'] == 1 || $result['count'] > 0) {
-      return NULL;
-    }
-
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'uri' => $file_name
-    );
-    $result = civicrm_api('File', 'create', $params);
-
-    if($result['is_error'] == 1) {
-      return NULL;
-    }
-
-    return array($file, $result['id']);
-  }
-
-    /**
-  * Convert file-id to url (maybe there is a better place for this method...)
-  * @return file-url
-  */
   public static function fileUriToUrl($id) {
     $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $id . "&eid=1");
     return $url;
