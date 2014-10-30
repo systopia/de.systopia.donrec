@@ -96,7 +96,8 @@ function processReply(reply) {
 function processDone(reply) {
   cj('#donrec_buttons').show();
   cj('#donrec_instructions').text(instructions_done);
-
+  cj("#progressbar").progressbar("disable");
+  
   // add download buttons for all files
   for (var exporter in reply.values.files) {
     var download = reply.values.files[exporter];
