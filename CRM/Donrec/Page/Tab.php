@@ -26,8 +26,8 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     }
 
     // permissions
-    $this->assign('is_admin', CRM_Core_Permission::check('delete receipts'));
-    $this->assign('has_permissions', CRM_Core_Permission::check('edit, reset or correct receipts'));
+    $this->assign('is_admin', CRM_Core_Permission::check('administer receipts'));
+    $this->assign('has_permissions', CRM_Core_Permission::check('view receipts'));
     // do we keep original pdf files?
     $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 
