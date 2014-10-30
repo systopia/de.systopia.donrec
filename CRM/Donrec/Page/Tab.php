@@ -14,7 +14,7 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
     $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
 
-    if($contact_id) {
+    if($contact_id && CRM_Core_Permission::check('view receipts')) {
       $params = array();
       $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
       $display_receipts = array();
@@ -25,8 +25,9 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       $this->assign('display_receipts', $display_receipts);
     }
 
-    // admin only
-    $this->assign('is_admin', CRM_Core_Permission::check('administer CiviCRM'));
+    // permissions
+    $this->assign('is_admin', CRM_Core_Permission::check('administer receipts'));
+    $this->assign('has_permissions', CRM_Core_Permission::check('view receipts'));
     // do we keep original pdf files?
     $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 

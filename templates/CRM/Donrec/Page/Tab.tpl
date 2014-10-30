@@ -8,7 +8,9 @@
 +--------------------------------------------------------*}
 
 <div class="action-link">
-  <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts}Create new donation receipt{/ts}</span></a>
+  {if call_user_func(array('CRM_Core_Permission','check'), 'view receipts') }
+    <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts}Create new donation receipt{/ts}</span></a>
+  {/if}
 </div>
 <div class="donrec-stats-block">
   <table>
@@ -82,22 +84,24 @@
       </td>
       <td>
         <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
-        {if $receipt.status == 'ORIGINAL'}
-        <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
-        <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+        {if $receipt.status == 'ORIGINAL' && $has_permissions}
+          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         {/if}
-        {if $is_admin}<a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>{/if}
+        {if $is_admin}
+          <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+          <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>
+        {/if}
 
         {*ALTERNATIVELY: CiviCRM List style: if $receipt.original_file}
           <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts}View{/ts}</a>
         {else}
           <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="#">{ts}View{/ts}</a>
         {/if}
-        {if $receipt.status == 'ORIGINAL'}
+        {if $receipt.status == 'ORIGINAL' && $has_permissions}
           <a id="copy_receipt_{$receipt_id}" title="{ts}Create copy{/ts}" class="action-item" href="#">{ts}Create copy{/ts}</a>
-          <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
         {/if}
         {if $is_admin}
+          <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
           <a id="delete_receipt_{$receipt_id}" title="{ts}Delete{/ts}" class="action-item" href="#">{ts}Delete{/ts}</a>
         {/if*}
       </td>
@@ -166,6 +170,7 @@
         }
 
     });
+    {/literal}{if $is_admin}{literal}
     // called for every withdraw-button
     cj('.donrec-stats-block a[id^="withdraw_receipt_"]').click(function() {
         // calculate receipt id
@@ -188,6 +193,7 @@
         }
 
     });
+    {/literal}{/if}{if $has_permissions}{literal}
     // called for every copy-button
     cj('.donrec-stats-block a[id^="copy_receipt_"]').click(function() {
         // calculate receipt id
@@ -210,7 +216,7 @@
         }
 
     });
-    {/literal}{if $is_admin}{literal}
+    {/literal}{/if}{if $is_admin}{literal}
     // called for every delete-button
     cj('.donrec-stats-block a[id^="delete_receipt_"]').click(function() {
         // calculate receipt id

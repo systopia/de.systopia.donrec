@@ -13,11 +13,11 @@
 * This class handles form input for the contribution creation task
 */
 class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
-  // TODO: rename? 
-  
+  // TODO: rename?
+
   function run() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
-    
+
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
 
@@ -96,7 +96,7 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
       $this->assign('conflict_error', $conflict[1]);
       $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search'));
 
-      if(CRM_Core_Permission::check('administer CiviCRM')) {
+      if(CRM_Core_Permission::check('delete receipts')) {
         $this->assign('is_admin', CRM_Utils_System::url('civicrm/contact/search'));
         $this->assign('return_to', $conflict[2][0]);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
