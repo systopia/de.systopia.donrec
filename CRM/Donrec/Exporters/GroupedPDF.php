@@ -2,16 +2,82 @@
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2014 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)             |
+| Author: N. Bochan (bochan -at- systopia.de)            |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
 /**
- * This is the PDF exporter base class
+ * Exporter for GROUPED, ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
+class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
+
+  /**
+   * @return the display name
+   */
+  static function name() {
+    return ts('Individual PDFs sorted by page count');
+  }
+
+  /**
+   * @return a html snippet that defines the options as form elements
+   */
+  static function htmlOptions() {
+    return '';
+  }
+
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  public function checkRequirements() {
+    $result = array();
+
+    $result['is_error'] = FALSE;
+    $result['message'] = '';
+
+    /*
+      check if xpdf pdfinfo is available
+    */
+    $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+    if(!empty($pdfinfo_path)) {
+        // "ping" pdfinfo
+        $cmd = escapeshellcmd($pdfinfo_path . ' -v') . ' 2>&1';
+        exec($cmd, $output, $ret_status);
+
+        // check version
+        if (!empty($output) && preg_match('/pdfinfo version ([0-9]+\.[0-9]+\.[0-9]+)/', $output[0], $matches)) {
+          $pdfinfo_version = $matches[1];
+          if(!empty($matches) && count($matches) == 2) {
+            if (version_compare($pdfinfo_version, '0.24.5') >= 0) {
+              $result['message'] = "using pdfinfo $pdfinfo_version";
+            }else{
+              $result['is_error'] = TRUE;
+              $result['message'] = "pdfinfo $pdfinfo_version is not supported";
+            }
+          }else{
+            $result['is_error'] = TRUE;
+            $result['message'] = "found pdfinfo but could not retrieve version";
+          }
+        }else{
+          $result['is_error'] = TRUE;
+          if($ret_status == 126) { //	126 - Permission problem or command is not an executable
+            $result['message'] = "pdfinfo is not executable. check permissions";
+          }else{
+            $result['message'] = "pdfinfo ping failed";
+          }
+        }
+    }else{
+        $result['is_error'] = TRUE;
+        $result['message'] = 'pdfinfo path is not set';
+    }
+    return $result;
+  }
+
 
   public function exportSingle($chunk, $snapshotId, $is_test) {
     $reply = array();
@@ -88,6 +154,13 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       }else{
         // save file names for wrapup()
         $this->setProcessInformation($chunk_item['id'], $result);
+        // get pdf page count
+        $config = CRM_Core_Config::singleton();
+        $filePath = $config->customFileUploadDir . $result;
+        $pageCount = $this->getPDFPageCount($filePath);
+        error_log("page count for $filePath: $pageCount");
+        //TODO setProcessInformation
+
         $success++;
       }
     }
@@ -176,9 +249,15 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     if ($result === FALSE) {
       $failures++;
     }else{
+      $config = CRM_Core_Config::singleton();
       // save file names for wrapup()
       foreach($chunk_items as $key => $item) {
         $this->setProcessInformation($item['id'], $result);
+        // get pdf page count
+        $filePath = $config->customFileUploadDir . $result;
+        $pageCount = $this->getPDFPageCount($filePath);
+        error_log("page count for $filePath: $pageCount");
+        //TODO setProcessInformation
       }
       $success++;
     }
@@ -250,25 +329,30 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * @return the ID of this importer class
-   */
-  public function getID() {
-    return 'PDF';
-  }
-
-  /**
-   * check whether all requirements are met to run this exporter
+   * get page count for a pdf file
    *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @return int page count (-1 if there is an error)
    */
-  public function checkRequirements() {
-    $result = array();
+  private function getPDFPageCount($document)
+  {
+      $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+      $cmd = escapeshellarg($pdfinfo_path);
+      $document = escapeshellarg($document);
+      $cmd = escapeshellcmd("$cmd $document") . " 2>&1";
+      error_log($cmd);
+      exec($cmd, $output);
 
-    $result['is_error'] = FALSE;
-    $result['message'] = '';
+      $count = 0;
+      foreach($output as $line)
+      {
+          // Extract the number
+          if(preg_match("/Pages:\s*(\d+)/i", $line, $matches) === 1)
+          {
+              return intval($matches[1]);
+          }
+      }
 
-    return $result;
+      return -1;
   }
+
 }

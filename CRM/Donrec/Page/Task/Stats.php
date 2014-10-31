@@ -118,13 +118,16 @@ class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
           $result = $instance->checkRequirements();
           $is_usable = TRUE;
           $error_msg = "";
+          $info_msg = "";
 
           if ($result['is_error']) {
             $is_usable = FALSE;
             $error_msg = $result['message'];
+          }else if(!empty($result['message'])){
+            $info_msg = $result['message'];
           }
 
-          $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions(), $is_usable, $error_msg);
+          $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions(), $is_usable, $error_msg, $info_msg);
         }
 
         $this->assign('exporters', $exp_array);
