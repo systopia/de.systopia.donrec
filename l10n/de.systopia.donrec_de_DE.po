@@ -486,7 +486,7 @@ msgstr "Ausgewählte Kontakte"
 
 #: CRM/Donrec/Page/Runner.php
 msgid "Creating Donation Receipts"
-msgstr "Zuwendungsbescheinigungen Generierern"
+msgstr "Zuwendungsbescheinigungen Generieren"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Donation Receipts Settings"
