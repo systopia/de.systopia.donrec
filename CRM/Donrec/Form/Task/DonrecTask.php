@@ -122,9 +122,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
           LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id`
           WHERE `contact_id` IN ($contactIds)
           $query_date_limit
-          AND (`non_deductible_amount` < `total_amount` OR non_deductible_amount IS NULL)
+          AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
           AND `contribution_status_id` = 1
           AND `is_test` = 0
+          AND `currency` = 'EUR'
           AND (`b1`.`id` IS NULL
           OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
           ";
