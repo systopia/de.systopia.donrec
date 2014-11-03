@@ -153,13 +153,11 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         $failures++;
       }else{
         // save file names for wrapup()
-        $this->setProcessInformation($chunk_item['id'], $result);
         // get pdf page count
         $config = CRM_Core_Config::singleton();
         $filePath = $config->customFileUploadDir . $result;
         $pageCount = $this->getPDFPageCount($filePath);
-        error_log("page count for $filePath: $pageCount");
-        //TODO setProcessInformation
+        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result, 'pdf_pagecount' => $pageCount));
 
         $success++;
       }
@@ -252,12 +250,10 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       $config = CRM_Core_Config::singleton();
       // save file names for wrapup()
       foreach($chunk_items as $key => $item) {
-        $this->setProcessInformation($item['id'], $result);
         // get pdf page count
         $filePath = $config->customFileUploadDir . $result;
         $pageCount = $this->getPDFPageCount($filePath);
-        error_log("page count for $filePath: $pageCount");
-        //TODO setProcessInformation
+        $this->updateProcessInformation($item['id'], array('pdf_file' => $result, 'pdf_pagecount' => $pageCount));
       }
       $success++;
     }
@@ -285,24 +281,69 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $preferredFileName = ts("donation_receipts.zip");
     $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
     $fileURL = $config->customFileUploadDir . $archiveFileName;
-    $zip = new ZipArchive;
+    $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
     $toRemove = array();
 
-    if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
-      foreach($ids as $id) {
-        $proc_info = $snapshot->getProcessInformation($id);
-        if(!empty($proc_info)) {
-          $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
-          if ($filename) {
-            $toRemove[$id] = $config->customFileUploadDir . $filename;
-            $opResult = $zip->addFile($config->customFileUploadDir . $filename, basename($filename)) ;
-            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-          }
+    // Sort array by page count
+    $pageCountArr = array();
+    foreach($ids as $id) {
+      $proc_info = $snapshot->getProcessInformation($id);
+      if(!empty($proc_info)) {
+        $pageCount = isset($proc_info['PDF']['pdf_pagecount']) ? $proc_info['PDF']['pdf_pagecount'] : FALSE;
+        $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
+        if ($pageCount) {
+          $pageCountArr[$pageCount][] = array($pageCount, $id, $filename);
         }
       }
-      if(!$zip->close()) {
+    }
+
+    // create and open a zip file for each (page count) group
+    $zipPool = array();
+    $pageCountArrKeys = array_keys($pageCountArr);
+    foreach($pageCountArrKeys as $groupId => $value) {
+      $tmp = new ZipArchive;
+      $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
+      $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
+      $pcFileURL = $config->customFileUploadDir . $pcArchiveFileName;
+
+      if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
+        $zipPool[$value] = array('handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
+      }else{
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file %s', $fileURL), CRM_Donrec_Logic_Exporter::FATAL);
+        return $reply;
+      }
+    }
+
+    // add files to sub-archives
+    foreach($pageCountArr as $entry) {
+      foreach ($entry as $item) {
+        if($item[0] && $item[2]) { // if page count and file name exists
+          $opResult = $zipPool[$item[0]]['handle']->addFile($config->customFileUploadDir . $item[2], basename($item[2])) ;
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add " . $item[2] . " to sub-archive $pcArchiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        }
+      }
+    }
+
+    // close sub-archives
+    foreach($zipPool as $archive) {
+      if(!$archive['handle']->close()) {
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'archive->close() returned false for file' . $archive['file'], CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+      }
+    }
+
+    // open main archive and add sub-archives
+    if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
+      foreach($zipPool as $zip) {
+        $filename = $zip['file'];
+        if ($filename) {
+          $toRemove[] = $config->customFileUploadDir . $filename;
+          $opResult = $outerArchive->addFile($config->customFileUploadDir . $filename, $zip['pref_name']) ;
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        }
+      }
+      if(!$outerArchive->close()) {
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
       }
     }else{
@@ -318,7 +359,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
 
     // remove loose pdf files or store them
     if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
       foreach($toRemove as $file) {
         unlink($file);
       }
@@ -339,7 +380,6 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       $cmd = escapeshellarg($pdfinfo_path);
       $document = escapeshellarg($document);
       $cmd = escapeshellcmd("$cmd $document") . " 2>&1";
-      error_log($cmd);
       exec($cmd, $output);
 
       $count = 0;

@@ -47,7 +47,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
     // edit the process information
     foreach ($chunk as $chunk_id => $chunk_item) {
-      $this->setProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
+      $this->updateProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
     }
 
     usleep(300);

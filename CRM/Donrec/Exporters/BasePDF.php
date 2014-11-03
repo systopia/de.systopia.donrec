@@ -87,7 +87,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $failures++;
       }else{
         // save file names for wrapup()
-        $this->setProcessInformation($chunk_item['id'], $result);
+        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
         $success++;
       }
     }
@@ -178,7 +178,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     }else{
       // save file names for wrapup()
       foreach($chunk_items as $key => $item) {
-        $this->setProcessInformation($item['id'], $result);
+        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
       }
       $success++;
     }
@@ -215,7 +215,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       foreach($ids as $id) {
         $proc_info = $snapshot->getProcessInformation($id);
         if(!empty($proc_info)) {
-          $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
+          $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
           if ($filename) {
             $toRemove[$id] = $config->customFileUploadDir . $filename;
             $opResult = $zip->addFile($config->customFileUploadDir . $filename, basename($filename)) ;
