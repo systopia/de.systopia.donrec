@@ -238,16 +238,14 @@ class CRM_Donrec_Logic_Template
     $html = $smarty->fetch("string:$html");
 
     // set up file names
-    $config = CRM_Core_Config::singleton();
-    $filename = CRM_Utils_DonrecHelper::makeFileName("donrec.pdf");
-    $filename_export = sprintf("%s%s", $config->customFileUploadDir, $filename);
+    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-")."{$values['contributor']['id']}-{$values['today']}", ".pdf");
 
     // render PDF receipt
     $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
     if($result) {
-      return $filename;
+      return $filename_export;
     }else{
-      $parameters['error'] = "Could not write file $filename";
+      $parameters['error'] = "Could not write file $filename_export";
       return FALSE;
     }
   }

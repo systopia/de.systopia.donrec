@@ -79,9 +79,33 @@ class CRM_Donrec_Logic_File {
       $entityFile->save();
     }
 
-    // create URL
-    $file['url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $file['id'] . "&eid=$contact_id");
+    // build reply
+    $reply = $file['values'];
+    $reply['url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $file['id'] . "&eid=$contact_id");
+    $reply['path'] = $newPath;
     
-    return $file;
+    return $reply;
+  }
+
+
+  /**
+   * Will create a suitable file for writing to
+   * 
+   * @param preferredName The preferred name. There will probably by a suffix appended to it
+   * 
+   * @return a string with a file path
+   */
+  public static function makeFileName($preferredName, $suffix='') {
+    // generate a uniq temp file
+    $new_file = tempnam(sys_get_temp_dir(), $preferredName . '-');
+
+    // append the suffix, if possible
+    $ideal_file = $new_file . $suffix;
+    if (!file_exists($ideal_file)) {
+      rename($new_file, $ideal_file);
+      return $ideal_file;
+    } else {
+      return $new_file;
+    }
   }
 }

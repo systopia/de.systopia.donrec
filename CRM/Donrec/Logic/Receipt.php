@@ -379,6 +379,7 @@ class CRM_Donrec_Logic_Receipt {
         receipt.`$receipt_fields[status]` AS `status`,
         receipt.`$receipt_fields[issued_on]` AS `issued_on`,
         receipt.`$receipt_fields[street_address]` AS `contributor__street_address`,
+        receipt.`entity_id` AS `contributor__id`,
         receipt.`$receipt_fields[supplemental_address_1]` AS `contributor__supplemental_address_1`,
         receipt.`$receipt_fields[supplemental_address_2]` AS `contributor__supplemental_address_2`,
         receipt.`$receipt_fields[supplemental_address_3]` AS `contributor__supplemental_address_3`,

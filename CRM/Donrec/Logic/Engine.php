@@ -152,6 +152,9 @@ class CRM_Donrec_Logic_Engine {
               if (!empty($file)) {
                 $receipt_params['file_id'] = $file['id'];
               }
+
+              // update PDF path
+              $this->setPDF($chunk_item['id'], $file['path']);
             }
           }
           CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
@@ -292,5 +295,14 @@ class CRM_Donrec_Logic_Engine {
     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
     $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
     return $filename;
+  }
+
+  /**
+  * get or create a pdf file for the snapshot line
+  */
+  public function setPDF($snapshot_line_id, $file) {
+    $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
+    $proc_info['PDF']['pdf_file'] = $file;
+    $this->snapshot->updateProcessInformation($snapshot_line_id, $proc_info);
   }
 }

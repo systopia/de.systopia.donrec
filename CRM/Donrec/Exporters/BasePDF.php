@@ -204,21 +204,20 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $config = CRM_Core_Config::singleton();
 
     $preferredFileName = ts("donation_receipts.zip");
-    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-    $fileURL = $config->customFileUploadDir . $archiveFileName;
-    $zip = new ZipArchive;
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts"), ".zip");
+    $zip = new ZipArchive();
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
     $toRemove = array();
 
-    if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
+    if ($zip->open($archiveFileName, ZIPARCHIVE::CREATE) === TRUE) {
       foreach($ids as $id) {
         $proc_info = $snapshot->getProcessInformation($id);
         if(!empty($proc_info)) {
           $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
           if ($filename) {
-            $toRemove[$id] = $config->customFileUploadDir . $filename;
-            $opResult = $zip->addFile($config->customFileUploadDir . $filename, basename($filename)) ;
+            $toRemove[$id] = $filename;
+            $opResult = $zip->addFile($filename, basename($filename)) ;
             CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
           }
         }
@@ -227,11 +226,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
       }
     }else{
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::FATAL);
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::LOG_TYPE_FATAL);
       return $reply;
     }
 
-    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName);
+    $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
     if (!empty($file)) {
       $reply['download_name'] = $preferredFileName;
       $reply['download_url'] = $file;
