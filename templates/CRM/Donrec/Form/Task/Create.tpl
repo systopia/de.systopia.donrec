@@ -21,11 +21,14 @@
 	<tr>
 	  <td>
 	  </td>
-		<td>
-		  <span id="custom_period">
-			  {$form.donrec_contribution_horizon_from.label} {include file="CRM/common/jcalendar.tpl" elementName='donrec_contribution_horizon_from'} {$form.donrec_contribution_horizon_to.label} {include file="CRM/common/jcalendar.tpl" elementName='donrec_contribution_horizon_to'}
-			</span>
-		</td>
+    <td>
+      <div id="custom_period">
+        {$form.donrec_contribution_horizon_from.label}
+        {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_from}
+        {$form.donrec_contribution_horizon_to.label}
+        {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_to}
+      </div>
+    </td>
 	</tr>
 	<tr>
 		<td></td>
@@ -58,15 +61,14 @@
         custom_period.show();
         break;
       case "current_year":
+        from.datepicker('setDate', new Date(current_year, 1, 1));
+        to.datepicker('setDate', new Date(current_year, 12, 31));
         custom_period.hide();
-        from.val(new Date(current_year, 1, 1));
-        to.val(new Date(current_year, 12, 31));
-        to_display.val("");
         break;
       case "last_year":
+        from.datepicker('setDate', new Date(current_year-1, 1, 1));
+        to.datepicker('setDate', new Date(current_year-1, 12, 31));
         custom_period.hide();
-        from.val(new Date(current_year - 1, 1, 1));
-        to.val(new Date(current_year - 1, 12, 31));
         break;
       }
     }
