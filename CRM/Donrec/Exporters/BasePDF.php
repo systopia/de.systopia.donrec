@@ -58,18 +58,11 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       }
       $contrib = $contrib['values'][0];
 
-      $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'id' => $contrib['contact_id'],
-      );
-      $contributor_contact = civicrm_api('Contact', 'get', $params);
-      if ($contributor_contact['is_error'] != 0 || $contributor_contact['count'] != 1) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contact'), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+      $contributor_contact = civicrm_api('Contact', 'getsingle', array('id'=>$contrib['contact_id'], 'version'=>3));
+      if (!empty($contributor_contact['is_error'])) {
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contact').'<br/>'.$contributor_contact['error_message'], CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
         return $reply;
       }
-      $contributor_contact = $contributor_contact['values'][0];
 
       // assign all unique template variables
       $values['contributor'] = $contributor_contact;
