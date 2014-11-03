@@ -245,16 +245,16 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
         foreach ($forbidden as $col) {
           if ($result->$col != $params[$col]) {
             // we need a extra-check for dates (which are not in the same format)
-            if (strpos($col, 'date') && preg_replace('/[-: ]/', '', $result->$col) == $params[$col]) {
+            if (strpos($col, 'date')) {
+              if($col == 'receive_date' && substr(preg_replace('/[-: ]/', '', $result->$col), 0, -2) . "00" == $params[$col]) {
                 continue;
+              }
             }
-            error_log("The column $col of this contribution ($id) must not be changed because it has a receipt or is going to be receipted!");
-            die;
+            CRM_Utils_DonrecHelper::exitWithMessage("The column $col of this contribution ($id) must not be changed because it has a receipt or is going to be receipted!");
           }
         }
       } elseif ($op == 'delete') {
-        error_log("This contribution ($id) must not be deleted because it has a receipt or is going to be receipted!");
-        die;
+        CRM_Utils_DonrecHelper::exitWithMessage("This contribution ($id) must not be deleted because it has a receipt or is going to be receipted!");
       }
     }
   }

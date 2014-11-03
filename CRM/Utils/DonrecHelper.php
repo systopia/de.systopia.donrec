@@ -207,4 +207,16 @@ class CRM_Utils_DonrecHelper
     return $url;
   }
 
+  /**
+  * Calls die() with a pretty template (WIP)
+  *
+  */
+  public static function exitWithMessage($error_message) {
+    $template = "<html>
+                 <head><title>Donation Receipt - Fatal Error</title></head>
+                 <body><p>$error_message</p></body>
+                 </html>";
+    exit($template);
+  }
+
 }
