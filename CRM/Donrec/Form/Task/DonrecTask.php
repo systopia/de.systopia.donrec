@@ -25,8 +25,6 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $options = array(
        'current_year' => ts('current year'),
        'last_year' => ts('last year'),
-       //'last_two_years' => ts('last two years'),
-       //'unlimited' => ts('unlimited'),
        'customized_period' => ts('specify period')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);

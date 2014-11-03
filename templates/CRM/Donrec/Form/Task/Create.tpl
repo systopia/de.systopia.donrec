@@ -42,7 +42,7 @@
 
 {literal}
 <script type="text/javascript">
-  (function(cj) {
+  cj(document).ready(function() {
     var time_period = cj('#time_period');
     var custom_period = cj('#custom_period');
     var current_year = (new Date).getFullYear();
@@ -61,13 +61,15 @@
         custom_period.show();
         break;
       case "current_year":
-        from.datepicker('setDate', new Date(current_year, 1, 1));
-        to.datepicker('setDate', new Date(current_year, 12, 31));
+        console.log('this_year');
+        from_display.datepicker('setDate', new Date(current_year, 0, 1));
+        to_display.datepicker('setDate', new Date(current_year, 11, 31));
         custom_period.hide();
         break;
       case "last_year":
-        from.datepicker('setDate', new Date(current_year-1, 1, 1));
-        to.datepicker('setDate', new Date(current_year-1, 12, 31));
+        console.log('last_year');
+        from_display.datepicker('setDate', new Date(current_year-1, 0, 1));
+        to_display.datepicker('setDate', new Date(current_year-1, 11, 31));
         custom_period.hide();
         break;
       }
@@ -78,6 +80,6 @@
 
     //on change
     time_period.change(set_period);
-  })(cj);
+  });
 </script>
 {/literal}
