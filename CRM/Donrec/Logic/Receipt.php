@@ -387,8 +387,8 @@ class CRM_Donrec_Logic_Receipt {
         receipt.`$receipt_fields[country]` AS `country`,
         contact.`display_name` AS `contributor__display_name`,
         SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
-        MIN(item.`$item_fields[issued_on]`) AS `date_from`,
-        MAX(item.`$item_fields[issued_on]`) AS `date_to`,
+        MIN(item.`$item_fields[receive_date]`) AS `date_from`,
+        MAX(item.`$item_fields[receive_date]`) AS `date_to`,
         item.`$item_fields[issued_on]` AS `currency`
       FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
       RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
@@ -448,8 +448,8 @@ class CRM_Donrec_Logic_Receipt {
         receipt.`$receipt_fields[status]` AS `status`,
         receipt.`$receipt_fields[issued_on]` AS `issued_on`,
         SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
-        MIN(item.`$item_fields[issued_on]`) AS `date_from`,
-        MAX(item.`$item_fields[issued_on]`) AS `date_to`,
+        MIN(item.`$item_fields[receive_date]`) AS `date_from`,
+        MAX(item.`$item_fields[receive_date]`) AS `date_to`,
         item.`$item_fields[currency]` AS `currency`,
         receipt.`$receipt_fields[street_address]` AS `receipt_address__street_address`,
         receipt.`$receipt_fields[supplemental_address_1]` AS `receipt_address__supplemental_address_1`,
