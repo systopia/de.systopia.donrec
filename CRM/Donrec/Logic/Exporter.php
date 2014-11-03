@@ -25,7 +25,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    * returns the list of implemented exporters
    */
   public static function listExporters() {
-    return array('Dummy', 'PDF');
+    return array('Dummy', 'PDF', 'GroupedPDF');
   }
 
   /**
@@ -83,6 +83,16 @@ abstract class CRM_Donrec_Logic_Exporter {
   abstract function wrapUp($snapshotId, $is_test, $is_bulk);
 
 
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  abstract function checkRequirements();
+
+
   // HELPERS
 
   /**
@@ -102,12 +112,8 @@ abstract class CRM_Donrec_Logic_Exporter {
    * set the process information for this exporter type
    *  for the given snapshot item
    */
-   // TODO: rename to updateProcessInformations
-   // TODO: use $snapshot->updateProcessInformations()
-  protected function setProcessInformation($snapshot_item_id, $values) {
-    $all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
-    $all_process_information[$this->getID()] = $values;
-    $this->engine->getSnapshot()->setProcessInformation($snapshot_item_id, $all_process_information);
+  protected function updateProcessInformation($snapshot_item_id, $array) {
+    $this->engine->getSnapshot()->updateProcessInformation($snapshot_item_id, array($this->getID() => $array));
   }
 
   /**

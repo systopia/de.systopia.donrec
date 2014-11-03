@@ -23,6 +23,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('text', 'packet_size', ts('Packet size'));
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     $this->addElement('checkbox','financial_types_all'); // "
+    $this->addElement('text', 'pdfinfo_path', ts('pdfinfo path'));
 
     // add a checkbox for every contribution type
     $ct = CRM_Donrec_Logic_Settings::getContributionTypes();
@@ -43,6 +44,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addRule('draft_text', ts('Draft text can only contain text'), 'lettersonly');
     $this->addRule('copy_text', ts('Copy text can only contain text'), 'lettersonly');
     $this->addRule('packet_size', ts('Packet size can only contain positive integers'), 'onlypositive');
+    //TODO add rule for unix paths
   }
 
   function preProcess() {
@@ -51,7 +53,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->setDefaults(array(
         'draft_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text'),
         'copy_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text'),
-        'packet_size' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size')
+        'packet_size' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'),
+        'pdfinfo_path' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path')
       ));
   }
 
@@ -67,6 +70,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Core_BAO_Setting::setItem($values['copy_text'],'Donation Receipt Settings', 'copy_text');
     }
     CRM_Core_BAO_Setting::setItem($values['packet_size'],'Donation Receipt Settings', 'packet_size');
+    if ($values['pdfinfo_path']){
+      CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
+    }
 
     // save checkboxes
     CRM_Core_BAO_Setting::setItem(!empty($values['store_pdf']),'Donation Receipt Settings', 'store_original_pdf');

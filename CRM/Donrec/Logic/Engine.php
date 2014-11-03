@@ -290,7 +290,7 @@ class CRM_Donrec_Logic_Engine {
   */
   public function getPDF($snapshot_line_id) {
     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
-    $filename = isset($proc_info['PDF']) ? $proc_info['PDF'] : FALSE;
+    $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
     return $filename;
   }
 }

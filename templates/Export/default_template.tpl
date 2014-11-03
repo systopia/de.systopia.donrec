@@ -278,9 +278,6 @@ zurückliegt (BMF vom 15.12.1994 – BStBl I S. 884).</p>
   {/foreach}
   <tr id='totals'><th colspan='3'>Gesamtsumme</th><td class='amount'><span class='value'>**{$total}</span>&nbsp;<span class='unit'>&euro;</span></td></tr>
 </table>
-{else}
-  <p style="visibility:hidden">foobar</p>
-
 </div>
 {/if}
 </body>

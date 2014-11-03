@@ -47,7 +47,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
     // edit the process information
     foreach ($chunk as $chunk_id => $chunk_item) {
-      $this->setProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
+      $this->updateProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
     }
 
     usleep(300);
@@ -86,5 +86,16 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
     $reply = array();
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
+  }
+
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  public function checkRequirements() {
+    return array('is_error' => FALSE);
   }
 }

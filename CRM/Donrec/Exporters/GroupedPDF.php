@@ -2,16 +2,82 @@
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2014 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)             |
+| Author: N. Bochan (bochan -at- systopia.de)            |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | TODO: License                                          |
 +--------------------------------------------------------*/
 
 /**
- * This is the PDF exporter base class
+ * Exporter for GROUPED, ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
+class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
+
+  /**
+   * @return the display name
+   */
+  static function name() {
+    return ts('Individual PDFs sorted by page count');
+  }
+
+  /**
+   * @return a html snippet that defines the options as form elements
+   */
+  static function htmlOptions() {
+    return '';
+  }
+
+  /**
+   * check whether all requirements are met to run this exporter
+   *
+   * @return array:
+   *         'is_error': set if there is a fatal error
+   *         'message': error message
+   */
+  public function checkRequirements() {
+    $result = array();
+
+    $result['is_error'] = FALSE;
+    $result['message'] = '';
+
+    /*
+      check if xpdf pdfinfo is available
+    */
+    $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+    if(!empty($pdfinfo_path)) {
+        // "ping" pdfinfo
+        $cmd = escapeshellcmd($pdfinfo_path . ' -v') . ' 2>&1';
+        exec($cmd, $output, $ret_status);
+
+        // check version
+        if (!empty($output) && preg_match('/pdfinfo version ([0-9]+\.[0-9]+\.[0-9]+)/', $output[0], $matches)) {
+          $pdfinfo_version = $matches[1];
+          if(!empty($matches) && count($matches) == 2) {
+            if (version_compare($pdfinfo_version, '0.24.5') >= 0) {
+              $result['message'] = "using pdfinfo $pdfinfo_version";
+            }else{
+              $result['is_error'] = TRUE;
+              $result['message'] = "pdfinfo $pdfinfo_version is not supported";
+            }
+          }else{
+            $result['is_error'] = TRUE;
+            $result['message'] = "found pdfinfo but could not retrieve version";
+          }
+        }else{
+          $result['is_error'] = TRUE;
+          if($ret_status == 126) { //	126 - Permission problem or command is not an executable
+            $result['message'] = "pdfinfo is not executable. check permissions";
+          }else{
+            $result['message'] = "pdfinfo ping failed";
+          }
+        }
+    }else{
+        $result['is_error'] = TRUE;
+        $result['message'] = 'pdfinfo path is not set';
+    }
+    return $result;
+  }
+
 
   public function exportSingle($chunk, $snapshotId, $is_test) {
     $reply = array();
@@ -87,7 +153,12 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $failures++;
       }else{
         // save file names for wrapup()
-        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
+        // get pdf page count
+        $config = CRM_Core_Config::singleton();
+        $filePath = $config->customFileUploadDir . $result;
+        $pageCount = $this->getPDFPageCount($filePath);
+        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result, 'pdf_pagecount' => $pageCount));
+
         $success++;
       }
     }
@@ -176,9 +247,13 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     if ($result === FALSE) {
       $failures++;
     }else{
+      $config = CRM_Core_Config::singleton();
       // save file names for wrapup()
       foreach($chunk_items as $key => $item) {
-        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
+        // get pdf page count
+        $filePath = $config->customFileUploadDir . $result;
+        $pageCount = $this->getPDFPageCount($filePath);
+        $this->updateProcessInformation($item['id'], array('pdf_file' => $result, 'pdf_pagecount' => $pageCount));
       }
       $success++;
     }
@@ -206,24 +281,69 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $preferredFileName = ts("donation_receipts.zip");
     $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
     $fileURL = $config->customFileUploadDir . $archiveFileName;
-    $zip = new ZipArchive;
+    $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
     $toRemove = array();
 
-    if ($zip->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
-      foreach($ids as $id) {
-        $proc_info = $snapshot->getProcessInformation($id);
-        if(!empty($proc_info)) {
-          $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
-          if ($filename) {
-            $toRemove[$id] = $config->customFileUploadDir . $filename;
-            $opResult = $zip->addFile($config->customFileUploadDir . $filename, basename($filename)) ;
-            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-          }
+    // Sort array by page count
+    $pageCountArr = array();
+    foreach($ids as $id) {
+      $proc_info = $snapshot->getProcessInformation($id);
+      if(!empty($proc_info)) {
+        $pageCount = isset($proc_info['PDF']['pdf_pagecount']) ? $proc_info['PDF']['pdf_pagecount'] : FALSE;
+        $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
+        if ($pageCount) {
+          $pageCountArr[$pageCount][] = array($pageCount, $id, $filename);
         }
       }
-      if(!$zip->close()) {
+    }
+
+    // create and open a zip file for each (page count) group
+    $zipPool = array();
+    $pageCountArrKeys = array_keys($pageCountArr);
+    foreach($pageCountArrKeys as $groupId => $value) {
+      $tmp = new ZipArchive;
+      $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
+      $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
+      $pcFileURL = $config->customFileUploadDir . $pcArchiveFileName;
+
+      if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
+        $zipPool[$value] = array('handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
+      }else{
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file %s', $fileURL), CRM_Donrec_Logic_Exporter::FATAL);
+        return $reply;
+      }
+    }
+
+    // add files to sub-archives
+    foreach($pageCountArr as $entry) {
+      foreach ($entry as $item) {
+        if($item[0] && $item[2]) { // if page count and file name exists
+          $opResult = $zipPool[$item[0]]['handle']->addFile($config->customFileUploadDir . $item[2], basename($item[2])) ;
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add " . $item[2] . " to sub-archive $pcArchiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        }
+      }
+    }
+
+    // close sub-archives
+    foreach($zipPool as $archive) {
+      if(!$archive['handle']->close()) {
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'archive->close() returned false for file' . $archive['file'], CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+      }
+    }
+
+    // open main archive and add sub-archives
+    if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
+      foreach($zipPool as $zip) {
+        $filename = $zip['file'];
+        if ($filename) {
+          $toRemove[] = $config->customFileUploadDir . $filename;
+          $opResult = $outerArchive->addFile($config->customFileUploadDir . $filename, $zip['pref_name']) ;
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+        }
+      }
+      if(!$outerArchive->close()) {
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
       }
     }else{
@@ -239,7 +359,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
     // remove loose pdf files or store them
     if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
       foreach($toRemove as $file) {
         unlink($file);
       }
@@ -250,25 +370,29 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * @return the ID of this importer class
-   */
-  public function getID() {
-    return 'PDF';
-  }
-
-  /**
-   * check whether all requirements are met to run this exporter
+   * get page count for a pdf file
    *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @return int page count (-1 if there is an error)
    */
-  public function checkRequirements() {
-    $result = array();
+  private function getPDFPageCount($document)
+  {
+      $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+      $cmd = escapeshellarg($pdfinfo_path);
+      $document = escapeshellarg($document);
+      $cmd = escapeshellcmd("$cmd $document") . " 2>&1";
+      exec($cmd, $output);
 
-    $result['is_error'] = FALSE;
-    $result['message'] = '';
+      $count = 0;
+      foreach($output as $line)
+      {
+          // Extract the number
+          if(preg_match("/Pages:\s*(\d+)/i", $line, $matches) === 1)
+          {
+              return intval($matches[1]);
+          }
+      }
 
-    return $result;
+      return -1;
   }
+
 }
