@@ -58,9 +58,11 @@
 	<tr>
 		<td class="label">{ts}Donation receipt type{/ts}:</td>
 		<td>
-      <input {if $statistic.singleOrBulk == 'bulk'}disabled {elseif $statistic.singleOrBulk == 'single' || !$statistic.singleOrBulk}checked="checked" {/if}value="1" type="radio" id="donrec_type" name="donrec_type" class="form-radio"/><label for="donrec_type">{ts}single receipts{/ts}</label>
+      <input {if $statistic.singleOrBulk == 'bulk'}disabled {elseif $statistic.singleOrBulk == 'single' || !$statistic.singleOrBulk}checked="checked" {/if}value="1" type="radio" id="donrec_type_single" name="donrec_type" class="form-radio"/>
+      <label for="donrec_type_single">{ts}single receipts{/ts}</label>
       &nbsp;
-      <input {if $statistic.singleOrBulk == 'single'}disabled {elseif $statistic.singleOrBulk == 'bulk'}checked="checked" {/if}value="2" type="radio" id="donrec_type" name="donrec_type" class="form-radio" /><label for="donrec_type">{ts}bulk receipts{/ts}</label>
+      <input {if $statistic.singleOrBulk == 'single'}disabled {elseif $statistic.singleOrBulk == 'bulk'}checked="checked" {/if}value="2" type="radio" id="donrec_type_bulk" name="donrec_type" class="form-radio" />
+      <label for="donrec_type_bulk">{ts}bulk receipts{/ts}</label>
 		</td>
 	</tr>
 	<tr>
