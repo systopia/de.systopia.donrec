@@ -36,6 +36,9 @@
   </div>
   <div>
   	<h3>PDF</h3>
+    <div>
+      <input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/><label for="store_pdf"> {ts}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts}Draft Text{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
+    </div>
   	<div>
   		<div>
 					<table>
