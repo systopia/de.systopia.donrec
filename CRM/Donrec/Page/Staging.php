@@ -12,8 +12,7 @@
 /**
 * This class handles form input for the contribution creation task
 */
-class CRM_Donrec_Page_Task_Stats extends CRM_Core_Page {
-  // TODO: rename?
+class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
   function run() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
