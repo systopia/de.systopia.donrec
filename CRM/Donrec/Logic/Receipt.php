@@ -667,6 +667,9 @@ class CRM_Donrec_Logic_Receipt {
   */
   public function deleteOriginalFile() {
     $file_id = self::getOriginalFileId();
+    if (!$file_id) {
+      return FALSE;
+    }
     $receipt_fields = self::$_custom_fields;
     $receipt_group_id = self::$_custom_group_id;
     $receipt_id = $this->Id;
