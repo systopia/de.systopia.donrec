@@ -418,8 +418,7 @@ class CRM_Donrec_Logic_Receipt {
     if($values['status'] == 'COPY') {
       $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');
     } elseif ($values['status'] == 'WITHDRAW') {
-      //TODO
-      //$properties['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'withdraw_text');
+      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
     }
 
     return $values;
