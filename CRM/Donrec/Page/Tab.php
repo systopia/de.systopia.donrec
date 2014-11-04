@@ -26,6 +26,8 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     }
 
     // permissions
+    // TODO: should admin has permissions other users don't have?
+    // e.g. admin can delete but also other users can withdraw receipts
     $this->assign('is_admin', CRM_Core_Permission::check('administer receipts'));
     $this->assign('has_permissions', CRM_Core_Permission::check('view receipts'));
     // do we keep original pdf files?
