@@ -8,7 +8,7 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <table id="statistic">
+  <table id="statistic" style="max-width: 50%;">
     <caption>{ts}Statistics{/ts}</caption>
     {if $statistic.requested_contacts}
       <tr><td class="statskey">{ts}selected contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
