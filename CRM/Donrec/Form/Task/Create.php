@@ -128,7 +128,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
           AND `contribution_status_id` = 1
           AND `is_test` = 0
           AND (`b1`.`id` IS NULL
-          OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
+          OR `b1`.`$status_column` != 'ORIGINAL')
           ";
 
     // execute the query
