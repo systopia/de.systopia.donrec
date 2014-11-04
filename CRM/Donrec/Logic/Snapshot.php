@@ -664,4 +664,22 @@ class CRM_Donrec_Logic_Snapshot {
     ";
     return (bool) CRM_Core_DAO::singleValueQuery($query);
   }
+
+  /**
+   * create a set of CRM_Donrec_Logic_SnapshotReceipt objects with a given chunk
+   * 
+   * @return an array of CRM_Donrec_Logic_SnapshotReceipts
+   */
+  public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
+    $temp_receipts = array();
+    if ($is_bulk) {
+      // BULK receipts => group by contact ID
+      // TODO
+    } else {
+      // create individual receipts
+      foreach ($chunk as $snapshot_line) {
+        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, $snapshot_line, $is_test);
+      }
+    }
+  }
 }

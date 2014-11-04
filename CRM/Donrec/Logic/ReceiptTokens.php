@@ -75,7 +75,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'totaltext'                 => 'Total Amount In Words',
       'totalmoney'                => 'Total Amount (formatted)',
       'today'                     => 'Issue Date',
-      'lines' => array(           // INDIVIDUAL LINES (in case of BULK receipt)
+      'items'                     => 'the same as lines, but only if BULK',
+      'lines' => array(           // INDIVIDUAL LINES
         'financial_type'               => 'Financial Type', 
         ),
       'contributor' => array(     // LEGAL ADDRESS OF THE DONOR
@@ -170,6 +171,11 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       }
     }
 
+    // add legacy 'items'
+    if (count($values['lines']) > 1) {
+      $values['items'] = $values['lines'];
+    }
+    
     // add organisation address
     if (empty($values['organisation'])) {
       $domain = CRM_Core_BAO_Domain::getDomain();
@@ -182,6 +188,12 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     } elseif ($values['status'] == 'WITHDRAWN') {
       $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
     }
+
+    // copy contributor values to addressee, if not set separately
+    if (!isset($values['addressee']['display_name']))
+      $values['addressee']['display_name'] = $values['contributor']['display_name'];
+    if (!isset($values['addressee']['addressee_display']))
+      $values['addressee']['addressee_display'] = $values['contributor']['addressee_display'];
 
     // TODO: call Token hooks? Currently done by PDF generator
   }
