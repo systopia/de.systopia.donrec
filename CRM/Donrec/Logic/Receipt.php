@@ -11,7 +11,7 @@
 /**
  * This class represents a single donation receipt
  */
-class CRM_Donrec_Logic_Receipt {
+class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
   * Custom field array to map attribute names to database colums
   * i.e. self::$_custom_field['status'] == 'status_38'
