@@ -69,6 +69,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   * @param int id of the copy
   */
   public static function createCopyAll($donation_receipt_id, $donation_receipt_copy_id) {
+    // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
     self::getCustomFields();
     $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     $sha1_string = sprintf($sha1_string,

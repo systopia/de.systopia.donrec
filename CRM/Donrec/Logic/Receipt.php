@@ -223,6 +223,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function createCopy(&$parameters) {
+    // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
     $query = "INSERT INTO `civicrm_value_donation_receipt_%d`
               (`id`,
                `entity_id`,
@@ -350,79 +351,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return array of properties
    */
   public function getAllProperties() {
-    $values = array();
-
-    // get default organisation
-    $domain = CRM_Core_BAO_Domain::getDomain();
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'id' => $domain->contact_id,
-    );
-    $contact = civicrm_api('Contact', 'get', $params);
-    if ($contact['is_error'] != 0 || $contact['count'] != 1) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid contact'), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-      return $reply;
-    }
-    $values['organisation'] = $contact['values'][0];
-
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-    $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
-    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
-    $receipt_id = $this->Id;
-
-    $query = "SELECT
-        receipt.`$receipt_fields[type]` AS `type`,
-        receipt.`$receipt_fields[status]` AS `status`,
-        receipt.`$receipt_fields[issued_on]` AS `issued_on`,
-        receipt.`$receipt_fields[street_address]` AS `contributor__street_address`,
-        receipt.`entity_id` AS `contributor__id`,
-        receipt.`$receipt_fields[supplemental_address_1]` AS `contributor__supplemental_address_1`,
-        receipt.`$receipt_fields[supplemental_address_2]` AS `contributor__supplemental_address_2`,
-        receipt.`$receipt_fields[supplemental_address_3]` AS `contributor__supplemental_address_3`,
-        receipt.`$receipt_fields[postal_code]` AS `contributor__postal_code`,
-        receipt.`$receipt_fields[city]` AS `contributor__city`,
-        receipt.`$receipt_fields[country]` AS `country`,
-        contact.`display_name` AS `contributor__display_name`,
-        SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
-        MIN(item.`$item_fields[receive_date]`) AS `date_from`,
-        MAX(item.`$item_fields[receive_date]`) AS `date_to`,
-        item.`$item_fields[issued_on]` AS `currency`
-      FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
-      RIGHT JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
-        ON item.`$item_fields[issued_in]` = receipt.`id`
-        AND item.`$item_fields[status]` = receipt.`$receipt_fields[status]`
-      LEFT JOIN `civicrm_contact` AS contact
-        ON contact.`id` = receipt.`entity_id`
-      WHERE receipt.`id` = $receipt_id";
-
-    $result = CRM_Core_DAO::executeQuery($query);
-    $result->fetch();
-    foreach($result as $key => $value) {
-      if ($key[0] != '_' && $key != 'N') {
-        $keys = split('__', $key);
-        if (count($keys) == 1) {
-          $values[$keys[0]] = $result->$key;
-        } else {
-          $values[$keys[0]][$keys[1]] = $result->$key;
-        }
-      }
-    }
-
-    $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($result->total_amount);
-    $values['today'] = date("j.n.Y", time());
-
-    if($values['status'] == 'COPY') {
-      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');
-    } elseif ($values['status'] == 'WITHDRAW') {
-      //TODO
-      //$properties['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'withdraw_text');
-    }
-
-    return $values;
+    // TODO: Remove stub
+    return $this->getAllTokens();
   }
 
   /**
@@ -433,84 +363,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return an array of all properties needed for display
    */
   public function getDisplayProperties() {
-    $values = array();
-
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-    $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
-    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
-    $receipt_id = $this->Id;
-
-    // get receipt-infos
-    $query = "
-      SELECT
-        receipt.`$receipt_fields[type]` AS `type`,
-        receipt.`$receipt_fields[status]` AS `status`,
-        receipt.`$receipt_fields[issued_on]` AS `issued_on`,
-        SUM(item.`$item_fields[total_amount]`) AS `total_amount`,
-        MIN(item.`$item_fields[receive_date]`) AS `date_from`,
-        MAX(item.`$item_fields[receive_date]`) AS `date_to`,
-        item.`$item_fields[currency]` AS `currency`,
-        receipt.`$receipt_fields[street_address]` AS `receipt_address__street_address`,
-        receipt.`$receipt_fields[supplemental_address_1]` AS `receipt_address__supplemental_address_1`,
-        receipt.`$receipt_fields[supplemental_address_2]` AS `receipt_address__supplemental_address_2`,
-        receipt.`$receipt_fields[supplemental_address_3]` AS `receipt_address__supplemental_address_3`,
-        receipt.`$receipt_fields[postal_code]` AS `receipt_address__postal_code`,
-        receipt.`$receipt_fields[city]` AS `receipt_address__city`,
-        receipt.`$receipt_fields[country]` AS `receipt_address__country`,
-        address.`street_address` AS `contact_address__street_address`,
-        address.`supplemental_address_1` AS `contact_address__supplemental_address_1`,
-        address.`supplemental_address_2` AS `contact_address__supplemental_address_2`,
-        address.`supplemental_address_3` AS `contact_address__supplemental_address_3`,
-        address.`postal_code` AS `contact_address__postal_code`,
-        address.`city` AS `contact_address__city`,
-        country.`name` AS `contact_address__country`
-      FROM `civicrm_value_donation_receipt_$receipt_group_id` AS receipt
-      INNER JOIN `civicrm_value_donation_receipt_item_$item_group_id` AS item
-        ON item.`$item_fields[issued_in]` = receipt.`id`
-      INNER JOIN `civicrm_contact` AS contact ON contact.`id` = receipt.`entity_id`
-      LEFT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
-      LEFT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
-      WHERE receipt.`id` = $receipt_id";
-
-    $result = CRM_Core_DAO::executeQuery($query);
-    $result->fetch();
-    foreach($result as $key => $value) {
-      if ($key[0] != '_' && $key != 'N') {
-        $keys = split('__', $key);
-        if (count($keys) == 1) {
-          $values[$keys[0]] = $result->$key;
-        } else {
-          $values[$keys[0]][$keys[1]] = $result->$key;
-        }
-      }
-    }
-
-    // get receipt-item-infos
-    $query = "
-      SELECT
-        item.`id` AS `id`,
-        item.`$item_fields[receive_date]` AS `receive_date`,
-        item.`$item_fields[total_amount]` AS `total_amount`,
-        item.`$item_fields[issued_on]` AS `currency`,
-        type.`name` AS `type`
-      FROM `civicrm_value_donation_receipt_item_$item_group_id` AS item
-      INNER JOIN `civicrm_contribution` AS contrib
-        ON item.`entity_id` = contrib.`id`
-      INNER JOIN `civicrm_financial_type` AS type
-        ON type.`id` = contrib.`financial_type_id`
-      WHERE item.`$item_fields[issued_in]` = $receipt_id";
-
-    $result = CRM_Core_DAO::executeQuery($query);
-    while ($result->fetch()) {
-      foreach($result as $key => $value) {
-        if ($key[0] != '_' && $key != 'N') {
-          $values['items'][$result->id][$key] = $result->$key;
-        }
-      }
-    }
-    return $values;
+    // TODO: Remove stub
+    return $this->getDisplayTokens();
   }
 
   /**
@@ -692,5 +546,129 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
     return $pdf;
   }
+
+  /**
+   * Get all properties of this receipt token source, so we can e.g. export it or pass the
+   * properties into the $template->generatePDF() function to create another copy
+   *
+   * @return array of properties
+   */
+  public function getAllTokens() {
+    $values = array();
+
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $expected_fields = CRM_Donrec_Logic_ReceiptTokens::$STORED_TOKENS;
+    $receipt_id = $this->Id;
+    $receipt_fields = self::$_custom_fields;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    // TODO: FIX, look up table name!
+    $receipt_table_name = 'civicrm_value_donation_receipt_'.self::$_custom_group_id;
+    $item_table_name = 'civicrm_value_donation_receipt_item_'.CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
+
+    // get all the receipt data
+    $query_receipt = "SELECT
+        receipt.`id`                                       AS `id`,
+        receipt.`entity_id`                                AS `contributor__id`,
+        receipt.`$receipt_fields[type]`                    AS `type`,
+        receipt.`$receipt_fields[status]`                  AS `status`,
+        receipt.`$receipt_fields[issued_on]`               AS `issued_on`,
+        receipt.`$receipt_fields[issued_by]`               AS `issued_by`,
+
+        contact.`display_name`                             AS `contributor__display_name`,
+        contact.`id`                                       AS `contributor__id`,
+        receipt.`$receipt_fields[street_address]`          AS `contributor__street_address`,
+        receipt.`$receipt_fields[supplemental_address_1]`  AS `contributor__supplemental_address_1`,
+        receipt.`$receipt_fields[supplemental_address_2]`  AS `contributor__supplemental_address_2`,
+        receipt.`$receipt_fields[postal_code]`             AS `contributor__postal_code`,
+        receipt.`$receipt_fields[city]`                    AS `contributor__city`,
+        receipt.`$receipt_fields[country]`                 AS `contributor__country`,
+
+        SUM(item.`$item_fields[total_amount]`)             AS `total_amount`,
+        SUM(item.`$item_fields[non_deductible_amount]`)    AS `non_deductible_amount`,
+        MIN(item.`$item_fields[receive_date]`)             AS `date_from`,
+        MAX(item.`$item_fields[receive_date]`)             AS `date_to`,
+        item.`$item_fields[currency]`                      AS `currency`
+
+      FROM `$receipt_table_name`                           AS receipt
+
+      RIGHT JOIN `$item_table_name`                        AS item
+        ON   item.`$item_fields[issued_in]` = receipt.`id`
+        AND  item.`$item_fields[status]`    = receipt.`$receipt_fields[status]`
+
+      LEFT JOIN `civicrm_contact` AS contact
+        ON   contact.`id` = receipt.`entity_id`
+
+      WHERE receipt.`id` = $receipt_id";
+
+    $result = CRM_Core_DAO::executeQuery($query_receipt);
+    if ($result->fetch()) {
+      foreach ($expected_fields as $key => $value) {
+        // copy all expected values, if they exist
+        if (!is_array($key) && isset($result->$key)) {
+          $values[$key] = $result->$key;
+        }
+      }
+
+      // also, copy the contributor data
+      foreach ($expected_fields['contributor'] as $key => $value) {
+        $qkey = 'contributor__' . $key;
+        if (isset($result->$qkey)) {
+          $values['contributor'][$key] = $result->$qkey;
+        }
+      }
+    } else {
+      error_log("de.systopia.donrec - couldn't load receipt data.");
+      return $values;
+    }
+
+    // get receipt-item-infos
+    $query_item = "
+      SELECT
+        item.`id`                                        AS `id`,
+        item.`entity_id`                                 AS `contribution_id`,
+        item.`$item_fields[receive_date]`                AS `receive_date`,
+        item.`$item_fields[total_amount]`                AS `total_amount`,
+        item.`$item_fields[issued_on]`                   AS `currency`,
+        item.`$item_fields[non_deductible_amount]`       AS `non_deductible_amount`,
+        type.`name`                                      AS `type`
+
+      FROM `$item_table_name`                            AS item
+      INNER JOIN `civicrm_contribution`                  AS contrib
+        ON   item.`entity_id` = contrib.`id`
+      INNER JOIN `civicrm_financial_type`                AS type
+        ON   type.`id` = contrib.`financial_type_id`
+
+      WHERE item.`$item_fields[issued_in]` = $receipt_id";
+
+    $result = CRM_Core_DAO::executeQuery($query_item);
+    while ($result->fetch()) {
+      foreach ($expected_fields['lines'] as $key => $value) {
+        if (isset($result->$key)) {
+          $values['lines'][$result->id][$key] = $result->$key;
+        }
+      }
+    }
+    
+    // add dynamically created tokens
+    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
+
+    // TODO: remove when done
+    error_log("MISSING: ".print_r(CRM_Donrec_Logic_ReceiptTokens::missingTokens($values),1));
+
+    return $values;
+  }
+
+  /**
+   * Get all properties of this receipt token sourceneeded for display in the summary tab
+   *
+   * This should only include the display properties, and be performance optimized
+   *
+   * @return an array of all properties needed for display
+   */
+  public function getDisplayTokens() {
+    // TODO: optimize
+    return $this->getAllTokens();
+  }  
+
 
 }
