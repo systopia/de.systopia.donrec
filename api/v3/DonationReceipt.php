@@ -116,7 +116,7 @@ function civicrm_api3_donation_receipt_view($params) {
       $name = $params['name'];
     }
     $file = $receipt->viewPdf();
-    $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file;
+    // $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file;
     $result = CRM_Donrec_Logic_File::createTemporaryFile($file, $name);
   }else{
     return civicrm_api3_create_error(sprintf(ts("Receipt with id %d does not exist."), $params['rid']));

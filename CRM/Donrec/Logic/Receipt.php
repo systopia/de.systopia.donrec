@@ -666,7 +666,6 @@ class CRM_Donrec_Logic_Receipt {
   * @deprecated
   */
   public function viewPdf() {
-    // TODO: Remove
     //check if a file pdf-file exists
     $receipt_fields = self::$_custom_fields;
     $receipt_group_id = self::$_custom_group_id;
