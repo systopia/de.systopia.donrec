@@ -8,18 +8,20 @@
 +--------------------------------------------------------*}
 
 {if $remaining_snapshot}
-<div id="remaining_snapshot" style="background-color:red">
+<div id="remaining_snapshot" class="messages warning no-popup">
+<span class="msg-title">{ts}Unfinished run detected{/ts}</span>
+<span class="msg-text">
 {if $statistic}
 {if !$statistic.status}
-<p><b>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
-    {ts}Otherwise it will be deleted!{/ts}</b></p></br>
+<p>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
+    {ts}Otherwise it <b>will be deleted</b>!{/ts}</p></br>
 {elseif $statistic.status == 'TEST'}
-<p><b>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
-    {ts}Otherwise it will be deleted!{/ts}</b></p></br>
-{elseif $statistic.status == 'DONE'}
-<p><b>{ts}Interrupted run detected, do you want to continue with it?{/ts}</br>
-    {ts}Otherwise the selection will be deleted!{/ts}</br>
-    {ts}<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually.{/ts}</b></p></br>
+<p>{ts}You have an unfinished run, do you want to continue with it?{/ts}</br>
+    {ts}Otherwise it <b>will be deleted</b>!{/ts}</p></br>
+{else if $statistic.status == 'DONE'}
+<p>{ts}An interrupted run has been detected. Do you want to continue with it?{/ts}</br>
+    {ts}Otherwise the selection <b>will be deleted</b>!{/ts}</br></br>
+    {ts}<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually.{/ts}</p></br>
 {/if}
   <table id="statistic">
     <caption>{ts}Statistics{/ts}</caption>
