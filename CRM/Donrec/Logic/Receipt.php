@@ -224,68 +224,35 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function createCopy(&$parameters) {
-    // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
+    $receipt_id = $this->Id;
+    $receipt_group_id = self::$_custom_group_id;
+    $receipt_fields = self::$_custom_fields;
+    $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
+    $exclude = array('status', 'issued_on', 'issued_by', 'original_file');
+    $field_query = '`entity_id`';
+    foreach($receipt_fields as $key => $field) {
+      if (!in_array($key, $exclude)) {
+        $field_query .= ", `$field`";
+      }
+    }
+    $query = "
+      INSERT INTO `civicrm_value_donation_receipt_$receipt_group_id` (
+        `$receipt_fields[status]`,
+        `$receipt_fields[issued_on]`,
+        `$receipt_fields[issued_by]`,
+        $field_query
+      )
+      SELECT
+        'COPY' AS `$receipt_fields[status]`,
+        NOW() AS `$receipt_fields[issued_on]`,
+        $uid AS `$receipt_fields[issued_by]`,
+        $field_query
+      FROM `civicrm_value_donation_receipt_$receipt_group_id`
+      WHERE `id` = $receipt_id
+        AND `$receipt_fields[status]` = 'ORIGINAL'
+    ";
 
-
-    $query = "INSERT INTO `civicrm_value_donation_receipt_%d`
-              (`id`,
-               `entity_id`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`,
-               `%s`)
-              SELECT
-              NULL as `id`,
-              `entity_id`,
-              'COPY' as `%s`,
-              `%s`,
-              NOW() as `%s`,
-              `%s`,
-              `%s`,
-              `%s`,
-              `%s`,
-              `%s`,
-              `%s`,
-              `%s`,
-              `%s`
-              FROM `civicrm_value_donation_receipt_%d`
-              WHERE `id` = %d AND `%s` = 'ORIGINAL';";
-    $query = sprintf($query,
-                    self::$_custom_group_id,
-                    self::$_custom_fields['status'],
-                    self::$_custom_fields['type'],
-                    self::$_custom_fields['issued_on'],
-                    self::$_custom_fields['issued_by'],
-                    self::$_custom_fields['street_address'],
-                    self::$_custom_fields['supplemental_address_1'],
-                    self::$_custom_fields['supplemental_address_2'],
-                    self::$_custom_fields['supplemental_address_3'],
-                    self::$_custom_fields['postal_code'],
-                    self::$_custom_fields['city'],
-                    self::$_custom_fields['country'],
-                    self::$_custom_fields['status'],
-                    self::$_custom_fields['type'],
-                    self::$_custom_fields['issued_on'],
-                    self::$_custom_fields['issued_by'],
-                    self::$_custom_fields['street_address'],
-                    self::$_custom_fields['supplemental_address_1'],
-                    self::$_custom_fields['supplemental_address_2'],
-                    self::$_custom_fields['supplemental_address_3'],
-                    self::$_custom_fields['postal_code'],
-                    self::$_custom_fields['city'],
-                    self::$_custom_fields['country'],
-                    self::$_custom_group_id,
-                    $this->Id,
-                    self::$_custom_fields['status']
-                    );
     $result = CRM_Core_DAO::executeQuery($query);
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
     CRM_Donrec_Logic_ReceiptItem::createCopyAll($this->Id, $lastId);
