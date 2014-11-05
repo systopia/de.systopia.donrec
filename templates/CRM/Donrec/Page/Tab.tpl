@@ -71,7 +71,7 @@
               </tr>
             </thead>
             <tbody>
-              {foreach from=$receipt.items key=id item=item}
+              {foreach from=$receipt.lines key=id item=item}
               <tr>
                 <td>{$item.total_amount|crmMoney}</td>
                 <td>{$item.receive_date}</td>

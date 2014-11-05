@@ -23,6 +23,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   protected static $STORED_TOKENS = array(
       'id'                        => 'Receipt ID',
       'status'                    => 'Status',
+      'type'                      => 'Single or bulk',
       'issued_by'                 => 'Creator Contact ID',
       'issued_on'                 => 'Issued Date',
       'total_amount'              => 'Total Amount',

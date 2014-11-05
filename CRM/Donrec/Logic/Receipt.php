@@ -74,8 +74,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
       self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? 'NULL' : $parameters['file_id'],
       self::$_custom_fields['street_address'] => empty($line['street_address']) ? 'NULL': "'$line[street_address]'",
       self::$_custom_fields['supplemental_address_1'] => empty($line['supplemental_address_1']) ? 'NULL': "'$line[supplemental_address_1]'",
-      self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_1]'",
-      self::$_custom_fields['supplemental_address_3'] => empty($line['supplemental_address_3']) ? 'NULL': "'$line[supplemental_address_1]'",
+      self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_2]'",
       self::$_custom_fields['postal_code'] => empty($line['postal_code']) ? 'NULL' : $line['postal_code'],
       self::$_custom_fields['city'] => empty($line['city']) ? 'NULL': "'$line[city]'",
       self::$_custom_fields['country'] => empty($line['country']) ? 'NULL': "'$line[country]'"

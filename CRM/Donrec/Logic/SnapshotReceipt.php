@@ -92,7 +92,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
 
   /**
-   * Get all properties of this receipt token sourceneeded for display in the summary tab
+   * Get all properties of this receipt token source needed for display in the summary tab
    *
    * This should only include the display properties, and be performance optimized
    *
