@@ -29,7 +29,7 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
       $filename = sys_get_temp_dir() . '/' . self::PREFIX . $_REQUEST['path'];
       if (file_exists($filename)) {
         // dump file contents in stream
-        echo readfile($filename);
+        readfile($filename);
 
         // set file name
         if (empty($_REQUEST['name'])) {
