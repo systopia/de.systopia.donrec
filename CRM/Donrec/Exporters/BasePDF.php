@@ -15,72 +15,26 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
   public function exportSingle($chunk, $snapshotId, $is_test) {
     $reply = array();
-    $values = array();
 
     // get the default template
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
 
-    // get domain
-    $domain = CRM_Core_BAO_Domain::getDomain();
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'id' => $domain->contact_id,
-    );
-    $contact = civicrm_api('Contact', 'get', $params);
-
-    if ($contact['is_error'] != 0 || $contact['count'] != 1) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid contact'), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-      return $reply;
-    }
-    $contact = $contact['values'][0];
-
-    // assign all shared template variables
-    $values['organisation'] = $contact;
+    // get snapshot data
+    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
+    $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, false, $is_test);
 
     $success = 0;
     $failures = 0;
-    foreach ($chunk as $chunk_id => $chunk_item) {
-      // prepare unique template variables
-
-      // get contributor
-      $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'id' => $chunk_item['contribution_id'],
-      );
-      $contrib = civicrm_api('Contribution', 'get', $params);
-      if ($contrib['is_error'] != 0 || $contrib['count'] != 1) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contribution'), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-        return $reply;
-      }
-      $contrib = $contrib['values'][0];
-
-      $contributor_contact = civicrm_api('Contact', 'getsingle', array('id'=>$contrib['contact_id'], 'version'=>3));
-      if (!empty($contributor_contact['is_error'])) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contact').'<br/>'.$contributor_contact['error_message'], CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-        return $reply;
-      }
-
-      // assign all unique template variables
-      $values['contributor'] = $contributor_contact;
-      $values['total'] = $chunk_item['total_amount'];
-      $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($chunk_item['total_amount']);
-      $values['today'] = date("j.n.Y", time());
-      $values['date'] = date("d.m.Y",strtotime($chunk_item['receive_date']));
-      if($is_test) {
-        $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
-      }
-
+    foreach ($snapshotReceipts as $snapshotReceipt) {
+      // get tokens and generate PDF
       $tpl_param = array();
+      $values = $snapshotReceipt->getAllTokens();
       $result = $template->generatePDF($values, $tpl_param);
       if ($result === FALSE) {
         $failures++;
-      }else{
+      } else {
         // save file names for wrapup()
-        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
+        $this->updateProcessInformation($snapshotReceipt->getID(), array('pdf_file' => $result));
         $success++;
       }
     }
@@ -92,89 +46,32 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
   public function exportBulk($chunk, $snapshotId, $is_test) {
     $reply = array();
-    $values = array();
 
     // get the default template
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
 
-    // get domain
-    $domain = CRM_Core_BAO_Domain::getDomain();
-    $params = array(
-      'version' => 3,
-      'q' => 'civicrm/ajax/rest',
-      'sequential' => 1,
-      'id' => $domain->contact_id,
-    );
-    $contact = civicrm_api('Contact', 'get', $params);
+    // get snapshot data
+    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
+    $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, true, $is_test);
 
-    if ($contact['is_error'] != 0 || $contact['count'] != 1) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid contact'), CRM_Donrec_Logic_Exporter::FATAL);
-      return $reply;
-    }
-    $contact = $contact['values'][0];
-
-    // assign all shared template variables
-    $values['organisation'] = $contact;
 
     $success = 0;
     $failures = 0;
-    foreach ($chunk as $contact_chunk_id => $chunk_items) {
-      // prepare unique template variables
-
-      // get contributor
-      $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'id' => $chunk_items[0]['contribution_id'],
-      );
-      $contrib = civicrm_api('Contribution', 'get', $params);
-      if ($contrib['is_error'] != 0 || $contrib['count'] < 1) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contribution'), CRM_Donrec_Logic_Exporter::FATAL);
-        return $reply;
+    foreach ($snapshotReceipts as $snapshotReceipt) {
+      // get tokens and generate PDF
+      $tpl_param = array();
+      $values = $snapshotReceipt->getAllTokens();
+      $result = $template->generatePDF($values, $tpl_param);
+      if ($result === FALSE) {
+        $failures++;
+      } else {
+        // save file names for wrapup()
+        $individualIDs = $snapshotReceipt->getIDs();
+        foreach ($individualIDs as $line_id) {
+          $this->updateProcessInformation($line_id, array('pdf_file' => $result));
+        }
+        $success++;
       }
-      $contrib = $contrib['values'][0];
-
-      $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'id' => $contrib['contact_id'],
-      );
-      $contributor_contact = civicrm_api('Contact', 'get', $params);
-      if ($contributor_contact['is_error'] != 0 || $contributor_contact['count'] != 1) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Invalid Contact'), CRM_Donrec_Logic_Exporter::FATAL);
-        return $reply;
-      }
-      $contributor_contact = $contributor_contact['values'][0];
-
-
-      $total_amount = 0.00;
-      foreach ($chunk_items as $lineid => $lineval) {
-        $total_amount += $lineval['total_amount'];
-      }
-
-    // assign all unique template variables
-    $values['contributor'] = $contributor_contact;
-    $values['total'] = $total_amount;
-    $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($total_amount);
-    $values['today'] = date("j.n.Y", time());
-    $values['items'] = $chunk_items;
-    if($is_test) {
-      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
-    }
-
-    $tpl_param = array();
-    $result = $template->generatePDF($values, $tpl_param);
-    if ($result === FALSE) {
-      $failures++;
-    }else{
-      // save file names for wrapup()
-      foreach($chunk_items as $key => $item) {
-        $this->updateProcessInformation($chunk_item['id'], array('pdf_file' => $result));
-      }
-      $success++;
-    }
     }
     // add a log entry
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded', count($chunk), $success, $failures), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
