@@ -22,8 +22,15 @@ function civicrm_api3_donation_receipt_withdraw($params) {
   if(!empty($receipt)) {
     if($receipt->isOriginal()) {
       // TODO: error-handling...
-      $result = $receipt->markWithdrawn();
+      // TODO: define statuus centrally
+      $copies = $receipt->getCopies();
+      $result = $receipt->setStatus('WITHDRAWN');
       $deleted = $receipt->deleteOriginalFile();
+      error_log(print_r($copies, 1));
+      foreach ($copies as $copy) {
+        $result = $copy->setStatus('WITHDRAWN_COPY');
+        $deleted = $copy->deleteOriginalFile();
+      }
     }else{
       return civicrm_api3_create_error(sprintf(ts("Only original donation receipts can be withdrawn."), $params['rid']));
     }
