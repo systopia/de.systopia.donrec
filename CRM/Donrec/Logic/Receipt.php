@@ -331,19 +331,39 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-   * Mark this receipt as withdrawn
-   *
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-   *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   * Mark a receipt and all its items as withdrawn, and its copies and their items as withdrawn_copy.
+   * @param $parameters: an assoc. array of creation parameters TODO: to be defined
+   * @return True on success, False otherwise //TODO
    */
   public function markWithdrawn(&$parameters) {
-    CRM_Donrec_Logic_ReceiptItem::setStatusAll($this->Id,"WITHDRAWN");
-    $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'WITHDRAWN' WHERE `id` = %d";
-    $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
+    $receipt_id = $this->Id;
+    $receipt_group_id = self::$_custom_group_id;
+    $receipt_fields = self::$_custom_fields;
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    $receipt_table_name = "civicrm_value_donation_receipt_$receipt_group_id";
+    $item_table_name = "civicrm_value_donation_receipt_item_$item_group_id";
+    $query = "
+      UPDATE `$receipt_table_name` o
+      RIGHT JOIN `$receipt_table_name` c
+        ON o.`id` = $receipt_id
+        AND o.`$receipt_fields[status]` = 'ORIGINAL'
+        AND c.`$receipt_fields[status]` = 'COPY'
+        AND o.entity_id = c.entity_id
+      RIGHT JOIN `$item_table_name` io
+        ON io.`$item_fields[issued_in]` = o.id
+      RIGHT JOIN `$item_table_name` ic
+        ON ic.`$item_fields[issued_in]` = c.id
+      SET o.`$receipt_fields[status]` = 'WITHDRAWN',
+        c.`$receipt_fields[status]` = 'WITHDRAWN_COPY',
+        io.`$item_fields[status]` = 'WITHDRAWN',
+        ic.`$item_fields[status]` = 'WITHDRAWN_COPY'
+      WHERE io.entity_id = ic.entity_id;
+    ";
+    file_put_contents('/tmp/query', $query);
     $result = CRM_Core_DAO::executeQuery($query);
-    // TODO: error-handling
-    return TRUE;
+    return True;
   }
 
   /**
@@ -518,28 +538,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-  * Delete original-file if exists
-  * @return TRUE for success, FALSE for failure
-  */
-  public function deleteOriginalFile() {
-    $file_id = self::getOriginalFileId();
-    if (!$file_id) {
-      return FALSE;
-    }
-    $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
-    $receipt_id = $this->Id;
-    $query = "
-      UPDATE `civicrm_value_donation_receipt_$receipt_group_id`
-      SET `$receipt_fields[original_file]` = NULL
-      WHERE id = $receipt_id
-    ";
-    $result = CRM_Core_DAO::executeQuery($query);
-    $success = CRM_Donrec_Logic_File::deleteFile($file_id);
-    return $success;
-  }
-
-  /**
    * Get all properties of this receipt token source, so we can e.g. export it or pass the
    * properties into the $template->generatePDF() function to create another copy
    *
@@ -641,7 +639,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         }
       }
     }
-    
+
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
 
@@ -658,7 +656,29 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getDisplayTokens() {
     // TODO: optimize
     return $this->getAllTokens();
-  }  
+  }
+
+  /**
+  * Delete original-file if exists
+  * @return TRUE for success, FALSE for failure
+  */
+  public function deleteOriginalFile() {
+    $file_id = self::getOriginalFileId();
+    if (!$file_id) {
+      return FALSE;
+    }
+    $receipt_fields = self::$_custom_fields;
+    $receipt_group_id = self::$_custom_group_id;
+    $receipt_id = $this->Id;
+    $query = "
+      UPDATE `civicrm_value_donation_receipt_$receipt_group_id`
+      SET `$receipt_fields[original_file]` = NULL
+      WHERE id = $receipt_id
+    ";
+    $result = CRM_Core_DAO::executeQuery($query);
+    $success = CRM_Donrec_Logic_File::deleteFile($file_id);
+    return $success;
+  }
 
   /**
    * Get url to pdf exists.
