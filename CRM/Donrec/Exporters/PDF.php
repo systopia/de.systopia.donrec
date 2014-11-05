@@ -26,4 +26,72 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
   static function htmlOptions() {
     return '';
   }
+
+  /**
+   * allows the subclasses to process the newly created PDF file
+   */
+  protected function postprocessPDF($file, $snapshot_line_id) {
+    $this->updateProcessInformation($snapshot_line_id, array('pdf_file' => $file));
+  }
+
+
+  /**
+   * generate the final result
+   *
+   * @return array:
+   *          'is_error': set if there is a fatal error
+   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   *          'download_url: URL to download the result
+   *          'download_name: suggested file name for the download
+   */
+  public function wrapUp($snapshot_id, $is_test, $is_bulk) {
+    $reply = array();
+
+    // create the zip file
+    $config = CRM_Core_Config::singleton();
+
+    $preferredFileName = ts("donation_receipts.zip");
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts"), ".zip");
+    $zip = new ZipArchive();
+    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
+    $ids = $snapshot->getIds();
+    $toRemove = array();
+
+    if ($zip->open($archiveFileName, ZIPARCHIVE::CREATE) === TRUE) {
+      foreach($ids as $id) {
+        $proc_info = $snapshot->getProcessInformation($id);
+        if(!empty($proc_info)) {
+          $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
+          if ($filename) {
+            $toRemove[$id] = $filename;
+            $opResult = $zip->addFile($filename, basename($filename)) ;
+            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          }
+        }
+      }
+      if(!$zip->close()) {
+        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+      }
+    }else{
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::LOG_TYPE_FATAL);
+      return $reply;
+    }
+
+    $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
+    if (!empty($file)) {
+      $reply['download_name'] = $preferredFileName;
+      $reply['download_url'] = $file;
+    }
+
+    // remove loose pdf files or store them
+    if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      foreach($toRemove as $file) {
+        unlink($file);
+      }
+    }
+
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+    return $reply;
+  }  
 }
