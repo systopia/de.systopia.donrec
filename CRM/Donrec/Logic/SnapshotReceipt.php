@@ -120,9 +120,6 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
 
-    // TODO: remove when done
-    error_log("MISSING: ".print_r(CRM_Donrec_Logic_ReceiptTokens::missingTokens($values),1));
-
     return $values;
   }
 
