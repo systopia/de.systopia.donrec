@@ -83,7 +83,11 @@
         </div>
       </td>
       <td>
-        <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {if $receipt.view_url}
+          <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts}Download{/ts}</span></a>
+        {else}
+          <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {/if}
         {if $receipt.status == 'ORIGINAL' && $has_permissions}
           <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         {/if}
@@ -106,6 +110,87 @@
           <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
           <a id="delete_receipt_{$receipt_id}" title="{ts}Delete{/ts}" class="action-item" href="#">{ts}Delete{/ts}</a>
         {/if*}
+      </td>
+    </tr>
+    <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
+      <td>
+        <div class="crm-clear crm-inline-block-content">
+              <div class="crm-edit-help"><div class="icon user-record-icon"></div>{ts}Issued To{/ts}</div>
+
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Name{/ts}</div>
+                <div class="crm-content">Maxwell</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Postal Code{/ts}</div>
+                <div class="crm-content">Patternman</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Street{/ts}</div>
+                <div class="crm-content">1600 Amphitheatre Parkway</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}City{/ts}</div>
+                <div class="crm-content">Mountain View, CA 94043</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Country{/ts}</div>
+                <div class="crm-content">United States of America</div>
+              </div>
+        </div>
+      </td>
+      <td>
+        <div class="crm-clear crm-inline-block-content">
+              <div class="crm-edit-help"><div class="icon dashboard-icon"></div>{ts}Current Address{/ts}</div>
+
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Name{/ts}</div>
+                <div class="crm-content">Maxwell</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Postal Code{/ts}</div>
+                <div class="crm-content">Patternman</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Street{/ts}</div>
+                <div class="crm-content">Todostraße 10</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}City{/ts}</div>
+                <div class="crm-content">53111 Bonn</div>
+              </div>
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Country{/ts}</div>
+                <div class="crm-content">Germany</div>
+              </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="even" id="donrec_details_block_{$receipt_id}_2" style="display: none;">
+      <td colspan="2">
+        <div class="crm-clear crm-inline-block-content">
+              <div class="crm-edit-help"><div class="icon search-icon"></div>{ts}Contributions{/ts}</div>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>{ts}Total Amount{/ts}</td>
+                      <td>{ts}Received Date{/ts}</td>
+                      <td>{ts}Financial Type{/ts}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {foreach from=$receipt.lines key=id item=item}
+                    <tr>
+                      <td>{$item.total_amount|crmMoney}</td>
+                      <td>{$item.receive_date}</td>
+                      <td>{$item.type}</td>
+                    </tr>
+                    {/foreach}
+                  </tbody>
+                </table>
+              </div>
+        </div>
       </td>
     </tr>
     {/foreach}
@@ -143,7 +228,8 @@
         // calculate receipt id
         var rid = re.exec(this.id);
         if (rid != null) {
-          cj('#donrec_details_block_' + rid[2]).toggle();
+          cj('#donrec_details_block_' + rid[2] + '_1').toggle();
+          cj('#donrec_details_block_' + rid[2] + '_2').toggle();
         }
 
     });

@@ -188,26 +188,6 @@ class CRM_Utils_DonrecHelper
   }
 
   /**
-   * Convert file-id to url (maybe there is a better place for this method...)
-   * @return file-url
-   */
-  public static function fileUriToUrl($id) {
-    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $id . "&eid=1");
-    return $url;
-  }
-
-  /**
-  * Convert file-path to url (maybe there is a better place for this method...)
-  * @return file-url
-  */
-  public static function pathToUrl($path) {
-    $config =  CRM_Core_Config::singleton();
-    //TODO: custom-file-path must not be hard-coded!
-    $url = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . basename($path);
-    return $url;
-  }
-
-  /**
   * Calls die() with a pretty template (WIP)
   *
   */

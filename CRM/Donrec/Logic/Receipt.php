@@ -342,6 +342,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'WITHDRAWN' WHERE `id` = %d";
     $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
     $result = CRM_Core_DAO::executeQuery($query);
+    // TODO: error-handling
     return TRUE;
   }
 
@@ -517,34 +518,25 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-  * Get url to pdf. If no pdf exists, create a tmp-file.
-  * @return file-name
-  * @deprecated
+  * Delete original-file if exists
+  * @return TRUE for success, FALSE for failure
   */
-  public function viewPdf() {
-    //check if a file pdf-file exists
+  public function deleteOriginalFile() {
+    $file_id = self::getOriginalFileId();
+    if (!$file_id) {
+      return FALSE;
+    }
     $receipt_fields = self::$_custom_fields;
     $receipt_group_id = self::$_custom_group_id;
     $receipt_id = $this->Id;
-
     $query = "
-      SELECT file.`uri`
-      FROM `civicrm_value_donation_receipt_$receipt_group_id` receipt
-      RIGHT JOIN `civicrm_file` file
-        ON file.`id` = receipt.`$receipt_fields[original_file]`
-      WHERE receipt.`id` = $receipt_id
+      UPDATE `civicrm_value_donation_receipt_$receipt_group_id`
+      SET `$receipt_fields[original_file]` = NULL
+      WHERE id = $receipt_id
     ";
-    $pdf = CRM_Core_DAO::singleValueQuery($query);
-    if (!empty($pdf)) {
-      $file_url = CRM_Utils_DonrecHelper::pathToUrl($pdf);
-    } else {
-      //create a pdf
-      $values = self::getAllProperties();
-      $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-      $parameter = array();
-      $pdf = $template->generatePDF($values, $parameter);
-    }
-    return $pdf;
+    $result = CRM_Core_DAO::executeQuery($query);
+    $success = CRM_Donrec_Logic_File::deleteFile($file_id);
+    return $success;
   }
 
   /**
@@ -667,4 +659,21 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     // TODO: optimize
     return $this->getAllTokens();
   }  
+
+  /**
+   * Get url to pdf exists.
+   * @return file-name or NULL
+   */
+  public function getOriginalFileId() {
+    $receipt_fields = self::$_custom_fields;
+    $receipt_group_id = self::$_custom_group_id;
+    $receipt_id = $this->Id;
+    $query = "
+      SELECT `$receipt_fields[original_file]`
+      FROM `civicrm_value_donation_receipt_$receipt_group_id`
+      WHERE `id` = $receipt_id
+    ";
+    $file_id = CRM_Core_DAO::singleValueQuery($query);
+    return $file_id;
+  }
 }
