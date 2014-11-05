@@ -32,16 +32,12 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-   * gets the line ID in case of a single line receipt
+   * gets the line ID of the first line
    *
-   * @return snapshot line ID if single, NULL if bulk
+   * @return snapshot line ID
    */
   public function getID() {
-    if ($this->isBulk()) {
-      return NULL;
-    } else {
-      return reset($this->snapshot_lines)['id'];
-    }
+    return reset($this->snapshot_lines)['id'];
   }
 
   /**
