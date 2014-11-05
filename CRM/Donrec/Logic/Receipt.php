@@ -699,45 +699,4 @@ class CRM_Donrec_Logic_Receipt {
     $file_id = CRM_Core_DAO::singleValueQuery($query);
     return $file_id;
   }
-
-  /**
-  * Get url to pdf exists.
-  * @return file-name or NULL
-  * @deprecated
-  */
-  public function getOriginalFile() {
-    $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
-    $receipt_id = $this->Id;
-    $query = "
-      SELECT file.`uri`
-      FROM `civicrm_value_donation_receipt_$receipt_group_id` receipt
-      RIGHT JOIN `civicrm_file` file
-        ON file.`id` = receipt.`$receipt_fields[original_file]`
-      WHERE receipt.`id` = $receipt_id
-    ";
-    $pdf = CRM_Core_DAO::singleValueQuery($query);
-    return $pdf;
-  }
-
-  /**
-  * Get url to pdf. If no pdf exists, create a tmp-file.
-  * @return file-name
-  * @deprecated
-  */
-  public function viewPdf() {
-    //check if a file exists
-    $pdf = $this->getOriginalFile();
-    if (!empty($pdf)) {
-      $file_url = CRM_Utils_DonrecHelper::pathToUrl($pdf);
-    } else {
-      //create a pdf
-      $values = self::getAllProperties();
-      $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-      $parameter = array();
-      $pdf = $template->generatePDF($values, $parameter);
-    }
-    return $pdf;
-  }
-
 }
