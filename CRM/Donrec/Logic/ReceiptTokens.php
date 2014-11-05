@@ -9,15 +9,15 @@
 +--------------------------------------------------------*/
 
 /**
- * This defines an abstract receipt token source, 
+ * This defines an abstract receipt token source,
  * i.e. data that can be used to create donation receipts
  *
  * current implementations are the donation receipt entity
  * and the snapshot (a temporary donation receipt)
  */
-abstract class CRM_Donrec_Logic_ReceiptTokens {  
+abstract class CRM_Donrec_Logic_ReceiptTokens {
   /**
-   * This is the list (and structure) of the tokens, that will be 
+   * This is the list (and structure) of the tokens, that will be
    * generated and stored in the recipt items
    */
   protected static $STORED_TOKENS = array(
@@ -34,10 +34,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'original_file'             => 'Stores the originial PDF file',
       'lines' => array(           // (MUTIPLE!) INDIVIDUAL LINES (in case of BULK receipt)
         'receive_date'                 => 'Receive Date',
-        'contribution_id'              => 'Contribution ID', 
-        'total_amount'                 => 'Total Amount', 
+        'contribution_id'              => 'Contribution ID',
+        'total_amount'                 => 'Total Amount',
         'non_deductible_amount'        => 'Non-deductible Amount',
-        'financial_type_id'            => 'Financial Type ID', 
+        'financial_type_id'            => 'Financial Type ID',
         ),
       'contributor' => array(     // LEGAL ADDRESS OF THE DONOR
         'id'                           => 'Contact ID',
@@ -64,11 +64,11 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
         'country'                      => 'Country',
         ),
     );
-  
+
   /**
-   * This is the list (and structure) of the tokens, 
+   * This is the list (and structure) of the tokens,
    * that will be NOT stored in the recipt items,
-   * but rather created on-the-fly. 
+   * but rather created on-the-fly.
    * However, in most cases it will be based on the stored data above
    */
   protected static $DYNAMIC_TOKENS = array(
@@ -80,13 +80,13 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'items'                     => 'the same as lines, but only if BULK',
       'view_url'                  => 'URL to downlaod an ORIGINAL PDF - if exists',
       'lines' => array(           // INDIVIDUAL LINES
-        'financial_type'               => 'Financial Type', 
+        'financial_type'               => 'Financial Type',
         ),
       'contributor' => array(     // LEGAL ADDRESS OF THE DONOR
         ),
       'addressee' => array(       // POSTAL ADDRESS OF THE RECEIPIENT
         ),
-      'organisation' => array(    // ISSUING (DEFAULT) ORGANISATION   =>        
+      'organisation' => array(    // ISSUING (DEFAULT) ORGANISATION   =>
         'display_name'                 => 'Display Name',
         'addressee'                    => 'Addressee',
         'supplemental_address_1'       => 'Supplemental Address 1',
@@ -95,7 +95,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
         'city'                         => 'City',
         'country'                      => 'Country',
         ),
-    );  
+    );
 
 
   /**
@@ -138,8 +138,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /*
-   * Takes a full list of token -> values and 
-   * adds the dynamic tokens 
+   * Takes a full list of token -> values and
+   * adds the dynamic tokens
    */
   public static function addDynamicTokens(&$values) {
     if (!empty($values['issued_by'])) {
@@ -178,7 +178,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     if (count($values['lines']) > 1) {
       $values['items'] = $values['lines'];
     }
-    
+
     // add organisation address
     if (empty($values['organisation'])) {
       $domain = CRM_Core_BAO_Domain::getDomain();
@@ -194,7 +194,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       // in all other cases, it's INVALID/DRAFT:
       $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
     }
-    
+
     // copy contributor values to addressee, if not set separately
     if (!isset($values['addressee']['display_name']))
       $values['addressee']['display_name'] = $values['contributor']['display_name'];
@@ -203,7 +203,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // add URL to view original file, if it exists
     if (!empty($values['original_file'])) {
-      $values['view_url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $values['original_file'] . "&eid=$contact_id");
+      $values['view_url'] = CRM_Donrec_Logic_File::getUrl($values['original_file']);
     }
 
     // TODO: call Token hooks? Currently done by PDF generator
@@ -211,7 +211,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * HELPER to verify that all the STORED_TOKENS have been set in the given value array
-   * 
+   *
    * @return an array with all missing tokens
    */
   public static function missingTokens($values) {
@@ -227,13 +227,13 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
             if (!isset($values['lines'][$first_line_id][$line_key])) {
               $missing_tokens['lines'][$line_key] = $line_value;
             }
-          }          
+          }
         } else {
           foreach ($value as $key2 => $value2) {
             if (!isset($values[$key][$key2])) {
               $missing_tokens[$key][$key2] = $value2;
             }
-          }          
+          }
         }
       } else {
         if (!isset($values[$key])) {
@@ -250,7 +250,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    */
   public static function lookupAddressTokens($contact_id, $location_type, $fallback_location_type) {
     if (empty($contact_id)) return array();
-    
+
     // find the address
     $address = self::_lookupAddress($contact_id, $location_type);
     if ($address == NULL) {
@@ -297,6 +297,6 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     } catch (Exception $e) {
       // address does not exist
       return NULL;
-    }    
+    }
   }
 }

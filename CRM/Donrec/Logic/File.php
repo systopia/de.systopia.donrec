@@ -161,12 +161,12 @@ class CRM_Donrec_Logic_File {
 
   /**
    * Get the url of a file
-   * @param $fid - civicrm_file.id or civicrm_file.uri
+   * @param file-id, entity-id
    * @return civicrm-file-url
    */
-  public static function getUrl($fid) {
-    $uri = (is_numeric($fid))? self::getUri($fid) : $fid;
-    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $id . "&eid=1");
+  public static function getUrl($id, $eid=1) {
+    // TODO: seems to work only with $eid=1. Why?
+    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=$id&eid=$eid");
     return $url;
   }
 
