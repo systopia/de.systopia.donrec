@@ -77,8 +77,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values['issued_by']             = CRM_Core_Session::singleton()->get('userID');
     $values['total_amount']          = 0.0;
     $values['non_deductible_amount'] = 0.0;
-    $values['date_from']             = 0;
-    $values['date_to']               = 9999999999;
+    $values['date_from']             = 9999999999;
+    $values['date_to']               = 0;
     $values['lines'] = array();
     foreach ($this->snapshot_lines as $snapshot_line) {
       $snapshot_line_id = $snapshot_line['id'];
@@ -98,8 +98,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
       // update general values
       $values['id']        = $snapshot_line_id;    // just use one of them as ID
       $values['currency']  = $snapshot_line['currency'];
-      if ($receive_date > $values['date_from'])  $values['date_from'] = $receive_date;
-      if ($receive_date < $values['date_to'])    $values['date_to'] = $receive_date;
+      if ($receive_date < $values['date_from'])  $values['date_from'] = $receive_date;
+      if ($receive_date > $values['date_to'])    $values['date_to']   = $receive_date;
       $values['total_amount'] += $snapshot_line['total_amount'];
       $values['non_deductible_amount'] += $snapshot_line['non_deductible_amount'];
     }
