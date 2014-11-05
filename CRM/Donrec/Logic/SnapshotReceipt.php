@@ -22,14 +22,52 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   private $cached_addressees = array();
 
   public function __construct($snapshot, $snapshot_lines, $is_test) {
-    error_log(print_r($snapshot_lines,1));
     $this->snapshot = $snapshot;
     $this->snapshot_lines = $snapshot_lines;
     $this->is_test = $is_test;
   }
 
-  public function isTest() {
+  public function isBulk() {
     return count($this->snapshot_lines) > 1;
+  }
+
+  /**
+   * gets the line ID in case of a single line receipt
+   *
+   * @return snapshot line ID if single, NULL if bulk
+   */
+  public function getID() {
+    if ($this->isBulk()) {
+      return NULL;
+    } else {
+      return reset($this->snapshot_lines)['id'];
+    }
+  }
+
+  /**
+   * gets the line IDs in case of a bulk line receipt
+   *
+   * @return snapshot line IDs if bulk, NULL if single
+   */
+  public function getIDs() {
+    if ($this->isBulk()) {
+      foreach ($this->snapshot_lines as $snapshot_line) {
+        $line_ids[] = $snapshot_line['id'];
+      }
+      return $line_ids;
+    } else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Get all the lines
+   */
+  public function getLines() {
+    foreach ($this->snapshot_lines as $snapshot_line) {
+      $lines[$snapshot_line['id']] = $snapshot_line;
+    }
+    return $lines;
   }
 
   /**
@@ -49,11 +87,13 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values['date_from']             = 0;
     $values['date_to']               = 9999999999;
     $values['lines'] = array();
-    foreach ($this->snapshot_lines as $snapshot_line_id => $snapshot_line) {
+    foreach ($this->snapshot_lines as $snapshot_line) {
+      $snapshot_line_id = $snapshot_line['id'];
       $receive_date = strtotime($snapshot_line['receive_date']);
 
       // create line item
       $values['lines'][$snapshot_line_id] = array(
+        'id'                           => $snapshot_line['id'],
         'receive_date'                 => $snapshot_line['receive_date'],
         'contribution_id'              => $snapshot_line['contribution_id'],
         'total_amount'                 => $snapshot_line['total_amount'],

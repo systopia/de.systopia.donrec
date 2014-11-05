@@ -678,8 +678,9 @@ class CRM_Donrec_Logic_Snapshot {
     } else {
       // create individual receipts
       foreach ($chunk as $snapshot_line) {
-        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, $snapshot_line, $is_test);
+        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, array($snapshot_line), $is_test);
       }
     }
+    return $temp_receipts;
   }
 }
