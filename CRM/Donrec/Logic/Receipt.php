@@ -225,10 +225,12 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function createCopy(&$parameters) {
     // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
+
+
+
     $query = "INSERT INTO `civicrm_value_donation_receipt_%d`
               (`id`,
                `entity_id`,
-               `%s`,
                `%s`,
                `%s`,
                `%s`,
@@ -253,7 +255,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
               `%s`,
               `%s`,
               `%s`,
-              `%s`,
               `%s`
               FROM `civicrm_value_donation_receipt_%d`
               WHERE `id` = %d AND `%s` = 'ORIGINAL';";
@@ -263,7 +264,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
                     self::$_custom_fields['type'],
                     self::$_custom_fields['issued_on'],
                     self::$_custom_fields['issued_by'],
-                    self::$_custom_fields['original_file'],
                     self::$_custom_fields['street_address'],
                     self::$_custom_fields['supplemental_address_1'],
                     self::$_custom_fields['supplemental_address_2'],
@@ -275,7 +275,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
                     self::$_custom_fields['type'],
                     self::$_custom_fields['issued_on'],
                     self::$_custom_fields['issued_by'],
-                    self::$_custom_fields['original_file'],
                     self::$_custom_fields['street_address'],
                     self::$_custom_fields['supplemental_address_1'],
                     self::$_custom_fields['supplemental_address_2'],

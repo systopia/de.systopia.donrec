@@ -26,7 +26,6 @@ function civicrm_api3_donation_receipt_withdraw($params) {
       $copies = $receipt->getCopies();
       $result = $receipt->setStatus('WITHDRAWN');
       $deleted = $receipt->deleteOriginalFile();
-      error_log(print_r($copies, 1));
       foreach ($copies as $copy) {
         $result = $copy->setStatus('WITHDRAWN_COPY');
         $deleted = $copy->deleteOriginalFile();
@@ -91,6 +90,7 @@ function civicrm_api3_donation_receipt_delete($params) {
   $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
 
   if(!empty($receipt)) {
+    $deleted = $receipt->deleteOriginalFile();
     $delete_params = array();
     $result = $receipt->delete($delete_params);
   }else{
