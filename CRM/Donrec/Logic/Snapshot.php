@@ -590,7 +590,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // if we have TEST- and DONE-states we have a problem
     if ($states['TEST'] && $states['DONE']) {
-      error_log("Snapshot with id $id has entries with both TEST and DONE states!");
+      error_log("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
     } elseif ($states['TEST']) {
       $status = 'TEST';
     } elseif ($states['DONE']) {
@@ -686,4 +686,14 @@ class CRM_Donrec_Logic_Snapshot {
     }
     return $temp_receipts;
   }
+
+  /**
+   * Get as SINGLE CRM_Donrec_Logic_SnapshotReceipt objects with a ID
+   * 
+   * @return CRM_Donrec_Logic_SnapshotReceipt
+   */
+  public function getSnapshotReceipt($snapshot_line_id, $is_bulk, $is_test) {
+    return new CRM_Donrec_Logic_SnapshotReceipt($this, array($this->getLine($snapshot_line_id)), $is_test);
+  }
+
 }

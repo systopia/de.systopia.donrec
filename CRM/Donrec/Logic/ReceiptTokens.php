@@ -31,6 +31,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'currency'                  => 'Currency',
       'date_from'                 => 'Contribution Receive Date From',
       'date_to'                   => 'Contribution Receive Date To',
+      'original_file'             => 'Stores the originial PDF file',
       'lines' => array(           // (MUTIPLE!) INDIVIDUAL LINES (in case of BULK receipt)
         'receive_date'                 => 'Receive Date',
         'contribution_id'              => 'Contribution ID', 
@@ -77,6 +78,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'totalmoney'                => 'Total Amount (formatted)',
       'today'                     => 'Issue Date',
       'items'                     => 'the same as lines, but only if BULK',
+      'view_url'                  => 'URL to downlaod an ORIGINAL PDF - if exists',
       'lines' => array(           // INDIVIDUAL LINES
         'financial_type'               => 'Financial Type', 
         ),
@@ -198,6 +200,11 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       $values['addressee']['display_name'] = $values['contributor']['display_name'];
     if (!isset($values['addressee']['addressee_display']))
       $values['addressee']['addressee_display'] = $values['contributor']['addressee_display'];
+
+    // add URL to view original file, if it exists
+    if (!empty($values['original_file'])) {
+      $values['view_url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $values['original_file'] . "&eid=$contact_id");
+    }
 
     // TODO: call Token hooks? Currently done by PDF generator
   }

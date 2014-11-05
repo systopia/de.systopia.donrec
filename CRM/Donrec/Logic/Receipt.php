@@ -55,6 +55,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   * @return Receipt object if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
   */
   public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
+    // TODO: Use tokens from snapshot->getSnapshotReceipt()->getAllTokens()
     // initialize custom field map
     self::getCustomFields();
 
@@ -129,6 +130,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
+    // TODO: Use tokens from snapshot->getSnapshotReceipt()->getAllTokens()
     // initialize custom field map
     self::getCustomFields();
 
@@ -571,6 +573,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[status]`                  AS `status`,
         receipt.`$receipt_fields[issued_on]`               AS `issued_on`,
         receipt.`$receipt_fields[issued_by]`               AS `issued_by`,
+        receipt.`$receipt_fields[original_file]`           AS `original_file`,
 
         contact.`display_name`                             AS `contributor__display_name`,
         contact.`id`                                       AS `contributor__id`,
