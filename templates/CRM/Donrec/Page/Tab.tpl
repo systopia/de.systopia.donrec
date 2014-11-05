@@ -87,8 +87,10 @@
         {if $receipt.status == 'ORIGINAL' && $has_permissions}
           <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         {/if}
-        {if $is_admin}
+        {if $receipt.status == 'ORIGINAL' && $is_admin}
           <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+        {/if}
+        {if $is_admin}
           <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>
         {/if}
 

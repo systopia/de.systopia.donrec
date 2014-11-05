@@ -19,7 +19,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
   function buildQuickForm() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
-    
+
     $this->addElement('hidden', 'rsid');
     // TODO: instead of 'last year',.. we should have '2013', '2012', '2011'
     $options = array(
@@ -51,7 +51,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
 
-      //work on with a remaining snapshot...      
+      //work on with a remaining snapshot...
       $use_remaining_snapshot = CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL);
       if (!empty($use_remaining_snapshot)) {
         CRM_Core_Session::singleton()->pushUserContext(
@@ -127,7 +127,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
           AND `is_test` = 0
           AND `currency` = 'EUR'
           AND (`b1`.`id` IS NULL
-          OR `b1`.`$status_column` NOT IN ('ORIGINAL', 'COPY'))
+          OR `b1`.`$status_column` != 'ORIGINAL')
           ";
 
     // execute the query

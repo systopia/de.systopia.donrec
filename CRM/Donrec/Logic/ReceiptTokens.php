@@ -184,12 +184,15 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    if ($values['status'] == 'COPY') {
+    if ($values['status'] == 'ORIGINAL') {
+      // nothing to to in this case..
+    } elseif ($values['status'] == 'COPY') {
       $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');
-    } elseif ($values['status'] == 'WITHDRAWN') {
+    } else {
+      // in all other cases, it's INVALID/DRAFT:
       $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
     }
-
+    
     // copy contributor values to addressee, if not set separately
     if (!isset($values['addressee']['display_name']))
       $values['addressee']['display_name'] = $values['contributor']['display_name'];

@@ -656,6 +656,7 @@ class CRM_Donrec_Logic_Snapshot {
   * @return boolean
   */
   public static function isInOpenSnapshot($contribution_id) {
+    // TODO: what if status is DONE, but the snapshot is not finished yet?
     $query = "
       SELECT COUNT(*)
       FROM `civicrm_donrec_snapshot`
