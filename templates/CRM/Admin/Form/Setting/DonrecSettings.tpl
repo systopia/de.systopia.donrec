@@ -10,7 +10,7 @@
 <div class="crm-block crm-form-block">
 	<div>
 		<h3>{ts}Contribution types{/ts}</h3>
-		<input value="all" type="checkbox" id="financial_types_all" name="financial_types_all" {if $financialTypes[0]}checked="checked{/if}" {if count($financialTypes) eq 0}disabled="disabled"{/if} class="form-checkbox"/><label for="financial_types"> {ts}All deductible contribution types{/ts} <a onclick='CRM.help("{ts}Draft Text{/ts}", {literal}{"id":"id-contribution-types","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
+		<input value="all" type="checkbox" id="financial_types_all" name="financial_types_all" {if $financialTypes[0]}checked="checked{/if}" {if count($financialTypes) eq 0}disabled="disabled"{/if} class="form-checkbox"/><label for="financial_types"> {ts}All deductible contribution types{/ts} <a onclick='CRM.help("{ts}Contribution Types{/ts}", {literal}{"id":"id-contribution-types","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
 		<div id="advContribTypeList" {if $financialTypes[0] eq 1}hidden{/if}>
   		{foreach from=$financialTypes item=item name=fitems}
   			{if !$smarty.foreach.fitems.first}
@@ -37,13 +37,13 @@
   <div>
   	<h3>PDF</h3>
     <div>
-      <input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/><label for="store_pdf"> {ts}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts}Draft Text{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
+      <input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/><label for="store_pdf"> {ts}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
     </div>
   	<div>
   		<div>
 					<table>
 						<tr>
-							<td class="label">{$form.pdfinfo_path.label} <a onclick='CRM.help("{ts}pdfinfo binary path{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+							<td class="label">{$form.pdfinfo_path.label} <a onclick='CRM.help("{ts}The <code>pdfinfo</code> Tool{/ts}", {literal}{"id":"id-pdfinfo-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
 							<td>{$form.pdfinfo_path.html}</td>
 						</tr>
 					</table>
@@ -55,7 +55,7 @@
   	<div>
   		<table>
   			<tr>
-  				<td>{$form.packet_size.label} <a onclick='CRM.help("{ts}Draft Text{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td>{$form.packet_size.label} <a onclick='CRM.help("{ts}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
   				<td>{$form.packet_size.html}</td>
   			</tr>
   		</table>

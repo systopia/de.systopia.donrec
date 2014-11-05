@@ -23,7 +23,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('text', 'packet_size', ts('Packet size'));
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     $this->addElement('checkbox','financial_types_all'); // "
-    $this->addElement('text', 'pdfinfo_path', ts('pdfinfo path'));
+    $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>'));
 
     // add a checkbox for every contribution type
     $ct = CRM_Donrec_Logic_Settings::getContributionTypes();
