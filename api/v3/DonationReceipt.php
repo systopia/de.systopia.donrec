@@ -21,7 +21,9 @@ function civicrm_api3_donation_receipt_withdraw($params) {
 
   if(!empty($receipt)) {
     if($receipt->isOriginal()) {
+      // TODO: error-handling...
       $result = $receipt->markWithdrawn();
+      $deleted = $receipt->deleteOriginalFile();
     }else{
       return civicrm_api3_create_error(sprintf(ts("Only original donation receipts can be withdrawn."), $params['rid']));
     }
@@ -109,20 +111,21 @@ function civicrm_api3_donation_receipt_view($params) {
 
   $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
 
-  if(!empty($receipt)) {
-    if (empty($params['name'])) {
-      $name = 'View.pdf';
-    } else {
-      $name = $params['name'];
-    }
-    $file = $receipt->viewPdf();
-    // $file = $config->userFrameworkBaseURL . "sites/default/files/civicrm/custom/" . $file;
-    $result = CRM_Donrec_Logic_File::createTemporaryFile($file, $name);
-  }else{
+  if(empty($receipt)) {
     return civicrm_api3_create_error(sprintf(ts("Receipt with id %d does not exist."), $params['rid']));
   }
+  if (empty($params['name'])) {
+    $name = 'View.pdf';
+  } else {
+    $name = $params['name'];
+  }
+  $values = $receipt->getAllProperties();
+  $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+  $parameter = array();
+  $pdf = $template->generatePDF($values, $parameter);
+  $url = CRM_Donrec_Logic_File::createTemporaryFile($pdf, $name);
   // and return the result
-  return civicrm_api3_create_success($result);
+  return civicrm_api3_create_success($url);
 }
 
 /**

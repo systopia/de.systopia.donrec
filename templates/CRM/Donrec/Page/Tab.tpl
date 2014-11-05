@@ -36,7 +36,11 @@
         </div>
       </td>
       <td>
-        <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {if $receipt.view_url}
+          <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts}Download{/ts}</span></a>
+        {else}
+          <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {/if}
         {if $receipt.status == 'ORIGINAL' && $has_permissions}
           <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         {/if}

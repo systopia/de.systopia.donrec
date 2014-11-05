@@ -17,12 +17,12 @@ class CRM_Donrec_Logic_File {
   /**
    * This function will take any file and make it temporarily available
    * for download
-   * 
+   *
    * @param path          where to find the file
    * @param name          end-user name of the file
    * @param deleteSource  if true, the file will be moved to another place rather than copied
    * @param mimetype      the document's MIME type. Autodetect if null
-   * 
+   *
    * @return a string with an URL where to download the file
    */
   public static function createTemporaryFile($path, $name = null, $deleteSource = true, $mimetype = null) {
@@ -31,14 +31,14 @@ class CRM_Donrec_Logic_File {
 
 
   /**
-   * This function will take any file and make it permanently 
+   * This function will take any file and make it permanently
    * available as a CiviCRM File entity.
-   * 
+   *
    * @param path          where to find the file
    * @param contact_id    which contact to connect to
-   * 
+   *
    * @param mimetype      the document's MIME type. Autodetect if null
-   * 
+   *
    * @return an array containing the created file object, including a generated url
    */
   public static function createPermanentFile($path, $name = null, $contact_id, $mimetype = null, $description = '') {
@@ -49,7 +49,7 @@ class CRM_Donrec_Logic_File {
 
     // move file to a permanent folder
     $newPath = $config->customFileUploadDir . basename($path);
-    rename($path, $newPath);    
+    rename($path, $newPath);
 
     // find mime type
     if (empty($mimetype)) {
@@ -83,16 +83,16 @@ class CRM_Donrec_Logic_File {
     $reply = $file['values'];
     $reply['url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $file['id'] . "&eid=$contact_id");
     $reply['path'] = $newPath;
-    
+
     return $reply;
   }
 
 
   /**
    * Will create a suitable file for writing to
-   * 
+   *
    * @param preferredName The preferred name. There will probably by a suffix appended to it
-   * 
+   *
    * @return a string with a file path
    */
   public static function makeFileName($preferredName, $suffix='') {
@@ -107,5 +107,79 @@ class CRM_Donrec_Logic_File {
     } else {
       return $new_file;
     }
+  }
+
+  /**
+   * Delete the a file
+   * @param $fid - civicrm_file.id or civicrm_file.uri
+   * @return TRUE if file was deleted, FALSE otherwise
+   */
+
+  public static function deleteFile($id) {
+    // get file-path, but before deleting it, delete the civicrm_file-entry
+    $uri = self::getUri($id);
+    $path = self::getAbsolutePath($uri);
+
+    // delete civicrm_file and civicrm_entity_file
+    $query1 = "
+      DELETE FROM `civicrm_entity_file`
+      WHERE `file_id` = $id
+    ";
+    $query2 = "
+      DELETE FROM `civicrm_file`
+      WHERE `id` = $id
+    ";
+    $result1 = CRM_Core_DAO::executeQuery($query1);
+    $result2 = CRM_Core_DAO::executeQuery($query2);
+
+    // delete file on disc
+    $success = unlink($path);
+    if (!$success) {
+      error_log("Could not delete file: $path. The corresponding civicrm_file has been deleted!");
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Get civicrm_file.uri
+   * @param $id - civicrm_file.id
+   * @return civicrm_file.uri or NULL
+   */
+  public static function getUri($id) {
+    $query = "
+      SELECT `uri`
+      FROM `civicrm_file`
+      WHERE `id` = $id
+    ";
+    $uri = CRM_Core_DAO::singleValueQuery($query);
+    if (!$uri) {
+      error_log("There is no file with id '$id'.");
+    }
+    return $uri;
+  }
+
+  /**
+   * Get the url of a file
+   * @param $fid - civicrm_file.id or civicrm_file.uri
+   * @return civicrm-file-url
+   */
+  public static function getUrl($fid) {
+    $uri = (is_numeric($fid))? self::getUri($fid) : $fid;
+    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $id . "&eid=1");
+    return $url;
+  }
+
+  /**
+   * Get absolute Path for File
+   * @param $fid - either civicrm_file.id or civicrm_file.uri
+   * @return TRUE if file was deleted, FALSE otherwise
+   */
+
+  public static function getAbsolutePath($fid) {
+    $uri = (is_numeric($fid))? self::getUri($fid) : $fid;
+    $config = CRM_Core_Config::singleton();
+    $path = $config->customFileUploadDir . basename($uri);
+    return $path;
   }
 }
