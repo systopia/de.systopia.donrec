@@ -73,7 +73,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
     // create items
     $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
-    $values['issued_on']             = strtotime('now');
+    $values['issued_on']             = date('Y-m-d H:i:s');
+    $values['issued_by']             = CRM_Core_Session::singleton()->get('userID');
     $values['total_amount']          = 0.0;
     $values['non_deductible_amount'] = 0.0;
     $values['date_from']             = 0;
@@ -97,12 +98,15 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
       // update general values
       $values['id']        = $snapshot_line_id;    // just use one of them as ID
       $values['currency']  = $snapshot_line['currency'];
-      $values['issued_by']             = '';
       if ($receive_date > $values['date_from'])  $values['date_from'] = $receive_date;
       if ($receive_date < $values['date_to'])    $values['date_to'] = $receive_date;
       $values['total_amount'] += $snapshot_line['total_amount'];
       $values['non_deductible_amount'] += $snapshot_line['non_deductible_amount'];
     }
+
+    // format date timestamps
+    $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
+    $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
 
     // TODO: remove lookup when contact_id in snapshot
     $contribution_id = reset($values['lines'])['id'];
