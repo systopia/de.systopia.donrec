@@ -83,12 +83,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    * allows the subclasses to process the newly created PDF file
    */
   protected function postprocessPDF($file, $snapshot_line_id) {
+    $pageCount = $this->getPDFPageCount($file);
 
-    // TODO: check with Thomas, use existing functions
-    $filePath = $config->customFileUploadDir . $file;
-    $pageCount = $this->getPDFPageCount($filePath);
-
-    $this->updateProcessInformation($snapshot_line_id, 
+    $this->updateProcessInformation($snapshot_line_id,
       array( 'pdf_file'      => $file,
              'pdf_pagecount' => $pageCount));
   }
@@ -110,7 +107,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
 
     $preferredFileName = ts("donation_receipts.zip");
     $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-    $fileURL = $config->customFileUploadDir . $archiveFileName;
+    $fileURL = sys_get_temp_dir() . '/' . $archiveFileName;
     $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
@@ -136,7 +133,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       $tmp = new ZipArchive;
       $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
       $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-      $pcFileURL = $config->customFileUploadDir . $pcArchiveFileName;
+      $pcFileURL = sys_get_temp_dir() . '/' . $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
         $zipPool[$value] = array('handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
@@ -150,7 +147,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     foreach($pageCountArr as $entry) {
       foreach ($entry as $item) {
         if($item[0] && $item[2]) { // if page count and file name exists
-          $opResult = $zipPool[$item[0]]['handle']->addFile($config->customFileUploadDir . $item[2], basename($item[2])) ;
+          $opResult = $zipPool[$item[0]]['handle']->addFile($item[2], basename($item[2])) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add " . $item[2] . " to sub-archive $pcArchiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
@@ -168,8 +165,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach($zipPool as $zip) {
         $filename = $zip['file'];
         if ($filename) {
-          $toRemove[] = $config->customFileUploadDir . $filename;
-          $opResult = $outerArchive->addFile($config->customFileUploadDir . $filename, $zip['pref_name']) ;
+          $toRemove[] = sys_get_temp_dir() . '/' . $filename;
+          $opResult = $outerArchive->addFile(sys_get_temp_dir() . '/' . $filename, $zip['pref_name']) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
