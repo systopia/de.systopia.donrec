@@ -61,13 +61,11 @@
         custom_period.show();
         break;
       case "current_year":
-        console.log('this_year');
         from_display.datepicker('setDate', new Date(current_year, 0, 1));
         to_display.datepicker('setDate', new Date(current_year, 11, 31));
         custom_period.hide();
         break;
       case "last_year":
-        console.log('last_year');
         from_display.datepicker('setDate', new Date(current_year-1, 0, 1));
         to_display.datepicker('setDate', new Date(current_year-1, 11, 31));
         custom_period.hide();
