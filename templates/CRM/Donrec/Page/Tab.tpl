@@ -27,6 +27,7 @@
               {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
               {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
               {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
+              {if $receipt.status eq 'WITHDRAWN_COPY'}{ts}withdrawn copy{/ts}{/if}
             </b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
