@@ -51,7 +51,7 @@ class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
 
     // get snapshot data
-    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
+    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
     $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, true, $is_test);
 
 

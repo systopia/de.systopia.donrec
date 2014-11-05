@@ -674,8 +674,10 @@ class CRM_Donrec_Logic_Snapshot {
   public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
     $temp_receipts = array();
     if ($is_bulk) {
-      // BULK receipts => group by contact ID
-      // TODO
+      // then create the temporary receipts
+      foreach ($chunk as $contact_id => $snapshot_lines) {
+        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, $snapshot_lines, $is_test);
+      }
     } else {
       // create individual receipts
       foreach ($chunk as $snapshot_line) {

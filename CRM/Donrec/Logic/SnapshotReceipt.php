@@ -45,19 +45,15 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-   * gets the line IDs in case of a bulk line receipt
+   * gets the line IDs
    *
-   * @return snapshot line IDs if bulk, NULL if single
+   * @return snapshot line IDs
    */
   public function getIDs() {
-    if ($this->isBulk()) {
-      foreach ($this->snapshot_lines as $snapshot_line) {
-        $line_ids[] = $snapshot_line['id'];
-      }
-      return $line_ids;
-    } else {
-      return NULL;
+    foreach ($this->snapshot_lines as $snapshot_line) {
+      $line_ids[] = $snapshot_line['id'];
     }
+    return $line_ids;
   }
 
   /**
@@ -80,7 +76,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values = array();
 
     // create items
-    $values['status']                = '';
+    $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
     $values['issued_on']             = strtotime('now');
     $values['total_amount']          = 0.0;
     $values['non_deductible_amount'] = 0.0;
