@@ -8,7 +8,7 @@
 +--------------------------------------------------------*}
 
 <div class="action-link">
-  {if call_user_func(array('CRM_Core_Permission','check'), 'view receipts') }
+  {if $can_create_withdraw }
     <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts}Create new donation receipt{/ts}</span></a>
   {/if}
 </div>
