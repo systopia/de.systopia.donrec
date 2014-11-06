@@ -36,12 +36,13 @@
   </div>
   <div>
   	<h3>PDF</h3>
-    <div>
-      <input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/><label for="store_pdf"> {ts}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label>&nbsp;
-    </div>
   	<div>
   		<div>
 					<table>
+						<tr>
+							<td class="label"><label for="store_pdf"> {ts}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+							<td><input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/></td>
+						</tr>
 						<tr>
 							<td class="label">{$form.pdfinfo_path.label} <a onclick='CRM.help("{ts}The <code>pdfinfo</code> Tool{/ts}", {literal}{"id":"id-pdfinfo-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
 							<td>{$form.pdfinfo_path.html}</td>
@@ -51,12 +52,37 @@
 		</div>
   </div>
   <div>
-  	<h3>Donation receipts</h3>
+  	<h3>{ts}Donation receipts{/ts}</h3>
   	<div>
   		<table>
   			<tr>
-  				<td>{$form.packet_size.label} <a onclick='CRM.help("{ts}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td class="label">{$form.packet_size.label} <a onclick='CRM.help("{ts}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
   				<td>{$form.packet_size.html}</td>
+  			</tr>
+  		</table>
+  	</div>
+  </div>
+  <div>
+  	<h3>{ts}Address Types{/ts}</h3>
+  	<div>
+  		<table>
+  			<tr>
+  				<td class="label">{$form.legal_address.label} <a onclick='CRM.help("{ts}Legal Address{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td>{$form.legal_address.html}</td>
+  			</tr>
+  			<tr>
+  				<td class="label">{$form.legal_address_fallback.label} <a onclick='CRM.help("{ts}Legal Address Fallback{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td>{$form.legal_address_fallback.html}</td>
+  			</tr>
+  		</table>
+  		<table>
+  			<tr>
+  				<td class="label">{$form.postal_address.label} <a onclick='CRM.help("{ts}Postal Address{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td>{$form.postal_address.html}</td>
+  			</tr>
+  			<tr>
+  				<td class="label">{$form.postal_address_fallback.label} <a onclick='CRM.help("{ts}Postal Address Fallback{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+  				<td>{$form.postal_address_fallback.html}</td>
   			</tr>
   		</table>
   	</div>
