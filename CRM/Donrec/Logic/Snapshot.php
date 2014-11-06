@@ -668,7 +668,7 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * create a set of CRM_Donrec_Logic_SnapshotReceipt objects with a given chunk
-   * 
+   *
    * @return an array of CRM_Donrec_Logic_SnapshotReceipts
    */
   public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
@@ -689,7 +689,7 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * Get as SINGLE CRM_Donrec_Logic_SnapshotReceipt objects with a ID
-   * 
+   *
    * @return CRM_Donrec_Logic_SnapshotReceipt
    */
   public function getSnapshotReceipt($snapshot_line_id, $is_bulk, $is_test) {

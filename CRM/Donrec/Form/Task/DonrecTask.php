@@ -129,7 +129,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
           AND (`b1`.`id` IS NULL
           OR `b1`.`$status_column` != 'ORIGINAL')
           ";
-
+    // TODO: this query is hardcoded to EUR. Should we change this?
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);
 
