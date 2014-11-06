@@ -16,7 +16,7 @@ class CRM_Donrec_Logic_Snapshot {
   private $Id;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
   private static $LINE_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
   // private constructor to prevent
@@ -90,11 +90,12 @@ class CRM_Donrec_Logic_Snapshot {
     // assemble the query
     // remark: if you change this, also adapt the $CHUNK_FIELDS list
     $insert_query =
-          "INSERT INTO
-              `civicrm_donrec_snapshot` (
+          "INSERT INTO `civicrm_donrec_snapshot` (
               `id`,
               `snapshot_id`,
               `contribution_id`,
+              `contact_id`,
+              `financial_type_id`,
               `created_timestamp`,
               `expires_timestamp`,
               `status`,
@@ -107,6 +108,8 @@ class CRM_Donrec_Logic_Snapshot {
               NULL as `id`,
               '%1' as `snapshot_id`,
               `id`,
+              `contact_id`,
+              `financial_type_id`,
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
@@ -572,12 +575,9 @@ class CRM_Donrec_Logic_Snapshot {
       FROM (
         SELECT contact_id
         FROM civicrm_donrec_snapshot
-        LEFT JOIN civicrm_contribution C
-        ON contribution_id = C.id
         WHERE snapshot_id = $id
         GROUP BY contact_id
       ) A";
-
     $result1 = CRM_Core_DAO::executeQuery($query1);
     $result1->fetch();
 
@@ -587,10 +587,10 @@ class CRM_Donrec_Logic_Snapshot {
     // as a object-method as well.
     $snapshot = self::get($id);
     $states = $snapshot->getStates();
-
     // if we have TEST- and DONE-states we have a problem
     if ($states['TEST'] && $states['DONE']) {
       error_log("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
+      // TODO : raise an error
     } elseif ($states['TEST']) {
       $status = 'TEST';
     } elseif ($states['DONE']) {
@@ -668,7 +668,7 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * create a set of CRM_Donrec_Logic_SnapshotReceipt objects with a given chunk
-   * 
+   *
    * @return an array of CRM_Donrec_Logic_SnapshotReceipts
    */
   public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
@@ -689,7 +689,7 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * Get as SINGLE CRM_Donrec_Logic_SnapshotReceipt objects with a ID
-   * 
+   *
    * @return CRM_Donrec_Logic_SnapshotReceipt
    */
   public function getSnapshotReceipt($snapshot_line_id, $is_bulk, $is_test) {
