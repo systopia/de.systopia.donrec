@@ -37,6 +37,9 @@ class CRM_Donrec_DataStructure {
     'is_view' => 1,
   );
   public static $customFields = array(
+
+    /***** receipt *****/
+    /*receipt-specific*/
     array(
       'name' => 'status',
       'custom_group_name' => 'zwb_donation_receipt',
@@ -80,6 +83,50 @@ class CRM_Donrec_DataStructure {
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'original_file',
       'data_type' => 'Int',
+      'html_type' => 'Text',
+    ),
+    /*contact-specific*/
+    array(
+      'name' => 'contact_type',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Contact Type',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'gender',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Gender',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'prefix',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Prefix',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    /*address-specific*/
+    array(
+      'name' => 'postal_greeting_display',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Postal Greeting',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'email_greeting_display',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Email Greeting',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'addressee_display',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Addressee',
+      'data_type' => 'String',
       'html_type' => 'Text',
     ),
     array(
@@ -131,6 +178,51 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
+    /*shipping-address-specific*/
+    array(
+      'name' => 'shipping_street_address',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_street_address',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'shipping_supplemental_address_1',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_supplemental_address_1',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'shipping_supplemental_address_2',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_supplemental_address_2',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'shipping_postal_code',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_postal_code',
+      'data_type' => 'Int',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'shipping_city',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_city',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'shipping_country',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'shipping_country',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+
+    /***** receipt-item *****/
     array(
       'name' => 'status',
       'custom_group_name' => 'zwb_donation_receipt_item',
@@ -175,6 +267,13 @@ class CRM_Donrec_DataStructure {
       'custom_group_name' => 'zwb_donation_receipt_item',
       'label' => 'total_amount',
       'data_type' => 'Money',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'financial_type_id',
+      'custom_group_name' => 'zwb_donation_receipt_item',
+      'label' => 'financial_type_id',
+      'data_type' => 'Int',
       'html_type' => 'Text',
     ),
     array(
@@ -231,16 +330,28 @@ class CRM_Donrec_DataStructure {
       'value' => 'ORIGINAL',
     ),
     array(
-      'name' => 'INVALID',
-      'option_group_name' => 'donrec_status',
-      'label' => 'invalid',
-      'value' => 'INVALID',
-    ),
-    array(
       'name' => 'COPY',
       'option_group_name' => 'donrec_status',
       'label' => 'copy',
       'value' => 'COPY',
+    ),
+    array(
+      'name' => 'WITHDRAWN',
+      'option_group_name' => 'donrec_status',
+      'label' => 'withdrawn',
+      'value' => 'WITHDRAWN',
+    ),
+    array(
+      'name' => 'WITHDRAWN_COPY',
+      'option_group_name' => 'donrec_status',
+      'label' => 'withdrawn_copy',
+      'value' => 'WITHDRAWN_COPY',
+    ),
+    array(
+      'name' => 'INVALID',
+      'option_group_name' => 'donrec_status',
+      'label' => 'invalid',
+      'value' => 'INVALID',
     ),
     array(
       'name' => 'SINGLE',
@@ -298,7 +409,7 @@ class CRM_Donrec_DataStructure {
   protected static function updateCustomGroups() {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
-      // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE: 
+      // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE:
       //$params['title'] = ts($params['title']);
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
