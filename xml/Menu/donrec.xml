@@ -4,31 +4,25 @@
     <path>civicrm/donrec/runner</path>
     <page_callback>CRM_Donrec_Page_Runner</page_callback>
     <title>Creating Donation Receipts</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>can_create_withdraw</access_arguments>
   </item>
   <item>
     <path>civicrm/donrec/task</path>
     <page_callback>CRM_Donrec_Page_Staging</page_callback>
     <title>Issue Donation Receipts</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/donrec/test</path>
-    <page_callback>CRM_Donrec_Page_Test</page_callback>
-    <title>Donation Receipt Tests</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>can_create_withdraw</access_arguments>
   </item>
   <item>
     <path>civicrm/donrec/tab</path>
     <page_callback>CRM_Donrec_Page_Tab</page_callback>
     <title>Donation Receipts</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>can_view_copy</access_arguments>
   </item>
   <item>
     <path>civicrm/donrec/create</path>
     <page_callback>CRM_Donrec_Form_Task_Create</page_callback>
     <title>Issue Donation Receipts</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>can_create_withdraw</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/setting/donrec</path>
@@ -43,6 +37,6 @@
     <path>civicrm/donrec/showfile</path>
     <page_callback>CRM_Donrec_Page_Tempfile</page_callback>
     <title>Tempfile</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>can_view_copy</access_arguments>
   </item>
 </menu>

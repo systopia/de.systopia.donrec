@@ -84,18 +84,20 @@
         </div>
       </td>
       <td>
-        {if $receipt.view_url}
-          <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts}Download{/ts}</span></a>
-        {else}
-          <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+        {if $can_view_copy}
+          {if $receipt.view_url}
+            <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts}Download{/ts}</span></a>
+          {else}
+            <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+          {/if}
         {/if}
-        {if $receipt.status == 'ORIGINAL' && $has_permissions}
+        {if $receipt.status == 'ORIGINAL' && $can_view_copy}
           <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
         {/if}
-        {if $receipt.status == 'ORIGINAL' && $is_admin}
+        {if $receipt.status == 'ORIGINAL' && $can_create_withdraw}
           <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
         {/if}
-        {if $is_admin}
+        {if $can_delete}
           <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>
         {/if}
 
@@ -104,11 +106,13 @@
         {else}
           <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="#">{ts}View{/ts}</a>
         {/if}
-        {if $receipt.status == 'ORIGINAL' && $has_permissions}
+        {if $receipt.status == 'ORIGINAL' && $can_view_copy}
           <a id="copy_receipt_{$receipt_id}" title="{ts}Create copy{/ts}" class="action-item" href="#">{ts}Create copy{/ts}</a>
         {/if}
-        {if $is_admin}
+        {if $can_create_withdraw}
           <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
+        {/if}
+        {if $can_delete}
           <a id="delete_receipt_{$receipt_id}" title="{ts}Delete{/ts}" class="action-item" href="#">{ts}Delete{/ts}</a>
         {/if*}
       </td>
@@ -259,7 +263,7 @@
         }
 
     });
-    {/literal}{if $is_admin}{literal}
+    {/literal}{if $can_create_withdraw}{literal}
     // called for every withdraw-button
     cj('.donrec-stats-block a[id^="withdraw_receipt_"]').click(function() {
         // calculate receipt id
@@ -282,7 +286,7 @@
         }
 
     });
-    {/literal}{/if}{if $has_permissions}{literal}
+    {/literal}{/if}{if $can_view_copy}{literal}
     // called for every copy-button
     cj('.donrec-stats-block a[id^="copy_receipt_"]').click(function() {
         // calculate receipt id
@@ -305,7 +309,7 @@
         }
 
     });
-    {/literal}{/if}{if $is_admin}{literal}
+    {/literal}{/if}{if $can_delete}{literal}
     // called for every delete-button
     cj('.donrec-stats-block a[id^="delete_receipt_"]').click(function() {
         // calculate receipt id

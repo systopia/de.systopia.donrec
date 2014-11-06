@@ -123,11 +123,11 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
  */
 function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
   // TODO: adjust to correct permission
-  $permissions['donation_receipt_engine']['next'] = array('access CiviCRM');
-  $permissions['donation_receipt']['view'] = array('view receipts');
-  $permissions['donation_receipt']['delete'] = array('administer receipts');
-  $permissions['donation_receipt']['copy'] = array('view receipts');
-  $permissions['donation_receipt']['withdraw'] = array('administer receipts');
+  $permissions['donation_receipt_engine']['next'] = array('create and withdraw receipts');
+  $permissions['donation_receipt']['view'] = array('view and copy receipts');
+  $permissions['donation_receipt']['delete'] = array('delete receipts');
+  $permissions['donation_receipt']['copy'] = array('view and copy receipts');
+  $permissions['donation_receipt']['withdraw'] = array('create and withdraw receipts');
 }
 
 /**
@@ -136,9 +136,9 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
  function donrec_civicrm_permission(&$permissions) {
   $prefix = ts('DonationReceipts') . ': ';
 
-  $permissions['view receipts'] = $prefix . ts('view and create copies of receipts');
-  $permissions['edit receipts'] = $prefix . ts('edit receipts');
-  $permissions['administer receipts'] = $prefix . ts('withdraw and delete receipts');
+  $permissions['view and copy receipts'] = $prefix . ts('view and create copies of receipts');
+  $permissions['create and withdraw receipts'] = $prefix . ts('create and withdraw receipts');
+  $permissions['delete receipts'] = $prefix . ts('delete receipts');
  }
 
 /**

@@ -14,7 +14,7 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
     $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
 
-    if($contact_id && CRM_Core_Permission::check('view receipts')) {
+    if($contact_id && CRM_Core_Permission::check('view and copy receipts')) {
       $params = array();
       $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
       $display_receipts = array();
@@ -26,10 +26,10 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     }
 
     // permissions
-    // TODO: should admin has permissions other users don't have?
-    // e.g. admin can delete but also other users can withdraw receipts
-    $this->assign('is_admin', CRM_Core_Permission::check('administer receipts'));
-    $this->assign('has_permissions', CRM_Core_Permission::check('view receipts'));
+    $this->assign('can_view_copy', CRM_Core_Permission::check('view and copy receipts'));
+    $this->assign('can_create_withdraw', CRM_Core_Permission::check('create and withdraw receipts'));
+    $this->assign('can_delete', CRM_Core_Permission::check('delete receipts'));
+
     // do we keep original pdf files?
     $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 
