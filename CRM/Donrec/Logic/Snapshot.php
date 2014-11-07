@@ -220,12 +220,10 @@ class CRM_Donrec_Logic_Snapshot {
 
       // get all lines
       $query = CRM_Core_DAO::executeQuery(
-         "SELECT contact.id as `contact_id`, snapshot.* FROM `civicrm_donrec_snapshot` as snapshot
-          RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = snapshot.`contribution_id`
-          RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
+         "SELECT * FROM `civicrm_donrec_snapshot` as snapshot
           WHERE snapshot.`snapshot_id` = $snapshot_id
           AND $status_clause
-          ORDER BY contact.id ASC;");
+          ORDER BY snapshot.`contact_id` ASC;");
       $chunk_lines = array();
       while ($query->fetch()) {
         $tmp = array();
