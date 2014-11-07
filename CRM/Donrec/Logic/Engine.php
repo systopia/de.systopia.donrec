@@ -140,13 +140,14 @@ class CRM_Donrec_Logic_Engine {
     // create donation receipts
     if (!$is_test) {
 
-        // THIS IS BULK PROCESSING
         $receipt_params = array();
         $bulk_line_ids = array();
         $single_line_ids = array();
 
         // get all lines per contact
+        // and sort them in the respective arrays
         foreach ($chunk as $chunk_id => $chunk_items) {
+          // override bulk when there is only one receipt
           if($is_bulk && count($chunk_items) == 1) {
             $single_line_ids[] = $chunk_items[0]['id'];
           }elseif ($is_bulk){
