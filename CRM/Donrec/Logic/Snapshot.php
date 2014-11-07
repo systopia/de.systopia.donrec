@@ -219,11 +219,19 @@ class CRM_Donrec_Logic_Snapshot {
       // BULK case: get items grouped by contact ID until it exceeds $chunk_size
 
       // get all lines
-      $query = CRM_Core_DAO::executeQuery(
-         "SELECT * FROM `civicrm_donrec_snapshot` as snapshot
-          WHERE snapshot.`snapshot_id` = $snapshot_id
-          AND $status_clause
-          ORDER BY snapshot.`contact_id` ASC;");
+      $query = "SELECT
+                 snapshot.*,
+                 a.contrib_count
+                FROM
+                `civicrm_donrec_snapshot` AS snapshot,
+                (SELECT `contact_id`, COUNT(*) AS contrib_count
+                  FROM `civicrm_donrec_snapshot`
+                  GROUP BY `contact_id`) AS a
+                WHERE a.`contact_id` = snapshot.`contact_id`
+                AND snapshot.`snapshot_id` = $snapshot_id
+                AND $status_clause
+                ORDER BY snapshot.`contact_id` ASC;";
+      $query = CRM_Core_DAO::executeQuery($query);
       $chunk_lines = array();
       while ($query->fetch()) {
         $tmp = array();
