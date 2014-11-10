@@ -32,13 +32,7 @@ class CRM_Donrec_Logic_ReceiptItem {
 
     $key_value = array();
     foreach ($params as $key => $value) {
-      if (is_null($value)) {
-        $key_value[$key] = 'NULL';
-      } elseif (is_string($value)) {
-        $key_value[$key] = "'$value'";
-      } else {
-        $key_value[$key] = $value;
-      }
+      $key_value[$key] = is_null($value) ? 'NULL' : "'$value'";
     }
     $set_str = "`entity_id`='$params[contribution_id]'";
     foreach ($fields as $key => $field) {
