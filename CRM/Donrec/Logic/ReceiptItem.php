@@ -32,18 +32,17 @@ class CRM_Donrec_Logic_ReceiptItem {
 
     $key_value = array();
     foreach ($params as $key => $value) {
-      $key_value[$key] = !empty($value) ? $value : NULL;
+      if (is_null($value)) {
+        $key_value[$key] = 'NULL';
+      } elseif (is_string($value)) {
+        $key_value[$key] = "'$value'";
+      } else {
+        $key_value[$key] = $value;
+      }
     }
-    // TODO: make the keys unitary?
-    $key_value['entity_id'] = $params['contribution_id'];
-    $key_value['issued_on'] = $params['receive_date'];
     $set_str = "`entity_id`='$params[contribution_id]'";
     foreach ($fields as $key => $field) {
-      if (is_null($key_value[$key])) {
-        $set_str .= ", `$field`=NULL";
-      }else{
-        $set_str .= ", `$field`='$key_value[$key]'";
-      }
+      $set_str .= ", `$field`=$key_value[$key]";
     }
     $query = "INSERT INTO `$table` SET $set_str";
     $result = CRM_Core_DAO::executeQuery($query);
