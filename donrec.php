@@ -45,6 +45,7 @@ function donrec_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function donrec_civicrm_uninstall() {
+  // CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
   return _donrec_civix_civicrm_uninstall();
 }
 

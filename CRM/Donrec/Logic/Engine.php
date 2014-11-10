@@ -136,45 +136,36 @@ class CRM_Donrec_Logic_Engine {
         $logs = array_merge($logs, $result['log']);
       }
     }
+
     // create donation receipts
     if (!$is_test) {
-      if(!$is_bulk) {
-        // THIS IS SINGLE PROCESSING
-        $receipt_params = array();
-        foreach ($chunk as $chunk_id => $chunk_item) {
-          if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-            // get pdf file name from snapshot line
-            $pdf_file = $this->getPDF($chunk_item['id']);
-            if ($pdf_file) {
-              // get contact Id from chunk item
-              $contact_id = 1; // TODO: get contact_id
-              $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
-              if (!empty($file)) {
-                $receipt_params['file_id'] = $file['id'];
-              }
 
-              // update PDF path
-              $this->setPDF($chunk_item['id'], $file['path']);
+        $receipt_params = array();
+        $bulk_line_ids = array();
+        $single_line_ids = array();
+
+        // get all lines per contact
+        // and sort them in the respective arrays
+        foreach ($chunk as $chunk_id => $chunk_items) {
+          // override bulk when there is only one receipt
+          if($is_bulk && count($chunk_items) == 1) {
+            $single_line_ids[] = $chunk_items[0]['id'];
+          }elseif ($is_bulk){
+            foreach ($chunk_items as $key => $chunk_item) {
+              $bulk_line_ids[$chunk_id][] = $chunk_item['id'];
             }
+          }else{
+            $single_line_ids[] = $chunk_items['id'];
           }
-          CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $chunk_item['id'], $receipt_params);
         }
 
-      } else {
         // THIS IS BULK PROCESSING
-        $receipt_params = array();
-        $line_ids = array();
-        foreach ($chunk as $chunk_id => $chunk_items) {
-          foreach ($chunk_items as $key => $chunk_item) {
-            $line_ids[] = $chunk_item['id'];
-          }
-          if (!empty($line_ids)) {
+        if (!empty($bulk_line_ids)) {
+          foreach($bulk_line_ids as $contact_id => $line_ids) {
             if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
               // get pdf file name from snapshot line
-              $pdf_file = $this->getPDF($chunk_items[0]['id']);
+              $pdf_file = $this->getPDF($line_ids[0]);
               if ($pdf_file) {
-                // get contact Id from chunk item
-                $contact_id = 1; // TODO: get contact_id
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
                   $receipt_params['file_id'] = $file['id'];
@@ -184,11 +175,33 @@ class CRM_Donrec_Logic_Engine {
             $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $line_ids, $receipt_params);
             if(!$result) {
               error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
+            }else{
+              unset($receipt_params['file_id']);
             }
-            $line_ids = array();
           }
         }
-      }
+
+        // THIS IS SINGLE PROCESSING
+        if (!empty($single_line_ids)) {
+          foreach ($single_line_ids as $index => $line_id) {
+            if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
+              // get pdf file name from snapshot line
+              $pdf_file = $this->getPDF($line_id);
+              if ($pdf_file) {
+                $contact_id = 1; // TODO: get contact_id
+                $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
+                if (!empty($file)) {
+                  $receipt_params['file_id'] = $file['id'];
+                }
+
+                // update PDF path
+                $this->setPDF($line_id, $file['path']);
+              }
+            }
+            CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $line_id, $receipt_params);
+            unset($receipt_params['file_id']);
+          }
+        }
     }
 
     // mark the chunk as processed

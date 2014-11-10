@@ -16,9 +16,9 @@ class CRM_Donrec_Logic_Snapshot {
   private $Id;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
-  private static $LINE_FIELDS = array('id', 'contribution_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
+  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
   // private constructor to prevent
   // external instantiation
   private function __construct($id) {
@@ -90,11 +90,12 @@ class CRM_Donrec_Logic_Snapshot {
     // assemble the query
     // remark: if you change this, also adapt the $CHUNK_FIELDS list
     $insert_query =
-          "INSERT INTO
-              `civicrm_donrec_snapshot` (
+          "INSERT INTO `civicrm_donrec_snapshot` (
               `id`,
               `snapshot_id`,
               `contribution_id`,
+              `contact_id`,
+              `financial_type_id`,
               `created_timestamp`,
               `expires_timestamp`,
               `status`,
@@ -107,6 +108,8 @@ class CRM_Donrec_Logic_Snapshot {
               NULL as `id`,
               '%1' as `snapshot_id`,
               `id`,
+              `contact_id`,
+              `financial_type_id`,
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
@@ -216,19 +219,33 @@ class CRM_Donrec_Logic_Snapshot {
       // BULK case: get items grouped by contact ID until it exceeds $chunk_size
 
       // get all lines
-      $query = CRM_Core_DAO::executeQuery(
-         "SELECT contact.id as `contact_id`, snapshot.* FROM `civicrm_donrec_snapshot` as snapshot
-          RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = snapshot.`contribution_id`
-          RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
-          WHERE snapshot.`snapshot_id` = $snapshot_id
-          AND $status_clause
-          ORDER BY contact.id ASC;");
+      $query = "SELECT
+                 snapshot.*,
+                 a.contrib_count
+                FROM
+                `civicrm_donrec_snapshot` AS snapshot,
+                (SELECT `contact_id`, COUNT(*) AS contrib_count
+                  FROM `civicrm_donrec_snapshot`
+                  GROUP BY `contact_id`) AS a
+                WHERE a.`contact_id` = snapshot.`contact_id`
+                AND snapshot.`snapshot_id` = $snapshot_id
+                AND $status_clause
+                ORDER BY snapshot.`contact_id` ASC;";
+      $query = CRM_Core_DAO::executeQuery($query);
       $chunk_lines = array();
       while ($query->fetch()) {
         $tmp = array();
         foreach (self::$CHUNK_FIELDS as $field) {
           $tmp[$field] = $query->$field;
         }
+        // not used at the moment
+        // notify the engine that this contact has only one contribution
+        // in this snapshot and it can therefore process this as a
+        // single receipt instead of a bulk receipt
+        // if($query->contrib_count == 1) {
+        //   $tmp['single_override'] = TRUE;
+        // }
+
         $chunk_lines[] = $tmp;
       }
 
@@ -572,12 +589,9 @@ class CRM_Donrec_Logic_Snapshot {
       FROM (
         SELECT contact_id
         FROM civicrm_donrec_snapshot
-        LEFT JOIN civicrm_contribution C
-        ON contribution_id = C.id
         WHERE snapshot_id = $id
         GROUP BY contact_id
       ) A";
-
     $result1 = CRM_Core_DAO::executeQuery($query1);
     $result1->fetch();
 
@@ -587,10 +601,10 @@ class CRM_Donrec_Logic_Snapshot {
     // as a object-method as well.
     $snapshot = self::get($id);
     $states = $snapshot->getStates();
-
     // if we have TEST- and DONE-states we have a problem
     if ($states['TEST'] && $states['DONE']) {
       error_log("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
+      // TODO : raise an error
     } elseif ($states['TEST']) {
       $status = 'TEST';
     } elseif ($states['DONE']) {

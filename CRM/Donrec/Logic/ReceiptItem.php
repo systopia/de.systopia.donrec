@@ -22,45 +22,25 @@ class CRM_Donrec_Logic_ReceiptItem {
   /**
   * Creates a new receipt item
   * @param array of parameters
-  * @return TRUE or FALSE if there was an error
+  * @return TRUE or FALSE if there was an error //TODO
   */
   public static function create(&$params) {
-  	self::getCustomFields();
+    self::getCustomFields();
+    $fields = self::$_custom_fields;
+    $group_id = self::$_custom_group_id;
+    $table = "civicrm_value_donation_receipt_item_$group_id";
 
-  	$query = sprintf("INSERT INTO `civicrm_value_donation_receipt_item_%d`
-  		(`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
-  		VALUES (NULL, %%d, %%s, %%s, %%d, %s, %%d, %%f, %%f, %%s, %s, %%s);",
-	  		self::$_custom_group_id,
-	        self::$_custom_fields['status'],
-        	self::$_custom_fields['type'],
-        	self::$_custom_fields['issued_in'],
-        	self::$_custom_fields['issued_on'],
-        	self::$_custom_fields['issued_by'],
-        	self::$_custom_fields['total_amount'],
-        	self::$_custom_fields['non_deductible_amount'],
-        	self::$_custom_fields['currency'],
-        	self::$_custom_fields['receive_date'],
-        	self::$_custom_fields['contribution_hash'],
-        	"'" . $params['issued_on'] . "'",
-        	"'" . $params['receive_date'] . "'"
-        );
-
-    $query = sprintf($query,
-                     $params['contribution_id'],
-                     empty($params['status']) ? "NULL" : "'" . $params['status']. "'",
-                     empty($params['type']) ? "NULL" : "'" . $params['type'] . "'",
-                     $params['issued_in'],
-                     $params['issued_by'],
-                     is_null($params['total_amount']) ? 0.00 : $params['total_amount'],
-                     is_null($params['non_deductible_amount']) ? 0.00 : $params['non_deductible_amount'],
-                     empty($params['currency']) ? "NULL" : "'" . $params['currency'] . "'" ,
-                     empty($params['contribution_hash']) ? "NULL" : "'" . $params['contribution_hash']. "'"
-                     );
-
-
+    $key_value = array();
+    foreach ($params as $key => $value) {
+      $key_value[$key] = is_null($value) ? 'NULL' : "'$value'";
+    }
+    $set_str = "`entity_id`='$params[contribution_id]'";
+    foreach ($fields as $key => $field) {
+      $set_str .= ", `$field`=$key_value[$key]";
+    }
+    $query = "INSERT INTO `$table` SET $set_str";
     $result = CRM_Core_DAO::executeQuery($query);
-
-    return FALSE;
+    return TRUE;
   }
 
   /**

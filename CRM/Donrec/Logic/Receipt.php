@@ -95,6 +95,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $result = CRM_Core_DAO::executeQuery($query);
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
 
+    // TODO: unitary field-names on database-level?
     // create the donation_receipt_item
     $item_params = array();
     $item_params['contribution_id'] = $line['contribution_id'];
@@ -107,6 +108,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $item_params['currency'] = $line['currency'];
     $item_params['issued_on'] = $line['created_timestamp'];
     $item_params['receive_date'] = $line['receive_date'];
+    $item_params['financial_type_id'] = $line['financial_type_id'];
 
     // calculate sha1 checksum
     $contrib_string = "";
