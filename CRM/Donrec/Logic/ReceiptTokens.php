@@ -284,7 +284,6 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     } else {
       $query_params['location_type_id'] = $location_type;
     }
-
     // execute the query
     try {
       $address_found = civicrm_api3('Address', 'getsingle', $query_params);

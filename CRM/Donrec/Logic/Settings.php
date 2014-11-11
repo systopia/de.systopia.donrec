@@ -47,6 +47,17 @@ class CRM_Donrec_Logic_Settings {
   }
 
   /**
+  * Returns location_types used for the legal- and postal-address and their fallbacks.
+  * @return array
+  */
+  public static function getLocationTypes() {
+    $location_types['legal']['address'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'legal_address');
+    $location_types['legal']['fallback'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'legal_address_fallback');
+    $location_types['postal']['address'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address');
+    $location_types['postal']['fallback'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address_fallback');
+    return $location_types;
+  }
+  /**
   * @return bool
   */
   public static function saveOriginalPDF() {
@@ -74,5 +85,5 @@ class CRM_Donrec_Logic_Settings {
       return NULL;
     }
     return $session->get('userID');
-  }  
+  }
 }
