@@ -33,11 +33,6 @@ function donrec_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function donrec_civicrm_install() {
-  // create database tables
-  $config = CRM_Core_Config::singleton();
-  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
-  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
-
   return _donrec_civix_civicrm_install();
 }
 
@@ -45,8 +40,6 @@ function donrec_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function donrec_civicrm_uninstall() {
-  // delete the snapshot-table
-  CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
   return _donrec_civix_civicrm_uninstall();
 }
 
@@ -54,8 +47,14 @@ function donrec_civicrm_uninstall() {
  * Implementation of hook_civicrm_enable
  */
 function donrec_civicrm_enable() {
+  // create snapshot database tables
+  $config = CRM_Core_Config::singleton();
+  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
+  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
+
   // create/update custom groups
   CRM_Donrec_DataStructure::update();
+
   // install default template
   CRM_Donrec_Logic_Template::setDefaultTemplate();
 
@@ -66,6 +65,9 @@ function donrec_civicrm_enable() {
  * Implementation of hook_civicrm_disable
  */
 function donrec_civicrm_disable() {
+  // delete the snapshot-table
+  CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
+
   return _donrec_civix_civicrm_disable();
 }
 
