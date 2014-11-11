@@ -11,6 +11,9 @@
 
 <table>
 	<tr>
+		<h3>{ts}Filter contributions by receive date{/ts}</h3>
+	</tr>
+	<tr>
 		<td class="label">
       {ts}Select time span{/ts}:
 		</td>

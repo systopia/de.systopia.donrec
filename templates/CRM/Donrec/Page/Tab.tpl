@@ -17,7 +17,7 @@
     {foreach from=$display_receipts key=receipt_id item=receipt name=receipt_items}
     <tr class="{if $smarty.foreach.receipt_items.index % 2 == 0}even{else}odd{/if}">
       <td>
-        <div class="donrec-stats" name="donrec_stats_{$receipt_id}">
+        <div class="donrec-stats" id="donrec_stats_{$receipt_id}">
           <ul>
             <li><u><b>
               {if $receipt.type eq 'BULK'}{ts}bulk receipt{/ts}{/if}
@@ -238,6 +238,12 @@
         }
 
     });
+    // auto scroll
+    {/literal}{if $scroll_to}{literal}
+      cj('html, body').animate({
+                          scrollTop: cj('#donrec_stats_' + {/literal}{$scroll_to}{literal}).offset().top - 40
+                      }, 1000);
+    {/literal}{/if}{literal}
     // called for every view-button
     cj('.donrec-stats-block a[id^="view_receipt_"]').click(function() {
         // calculate receipt id
@@ -318,7 +324,7 @@
           rid = rid[2];
           // delete this donation receipt
           var msgExt = "";
-          if(/original/i.test(cj("div[name='donrec_stats_" + rid +"'] ul li:nth-child(2)").text())) {
+          if(/original/i.test(cj("#donrec_stats_" + rid + " ul li:nth-child(2)").text())) {
             msgExt = "<br/>" + {/literal}"{ts}You could also just withdraw it.{/ts}"{literal};
           }
           CRM.confirm(function() {
