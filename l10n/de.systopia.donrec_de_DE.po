@@ -537,3 +537,110 @@ msgstr ""
 msgid "Financial Type"
 msgstr ""
 
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "You do not have the permissions required to access this page."
+msgstr "Sie haben keine Berechtigung, diese Funktion zu verwenden."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooking of multiple contributions from different contacts is not allowed!"
+msgstr "Umbuchen von Zuwendungen von unterschiedlichen Kontakten ist nicht möglich!"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooking not allowed!"
+msgstr "Umbuchung nicht möglich!"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "CiviCRM ID"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php rebook.php
+msgid "Rebook"
+msgstr "Umbuchen"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Please enter a CiviCRM ID!"
+msgstr "Bitte geben Sie eine CiviCRM-ID ein!"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "A contact with CiviCRM ID %1 doesn't exist!"
+msgstr "Kein Kontakt mit CiviCRM-ID %1 gefunden."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be a household!"
+msgstr "Der Zielkontakt darf kein Haushalt sein."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be in trash!"
+msgstr "Der Zielkontakt darf sich nicht im Papierkorb befinden."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The contribution with ID %1 is not completed!"
+msgstr "Die Zuwendung [%1] ist nicht abgeschlossen."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked to CiviCRM ID %1"
+msgstr "Umgebucht zu CiviID  %1"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Error"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked from CiviCRM ID %1"
+msgstr "Umgebucht von CiviID  %1"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "%1 contribution(s) successfully rebooked!"
+msgstr "%1 Zuwendungen erfolgreich umgebucht."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Successfully rebooked!"
+msgstr "Erfolgreich umgebucht!"
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Please check your data and try again"
+msgstr "Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Nothing rebooked!"
+msgstr "Kein Umbuchung vorgenommen!"
+
+#: rebook.php
+msgid "Rebook to contact"
+msgstr "Umbuchen zu anderem Kontakt"
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the selected contributions?"
+msgstr "Sind Sie sicher dass sie die ausgewählten Zuwendungen umbuchen wollen?"
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Number of selected contributions:"
+msgstr "Anzahl der ausgewählten Zuwendungen:"
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Please enter the target CiviCRM ID?"
+msgstr "Bitte geben Sie die CiviCRM-ID des Zielkontakts ein."
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the contribution?"
+msgstr "Sind Sie sicher dass sie die Zuwendung umbuchen wollen?"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "You need to specifiy a contribution to rebook."
+msgstr "Sie müssen eine Zuwendung zur Umbuchung angeben."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "At least one of the given contributions doesn't exist!"
+msgstr "Mindestens eine der angegebenen Zuwendungen existiert nicht oder nicht mehr."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference, exceeds 35 characters."
+msgstr "Es kann keine neue Mandatsreferenz erstellt werden, die alte ist schon zu lang."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference"
+msgstr "Es konnte keine neue Mandatsreferenz gefunden werden."
