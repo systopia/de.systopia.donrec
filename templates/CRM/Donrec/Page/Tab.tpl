@@ -35,53 +35,6 @@
             <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
           </ul>
         </div>
-        <div id="donrec_details_block_{$receipt_id}" class="donrec-details-block">
-          <table>
-            <tr>
-              <td>
-                <ul class="donrec-details">
-                  <li><b>{ts}Issued To{/ts}</b></li>
-                  <li>{ts}Name{/ts}: TODO</li>
-                  <li>{ts}Postal Code{/ts}: TODO</li>
-                  <li>{ts}Street{/ts}: {$receipt.receipt_address.street_address}</li>
-                  <li>{ts}City{/ts}: {$receipt.receipt_address.city}</li>
-                  <li>{ts}Country{/ts}: {$receipt.receipt_address.country}</li>
-                </ul>
-              </td>
-              <td>
-                <ul class="donrec-details">
-                  <li><b>{ts}Current Address{/ts}</b></li>
-                  <li>{ts}Name{/ts}: TODO</li>
-                  <li>{ts}Postal Code{/ts}: TODO</li>
-                  <li>{ts}Street{/ts}: {$receipt.contact_address.street_address}</li>
-                  <li>{ts}City{/ts}: {$receipt.contact_address.city}</li>
-                  <li>{ts}Country{/ts}: {$receipt.contact_address.country}</li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <td><b>{ts}Contributions{/ts}</b></td>
-              </tr>
-              <tr>
-                <td><b>{ts}Total Amount{/ts}</b></td>
-                <td><b>{ts}Received Date{/ts}</b></td>
-                <td><b>{ts}Financial Type{/ts}</b></td>
-              </tr>
-            </thead>
-            <tbody>
-              {foreach from=$receipt.lines key=id item=item}
-              <tr>
-                <td>{$item.total_amount|crmMoney}</td>
-                <td>{$item.receive_date}</td>
-                <td>{$item.type}</td>
-              </tr>
-              {/foreach}
-            </tbody>
-          </table>
-        </div>
       </td>
       <td>
         {if $can_view_copy}
@@ -124,23 +77,23 @@
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
-                <div class="crm-content">Maxwell</div>
+                <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Postal Code{/ts}</div>
-                <div class="crm-content">Patternman</div>
+                <div class="crm-content">{$receipt.contributor.postal_code}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Street{/ts}</div>
-                <div class="crm-content">1600 Amphitheatre Parkway</div>
+                <div class="crm-content">{$receipt.contributor.street_address}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}City{/ts}</div>
-                <div class="crm-content">Mountain View, CA 94043</div>
+                <div class="crm-content">{$receipt.contributor.city}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Country{/ts}</div>
-                <div class="crm-content">United States of America</div>
+                <div class="crm-content">{$receipt.contributor.country}</div>
               </div>
         </div>
       </td>
@@ -150,23 +103,23 @@
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
-                <div class="crm-content">Maxwell</div>
+                <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Postal Code{/ts}</div>
-                <div class="crm-content">Patternman</div>
+                <div class="crm-content">{$receipt.addressee.postal_code}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Street{/ts}</div>
-                <div class="crm-content">Todostraße 10</div>
+                <div class="crm-content">{$receipt.addressee.street_address}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}City{/ts}</div>
-                <div class="crm-content">53111 Bonn</div>
+                <div class="crm-content">{$receipt.addressee.city}</div>
               </div>
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Country{/ts}</div>
-                <div class="crm-content">Germany</div>
+                <div class="crm-content">{$receipt.addressee.country}</div>
               </div>
         </div>
       </td>

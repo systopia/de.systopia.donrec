@@ -20,7 +20,7 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
       $display_receipts = array();
       foreach ($receipts as $rec) {
-        $display_receipts[$rec->getId()] = $rec->getDisplayProperties();
+        $display_receipts[$rec->getId()] = $rec->getAllTokens();
       }
       $this->assign('cid', $contact_id);
       $this->assign('display_receipts', $display_receipts);

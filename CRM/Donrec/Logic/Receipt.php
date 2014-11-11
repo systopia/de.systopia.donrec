@@ -484,14 +484,20 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[issued_by]`               AS `issued_by`,
         receipt.`$receipt_fields[original_file]`           AS `original_file`,
 
-        contact.`display_name`                             AS `contributor__display_name`,
         contact.`id`                                       AS `contributor__id`,
+        receipt.`$receipt_fields[display_name]`            AS `contributor__display_name`,
         receipt.`$receipt_fields[street_address]`          AS `contributor__street_address`,
         receipt.`$receipt_fields[supplemental_address_1]`  AS `contributor__supplemental_address_1`,
         receipt.`$receipt_fields[supplemental_address_2]`  AS `contributor__supplemental_address_2`,
         receipt.`$receipt_fields[postal_code]`             AS `contributor__postal_code`,
         receipt.`$receipt_fields[city]`                    AS `contributor__city`,
         receipt.`$receipt_fields[country]`                 AS `contributor__country`,
+        receipt.`$receipt_fields[shipping_street_address]`          AS `addressee__street_address`,
+        receipt.`$receipt_fields[shipping_supplemental_address_1]`  AS `addressee__supplemental_address_1`,
+        receipt.`$receipt_fields[shipping_supplemental_address_2]`  AS `addressee__supplemental_address_2`,
+        receipt.`$receipt_fields[shipping_postal_code]`             AS `addressee__postal_code`,
+        receipt.`$receipt_fields[shipping_city]`                    AS `addressee__city`,
+        receipt.`$receipt_fields[shipping_country]`                 AS `addressee__country`,
 
         SUM(item.`$item_fields[total_amount]`)             AS `total_amount`,
         SUM(item.`$item_fields[non_deductible_amount]`)    AS `non_deductible_amount`,
@@ -524,6 +530,14 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         $qkey = 'contributor__' . $key;
         if (isset($result->$qkey)) {
           $values['contributor'][$key] = $result->$qkey;
+        }
+      }
+
+      // and the addresse data
+      foreach ($expected_fields['addressee'] as $key => $value) {
+        $qkey = 'addressee__' . $key;
+        if (isset($result->$qkey)) {
+          $values['addressee'][$key] = $result->$qkey;
         }
       }
     } else {

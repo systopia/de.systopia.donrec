@@ -87,6 +87,13 @@ class CRM_Donrec_DataStructure {
     ),
     /*contact-specific*/
     array(
+      'name' => 'display_name',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Display Name',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
       'name' => 'contact_type',
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'Contact Type',
@@ -107,25 +114,25 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
-    /*address-specific*/
     array(
       'name' => 'postal_greeting_display',
       'custom_group_name' => 'zwb_donation_receipt',
-      'label' => 'Postal Greeting',
+      'label' => 'Postal Greeting Display',
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
     array(
       'name' => 'email_greeting_display',
       'custom_group_name' => 'zwb_donation_receipt',
-      'label' => 'Email Greeting',
+      'label' => 'Email Greeting Display',
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
+    /*address-specific*/
     array(
       'name' => 'addressee_display',
       'custom_group_name' => 'zwb_donation_receipt',
-      'label' => 'Addressee',
+      'label' => 'Addressee Display',
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
@@ -151,13 +158,6 @@ class CRM_Donrec_DataStructure {
       'html_type' => 'Text',
     ),
     array(
-      'name' => 'supplemental_address_3',
-      'custom_group_name' => 'zwb_donation_receipt',
-      'label' => 'supplemental_address_3',
-      'data_type' => 'String',
-      'html_type' => 'Text',
-    ),
-    array(
       'name' => 'postal_code',
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'postal_code',
@@ -179,6 +179,13 @@ class CRM_Donrec_DataStructure {
       'html_type' => 'Text',
     ),
     /*shipping-address-specific*/
+    array(
+      'name' => 'shipping_addressee_display',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Shipping Addressee Display',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
     array(
       'name' => 'shipping_street_address',
       'custom_group_name' => 'zwb_donation_receipt',
