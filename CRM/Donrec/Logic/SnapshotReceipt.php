@@ -13,9 +13,9 @@
  * or a list of snapshot lines in case of the bulk receipt
  */
 class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
-    
-  protected $snapshot;  
-  protected $snapshot_lines;  
+
+  protected $snapshot;
+  protected $snapshot_lines;
   protected $is_test;
 
   private $cached_contributors = array();
@@ -91,12 +91,12 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
         'contribution_id'              => $snapshot_line['contribution_id'],
         'total_amount'                 => $snapshot_line['total_amount'],
         'non_deductible_amount'        => $snapshot_line['non_deductible_amount'],
-        // TODO: remove when in financial_type_id snapshot
         'financial_type_id'            => $snapshot_line['financial_type_id'],
         );
 
       // update general values
       $values['id']        = $snapshot_line_id;    // just use one of them as ID
+      $contact_id = $snapshot_line['contact_id'];
       $values['currency']  = $snapshot_line['currency'];
       if ($receive_date < $values['date_from'])  $values['date_from'] = $receive_date;
       if ($receive_date > $values['date_to'])    $values['date_to']   = $receive_date;
@@ -107,19 +107,13 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     // format date timestamps
     $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
     $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
-
-    // TODO: remove lookup when contact_id in snapshot
-    $contribution_id = reset($values['lines'])['id'];
-    $contribution = civicrm_api3('Contribution', 'getsingle', array('id'=>$snapshot_line['contribution_id']));
-    $contact_id = $contribution['contact_id']; 
-
     // add contributor and addressee
     $values['contributor'] = $this->getContributor($contact_id);
     $values['addressee'] = $this->getAddressee($contact_id);
-    
+
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
-
+    error_log('snapshot_receipt');
     return $values;
   }
 
@@ -159,8 +153,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add the addresses
-    // TODO: get location types from config
-    $contributor_address = $this->lookupAddressTokens($contact_id, 0, 0);
+    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['legal'];
+    $contributor_address = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
     if ($contributor_address != NULL) {
       $contributor = array_merge($contributor, $contributor_address);
     }
@@ -180,8 +174,11 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // get the addresses
-    // TODO: get location types from config
-    $addressee = $this->lookupAddressTokens($contact_id, 0, 0);
+    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['postal'];
+    // TODO: if the contributor-address has the same type, this will result in
+    // a superfluous database-request.
+    // An extra address-cache would be fine.
+    $addressee = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
 
     // cache the result
     $this->cached_addressees[$contact_id] = $addressee;

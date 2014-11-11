@@ -27,10 +27,10 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>'));
 
     // add location-type-selections
-    $query = "SELECT `name` FROM `civicrm_location_type`";
+    $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
     $result = CRM_Core_DAO::executeQuery($query);
-    $options = array('is_primary' => ts('primary address'));
-    while ($result->fetch()) {$options[$result->name] = ts($result->name);}
+    $options = array(0 => ts('primary address'));
+    while ($result->fetch()) {$options[$result->id] = ts($result->name);}
     $this->addElement('select', 'legal_address', ts('Legal Address-Type:'), $options);
     $this->addElement('select', 'postal_address', ts('Postal Address-Type:'), $options);
     $this->addElement('select', 'legal_address_fallback', ts('Fallback:'), $options);

@@ -57,7 +57,12 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
     // TODO: Use tokens from snapshot->getSnapshotReceipt()->getAllTokens()
     // initialize custom field map
+    error_log('here');
     self::getCustomFields();
+
+    // get all tokens form SnapshotReceipt
+    $tokens = $snapshot->getSnapshotReceipt()->getAllTokens();
+    file_put_contents('/tmp/receipt-tokens', $tokens);
 
     $line = $snapshot->getLine($snapshot_line_id);
     if (empty($line)) {
