@@ -33,7 +33,8 @@ class CRM_Donrec_Form_Task_RebookTask extends CRM_Contribute_Form_Task {
 
     $this->add('text', 'contactId', ts('CiviCRM ID'), null, $required = true);
     $this->add('hidden', 'contributionIds', $contributionIds);
-    $this->addDefaultButtons(ts('Rebook'));
+    // call the (overwritten) Form's method, so the continue button is on the right...
+    CRM_Core_Form::addDefaultButtons(ts('Rebook'));
 
     parent::buildQuickForm();
   }
