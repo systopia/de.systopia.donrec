@@ -138,6 +138,10 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
  */
 function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selector) {
   if ($objectName == 'contribution') {
+    // ************************************
+    // **      ADD CONTRIBUTED COLUMN    **
+    // ************************************
+
     // save last element (action list)
     $actionList = array_pop($headers);
     // insert new column
@@ -159,6 +163,26 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     }
     // restore last element
     $headers[] = $actionList;
+
+
+    // ************************************
+    // **       ADD REBOOK ACTION        **
+    // ************************************
+    $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $title = ts('Rebook');
+    $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
+    $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
+
+    // add 'rebook' action link to each row
+    foreach ($values as $rownr => $row) {
+      $contribution_status_id = $row['contribution_status_id'];
+      // ... but only for completed contributions
+      if ($contribution_status_id==$contribution_status_complete) {
+        $contribution_id = $row['contribution_id'];
+        $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
+        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);        
+      }
+    }
   }
 }
 
@@ -303,32 +327,4 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
     }
   }
   return;
-}
-
-/**
- * Add a REBOOK action to a list of contributions
- *
- * @todo  use civicrm_links hook as soon as it works properly (>= v4.5)
- *
- * @access public
- */
-function donrec_civicrm_searchColumns( $objectName, &$headers,  &$values, &$selector ) {
-  if ($objectName == 'contribution') {
-    // gather some data
-    $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
-    $title = ts('Rebook');
-    $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
-    $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
-
-    // add 'rebook' action link to each row
-    foreach ($values as $rownr => $row) {
-      $contribution_status_id = $row['contribution_status_id'];
-      // ... but only for completed contributions
-      if ($contribution_status_id==$contribution_status_complete) {
-        $contribution_id = $row['contribution_id'];
-        $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
-        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);        
-      }
-    }
-  }
 }
