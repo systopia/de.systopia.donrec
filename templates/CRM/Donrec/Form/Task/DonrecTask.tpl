@@ -10,37 +10,37 @@
 {include file="CRM/Donrec/Form/Task/remaining_snapshot.tpl"}
 
 <table>
-	<tr>
-		<h3>{ts}Filter contributions by receive date{/ts}</h3>
-	</tr>
-	<tr>
-		<td class="label">
+  <tr>
+    <h3>{ts}Filter contributions by receive date{/ts}</h3>
+  </tr>
+  <tr>
+    <td class="label">
       {ts}Select time span{/ts}:
-		</td>
-		<td>
-		  {$form.time_period.html}
-		</td>
-	</tr>
-	<tr>
-	  <td>
-	  </td>
-		<td>
+    </td>
+    <td>
+      {$form.time_period.html}
+    </td>
+  </tr>
+  <tr>
+    <td>
+    </td>
+    <td>
       <div id="custom_period">
         {$form.donrec_contribution_horizon_from.label}
         {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_from}
         {$form.donrec_contribution_horizon_to.label}
         {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_to}
       </div>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>
-			<div class="crm-submit-buttons">
-			{include file="CRM/common/formButtons.tpl" location="bottom"}
-			</div>
-		</td>
-	</tr>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <div class="crm-submit-buttons">
+      {include file="CRM/common/formButtons.tpl" location="bottom"}
+      </div>
+    </td>
+  </tr>
 </table>
 
 {literal}

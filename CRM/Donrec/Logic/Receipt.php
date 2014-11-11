@@ -45,6 +45,43 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
   }
 
+
+  /**
+  * Creates a receipt without receipt-items using the generic tokens
+  * @param $tokens             tokens coming from SnapshotReceipt->getAllTokens
+  * @return Receipt object if successfull, FALSE otherwise.
+  */
+  public static function _createReceiptFromTokens($tokens, $type) {
+    // initialize custom field map
+    self::getCustomFields();
+    $fields = self::$_custom_fields;
+    $custom_group_id = self::$_custom_group_id;
+    $table = "civicrm_value_donation_receipt_$custom_group_id";
+
+    // build SET-SQL
+    $sql_set = "`entity_id`=$tokens[contact_id], `$fields[type]`='$type'";
+    foreach ($fields as $key => $field) {
+      $value = null;
+      if (0 === strpos($key, 'shipping')) {
+        $token_key = substr($key, strlen('shipping_'));
+        $value = $tokens['addressee'][$token_key];
+      } elseif ($tokens[$key]) {
+        $value = $tokens[$key];
+      } elseif ($tokens['contributor'][$key]) {
+        $value = $tokens['contributor'][$key];
+      }
+      if (!is_null($value)) {
+        $sql_set .= ", `$field`='$value'";
+      }
+    }
+
+    // build query
+    $query = "INSERT INTO `$table` SET $sql_set";
+
+    // run the query
+    return CRM_Core_DAO::executeQuery($query);
+  }
+
   /**
   * Creates a new receipt with the given snapshot line
   *
@@ -55,67 +92,25 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   * @return Receipt object if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
   */
   public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
-    // TODO: Use tokens from snapshot->getSnapshotReceipt()->getAllTokens()
-    // initialize custom field map
-    self::getCustomFields();
+    // get all tokens form SnapshotReceipt
+    $snapshot_receipt = $snapshot->getSnapshotReceipt(array($snapshot_line_id), FALSE);
+    $tokens = $snapshot_receipt->getAllTokens();
 
-    $line = $snapshot->getLine($snapshot_line_id);
-    if (empty($line)) {
+    // check if we've got tokens
+    if (empty($tokens)) {
       $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
       return FALSE;
     }
 
-    //fields => values
-    $key_value = array(
-      'entity_id' => $line[contact_id],
-      self::$_custom_fields['status'] => "'ORIGINAL'",
-      self::$_custom_fields['type'] => "'SINGLE'",
-      self::$_custom_fields['issued_on'] => "'$line[created_timestamp]'",
-      self::$_custom_fields['issued_by'] => $line[created_by],
-      self::$_custom_fields['original_file'] => empty($parameters['file_id']) ? 'NULL' : $parameters['file_id'],
-      self::$_custom_fields['street_address'] => empty($line['street_address']) ? 'NULL': "'$line[street_address]'",
-      self::$_custom_fields['supplemental_address_1'] => empty($line['supplemental_address_1']) ? 'NULL': "'$line[supplemental_address_1]'",
-      self::$_custom_fields['supplemental_address_2'] => empty($line['supplemental_address_2']) ? 'NULL': "'$line[supplemental_address_2]'",
-      self::$_custom_fields['postal_code'] => empty($line['postal_code']) ? 'NULL' : $line['postal_code'],
-      self::$_custom_fields['city'] => empty($line['city']) ? 'NULL': "'$line[city]'",
-      self::$_custom_fields['country'] => empty($line['country']) ? 'NULL': "'$line[country]'"
-    );
+    // create receipt
+    $result = self::_createReceiptFromTokens($tokens, 'SINGLE');
 
-    // build the query
-    $custom_group_id = self::$_custom_group_id;
-    $sql_set = '';
-    foreach ($key_value as $key => $value) {
-      $sql_set .= "`$key`=$value, ";
-    }
-    $sql_set = rtrim($sql_set, ", ");
-    $query = "
-      INSERT INTO `civicrm_value_donation_receipt_$custom_group_id`
-      SET $sql_set";
-
-    $result = CRM_Core_DAO::executeQuery($query);
+    // create receipt-item
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
-
-    // create the donation_receipt_item
-    $item_params = array();
-    $item_params['contribution_id'] = $line['contribution_id'];
-    $item_params['status'] = 'ORIGINAL';
-    $item_params['type']  = 'SINGLE';
-    $item_params['issued_in'] = $lastId;
-    $item_params['issued_by'] = $line['created_by'];
-    $item_params['total_amount'] = $line['total_amount'];
-    $item_params['non_deductible_amount'] = $line['non_deductible_amount'];
-    $item_params['currency'] = $line['currency'];
-    $item_params['issued_on'] = $line['created_timestamp'];
-    $item_params['receive_date'] = $line['receive_date'];
-
-    // calculate sha1 checksum
-    $contrib_string = "";
-    foreach ($item_params as $key => $value) {
-      $contrib_string .= $value;
-    }
-    $item_params['contribution_hash'] = sha1($contrib_string);
-
-    CRM_Donrec_Logic_ReceiptItem::create($item_params);
+    $params = array_merge($tokens, $tokens['lines'][$snapshot_line_id]);
+    $params['issued_in'] = $lastId;
+    $params['type'] = 'SINGLE';
+    CRM_Donrec_Logic_ReceiptItem::create($params);
 
     return new self($lastId);
   }
@@ -130,87 +125,26 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
-    // TODO: Use tokens from snapshot->getSnapshotReceipt()->getAllTokens()
-    // initialize custom field map
-    self::getCustomFields();
+    // get all tokens form SnapshotReceipt
+    $snapshot_receipt = $snapshot->getSnapshotReceipt($snapshot_line_ids, FALSE);
+    $tokens = $snapshot_receipt->getAllTokens();
 
-    $lines = array();
-    foreach ($snapshot_line_ids as $lid) {
-      $line = $snapshot->getLine($lid);
-      if (!empty($line)) {
-        $lines[] = $line;
-      }
-    }
-
-    if (empty($lines)) {
+    // error if no tokens found
+    if (empty($tokens)) {
       $parameters['is_error'] = "snapshot lines do not exist";
       return FALSE;
     }
 
-    $line = $lines[0];
-    if (empty($line)) {
-      $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
-      return FALSE;
-    }
+    // create receipt
+    $result = self::_createReceiptFromTokens($tokens, 'BULK');
 
-    $query = sprintf("INSERT INTO `civicrm_value_donation_receipt_%d` (`id`, `entity_id`, `%s`, `%s`, `%s`, `%s`, `%s`,  `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)
-                      VALUES (NULL, %%d, %%s, %%s, %s, %%d, %%d, %%s, %%s, %%s, %%s, %%d, %%s, %%s);",
-                self::$_custom_group_id,
-                self::$_custom_fields['status'],
-                self::$_custom_fields['type'],
-                self::$_custom_fields['issued_on'],
-                self::$_custom_fields['issued_by'],
-                self::$_custom_fields['original_file'],
-                self::$_custom_fields['street_address'],
-                self::$_custom_fields['supplemental_address_1'],
-                self::$_custom_fields['supplemental_address_2'],
-                self::$_custom_fields['supplemental_address_3'],
-                self::$_custom_fields['postal_code'],
-                self::$_custom_fields['city'],
-                self::$_custom_fields['country'],
-                "'" . $line['created_timestamp'] . "'"
-              );
-
-    $query = sprintf($query,
-                    $line['contact_id'],
-                    "'ORIGINAL'",
-                    "'BULK'",
-                    $line['created_by'],
-                    empty($parameters['file_id']) ? NULL : $parameters['file_id'],
-                    empty($line['street_address']) ? "NULL": "'" . $line['street_address'] . "'",
-                    empty($line['supplemental_address_1']) ? "NULL" : "'" . $line['supplemental_address_1'] . "'" ,
-                    empty($line['supplemental_address_2']) ? "NULL" : "'" . $line['supplemental_address_2'] . "'" ,
-                    empty($line['supplemental_address_3']) ? "NULL" : "'" . $line['supplemental_address_3'] . "'" ,
-                    empty($line['postal_code']) ? "NULL" : "'" . $line['postal_code'] . "'",
-                    empty($line['city']) ? "NULL" : "'" . $line['city'] . "'" ,
-                    empty($line['country']) ? "NULL" : "'" . $line['country'] . "'"
-                    );
-
-    $result = CRM_Core_DAO::executeQuery($query);
-    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
-
-    for ($i=0; $i < count($lines); $i++) {
-      // create the donation_receipt_item
-      $item_params = array();
-      $item_params['contribution_id'] = $lines[$i]['contribution_id'];
-      $item_params['status'] = 'ORIGINAL';
-      $item_params['type']  = 'BULK';
-      $item_params['issued_in'] = $lastId;
-      $item_params['issued_by'] = $lines[$i]['created_by'];
-      $item_params['total_amount'] = $lines[$i]['total_amount'];
-      $item_params['non_deductible_amount'] = $lines[$i]['non_deductible_amount'];
-      $item_params['currency'] = $lines[$i]['currency'];
-      $item_params['issued_on'] = $lines[$i]['created_timestamp'];
-      $item_params['receive_date'] = $lines[$i]['receive_date'];
-
-      // calculate sha1 checksum
-      $contrib_string = "";
-      foreach ($item_params as $key => $value) {
-        $contrib_string .= $value;
-      }
-      $item_params['contribution_hash'] = sha1($contrib_string);
-
-      CRM_Donrec_Logic_ReceiptItem::create($item_params);
+    // create receipt-items
+    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
+    foreach ($tokens['lines'] as $lid => $line_tokens) {
+      $params = array_merge($tokens, $line_tokens);
+      $params['issued_in'] = $lastId;
+      $params['type'] = 'BULK';
+      CRM_Donrec_Logic_ReceiptItem::create($params);
     }
 
     return new self($lastId);

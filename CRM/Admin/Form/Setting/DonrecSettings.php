@@ -17,6 +17,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   function buildQuickForm( ) {
     CRM_Utils_System::setTitle(ts('Donation Receipts - Settings'));
 
+    //TODO: why not use the definitions in donrec.setting.php?
     // add all required elements
     $this->addElement('text', 'draft_text', ts('Draft text'));
     $this->addElement('text', 'copy_text', ts('Copy text'));
@@ -24,6 +25,16 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     $this->addElement('checkbox','financial_types_all'); // "
     $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>'));
+
+    // add location-type-selections
+    $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
+    $result = CRM_Core_DAO::executeQuery($query);
+    $options = array(0 => ts('primary address'));
+    while ($result->fetch()) {$options[$result->id] = ts($result->name);}
+    $this->addElement('select', 'legal_address', ts('Legal Address-Type:'), $options);
+    $this->addElement('select', 'postal_address', ts('Postal Address-Type:'), $options);
+    $this->addElement('select', 'legal_address_fallback', ts('Fallback:'), $options);
+    $this->addElement('select', 'postal_address_fallback', ts('Fallback:'), $options);
 
     // add a checkbox for every contribution type
     $ct = CRM_Donrec_Logic_Settings::getContributionTypes();
@@ -54,7 +65,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
         'draft_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text'),
         'copy_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text'),
         'packet_size' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'),
-        'pdfinfo_path' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path')
+        'pdfinfo_path' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'),
+        'legal_address' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'legal_address'),
+        'postal_address' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address'),
+        'legal_address_fallback' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'legal_address_fallback'),
+        'postal_address_fallback' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address_fallback')
       ));
   }
 
@@ -72,6 +87,18 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Core_BAO_Setting::setItem($values['packet_size'],'Donation Receipt Settings', 'packet_size');
     if ($values['pdfinfo_path']){
       CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
+    }
+    if ($values['legal_address']){
+      CRM_Core_BAO_Setting::setItem($values['legal_address'],'Donation Receipt Settings', 'legal_address');
+    }
+    if ($values['postal_address']){
+      CRM_Core_BAO_Setting::setItem($values['postal_address'],'Donation Receipt Settings', 'postal_address');
+    }
+    if ($values['legal_address_fallback']){
+      CRM_Core_BAO_Setting::setItem($values['legal_address_fallback'],'Donation Receipt Settings', 'legal_address_fallback');
+    }
+    if ($values['postal_address_fallback']){
+      CRM_Core_BAO_Setting::setItem($values['postal_address_fallback'],'Donation Receipt Settings', 'postal_address_fallback');
     }
 
     // save checkboxes

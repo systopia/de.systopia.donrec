@@ -13,7 +13,7 @@ require_once 'CRM/Core/Page.php';
 class CRM_Donrec_Page_Tab extends CRM_Core_Page {
   function run() {
     $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-    $scroll_to_contribution = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
+    $scroll_to_receipt = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
 
     if($contact_id && CRM_Core_Permission::check('view and copy receipts')) {
       $params = array();
@@ -24,8 +24,8 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
       }
       $this->assign('cid', $contact_id);
       $this->assign('display_receipts', $display_receipts);
-      if ($scroll_to_contribution) {
-        $this->assign('scroll_to', $scroll_to_contribution);
+      if ($scroll_to_receipt) {
+        $this->assign('scroll_to', $scroll_to_receipt);
       }
     }
 
@@ -37,6 +37,6 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     // do we keep original pdf files?
     $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 
-  	parent::run();
+    parent::run();
   }
 }
