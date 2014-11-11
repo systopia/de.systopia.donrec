@@ -238,13 +238,6 @@ class CRM_Donrec_Logic_Snapshot {
         foreach (self::$CHUNK_FIELDS as $field) {
           $tmp[$field] = $query->$field;
         }
-        // not used at the moment
-        // notify the engine that this contact has only one contribution
-        // in this snapshot and it can therefore process this as a
-        // single receipt instead of a bulk receipt
-        // if($query->contrib_count == 1) {
-        //   $tmp['single_override'] = TRUE;
-        // }
 
         $chunk_lines[] = $tmp;
       }
