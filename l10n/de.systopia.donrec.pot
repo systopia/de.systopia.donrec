@@ -582,10 +582,6 @@ msgid "Rebooked to CiviCRM ID %1"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
-msgid "Error"
-msgstr ""
-
-#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
 msgid "Rebooked from CiviCRM ID %1"
 msgstr ""
 
