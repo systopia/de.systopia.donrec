@@ -535,3 +535,108 @@ msgstr ""
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Financial Type"
 msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "You do not have the permissions required to access this page."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid ""
+"Rebooking of multiple contributions from different contacts is not allowed!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooking not allowed!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "CiviCRM ID"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php rebook.php
+msgid "Rebook"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Please enter a CiviCRM ID!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "A contact with CiviCRM ID %1 doesn't exist!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be a household!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be in trash!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "The contribution with ID %1 is not completed!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked to CiviCRM ID %1"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked from CiviCRM ID %1"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "%1 contribution(s) successfully rebooked!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Successfully rebooked!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Please check your data and try again"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+msgid "Nothing rebooked!"
+msgstr ""
+
+#: rebook.php
+msgid "Rebook to contact"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the selected contributions?"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Number of selected contributions:"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Please enter the target CiviCRM ID?"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/RebookTask.tpl
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the contribution?"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "You need to specifiy a contribution to rebook."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "At least one of the given contributions doesn't exist!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference, exceeds 35 characters."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference"
+msgstr ""

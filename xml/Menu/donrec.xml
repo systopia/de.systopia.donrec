@@ -39,4 +39,10 @@
     <title>Tempfile</title>
     <access_arguments>view and copy receipts</access_arguments>
   </item>
+  <item>
+    <path>civicrm/donrec/rebook</path>
+    <page_callback>CRM_Donrec_Form_Task_Rebook</page_callback>
+    <title>Rebook</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>  
 </menu>

@@ -33,11 +33,6 @@ function donrec_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function donrec_civicrm_install() {
-  // create database tables
-  $config = CRM_Core_Config::singleton();
-  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
-  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
-
   return _donrec_civix_civicrm_install();
 }
 
@@ -45,8 +40,6 @@ function donrec_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function donrec_civicrm_uninstall() {
-  // delete the snapshot-table
-  CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
   return _donrec_civix_civicrm_uninstall();
 }
 
@@ -54,8 +47,14 @@ function donrec_civicrm_uninstall() {
  * Implementation of hook_civicrm_enable
  */
 function donrec_civicrm_enable() {
+  // create snapshot database tables
+  $config = CRM_Core_Config::singleton();
+  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
+  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
+
   // create/update custom groups
   CRM_Donrec_DataStructure::update();
+
   // install default template
   CRM_Donrec_Logic_Template::setDefaultTemplate();
 
@@ -66,6 +65,9 @@ function donrec_civicrm_enable() {
  * Implementation of hook_civicrm_disable
  */
 function donrec_civicrm_disable() {
+  // delete the snapshot-table
+  CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
+
   return _donrec_civix_civicrm_disable();
 }
 
@@ -112,11 +114,75 @@ function donrec_civicrm_caseTypes(&$caseTypes) {
 * @access public
 */
 function donrec_civicrm_searchTasks($objectType, &$tasks) {
+  // add DONATION RECEIPT task to contact list
   if ($objectType == 'contact') {
     $tasks[] = array(
     'title' => ts('Issue donation receipt(s)'),
     'class' => 'CRM_Donrec_Form_Task_DonrecTask',
     'result' => false);
+  }
+
+  // add REBOOK task to contribution list
+  if ($objectType == 'contribution') {
+    if (CRM_Core_Permission::check('administer CiviCRM')) {
+      $tasks[] = array(
+          'title'  => ts('Rebook to contact'),
+          'class'  => 'CRM_Donrec_Form_Task_RebookTask',
+          'result' => false);
+    }
+  }
+}
+
+/**
+ *
+ */
+function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selector) {
+  if ($objectName == 'contribution') {
+    // ************************************
+    // **      ADD CONTRIBUTED COLUMN    **
+    // ************************************
+
+    // save last element (action list)
+    $actionList = array_pop($headers);
+    // insert new column
+    $headers[] = array('name' => ts('Receipted'),
+                       'sort' => 'is_receipted',
+                      'direction' => 4);
+    // insert new values
+    foreach ($values as $id => $value ) {
+      $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
+      if($item_id === FALSE) {
+        $values[$id]['is_receipted'] = ts('No');
+      }else{
+        $values[$id]['is_receipted'] = sprintf('<a href="%s">%s</a>', CRM_Utils_System::url(
+        'civicrm/contact/view',
+        "reset=1&cid={$value['contact_id']}&rid=$item_id&selectedChild=donation_receipts",
+        TRUE, NULL, TRUE),
+        ts('Yes'));
+      }
+    }
+    // restore last element
+    $headers[] = $actionList;
+
+
+    // ************************************
+    // **       ADD REBOOK ACTION        **
+    // ************************************
+    $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $title = ts('Rebook');
+    $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
+    $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
+
+    // add 'rebook' action link to each row
+    foreach ($values as $rownr => $row) {
+      $contribution_status_id = $row['contribution_status_id'];
+      // ... but only for completed contributions
+      if ($contribution_status_id==$contribution_status_complete) {
+        $contribution_id = $row['contribution_id'];
+        $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
+        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);        
+      }
+    }
   }
 }
 
