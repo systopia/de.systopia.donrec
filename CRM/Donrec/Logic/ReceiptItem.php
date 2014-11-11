@@ -223,19 +223,24 @@ class CRM_Donrec_Logic_ReceiptItem {
   /**
   * Check if a contribution has a receipt-item with status ORIGINAL.
   *
-  * return boolean
+  * return boolean or item id
   */
-  public static function hasValidReceiptItem($contribution_id) {
+  public static function hasValidReceiptItem($contribution_id, $return_id=FALSE) {
     self::getCustomFields();
     $custom_group_id = self::$_custom_group_id;
     $status_field = self::$_custom_fields['status'];
 
     $query = "
-      SELECT COUNT(*)
+      SELECT `id`
       FROM `civicrm_value_donation_receipt_item_$custom_group_id`
       WHERE `entity_id` = $contribution_id
       AND `$status_field` = 'ORIGINAL'";
+    $result = CRM_Core_DAO::singleValueQuery($query);
 
-    return (bool) CRM_Core_DAO::singleValueQuery($query);
+    if($return_id && !is_null($result)) {
+      return $result;
+    }else{
+      return !is_null($result);
+    }
   }
 }

@@ -119,6 +119,35 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
 }
 
 /**
+ *
+ */
+function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selector) {
+  if ($objectName == 'contribution') {
+    // save last element (action list)
+    $actionList = array_pop($headers);
+    // insert new column
+    $headers[] = array('name' => ts('Receipted'),
+                       'sort' => 'is_receipted',
+                      'direction' => 4);
+    // insert new values
+    foreach ($values as $id => $value ) {
+      $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
+      if($item_id === FALSE) {
+        $values[$id]['is_receipted'] = ts('No');
+      }else{
+        $values[$id]['is_receipted'] = sprintf('<a href="%s">%s</a>', CRM_Utils_System::url(
+        'civicrm/contact/view',
+        "reset=1&cid={$value['contact_id']}&rid=$item_id&selectedChild=donation_receipts",
+        TRUE, NULL, TRUE),
+        ts('Yes'));
+      }
+    }
+    // restore last element
+    $headers[] = $actionList;
+  }
+}
+
+/**
  * Set permissions for runner/engine API call
  */
 function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
