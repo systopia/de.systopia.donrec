@@ -37,6 +37,6 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     // do we keep original pdf files?
     $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
 
-  	parent::run();
+    parent::run();
   }
 }

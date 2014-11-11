@@ -65,7 +65,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
           }
         }else{
           $result['is_error'] = TRUE;
-          if($ret_status == 126) { //	126 - Permission problem or command is not an executable
+          if($ret_status == 126) { //  126 - Permission problem or command is not an executable
             $result['message'] = "pdfinfo is not executable. check permissions";
           }else{
             $result['message'] = "pdfinfo ping failed";
@@ -203,23 +203,23 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    */
   private function getPDFPageCount($document)
   {
-      $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
-      $cmd = escapeshellarg($pdfinfo_path);
-      $document = escapeshellarg($document);
-      $cmd = escapeshellcmd("$cmd $document") . " 2>&1";
-      exec($cmd, $output);
+    $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+    $cmd = escapeshellarg($pdfinfo_path);
+    $document = escapeshellarg($document);
+    $cmd = escapeshellcmd("$cmd $document") . " 2>&1";
+    exec($cmd, $output);
 
-      $count = 0;
-      foreach($output as $line)
+    $count = 0;
+    foreach($output as $line)
+    {
+      // Extract the number
+      if(preg_match("/Pages:\s*(\d+)/i", $line, $matches) === 1)
       {
-          // Extract the number
-          if(preg_match("/Pages:\s*(\d+)/i", $line, $matches) === 1)
-          {
-              return intval($matches[1]);
-          }
+          return intval($matches[1]);
       }
+    }
 
-      return -1;
+    return -1;
   }
 
 }
