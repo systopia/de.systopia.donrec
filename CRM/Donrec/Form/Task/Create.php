@@ -133,7 +133,6 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
           ";
 
     // execute the query
-    file_put_contents('/tmp/query', $query);
     $result = CRM_Core_DAO::executeQuery($query);
 
     // build array

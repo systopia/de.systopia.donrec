@@ -18,29 +18,59 @@ class CRM_Donrec_Logic_ReceiptItem {
   */
   public static $_custom_fields; // TODO: set private, but add getters
   public static $_custom_group_id;
+  public static $_checksum_keys = array(
+    'contribution_id',
+    'status',
+    'type',
+    'issued_in',
+    'issued_by',
+    'total_amount',
+    'non_deductible_amount',
+    'currency',
+    'issued_on',
+    'receive_date'
+  );
+
 
   /**
   * Creates a new receipt item
   * @param array of parameters
   * @return TRUE or FALSE if there was an error //TODO
   */
-  public static function create(&$params) {
+  public static function create($params) {
     self::getCustomFields();
     $fields = self::$_custom_fields;
     $group_id = self::$_custom_group_id;
     $table = "civicrm_value_donation_receipt_item_$group_id";
+    $params['contribution_hash'] = self::calculateChecksum($params);
 
-    $key_value = array();
-    foreach ($params as $key => $value) {
-      $key_value[$key] = is_null($value) ? 'NULL' : "'$value'";
-    }
-    $set_str = "`entity_id`='$params[contribution_id]'";
+    // build set-string
+    $set_str = "`entity_id`=$params[contribution_id]";
     foreach ($fields as $key => $field) {
-      $set_str .= ", `$field`=$key_value[$key]";
+      if (!is_null($params[$key])) {
+        $set_str .= ", `$field`='$params[$key]'";
+      }
     }
+
+    // build query
     $query = "INSERT INTO `$table` SET $set_str";
+
+    // run query
     $result = CRM_Core_DAO::executeQuery($query);
-    return TRUE;
+    return $result;
+  }
+
+  /**
+  * Calculate sha1 checksum
+  * @param params
+  * @return checksum
+  */
+  public static function calculateChecksum($params) {
+    $str = '';
+    foreach (self::$_checksum_keys as $key) {
+      $str .= $params[$key];
+    }
+    return sha1($str);
   }
 
   /**

@@ -497,6 +497,8 @@ class CRM_Donrec_Logic_Snapshot {
     foreach (self::$LINE_FIELDS as $field) {
       $line[$field] = $result->$field;
     }
+    // TODO: if we use SnapshotReceipt->getAllTokens we don't need to collect
+    // the address-infos for the contact here!
     $contact_info = $this->getContactInformation($line_id);
     $line = array_merge($line, $contact_info);
     return $line;
@@ -702,12 +704,16 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-   * Get as SINGLE CRM_Donrec_Logic_SnapshotReceipt objects with a ID
-   *
+   * Get a CRM_Donrec_Logic_SnapshotReceipt object
+   * @param list of snapshot-line-ids
+   * @param boolean is_test
    * @return CRM_Donrec_Logic_SnapshotReceipt
    */
-  public function getSnapshotReceipt($snapshot_line_id, $is_bulk, $is_test) {
-    return new CRM_Donrec_Logic_SnapshotReceipt($this, array($this->getLine($snapshot_line_id)), $is_test);
+  public function getSnapshotReceipt($snapshot_line_ids, $is_test) {
+    foreach($snapshot_line_ids as $id) {
+      $lines[] = $this->getLine($id);
+    }
+    return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test);
   }
 
 }

@@ -70,7 +70,6 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function getAllTokens() {
     $values = array();
-
     // create items
     $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
     $values['issued_on']             = date('Y-m-d H:i:s');
@@ -96,7 +95,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
       // update general values
       $values['id']        = $snapshot_line_id;    // just use one of them as ID
-      $contact_id = $snapshot_line['contact_id'];
+      $values['contact_id'] = $snapshot_line['contact_id'];
       $values['currency']  = $snapshot_line['currency'];
       if ($receive_date < $values['date_from'])  $values['date_from'] = $receive_date;
       if ($receive_date > $values['date_to'])    $values['date_to']   = $receive_date;
@@ -108,12 +107,12 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
     $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
     // add contributor and addressee
-    $values['contributor'] = $this->getContributor($contact_id);
-    $values['addressee'] = $this->getAddressee($contact_id);
+    $values['contributor'] = $this->getContributor($values['contact_id']);
+    $values['addressee'] = $this->getAddressee($values['contact_id']);
 
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
-    error_log('snapshot_receipt');
+
     return $values;
   }
 
