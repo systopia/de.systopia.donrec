@@ -28,7 +28,7 @@
     <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
     <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
     <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
-    <tr><td class="statskey">{ts}created on{/ts}</td><td class="statsvalue">{$statistic.creation_date}</td></tr>
+    <tr><td class="statskey">{ts}created on{/ts}</td><td class="statsvalue">{$statistic.creation_date|crmDate:$config->dateformatFull}</td></tr>
   </table>
 {/if}
 

@@ -29,8 +29,8 @@
               {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts}withdrawn copy{/ts}{/if}
             </b></li>
-            <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
-            <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
+            <li>{ts}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
+            <li>{ts}Date{/ts}: {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
             <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
           </ul>
@@ -141,7 +141,7 @@
                     {foreach from=$receipt.lines key=id item=item}
                     <tr>
                       <td>{$item.total_amount|crmMoney}</td>
-                      <td>{$item.receive_date}</td>
+                      <td>{$item.receive_date|crmDate:$config->dateformatFull}</td>
                       <td>{$item.type}</td>
                     </tr>
                     {/foreach}
