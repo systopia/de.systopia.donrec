@@ -29,8 +29,8 @@
               {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts}withdrawn copy{/ts}{/if}
             </b></li>
-            <li>{ts}Creation date{/ts}: {$receipt.issued_on|date_format:"%d.%m.%Y"}</li>
-            <li>{ts}Date{/ts}: {$receipt.date_from|date_format:"%d.%m.%Y"} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|date_format:"%d.%m.%Y"}{/if}</li>
+            <li>{ts}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
+            <li>{ts}Date{/ts}: {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}</li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
             <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
           </ul>
@@ -73,7 +73,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
       <td>
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon user-record-icon"></div>{ts}Issued To{/ts}</div>
+              <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts}Issued To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
@@ -99,7 +99,7 @@
       </td>
       <td>
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon dashboard-icon"></div>{ts}Current Address{/ts}</div>
+              <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts}Sent To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
@@ -127,7 +127,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_2" style="display: none;">
       <td colspan="2">
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon search-icon"></div>{ts}Contributions{/ts}</div>
+              <div class="crm-edit-help"><div class="icon search-icon"></div><b>{ts}Contributions{/ts}</b></div>
               <div>
                 <table>
                   <thead>
@@ -141,7 +141,7 @@
                     {foreach from=$receipt.lines key=id item=item}
                     <tr>
                       <td>{$item.total_amount|crmMoney}</td>
-                      <td>{$item.receive_date}</td>
+                      <td>{$item.receive_date|crmDate:$config->dateformatFull}</td>
                       <td>{$item.type}</td>
                     </tr>
                     {/foreach}

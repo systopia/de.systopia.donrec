@@ -494,7 +494,7 @@ msgstr "Keine Dateien erzeugen"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Issued To"
-msgstr "Versandt an"
+msgstr "Ausgestellt für"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Name"
