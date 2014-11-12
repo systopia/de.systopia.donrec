@@ -551,6 +551,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         item.`$item_fields[total_amount]`                AS `total_amount`,
         item.`$item_fields[issued_on]`                   AS `currency`,
         item.`$item_fields[non_deductible_amount]`       AS `non_deductible_amount`,
+        item.`$item_fields[financial_type_id]`           AS `financial_type_id`,
         type.`name`                                      AS `type`
 
       FROM `$item_table_name`                            AS item
