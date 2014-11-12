@@ -63,6 +63,15 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
+   * gets the ContactID of the first line
+   *
+   * @return contact ID
+   */
+  public function getContactID() {
+    return reset($this->snapshot_lines)['contact_id'];
+  }
+
+  /**
    * Get all properties of this receipt token source, so we can e.g. export it or pass the
    * properties into the $template->generatePDF() function to create another copy
    *
