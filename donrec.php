@@ -66,7 +66,7 @@ function donrec_civicrm_enable() {
  */
 function donrec_civicrm_disable() {
   // delete the snapshot-table
-  CRM_Core_DAO::executeQuery("DROP TABLE `civicrm_donrec_snapshot`");
+  CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `civicrm_donrec_snapshot`");
 
   return _donrec_civix_civicrm_disable();
 }
@@ -180,7 +180,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
       if ($contribution_status_id==$contribution_status_complete) {
         $contribution_id = $row['contribution_id'];
         $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
-        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);        
+        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
       }
     }
   }
