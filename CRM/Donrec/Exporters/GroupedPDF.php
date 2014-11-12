@@ -136,7 +136,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       $pcFileURL = sys_get_temp_dir() . '/' . $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
-        $zipPool[$value] = array('handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
+        $zipPool[$value] = array('page_count' => $value, 'handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
       }else{
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file %s', $fileURL), CRM_Donrec_Logic_Exporter::FATAL);
         return $reply;
@@ -148,7 +148,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach ($entry as $item) {
         if($item[0] && $item[2]) { // if page count and file name exists
           $opResult = $zipPool[$item[0]]['handle']->addFile($item[2], basename($item[2])) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add " . $item[2] . " to sub-archive $pcArchiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]['page_count']}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
     }
@@ -167,7 +167,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         if ($filename) {
           $toRemove[] = sys_get_temp_dir() . '/' . $filename;
           $opResult = $outerArchive->addFile(sys_get_temp_dir() . '/' . $filename, $zip['pref_name']) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$filename}'>{$zip['page_count']}-page ZIP</span> to <span title='{$archiveFileName}'>final ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
       if(!$outerArchive->close()) {

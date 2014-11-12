@@ -120,9 +120,8 @@ abstract class CRM_Donrec_Logic_Exporter {
    * create a log entry and add to the give reply
    */
   public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO) {
-    $dateFormat = CRM_Core_Config::singleton()->dateformatDatetime;
     $reply['log'][] = array(
-        'timestamp'   => CRM_Utils_Date::customFormat(date('c'), $dateFormat),
+        'timestamp'   => date('Y-m-d H:i:s'),
         'type'        => $type,
         'message'     => $message
         );
