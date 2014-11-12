@@ -44,6 +44,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
         'contact_type'                 => 'Contact Type',
         'display_name'                 => 'Display Name',
         'addressee_display'            => 'Addressee',
+        'street_address'               => 'Street Address',
         'postal_greeting_display'      => 'Postal Greeting',
         'email_greeting_display'       => 'Email Greeting',
         'gender'                       => 'Gender',
@@ -57,6 +58,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'addressee' => array(       // POSTAL ADDRESS OF THE RECEIPIENT
         'display_name'                 => 'Display Name',
         'addressee_display'            => 'Addressee',
+        'street_address'               => 'Street Address',
         'supplemental_address_1'       => 'Supplemental Address 1',
         'supplemental_address_2'       => 'Supplemental Address 2',
         'postal_code'                  => 'Postal Code',
@@ -287,6 +289,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     // execute the query
     try {
       $address_found = civicrm_api3('Address', 'getsingle', $query_params);
+      $address['street_address'] = $address_found['street_address'];
       $address['postal_code'] = $address_found['postal_code'];
       $address['city'] = $address_found['city'];
       $address['country'] = $address_found['country'];
