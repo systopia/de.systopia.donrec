@@ -106,7 +106,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $config = CRM_Core_Config::singleton();
 
     $preferredFileName = ts("donation_receipts.zip");
-    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName);
     $fileURL = sys_get_temp_dir() . '/' . $archiveFileName;
     $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
@@ -132,7 +132,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     foreach($pageCountArrKeys as $groupId => $value) {
       $tmp = new ZipArchive;
       $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
-      $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
+      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName);
       $pcFileURL = sys_get_temp_dir() . '/' . $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
