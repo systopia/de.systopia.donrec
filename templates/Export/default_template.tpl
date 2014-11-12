@@ -190,16 +190,18 @@ h3 {
 </style>
 <body>
 <div class="firstpage">
-<div class="absenderblock_rechts">{$organisation.organization_name}<br/> {$organisation.street_address}<br/>{$organisation.postal_code} {$organisation.city}<br/>Telefon: {$organisation.phone}<br/>{$organisation.email}</div>
+<div class="absenderblock_rechts">{$organisation.display_name}<br/> {$organisation.street_address}<br/>{if $organisation.supplemental_address_1}{$organisation.supplemental_address_1}<br/>{/if}{if $organisation.supplemental_address_2}{$organisation.supplemental_address_2}<br/>{/if}{$organisation.postal_code} {$organisation.city}<br/></div>
 <p class="sender">
-<u>{$organisation.organization_name}, {$organisation.street_address}, {$organisation.postal_code} {$organisation.city}</u>
+<u>{$organisation.display_name}, {$organisation.street_address}, {$organisation.postal_code} {$organisation.city}</u>
 </p>
 
 <p>
-{$contributor.display_name}<br />
-{$contributor.street_address}<br />
-{$contributor.postal_code} {$contributor.city}
-{if $contributor.country ne 'Germany'}<br />{$contributor.country}{/if}
+{$addressee.display_name}<br />
+{$addressee.street_address}<br />
+{if $addressee.supplemental_address_1}{$addressee.supplemental_address_1}<br/>{/if}
+{if $addressee.supplemental_address_2}{$addressee.supplemental_address_2}<br/>{/if}
+{$addressee.postal_code} {$addressee.city}<br/>
+{$addressee.country}<br/>
 </p>
 
 <div class="main">
@@ -211,7 +213,9 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
     {$contributor.display_name}<br />
     {$contributor.street_address}<br />
     {$contributor.postal_code} {$contributor.city}<br />
-    {if $contributor.country ne 'Germany'}{$contributor.country}<br />{/if}
+    {if $contributor.supplemental_address_1}{$contributor.supplemental_address_1}<br/>{/if}
+    {if $contributor.supplemental_address_2}{$contributor.supplemental_address_2}<br/>{/if}
+    {$contributor.country}<br />
 </p>
 
 <table class='merged'>
@@ -223,7 +227,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
   <tr class='var'>
     <td id='total'>**{$total}</td>
     <td>{$totaltext}</td>
-    <td>{if $items}{$daterange}{else}{$date}{/if}</td>
+    <td>{if $items}{$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}{else}{$issued_on}{/if}</td>
   </tr>
 </table>
 
@@ -252,7 +256,7 @@ Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anla
 </div>
 
 <div class="signature">
-  {$organisation.city}, den {$today}
+  {$organisation.city}, den {$today|crmDate:$config->dateformatFull}
     <p>
     [Unterschrift]<br />
 
@@ -265,16 +269,16 @@ zu den in der Zuwendungsbestätigung angegebenen steuerbegünstigten Zwecken ver
 durch einen etwaigen Abzug der Zuwendungen beim Zuwendenden entgeht (§ 10b Abs. 4 EStG, § 9 Abs. 3 KStG, § 9 Nr. 5 GewStG).
 Diese Bestätigung wird nicht als Nachweis für die steuerliche Berücksichtigung der Zuwendung anerkannt, wenn das Datum des
 Freistellungsbescheides länger als 5 Jahre bzw. das Datum der vorläufigen Bescheinigung länger als 3 Jahre seit Ausstellung der Bestätigung
-zurückliegt (BMF vom 15.12.1994 – BStBl I S. 884).</p>
+zurückliegt (BMF vom 15.12.1994 \u2013 BStBl I S. 884).</p>
 </div>
 
 {if $items}
 <div class="newpage">
-<h2 class='box'>Anlage zur Sammelbestätigung vom {$today} für {$contributor.display_name}</h2>
+<h2 class='box'>Anlage zur Sammelbestätigung vom {$today|crmDate:'%d.%m.%Y'} für {$contributor.display_name}</h2>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>
   {foreach from=$items item=item}
-    <tr><td>{$item.receive_date|date_format:"%d.%m.%Y"}</td><td>{$item.type}</td><td>Nein</td><td class='amount'>{$item.total_amount}&nbsp;<span class='unit'>&euro;</span></td></tr>
+    <tr><td>{$item.receive_date|date_format:"%d.%m.%Y"}</td><td>{$item.financial_type}</td><td>Nein</td><td class='amount'>{$item.total_amount}&nbsp;<span class='unit'>&euro;</span></td></tr>
   {/foreach}
   <tr id='totals'><th colspan='3'>Gesamtsumme</th><td class='amount'><span class='value'>**{$total}</span>&nbsp;<span class='unit'>&euro;</span></td></tr>
 </table>
