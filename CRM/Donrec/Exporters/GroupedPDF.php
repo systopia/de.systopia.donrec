@@ -105,9 +105,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $preferredFileName = ts("donation_receipts.zip");
-    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-    $fileURL = sys_get_temp_dir() . '/' . $archiveFileName;
+    $preferredFileName = ts("donation_receipts");
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, '.zip');
+    $fileURL = $archiveFileName;
     $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
@@ -131,9 +131,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $pageCountArrKeys = array_keys($pageCountArr);
     foreach($pageCountArrKeys as $groupId => $value) {
       $tmp = new ZipArchive;
-      $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
-      $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-      $pcFileURL = sys_get_temp_dir() . '/' . $pcArchiveFileName;
+      $pcPreferredFileName = sprintf(ts('%d-page(s)'), $value);
+      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, '.zip');
+      $pcFileURL = $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
         $zipPool[$value] = array('page_count' => $value, 'handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
@@ -165,8 +165,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach($zipPool as $zip) {
         $filename = $zip['file'];
         if ($filename) {
-          $toRemove[] = sys_get_temp_dir() . '/' . $filename;
-          $opResult = $outerArchive->addFile(sys_get_temp_dir() . '/' . $filename, $zip['pref_name']) ;
+          $toRemove[] = $filename;
+          $opResult = $outerArchive->addFile($filename, $zip['pref_name']) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$filename}'>{$zip['page_count']}-page ZIP</span> to <span title='{$archiveFileName}'>final ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }

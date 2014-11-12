@@ -8,8 +8,8 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <div style="width:50%;">
-        <div class="crm-edit-help"><div class="icon details-icon"></div><b>{ts}Statistics{/ts}</b></div>
+  <div style="width:450px;">
+        <h2>{ts}Statistics{/ts}</h2>
 
         <div class="crm-summary-row">
           <div class="crm-label">{ts}selected contacts{/ts}</div>
@@ -25,7 +25,7 @@
         </div>
         <div class="crm-summary-row">
           <div class="crm-label">{ts}total amount{/ts}</div>
-          <div class="crm-content">{$statistic.total_amount}</div>
+          <div class="crm-content">{$statistic.total_amount|crmMoney}</div>
         </div>
   </div>
 {/if}
@@ -60,8 +60,9 @@
   {/if}
 {else}
 <div class="form-item">
+<h2>{ts}Settings{/ts}</h2>
 <!-- result format radioboxes-->
-<table>
+<table style="width:450px;">
   <tr>
     <td class="label">{ts}Donation receipt type{/ts}:</td>
     <td>
