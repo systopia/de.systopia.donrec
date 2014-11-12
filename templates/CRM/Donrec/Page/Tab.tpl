@@ -142,7 +142,7 @@
                     <tr>
                       <td>{$item.total_amount|crmMoney}</td>
                       <td>{$item.receive_date|crmDate:$config->dateformatFull}</td>
-                      <td>{$item.type}</td>
+                      <td>{$item.financial_type}</td>
                     </tr>
                     {/foreach}
                   </tbody>
