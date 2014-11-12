@@ -102,7 +102,7 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: CRM/Donrec/Logic/Template.php
 msgid "Default template"
-msgstr "Stadardvorlage"
+msgstr "Standardvorlage"
 
 #: CRM/Donrec/Page/Runner.php
 msgid "No snapshot ID given. Please call this page from a proper selection."

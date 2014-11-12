@@ -9,7 +9,7 @@
 
 {include file="CRM/Donrec/Form/Task/remaining_snapshot.tpl"}
 
-<table>
+<table style="max-width: 450px;">
   <tr>
     <h3>{ts}Filter contributions by receive date{/ts}</h3>
   </tr>

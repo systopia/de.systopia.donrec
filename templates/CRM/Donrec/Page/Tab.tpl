@@ -71,14 +71,26 @@
       </td>
     </tr>
     <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
-      <td>
-        <div class="crm-clear crm-inline-block-content">
+      <td colspan="2">
+        <div style="float:left;width:50%;">
               <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts}Issued To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
+              {if $receipt.contributor.supplemental_address_1}
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Supplemental Address 1{/ts}</div>
+                <div class="crm-content">{$receipt.contributor.supplemental_address_1}</div>
+              </div>
+              {/if}
+              {if $receipt.contributor.supplemental_address_2}
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Supplemental Address 2{/ts}</div>
+                <div class="crm-content">{$receipt.contributor.supplemental_address_2}</div>
+              </div>
+              {/if}
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Postal Code{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.postal_code}</div>
@@ -91,20 +103,32 @@
                 <div class="crm-label">{ts}City{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.city}</div>
               </div>
+              {if $receipt.addressee.country}
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Country{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.country}</div>
               </div>
+              {/if}
         </div>
-      </td>
-      <td>
-        <div class="crm-clear crm-inline-block-content">
+        <div style="float:right;width:50%;">
               <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts}Sent To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
+              {if $receipt.addressee.supplemental_address_1}
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Supplemental Address 1{/ts}</div>
+                <div class="crm-content">{$receipt.addressee.supplemental_address_1}</div>
+              </div>
+              {/if}
+              {if $receipt.addressee.supplemental_address_2}
+              <div class="crm-summary-row">
+                <div class="crm-label">{ts}Supplemental Address 2{/ts}</div>
+                <div class="crm-content">{$receipt.addressee.supplemental_address_2}</div>
+              </div>
+              {/if}
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Postal Code{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.postal_code}</div>
@@ -117,10 +141,12 @@
                 <div class="crm-label">{ts}City{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.city}</div>
               </div>
+              {if $receipt.addressee.country}
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Country{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.country}</div>
               </div>
+              {/if}
         </div>
       </td>
     </tr>

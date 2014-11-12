@@ -65,7 +65,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
           if ($filename) {
             $toRemove[$id] = $filename;
             $opResult = $zip->addFile($filename, basename($filename)) ;
-            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "trying to add $filename to archive $archiveFileName ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='$filename'>created PDF file</span> to <span title='$archiveFileName'>ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
           }
         }
       }
@@ -85,7 +85,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
     // remove loose pdf files or store them
     if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose pdf files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose PDF files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
       foreach($toRemove as $file) {
         unlink($file);
       }
