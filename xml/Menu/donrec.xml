@@ -28,7 +28,7 @@
     <path>civicrm/admin/setting/donrec</path>
     <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>
     <title>Donation Receipts Settings</title>
-    <desc>TODO</desc>
+    <desc>Donation Receipts Settings</desc>
     <access_arguments>administer CiviCRM</access_arguments>
     <adminGroup>CiviContribute</adminGroup>
     <icon>admin/small/online_contribution_pages.png</icon>
