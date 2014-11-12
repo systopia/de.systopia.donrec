@@ -87,6 +87,18 @@ return array(
     'description' => 'pdfinfo binary path',
     'help_text' => 'TODO',
   ),
+  'default_template' => array(
+    'group_name' => 'Donation Receipt Settings',
+    'group' => 'de.systopia',
+    'name' => 'default_template',
+    'type' => 'Integer',
+    'add' => '4.3',
+    'default' => 0,
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'default template to use for receipt-generation',
+    'help_text' => 'TODO',
+  ),
   'legal_address' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',
