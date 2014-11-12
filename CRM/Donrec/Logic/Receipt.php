@@ -484,7 +484,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[issued_by]`               AS `issued_by`,
         receipt.`$receipt_fields[original_file]`           AS `original_file`,
 
-        contact.`id`                                       AS `contributor__id`,
         receipt.`$receipt_fields[display_name]`            AS `contributor__display_name`,
         receipt.`$receipt_fields[street_address]`          AS `contributor__street_address`,
         receipt.`$receipt_fields[supplemental_address_1]`  AS `contributor__supplemental_address_1`,
@@ -492,6 +491,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[postal_code]`             AS `contributor__postal_code`,
         receipt.`$receipt_fields[city]`                    AS `contributor__city`,
         receipt.`$receipt_fields[country]`                 AS `contributor__country`,
+
         receipt.`$receipt_fields[shipping_street_address]`          AS `addressee__street_address`,
         receipt.`$receipt_fields[shipping_supplemental_address_1]`  AS `addressee__supplemental_address_1`,
         receipt.`$receipt_fields[shipping_supplemental_address_2]`  AS `addressee__supplemental_address_2`,
@@ -510,9 +510,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
       RIGHT JOIN `$item_table_name`                        AS item
         ON   item.`$item_fields[issued_in]` = receipt.`id`
         AND  item.`$item_fields[status]`    = receipt.`$receipt_fields[status]`
-
-      LEFT JOIN `civicrm_contact` AS contact
-        ON   contact.`id` = receipt.`entity_id`
 
       WHERE receipt.`id` = $receipt_id";
 
