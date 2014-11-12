@@ -13,7 +13,7 @@
   {/if}
 </div>
 <div class="donrec-stats-block">
-  <table>
+  <table style="max-width: 960px;">
     {foreach from=$display_receipts key=receipt_id item=receipt name=receipt_items}
     <tr class="{if $smarty.foreach.receipt_items.index % 2 == 0}even{else}odd{/if}">
       <td>
@@ -157,7 +157,7 @@
               <div>
                 <table>
                   <thead>
-                    <tr>
+                    <tr style="font-weight: 600;">
                       <td>{ts}Total Amount{/ts}</td>
                       <td>{ts}Received Date{/ts}</td>
                       <td>{ts}Financial Type{/ts}</td>

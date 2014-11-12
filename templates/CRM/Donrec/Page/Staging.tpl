@@ -52,10 +52,6 @@
 <!-- result format radioboxes-->
 <table>
   <tr>
-    <th style="width: 250px"></th>
-    <th></th>
-  </tr>
-  <tr>
     <td class="label">{ts}Donation receipt type{/ts}:</td>
     <td>
       <input {if $statistic.singleOrBulk == 'bulk'}disabled {elseif $statistic.singleOrBulk == 'single' || !$statistic.singleOrBulk}checked="checked" {/if}value="1" type="radio" id="donrec_type_single" name="donrec_type" class="form-radio"/>
