@@ -25,7 +25,7 @@
         </div>
         <div class="crm-summary-row">
           <div class="crm-label">{ts}total amount{/ts}</div>
-          <div class="crm-content">{$statistic.total_amount|crmMoney}</div>
+          <div class="crm-content">{$statistic.total_amount|crmMoney:EUR}</div>
         </div>
   </div>
 {/if}
