@@ -205,7 +205,7 @@ h3 {
 </p>
 
 <div class="main">
-<h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/ Mitgliedsbeitrag</h1><br />
+<h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/Mitgliedsbeitrag</h1><br />
 <p class="notice">Über Zuwendungen im Sinne des § 10 b des Einkommensteuergesetztes an eine der in § 5 Abs. 1 Nr. 9 des
 Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen und Vermögensmassen</p>
 
@@ -227,7 +227,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
   <tr class='var'>
     <td id='total'>**{$total}</td>
     <td>{$totaltext}</td>
-    <td>{if $items}{$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}{else}{$issued_on}{/if}</td>
+    <td>{if $items}{$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}{else}{$issued_on|crmDate:'%d.%m.%Y'}{/if}</td>
   </tr>
 </table>
 
@@ -269,7 +269,7 @@ zu den in der Zuwendungsbestätigung angegebenen steuerbegünstigten Zwecken ver
 durch einen etwaigen Abzug der Zuwendungen beim Zuwendenden entgeht (§ 10b Abs. 4 EStG, § 9 Abs. 3 KStG, § 9 Nr. 5 GewStG).
 Diese Bestätigung wird nicht als Nachweis für die steuerliche Berücksichtigung der Zuwendung anerkannt, wenn das Datum des
 Freistellungsbescheides länger als 5 Jahre bzw. das Datum der vorläufigen Bescheinigung länger als 3 Jahre seit Ausstellung der Bestätigung
-zurückliegt (BMF vom 15.12.1994 \u2013 BStBl I S. 884).</p>
+zurückliegt (BMF vom 15.12.1994 - BStBl I S. 884).</p>
 </div>
 
 {if $items}
