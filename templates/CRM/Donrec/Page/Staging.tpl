@@ -8,7 +8,7 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <div style="width:450px;">
+  <div style="max-width:960px;">
         <h2>{ts}Statistics{/ts}</h2>
 
         <div class="crm-summary-row">
@@ -62,7 +62,7 @@
 <div class="form-item">
 <h2>{ts}Settings{/ts}</h2>
 <!-- result format radioboxes-->
-<table style="width:450px;">
+<table style="max-width:960px;">
   <tr>
     <td class="label">{ts}Donation receipt type{/ts}:</td>
     <td>
