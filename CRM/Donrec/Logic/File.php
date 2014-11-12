@@ -49,7 +49,7 @@ class CRM_Donrec_Logic_File {
 
     // move file to a permanent folder
     $newPath = $config->customFileUploadDir . basename($path);
-    rename($path, $newPath);
+    copy($path, $newPath);
 
     // find mime type
     if (empty($mimetype)) {
