@@ -8,15 +8,26 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <table id="statistic" style="max-width: 50%;">
-    <caption>{ts}Statistics{/ts}</caption>
-    {if $statistic.requested_contacts}
-      <tr><td class="statskey">{ts}selected contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
-    {/if}
-    <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
-    <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
-    <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
-  </table>
+  <div style="width:50%;">
+        <div class="crm-edit-help"><div class="icon details-icon"></div><b>{ts}Statistics{/ts}</b></div>
+
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}selected contacts{/ts}</div>
+          <div class="crm-content">{$statistic.requested_contacts}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}contact count{/ts}</div>
+          <div class="crm-content">{$statistic.contact_count}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}contribution count{/ts}</div>
+          <div class="crm-content">{$statistic.contribution_count}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}total amount{/ts}</div>
+          <div class="crm-content">{$statistic.total_amount}</div>
+        </div>
+  </div>
 {/if}
 
 <form action="{$formAction}" method="post">
