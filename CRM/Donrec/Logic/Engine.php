@@ -199,9 +199,6 @@ class CRM_Donrec_Logic_Engine {
                 if (!empty($file)) {
                   $receipt_params['original_file'] = $file['id'];
                 }
-
-                // update PDF path
-                $this->setPDF($line_id, $file['path']);
               }
             }
             CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, array($line_id), $receipt_params);

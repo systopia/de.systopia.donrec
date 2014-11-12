@@ -49,7 +49,7 @@ class CRM_Donrec_Logic_File {
 
     // move file to a permanent folder
     $newPath = $config->customFileUploadDir . basename($path);
-    rename($path, $newPath);
+    copy($path, $newPath);
 
     // find mime type
     if (empty($mimetype)) {
@@ -97,12 +97,7 @@ class CRM_Donrec_Logic_File {
    */
   public static function makeFileName($preferredName, $suffix='') {
     // generate a uniq temp file
-    if(CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      $config = CRM_Core_Config::singleton();
-      $new_file = tempnam($config->customFileUploadDir, $preferredName . '-');
-    }else{
-      $new_file = tempnam(sys_get_temp_dir(), $preferredName . '-');
-    }
+    $new_file = tempnam(sys_get_temp_dir(), $preferredName . '-');
 
     // append the suffix, if possible
     $ideal_file = $new_file . $suffix;

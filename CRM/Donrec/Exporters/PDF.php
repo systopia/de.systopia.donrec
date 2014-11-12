@@ -84,11 +84,9 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
     }
 
     // remove loose pdf files or store them
-    if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose PDF files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-      foreach($toRemove as $file) {
-        unlink($file);
-      }
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing temporary PDF files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+    foreach($toRemove as $file) {
+      unlink($file);
     }
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);

@@ -34,9 +34,6 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
     $this->assign('can_create_withdraw', CRM_Core_Permission::check('create and withdraw receipts'));
     $this->assign('can_delete', CRM_Core_Permission::check('delete receipts'));
 
-    // do we keep original pdf files?
-    $this->assign('store_pdf', CRM_Donrec_Logic_Settings::saveOriginalPDF());
-
     parent::run();
   }
 }
