@@ -8,7 +8,8 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <div style="max-width:960px;">
+  <br/>
+  <div style="max-width:320px;">
         <h2>{ts}Statistics{/ts}</h2>
 
         <div class="crm-summary-row">
@@ -29,9 +30,10 @@
         </div>
   </div>
 {/if}
-
+<br/>
 <form action="{$formAction}" method="post">
 {if $error}
+<br/>
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
   <p style="color: #ffffff;">{ts}Error{/ts}: {$error}</p>
 </div>
