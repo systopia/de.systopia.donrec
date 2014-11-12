@@ -99,7 +99,7 @@
       </td>
       <td>
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon dashboard-icon"></div>{ts}Current Address{/ts}</div>
+              <div class="crm-edit-help"><div class="icon dashboard-icon"></div>{ts}Sent To{/ts}</div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
