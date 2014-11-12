@@ -187,6 +187,20 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
 }
 
 /**
+ *   Implementation of hook_civicrm_buildForm:
+ *   Inject modification tpl snippets, where required
+ */
+function donrec_civicrm_buildForm($formName, &$form) {
+  error_log($formName);
+	if ($formName == 'CRM_Contribute_Form_Search') {
+		CRM_Core_Region::instance('page-body')->add(array(
+      		'template' => 'CRM/Contribute/Form/Selector.snippet.tpl'
+    	));
+	}
+}
+
+
+/**
  * Set permissions for runner/engine API call
  */
 function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
