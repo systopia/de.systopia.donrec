@@ -73,7 +73,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
       <td>
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon user-record-icon"></div>{ts}Issued To{/ts}</div>
+              <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts}Issued To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
@@ -99,7 +99,7 @@
       </td>
       <td>
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon dashboard-icon"></div>{ts}Sent To{/ts}</div>
+              <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts}Sent To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts}Name{/ts}</div>
@@ -127,7 +127,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_2" style="display: none;">
       <td colspan="2">
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon search-icon"></div>{ts}Contributions{/ts}</div>
+              <div class="crm-edit-help"><div class="icon search-icon"></div><b>{ts}Contributions{/ts}</b></div>
               <div>
                 <table>
                   <thead>
