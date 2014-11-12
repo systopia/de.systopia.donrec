@@ -189,7 +189,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
       CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
       foreach($toRemove as $file) {
-        //unlink($file);
+        unlink($file);
       }
     }
 
