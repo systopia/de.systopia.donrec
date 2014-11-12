@@ -490,46 +490,7 @@ class CRM_Donrec_Logic_Snapshot {
     foreach (self::$LINE_FIELDS as $field) {
       $line[$field] = $result->$field;
     }
-    // TODO: if we use SnapshotReceipt->getAllTokens we don't need to collect
-    // the address-infos for the contact here!
-    $contact_info = $this->getContactInformation($line_id);
-    $line = array_merge($line, $contact_info);
     return $line;
-  }
-
-  /**
-  * Returns contact- and address information for a specific line in this snapshot
-  * @param int line id
-  * @return array or empty array
-  */
-  public function getContactInformation($line_id) {
-    $query = "SELECT
-              contact.`id` AS contact_id,
-              contact.`display_name`,
-              address.`street_address`,
-              address.`supplemental_address_1`,
-              address.`supplemental_address_2`,
-              address.`supplemental_address_3`,
-              address.`postal_code`,
-              address.`city`,
-              country.`name` AS country
-              FROM `civicrm_donrec_snapshot` AS snapshot
-              RIGHT JOIN `civicrm_contribution` AS contrib ON contrib.`id` = `snapshot`.`contribution_id`
-              RIGHT JOIN `civicrm_contact` AS contact ON contact.`id` = contrib.`contact_id`
-              LEFT JOIN `civicrm_address` AS address ON address.`contact_id` = contact.`id`
-              LEFT JOIN `civicrm_country` AS country ON country.`id` = address.`country_id`
-              WHERE snapshot.`id` = %1
-              AND snapshot.`snapshot_id` = %2
-              LIMIT 1";
-    $params = array(1 => array($line_id, 'Integer'),
-                    2 => array($this->Id, 'Integer'));
-    $result = CRM_Core_DAO::executeQuery($query, $params);
-    $result->fetch();
-    $contact = array();
-    foreach (self::$CONTACT_FIELDS as $field) {
-      $contact[$field] = $result->$field;
-    }
-    return $contact;
   }
 
   /**
