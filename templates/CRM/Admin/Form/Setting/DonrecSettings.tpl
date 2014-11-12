@@ -19,8 +19,9 @@
     {/foreach}
     </div>
   </div>
+  <br/>
   <div>
-    <h3>Text</h3>
+    <h3>{ts}Text{/ts}</h3>
     <div>
       <table>
         <tr>
@@ -35,7 +36,7 @@
     </div>
   </div>
   <div>
-    <h3>PDF</h3>
+    <h3>{ts}PDF{/ts}</h3>
     <div>
       <div>
           <table>
