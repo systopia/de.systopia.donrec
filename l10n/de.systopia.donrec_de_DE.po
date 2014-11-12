@@ -340,7 +340,7 @@ msgstr "Einzelne PDFs"
 
 #: CRM/Donrec/Form/Task/Create.php
 msgid "This contact has no selectable contributions in the selected time period."
-msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in die gewählten Zeitspanne."
+msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in der gewählten Zeitspanne."
 
 #: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "There are no selectable contributions for these contacts in the selected time period."
