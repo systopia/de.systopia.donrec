@@ -20,18 +20,22 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
 
+    // working on a test-snapshot
+    $from_test = empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test'];
+    $this->assign('from_test', $from_test);
+
     // add statistic
     if (!empty($id)) {
       $statistic = CRM_Donrec_Logic_Snapshot::getStatistic($id);
       $statistic['requested_contacts'] = $ccount;
+      // for working on a test-snapshot, we don't set singleOrBulk
+      if ($from_test) {
+        $statistic['singleOrBulk'] = null;
+      }
       $this->assign('statistic', $statistic);
     }
 
-    // when we come from a test-run...
-    $this->assign('from_test', empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test']);
-
     // check which button was clicked
-
     // called when the 'abort' button was selected
     if(!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
       $by_admin = !empty($_REQUEST['donrec_abort_by_admin']);
