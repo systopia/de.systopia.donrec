@@ -133,7 +133,7 @@ msgstr ""
 msgid "No 'sid' parameter given."
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Task/Stats.tpl
+#: donrec.php templates/CRM/Donrec/Page/Staging.tpl
 msgid "Issue donation receipt(s)"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgid "PLEASE DO NOT CLOSE THIS PAGE!"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Runner.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Back"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Staging.tpl
 msgid "Error"
 msgstr ""
 
@@ -280,37 +280,37 @@ msgstr ""
 msgid "Are you sure you want to delete this donation receipt?"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "Sorry, but at least one of the selected contributions is already being "
 "processed for a donation receipt:"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "The conflicting other donation receipt process was created by"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "It will automatically expire on"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Delete other process and restart"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Donation receipt type"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Result formats"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Test run"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Abort"
 msgstr ""
 
@@ -387,27 +387,27 @@ msgstr ""
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Statistics"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "contact count"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "contribution count"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "total amount"
 msgstr ""
@@ -432,11 +432,11 @@ msgstr ""
 msgid "Issue Donation Receipts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "single receipts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "bulk receipts"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgstr ""
 msgid "unlimited"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "selected contacts"
 msgstr ""
 
