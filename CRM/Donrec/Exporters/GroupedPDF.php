@@ -106,7 +106,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $config = CRM_Core_Config::singleton();
 
     $preferredFileName = ts("donation_receipts");
-    $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, '.zip');
+    $preferredSuffix = ts('.zip');
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredSuffix);
     $fileURL = $archiveFileName;
     $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
@@ -131,8 +132,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $pageCountArrKeys = array_keys($pageCountArr);
     foreach($pageCountArrKeys as $groupId => $value) {
       $tmp = new ZipArchive;
-      $pcPreferredFileName = sprintf(ts('%d-page(s)'), $value);
-      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, '.zip');
+      $pcPreferredFileName = sprintf(ts('%d-page(s)%s'), $value, $preferredSuffix);
+      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($pcPreferredFileName);
       $pcFileURL = $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
@@ -148,7 +149,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach ($entry as $item) {
         if($item[0] && $item[2]) { // if page count and file name exists
           $opResult = $zipPool[$item[0]]['handle']->addFile($item[2], basename($item[2])) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]['page_count']}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
     }
@@ -178,9 +179,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       return $reply;
     }
 
-    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName);
+    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName . $preferredSuffix);
     if (!empty($file)) {
-      $reply['download_name'] = $preferredFileName;
+      $reply['download_name'] = $preferredFileName . $preferredSuffix;
       $reply['download_url'] = $file;
     }
 
@@ -188,7 +189,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
       CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
       foreach($toRemove as $file) {
-        unlink($file);
+        //unlink($file);
       }
     }
 
