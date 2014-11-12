@@ -134,7 +134,8 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
 }
 
 /**
- *
+ *  1) add an extra search column 'receipted'
+ *  2) modify actions for rebook
  */
 function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selector) {
   if ($objectName == 'contribution') {
@@ -145,9 +146,8 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // save last element (action list)
     $actionList = array_pop($headers);
     // insert new column
-    $headers[] = array('name' => ts('Receipted'),
-                       'sort' => 'is_receipted',
-                      'direction' => 4);
+    $headers[] = array('name' => ts('Receipted'));
+
     // insert new values
     foreach ($values as $id => $value ) {
       $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
@@ -187,16 +187,15 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
 }
 
 /**
- *   Implementation of hook_civicrm_buildForm:
- *   Inject modification tpl snippets, where required
+ * The extra search column (see above) does not alter the template,
+ * so the template itself has to be overwritten to show the generated extra column
  */
-function donrec_civicrm_buildForm($formName, &$form) {
-  error_log($formName);
-	if ($formName == 'CRM_Contribute_Form_Search') {
-		CRM_Core_Region::instance('page-body')->add(array(
-      		'template' => 'CRM/Contribute/Form/Selector.snippet.tpl'
-    	));
-	}
+function donrec_civicrm_alterTemplateFile($formName, &$form, $context, &$tplName) {
+  if ($formName == 'CRM_Contribute_Page_Tab') {
+    $tplName = 'CRM/Contribute/Page/Tab.donrec.tpl';
+  } elseif ($formName == 'CRM_Contribute_Form_Search') {
+    $tplName = 'CRM/Contribute/Form/Search.donrec.tpl';
+  }
 }
 
 
