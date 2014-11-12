@@ -31,7 +31,7 @@
             </b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
             <li>{ts}Date{/ts}: {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}</li>
-            <li>{ts}Total amount{/ts}: {$receipt.total_amount} {$receipt.currency}</li>
+            <li>{ts}Total amount{/ts}: {$receipt.total_amount|crmMoney:$receipt.currency}</li>
             <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
           </ul>
         </div>
@@ -166,7 +166,7 @@
                   <tbody>
                     {foreach from=$receipt.lines key=id item=item}
                     <tr>
-                      <td>{$item.total_amount|crmMoney}</td>
+                      <td>{$item.total_amount|crmMoney:$receipt.currency}</td>
                       <td>{$item.receive_date|crmDate:$config->dateformatFull}</td>
                       <td>{$item.financial_type}</td>
                     </tr>
