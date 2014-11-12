@@ -6,7 +6,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Staging.php
 #: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Warning"
 msgstr ""
@@ -97,23 +97,23 @@ msgstr ""
 msgid "No snapshot ID given. Please call this page from a proper selection."
 msgstr ""
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "No snapshot id has been provided!"
 msgstr ""
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Invalid snapshot id!"
 msgstr ""
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "The older snapshot has been deleted. You can now proceed."
 msgstr ""
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "The previously created snapshot has been deleted."
 msgstr ""
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Missing exporter!"
 msgstr ""
 
@@ -428,7 +428,7 @@ msgid "View"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Issue Donation Receipts"
 msgstr ""
 
