@@ -19,8 +19,9 @@
     {/foreach}
     </div>
   </div>
+  <br/>
   <div>
-    <h3>Text</h3>
+    <h3>{ts}Text{/ts}</h3>
     <div>
       <table>
         <tr>
@@ -35,7 +36,7 @@
     </div>
   </div>
   <div>
-    <h3>PDF</h3>
+    <h3>{ts}PDF{/ts}</h3>
     <div>
       <div>
           <table>
@@ -92,18 +93,23 @@
 
 {literal}
 <script type="text/javascript">
-  function syncContribTypeList() {
-    if(cj("#financial_types_all").is(':checked')) {
-      cj('#advContribTypeList').hide();
-      //cj('#advContribTypeList :checkbox').attr('checked', false);
-    }else{
-      cj('#advContribTypeList').show();
+  (function(cj) {
+    // handle all-contribution-types-option
+    function syncContribTypeList() {
+      if(cj("#financial_types_all").is(':checked')) {
+        cj('#advContribTypeList').hide();
+        //cj('#advContribTypeList :checkbox').attr('checked', false);
+      }else{
+        cj('#advContribTypeList').show();
+      }
     }
-  }
+    cj(function() {
+      cj("#financial_types_all").on("change", syncContribTypeList);
+      syncContribTypeList();
+    });
 
-  cj(function() {
-    cj("#financial_types_all").on("change", syncContribTypeList);
-    syncContribTypeList();
-  });
+    //table-style
+    cj('td.label').width(300);
+  })(cj);
 </script>
 {/literal}

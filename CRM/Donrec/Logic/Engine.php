@@ -193,7 +193,8 @@ class CRM_Donrec_Logic_Engine {
               // get pdf file name from snapshot line
               $pdf_file = $this->getPDF($line_id);
               if ($pdf_file) {
-                $contact_id = 1; // TODO: get contact_id
+                $tempReceipt = $this->snapshot->getSnapshotReceipt($line_id, $is_test);
+                $contact_id =  $tempReceipt->getContactID();
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
                   $receipt_params['original_file'] = $file['id'];
