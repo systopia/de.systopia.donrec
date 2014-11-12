@@ -48,6 +48,7 @@ msgid "Packet size can only contain positive integers"
 msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Settings"
 msgstr ""
 
@@ -137,7 +138,7 @@ msgstr ""
 msgid "Issue donation receipt(s)"
 msgstr ""
 
-#: donrec.php
+#: donrec.php templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Donation receipts"
 msgstr ""
 
@@ -186,8 +187,7 @@ msgstr ""
 msgid "PLEASE DO NOT CLOSE THIS PAGE!"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
 msgid "Back"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
 msgid "Download"
 msgstr ""
 
@@ -261,6 +261,7 @@ msgid "Success"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: CRM/Donrec/Form/Task/Rebook.php
 msgid "Error"
 msgstr ""
 
@@ -553,7 +554,8 @@ msgstr ""
 msgid "CiviCRM ID"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php rebook.php
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+#: rebook.php donrec.php
 msgid "Rebook"
 msgstr ""
 
@@ -601,7 +603,7 @@ msgstr ""
 msgid "Nothing rebooked!"
 msgstr ""
 
-#: rebook.php
+#: rebook.php donrec.php
 msgid "Rebook to contact"
 msgstr ""
 
@@ -639,4 +641,261 @@ msgstr ""
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference"
+msgstr ""
+
+#: CRM/Donrec/Exporters/CSV.php CRM/Donrec/Exporters/GroupedPDF.php
+#: CRM/Donrec/Exporters/PDF.php
+msgid "donation_receipts"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfinfo</code>"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "primary address"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Legal Address-Type:"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Postal Address-Type:"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Fallback:"
+msgstr ""
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid "CSV File"
+msgstr ""
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid ".csv"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "Individual PDFs sorted by page count"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid ".zip"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "%d-page(s)%s"
+msgstr ""
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "donation_receipts.zip"
+msgstr ""
+
+#: CRM/Donrec/Logic/Template.php
+msgid "donationreceipt-"
+msgstr ""
+
+#: donrec.php
+msgid "Receipted"
+msgstr ""
+
+#: donrec.php
+msgid "No"
+msgstr ""
+
+#: donrec.php
+msgid "Yes"
+msgstr ""
+
+#: donrec.php
+msgid "DonationReceipts"
+msgstr ""
+
+#: donrec.php
+msgid "view and create copies of receipts"
+msgstr ""
+
+#: donrec.php
+msgid "create and withdraw receipts"
+msgstr ""
+
+#: donrec.php
+msgid "delete receipts"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    You can select the financial types that are eligable for donation "
+"receipts.\n"
+"    <br/>\n"
+"    The default is, that all financial types marked as tax deductible are "
+"included,\n"
+"    but you can adjust this selection to your organisation's needs.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    This watermark text is included in all invalid or test donation "
+"receipts.\n"
+"    <br/>\n"
+"    It cannot be left empty for legal reasons.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    This watermark text is included in all donation receipt copies.\n"
+"    <br/>\n"
+"    It cannot be left empty for legal reasons.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    When this option is activated, the originally generated PDF file will be "
+"stored with the donation receipt data set.\n"
+"    This approach has the advantage, that you can always see and download "
+"the exact PDF you sent to your donors.\n"
+"    On the other hand, activating this option gives you free access to the "
+"original PDF file,\n"
+"    which you can then print out without any further restrictions. This "
+"might cause legal issues.\n"
+"    <br/>\n"
+"    If you don't activate this option, a new PDF will be generated for you.\n"
+"    As long as you don't change the template, this should be the same as the "
+"original, except that it's marked invalid.\n"
+"    <br/>\n"
+"    Discuss the best setting here with your legal team.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    Defines the runner packed size.\n"
+"    <br/>\n"
+"    When creating large amounts of donation receipts, the runner will not "
+"process all of them at once.\n"
+"    It will break the lot down into little packets and process them "
+"individually.\n"
+"    <br/>\n"
+"    If you're having trouble with timeouts, try decreasing this value.\n"
+"    If you want more performance, try increasing it carefully - but don't "
+"tweak it to the limit.\n"
+"    <br/>\n"
+"    You should always test your settings in a test run.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"\n"
+"    The <code>pdfinfo</code> tool is need for the grouped PDF exporter.\n"
+"    <br/>\n"
+"    Ask your system administrator to set the correct setting, and install "
+"the tool if it's not there yet.\n"
+"    "
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "TODO"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Contribution Types"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Text"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "PDF"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Store original PDF"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "The <code>pdfinfo</code> Tool"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Generator Packet Size"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Address Types"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Legal Address"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Legal Address Fallback"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Postal Address"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Postal Address Fallback"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Filter contributions by receive date"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Unfinished run detected"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise it <b>will be deleted</b>!"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "An interrupted run has been detected. Do you want to continue with it?"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise the selection <b>will be deleted</b>!"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn copy"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 1"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 2"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Sent To"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "DonationReceipt"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tempfile.tpl
+msgid "Temporary file dowload failed."
+msgstr ""
+
+#: templates/Export/default_template.tpl
+msgid "until"
 msgstr ""
