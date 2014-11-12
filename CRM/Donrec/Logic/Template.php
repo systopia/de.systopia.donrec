@@ -82,6 +82,7 @@ class CRM_Donrec_Logic_Template
   public static function setDefaultTemplate() {
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
 
+    // TODO: don't use an ajax-request here.
     $params = array(
         'version' => 3,
         'q' => 'civicrm/ajax/rest',
@@ -96,6 +97,8 @@ class CRM_Donrec_Logic_Template
 
     // the default template has been already set
     if ($result['count'] != 0) {
+      // update the donrec-setting
+      CRM_Donrec_Logic_Settings::setDefaultTemplate($result['values'][0]['id']);
       return TRUE;
     }
 
