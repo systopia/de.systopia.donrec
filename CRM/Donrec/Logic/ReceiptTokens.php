@@ -292,7 +292,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       $address['street_address'] = $address_found['street_address'];
       $address['postal_code'] = $address_found['postal_code'];
       $address['city'] = $address_found['city'];
-      $address['country'] = $address_found['country'];
+      if (!empty($address_found['country_id'])) {
+        $country = CRM_Core_PseudoConstant::country($address_found['country_id']);
+        $address['country'] = $country;
+      }
       $address['supplemental_address_1'] = $address_found['supplemental_address_1'];
       $address['supplemental_address_2'] = $address_found['supplemental_address_2'];
       return $address;
