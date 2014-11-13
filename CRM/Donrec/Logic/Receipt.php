@@ -335,22 +335,22 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
               AND receipt.`%s` <> 'INVALID'";
 
     $query = sprintf($query,
-                    self::$custom_group_id,
-                    CRM_Donrec_Logic_ReceiptItem::$custom_group_id,
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_in'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['status'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['type'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_in'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_by'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['total_amount'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['non_deductible_amount'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['currency'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['issued_on'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['receive_date'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['contribution_hash'],
-                    CRM_Donrec_Logic_ReceiptItem::$custom_fields['status'],
+                    self::$_custom_group_id,
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['type'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_by'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['non_deductible_amount'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['currency'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['contribution_hash'],
+                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
                     $contribution_id,
-                    self::$custom_fields['status']
+                    self::$_custom_fields['status']
                     );
     return CRM_Core_DAO::singleValueQuery($query);
   }
