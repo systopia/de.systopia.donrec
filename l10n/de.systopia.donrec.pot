@@ -52,18 +52,6 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: CRM/Donrec/Exporters/Dummy.php
-msgid "Dummy Exporter"
-msgstr ""
-
-#: CRM/Donrec/Exporters/PDF.php
-msgid "Actually export individual PDFs"
-msgstr ""
-
-#: CRM/Donrec/Exporters/SecondDummy.php
-msgid "Dummy Exporter #2"
-msgstr ""
-
 #: CRM/Donrec/Form/Task/Create.php
 msgid ""
 "There are no contributions for this contact that can be used to issue "
@@ -172,11 +160,6 @@ msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Store original *.pdf files"
-msgstr ""
-
-#: templates/CRM/Donrec/Form/Task/Create.tpl
-#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
-msgid "Contribution horizon"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Runner.tpl
@@ -724,89 +707,6 @@ msgstr ""
 msgid "delete receipts"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    You can select the financial types that are eligable for donation "
-"receipts.\n"
-"    <br/>\n"
-"    The default is, that all financial types marked as tax deductible are "
-"included,\n"
-"    but you can adjust this selection to your organisation's needs.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    This watermark text is included in all invalid or test donation "
-"receipts.\n"
-"    <br/>\n"
-"    It cannot be left empty for legal reasons.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    This watermark text is included in all donation receipt copies.\n"
-"    <br/>\n"
-"    It cannot be left empty for legal reasons.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    When this option is activated, the originally generated PDF file will be "
-"stored with the donation receipt data set.\n"
-"    This approach has the advantage, that you can always see and download "
-"the exact PDF you sent to your donors.\n"
-"    On the other hand, activating this option gives you free access to the "
-"original PDF file,\n"
-"    which you can then print out without any further restrictions. This "
-"might cause legal issues.\n"
-"    <br/>\n"
-"    If you don't activate this option, a new PDF will be generated for you.\n"
-"    As long as you don't change the template, this should be the same as the "
-"original, except that it's marked invalid.\n"
-"    <br/>\n"
-"    Discuss the best setting here with your legal team.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    Defines the runner packed size.\n"
-"    <br/>\n"
-"    When creating large amounts of donation receipts, the runner will not "
-"process all of them at once.\n"
-"    It will break the lot down into little packets and process them "
-"individually.\n"
-"    <br/>\n"
-"    If you're having trouble with timeouts, try decreasing this value.\n"
-"    If you want more performance, try increasing it carefully - but don't "
-"tweak it to the limit.\n"
-"    <br/>\n"
-"    You should always test your settings in a test run.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid ""
-"\n"
-"    The <code>pdfinfo</code> tool is need for the grouped PDF exporter.\n"
-"    <br/>\n"
-"    Ask your system administrator to set the correct setting, and install "
-"the tool if it's not there yet.\n"
-"    "
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "TODO"
-msgstr ""
-
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Contribution Types"
 msgstr ""
@@ -898,4 +798,71 @@ msgstr ""
 
 #: templates/Export/default_template.tpl
 msgid "until"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"You can select the financial types that are eligable for donation receipts."
+"<br/>The default is, that all financial types marked as tax deductible are "
+"included,but you can adjust this selection to your organisation's needs."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"This watermark text is included in all invalid or test donation receipts.<br/"
+">It cannot be left empty for legal reasons."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"This watermark text is included in all donation receipt copies.<br/>It "
+"cannot be left empty for legal reasons."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"When this option is activated, the originally generated PDF file will be "
+"stored with the donation receipt data set.This approach has the advantage, "
+"that you can always see and download the exact PDF you sent to your donors."
+"On the other hand, activating this option gives you free access to the "
+"original PDF file,which you can then print out without any further "
+"restrictions. This might cause legal issues.<br/>If you don't activate this "
+"option, a new PDF will be generated for you.As long as you don't change the "
+"template, this should be the same as the original, except that it's marked "
+"invalid.<br/>Discuss the best setting here with your legal team."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"Defines the runner packed size.<br/>When creating large amounts of donation "
+"receipts, the runner will not process all of them at once.It will break the "
+"lot down into little packets and process them individually.<br/>If you're "
+"having trouble with timeouts, try decreasing this value.If you want more "
+"performance, try increasing it carefully - but don't tweak it to the limit."
+"<br/>You should always test your settings in a test run."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask "
+"your system administrator to set the correct setting, and install the tool "
+"if it's not there yet."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"Select the address type where the legal address (wrt IRS) of the donor can "
+"be found."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"Select the postal address type where the donation receipt should be mailed "
+"to."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"In case the first address is empty, this is the fallback address to be used "
+"insted."
 msgstr ""
