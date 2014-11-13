@@ -208,6 +208,8 @@ function donrec_civicrm_alterTemplateFile($formName, &$form, $context, &$tplName
     $tplName = 'CRM/Contribute/Page/Tab.donrec.tpl';
   } elseif ($formName == 'CRM_Contribute_Form_Search') {
     $tplName = 'CRM/Contribute/Form/Search.donrec.tpl';
+  } elseif ($formName == 'CRM_Contribute_Page_DashBoard') {
+    $tplName = 'CRM/Contribute/Page/DashBoard.donrec.tpl';
   }
 }
 
