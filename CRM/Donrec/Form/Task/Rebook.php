@@ -254,16 +254,23 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       return empty($errors) ? TRUE : $errors;
     }
 
-    // Es dürfen nur abgeschlossene Zuwendungen umgebucht werden
+    // Check contributions
     $completed = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
     $arr = explode(",", $contributionIds);
     foreach ($arr as $contributionId) {
       $contribution = new CRM_Contribute_DAO_Contribution();
       $contribution->id = $contributionId;
       if ($contribution->find(true)) {
+        // only 'completed' contributions can be rebooked
         if ($contribution->contribution_status_id != $completed) {
           $errors['contactId'] = ts('The contribution with ID %1 is not completed!', array(1 => $contributionId));
           return empty($errors) ? TRUE : $errors;
+        }
+
+        // receipted contributions can NOT be rebooked
+        if (CRM_Donrec_Logic_Receipt::isContributionLocked($contributionId)) {
+          $errors['contactId'] = ts('The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt.', array(1 => $contributionId));
+          return empty($errors) ? TRUE : $errors;          
         }
       }
     }

@@ -874,3 +874,9 @@ msgstr ""
 #: CRM/Donrec/DataStructure.php
 msgid "Donation Receipt Item"
 msgstr ""
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid ""
+"The contribution with ID %1 cannot be rebooked, because it has a valid "
+"contribution receipt."
+msgstr ""

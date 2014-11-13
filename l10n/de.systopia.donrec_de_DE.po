@@ -843,3 +843,7 @@ msgstr "Zuwendungsbescheinigungen"
 msgid "Donation Receipt Item"
 msgstr "Bescheinigte Werte"
 
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt."
+msgstr "Zuwendung [%1] kann nicht umgebucht werden, da für sie eine Zuwendungsbescheinigung vorliegt."
+

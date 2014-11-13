@@ -154,12 +154,15 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // insert new column
     $headers[] = array('name' => ts('Receipted'));
 
+    $receipted_contribution_ids = array();
+
     // insert new values
     foreach ($values as $id => $value ) {
       $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
       if($item_id === FALSE) {
         $values[$id]['is_receipted'] = ts('No');
       }else{
+        $receipted_contribution_ids[] = $value['contribution_id'];    // save as receipted for rebook (see below)
         $values[$id]['is_receipted'] = sprintf('<a href="%s">%s</a>', CRM_Utils_System::url(
         'civicrm/contact/view',
         "reset=1&cid={$value['contact_id']}&rid=$item_id&selectedChild=donation_receipts",
@@ -184,9 +187,13 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
       $contribution_status_id = $row['contribution_status_id'];
       // ... but only for completed contributions
       if ($contribution_status_id==$contribution_status_complete) {
-        $contribution_id = $row['contribution_id'];
-        $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
-        $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+        // receipted contributions cannot be rebooked either...
+        if (!in_array($row['contribution_id'], $receipted_contribution_ids)) {
+          // this contribution is o.k. => add the rebook action
+          $contribution_id = $row['contribution_id'];
+          $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
+          $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+        }        
       }
     }
   }
