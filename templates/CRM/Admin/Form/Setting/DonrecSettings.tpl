@@ -68,21 +68,21 @@
     <div>
       <table>
         <tr>
-          <td class="label">{$form.legal_address.label} <a onclick='CRM.help("{ts}Legal Address{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td class="label">{$form.legal_address.label} <a onclick='CRM.help("{ts}Legal Address{/ts}", {literal}{"id":"id-address-legal","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.legal_address.html}</td>
         </tr>
         <tr>
-          <td class="label">{$form.legal_address_fallback.label} <a onclick='CRM.help("{ts}Legal Address Fallback{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td class="label">{$form.legal_address_fallback.label} <a onclick='CRM.help("{ts}Legal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.legal_address_fallback.html}</td>
         </tr>
       </table>
       <table>
         <tr>
-          <td class="label">{$form.postal_address.label} <a onclick='CRM.help("{ts}Postal Address{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td class="label">{$form.postal_address.label} <a onclick='CRM.help("{ts}Postal Address{/ts}", {literal}{"id":"id-address-shipping","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.postal_address.html}</td>
         </tr>
         <tr>
-          <td class="label">{$form.postal_address_fallback.label} <a onclick='CRM.help("{ts}Postal Address Fallback{/ts}", {literal}{"id":"id-address_type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td class="label">{$form.postal_address_fallback.label} <a onclick='CRM.help("{ts}Postal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.postal_address_fallback.html}</td>
         </tr>
       </table>
