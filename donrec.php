@@ -59,6 +59,11 @@ function donrec_civicrm_enable() {
   // install default template
   CRM_Donrec_Logic_Template::setDefaultTemplate();
 
+  // rename the custom fields according to l10.
+  // FIXME: this is a workaround: if you do this before, the table name change,
+  //         BUT we should not be working with static table names
+  CRM_Donrec_DataStructure::translateCustomGroups();
+
   return _donrec_civix_civicrm_enable();
 }
 

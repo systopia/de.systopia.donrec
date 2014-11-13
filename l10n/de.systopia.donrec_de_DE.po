@@ -835,3 +835,11 @@ msgstr "Wählen sie die Adressart, die für den Versand der Spendenbescheinigung
 msgid "In case the first address is empty, this is the fallback address to be used insted."
 msgstr "Falls die zuerst gewählt Adresse nicht hinterlegt ist, wird die hier gewählte Adresse ersatzweise verwendet."
 
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt"
+msgstr "Zuwendungsbescheinigungen"
+
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt Item"
+msgstr "Bescheinigte Werte"
+

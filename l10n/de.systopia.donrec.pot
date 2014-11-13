@@ -866,3 +866,11 @@ msgid ""
 "In case the first address is empty, this is the fallback address to be used "
 "insted."
 msgstr ""
+
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt"
+msgstr ""
+
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt Item"
+msgstr ""

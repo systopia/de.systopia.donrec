@@ -474,4 +474,31 @@ class CRM_Donrec_DataStructure {
     $id = array_values($id['values']);
     return $id[0]['id'];
   }
+
+  /**
+   * This is a workaround for the problem that using the translated title right away makes the 
+   * table names change.
+   *
+   * FIXME: we should not be working with static table names
+   */
+  public static function translateCustomGroups() {
+    try {
+      // TRANSLATE zwb_donation_receipt title
+      $custom_group_receipt = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt'));
+      // since the API is not reliable here, we do this via SQL
+      $new_title = mysql_escape_string(ts('Donation Receipt'));
+      $custom_group_receipt_id = (int) $custom_group_receipt['id'];
+      CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_id;");
+
+      // TRANSLATE zwb_donation_receipt_item title
+      $custom_group_receipt_item = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt_item'));
+      // since the API is not reliable here, we do this via SQL
+      $new_title = mysql_escape_string(ts('Donation Receipt Item'));
+      $custom_group_receipt_item_id = (int) $custom_group_receipt_item['id'];
+      CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_item_id;");
+
+    } catch (Exception $e) {
+      error_log('de.systopia.donrec - Error translating custom groups: '.$e->getMessage());
+    }
+  }
 }
