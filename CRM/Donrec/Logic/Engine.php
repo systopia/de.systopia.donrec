@@ -159,8 +159,12 @@ class CRM_Donrec_Logic_Engine {
           }
         }
 
+        // TODO: receipt::createFromSnapshot is the same method-call for single-
+        // and bulk-receipts. Only difference is the count of line-ids...
+        // With that in mind the following code could be refactored.
         // THIS IS BULK PROCESSING
         if (!empty($bulk_line_ids)) {
+          $receipt_params['type'] = 'BULK';
           foreach($bulk_line_ids as $contact_id => $line_ids) {
             if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
               // get pdf file name from snapshot line
@@ -168,38 +172,37 @@ class CRM_Donrec_Logic_Engine {
               if ($pdf_file) {
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
-                  $receipt_params['file_id'] = $file['id'];
+                  $receipt_params['original_file'] = $file['id'];
                 }
               }
             }
-            $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($this->snapshot, $line_ids, $receipt_params);
+            $result = CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, $line_ids, $receipt_params);
             if(!$result) {
               error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
             }else{
-              unset($receipt_params['file_id']);
+              unset($receipt_params['original_file']);
             }
           }
         }
 
         // THIS IS SINGLE PROCESSING
         if (!empty($single_line_ids)) {
+          $receipt_params['type'] = 'SINGLE';
           foreach ($single_line_ids as $index => $line_id) {
             if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
               // get pdf file name from snapshot line
               $pdf_file = $this->getPDF($line_id);
               if ($pdf_file) {
-                $contact_id = 1; // TODO: get contact_id
+                $tempReceipt = $this->snapshot->getSnapshotReceipt($line_id, $is_test);
+                $contact_id =  $tempReceipt->getContactID();
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
-                  $receipt_params['file_id'] = $file['id'];
+                  $receipt_params['original_file'] = $file['id'];
                 }
-
-                // update PDF path
-                $this->setPDF($line_id, $file['path']);
               }
             }
-            CRM_Donrec_Logic_Receipt::createSingleFromSnapshot($this->snapshot, $line_id, $receipt_params);
-            unset($receipt_params['file_id']);
+            CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, array($line_id), $receipt_params);
+            unset($receipt_params['original_file']);
           }
         }
     }

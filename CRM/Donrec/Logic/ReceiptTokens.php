@@ -205,7 +205,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // add URL to view original file, if it exists
     if (!empty($values['original_file'])) {
-      $values['view_url'] = CRM_Donrec_Logic_File::getUrl($values['original_file']);
+      $values['view_url'] = CRM_Donrec_Logic_File::getPermanentURL($values['original_file'], $values['contributor']['id']);
     }
 
     // TODO: call Token hooks? Currently done by PDF generator

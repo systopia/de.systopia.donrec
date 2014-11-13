@@ -51,7 +51,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   * @param $tokens             tokens coming from SnapshotReceipt->getAllTokens
   * @return Receipt object if successfull, FALSE otherwise.
   */
-  public static function _createReceiptFromTokens($tokens, $type) {
+  public static function _createReceiptFromTokens($tokens) {
     // initialize custom field map
     self::getCustomFields();
     $fields = self::$_custom_fields;
@@ -59,7 +59,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $table = "civicrm_value_donation_receipt_$custom_group_id";
 
     // build SET-SQL
-    $sql_set = "`entity_id`=$tokens[contact_id], `$fields[type]`='$type'";
+    $sql_set = "`entity_id`=$tokens[contact_id]";
     foreach ($fields as $key => $field) {
       $value = null;
       if (0 === strpos($key, 'shipping')) {
@@ -83,40 +83,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-  * Creates a new receipt with the given snapshot line
-  *
-  * @param $snapshot           a snapshot object
-  * @param $snapshot_line_id   the ID of the snapshot line to be used for creation
-  * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-  *
-  * @return Receipt object if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
-  */
-  public static function createSingleFromSnapshot($snapshot, $snapshot_line_id, &$parameters) {
-    // get all tokens form SnapshotReceipt
-    $snapshot_receipt = $snapshot->getSnapshotReceipt(array($snapshot_line_id), FALSE);
-    $tokens = $snapshot_receipt->getAllTokens();
-
-    // check if we've got tokens
-    if (empty($tokens)) {
-      $parameters['is_error'] = "snapshot line #$snapshot_line_id does not exist";
-      return FALSE;
-    }
-
-    // create receipt
-    $result = self::_createReceiptFromTokens($tokens, 'SINGLE');
-
-    // create receipt-item
-    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID();');
-    $params = array_merge($tokens, $tokens['lines'][$snapshot_line_id]);
-    $params['issued_in'] = $lastId;
-    $params['type'] = 'SINGLE';
-    CRM_Donrec_Logic_ReceiptItem::create($params);
-
-    return new self($lastId);
-  }
-
-  /**
-   * Creates a new bulk receipt with the given snapshot lines
+   * Creates a new receipt and belonging receipt-items
    *
    * @param $snapshot           a snapshot object
    * @param $snapshot_line_ids  an array with the IDs of the snapshot lines to be used for creation
@@ -124,26 +91,28 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
-  public static function createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
+  public static function createFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
     // get all tokens form SnapshotReceipt
     $snapshot_receipt = $snapshot->getSnapshotReceipt($snapshot_line_ids, FALSE);
     $tokens = $snapshot_receipt->getAllTokens();
 
     // error if no tokens found
     if (empty($tokens)) {
-      $parameters['is_error'] = "snapshot lines do not exist";
+      $parameters['is_error'] = "snapshot-line-ids does not exist.";
       return FALSE;
     }
 
+    // update tokens from parameters
+    $tokens = array_merge($tokens, $parameters);
+
     // create receipt
-    $result = self::_createReceiptFromTokens($tokens, 'BULK');
+    $result = self::_createReceiptFromTokens($tokens);
 
     // create receipt-items
     $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
     foreach ($tokens['lines'] as $lid => $line_tokens) {
       $params = array_merge($tokens, $line_tokens);
       $params['issued_in'] = $lastId;
-      $params['type'] = 'BULK';
       CRM_Donrec_Logic_ReceiptItem::create($params);
     }
 

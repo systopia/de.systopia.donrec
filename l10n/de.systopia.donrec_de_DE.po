@@ -19,7 +19,7 @@ msgstr "Von:"
 msgid "Continue"
 msgstr "Weiter"
 
-#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Page/Staging.php
 #: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Warning"
 msgstr "Warnung"
@@ -61,20 +61,9 @@ msgid "Packet size can only contain positive integers"
 msgstr "Paketgröße muss ein positiver Ganzzahlwert sein"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Settings"
 msgstr "Einstellungen"
-
-#: CRM/Donrec/Exporters/Dummy.php
-msgid "Dummy Exporter"
-msgstr "Test Exporter"
-
-#: CRM/Donrec/Exporters/PDF.php
-msgid "Actually export individual PDFs"
-msgstr ""
-
-#: CRM/Donrec/Exporters/SecondDummy.php
-msgid "Dummy Exporter #2"
-msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php
 msgid "There are no contributions for this contact that can be used to issue donation receipts."
@@ -102,29 +91,29 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: CRM/Donrec/Logic/Template.php
 msgid "Default template"
-msgstr "Stadardvorlage"
+msgstr "Standardvorlage"
 
 #: CRM/Donrec/Page/Runner.php
 msgid "No snapshot ID given. Please call this page from a proper selection."
 msgstr "Keine Snapshot-ID angegeben. Bitte rufen Sie diese Seite nur aus der entsprechenden Selektion heraus auf."
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "No snapshot id has been provided!"
 msgstr "Keine Snapshot-ID angegeben!"
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Invalid snapshot id!"
 msgstr "Ungültige Snapshot-ID!"
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "The older snapshot has been deleted. You can now proceed."
 msgstr "Der zuvor angelegte Snapshot wurde gelöscht, Sie können nun weiter machen."
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "The previously created snapshot has been deleted."
 msgstr "Der zuvor erstellte Snapshot wurde gelöscht."
 
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Missing exporter!"
 msgstr "Kein Exporter ausgewählt!"
 
@@ -144,11 +133,11 @@ msgstr "Nur Zuwendungsbescheinigungen im Status \"Original\" können kopiert wer
 msgid "No 'sid' parameter given."
 msgstr "Fehlender Parameter: 'sid'."
 
-#: donrec.php templates/CRM/Donrec/Page/Task/Stats.tpl
+#: donrec.php templates/CRM/Donrec/Page/Staging.tpl
 msgid "Issue donation receipt(s)"
 msgstr "Zuwendungsbescheinigungen erstellen"
 
-#: donrec.php
+#: donrec.php templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Donation receipts"
 msgstr "Zuwendungsbescheinigungen"
 
@@ -184,11 +173,6 @@ msgstr "Wasserzeichen Kopie"
 msgid "Store original *.pdf files"
 msgstr "PDF Originale speichern"
 
-#: templates/CRM/Donrec/Form/Task/Create.tpl
-#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
-msgid "Contribution horizon"
-msgstr ""
-
 #: templates/CRM/Donrec/Page/Runner.tpl
 msgid "creation in progress, please wait..."
 msgstr "Erstellung läuft, bitte warten..."
@@ -197,8 +181,7 @@ msgstr "Erstellung läuft, bitte warten..."
 msgid "PLEASE DO NOT CLOSE THIS PAGE!"
 msgstr "DIESE SEITE BITTE NICHT SCHLIESSEN!"
 
-#: templates/CRM/Donrec/Page/Runner.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
 msgid "Back"
 msgstr "Zurück"
 
@@ -218,7 +201,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
 msgid "Download"
 msgstr ""
 
@@ -270,7 +253,8 @@ msgstr "Die Zuwendungsbescheinigung wurde zurückgesetzt"
 msgid "Success"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: CRM/Donrec/Form/Task/Rebook.php
 msgid "Error"
 msgstr "Fehler"
 
@@ -290,35 +274,35 @@ msgstr "Die Zuwendungsbescheinigung wurde gelöscht"
 msgid "Are you sure you want to delete this donation receipt?"
 msgstr "Sind Sie sicher dass Sie diese Zuwendungsbescheinigung löschen möchten?"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Sorry, but at least one of the selected contributions is already being processed for a donation receipt:"
 msgstr "Mindestens eine der selektierten Zuwendungen wird gerade von einem anderen Benutzer bestätigt:"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "The conflicting other donation receipt process was created by"
 msgstr "Der konkurrierende Zuwendungsbescheinigungslauf wurde erzeugt von Benutzer"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "It will automatically expire on"
 msgstr "Er wird automatisch verfallen am"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Delete other process and restart"
 msgstr "Den alten Lauf löschen und neu beginnen"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Donation receipt type"
 msgstr "Zuwendungsbescheinigungsart"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Result formats"
 msgstr "Ergebnisformat"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Test run"
 msgstr "Testlauf"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Abort"
 msgstr ""
 
@@ -340,7 +324,7 @@ msgstr "Einzelne PDFs"
 
 #: CRM/Donrec/Form/Task/Create.php
 msgid "This contact has no selectable contributions in the selected time period."
-msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in die gewählten Zeitspanne."
+msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in der gewählten Zeitspanne."
 
 #: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "There are no selectable contributions for these contacts in the selected time period."
@@ -376,7 +360,7 @@ msgstr "Es wurde ein unterbrochener Lauf gefunden. Wollen Sie den fortsetzen?"
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Otherwise the selection will be deleted!"
-msgstr ""
+msgstr "Andernfalls wird der Lauf gelöscht!"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
@@ -387,27 +371,27 @@ msgstr "<b>Achtung!</b> Es wurden bereits einige Zuwendungsbescheinigungen erste
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Statistics"
 msgstr "Übersicht"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "contact count"
 msgstr "Anzahl Kontakte"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "contribution count"
 msgstr "Anzahl Zuwendungen"
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "total amount"
 msgstr "Gesamtbetrag"
@@ -428,15 +412,15 @@ msgid "View"
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
-#: CRM/Donrec/Page/Task/Stats.php
+#: CRM/Donrec/Page/Staging.php
 msgid "Issue Donation Receipts"
 msgstr "Zuwendungsbescheinigungen erstellen"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "single receipts"
 msgstr "Einzelbescheinigungen"
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "bulk receipts"
 msgstr "Sammelbescheinigungen"
 
@@ -476,7 +460,7 @@ msgstr "letzte zwei Jahre"
 msgid "unlimited"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Task/Stats.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
 msgid "selected contacts"
 msgstr "Ausgewählte Kontakte"
 
@@ -525,7 +509,6 @@ msgid "Contributions"
 msgstr "Zuwendungen"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
-#, fuzzy
 msgid "Total Amount"
 msgstr "Gesamtbetrag"
 
@@ -553,7 +536,8 @@ msgstr "Umbuchung nicht möglich!"
 msgid "CiviCRM ID"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php rebook.php
+#: CRM/Donrec/Form/Task/RebookTask.php CRM/Donrec/Form/Task/Rebook.php
+#: rebook.php donrec.php
 msgid "Rebook"
 msgstr "Umbuchen"
 
@@ -601,7 +585,7 @@ msgstr "Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
 msgid "Nothing rebooked!"
 msgstr "Kein Umbuchung vorgenommen!"
 
-#: rebook.php
+#: rebook.php donrec.php
 msgid "Rebook to contact"
 msgstr "Umbuchen zu anderem Kontakt"
 
@@ -640,3 +624,214 @@ msgstr "Es kann keine neue Mandatsreferenz erstellt werden, die alte ist schon z
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference"
 msgstr "Es konnte keine neue Mandatsreferenz gefunden werden."
+
+#: CRM/Donrec/Exporters/CSV.php CRM/Donrec/Exporters/GroupedPDF.php
+#: CRM/Donrec/Exporters/PDF.php
+msgid "donation_receipts"
+msgstr "Zuwendungsbescheinigungen"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfinfo</code>"
+msgstr "Externes Programm: Pfad zu <code>pdfinfo</code>"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "primary address"
+msgstr "Hauptadresse"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Legal Address-Type:"
+msgstr "Adresstyp Spender:"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Postal Address-Type:"
+msgstr "Adresstyp Versand:"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Fallback:"
+msgstr "Ersatz:"
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid "CSV File"
+msgstr "CSV Datei"
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid ".csv"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "Individual PDFs sorted by page count"
+msgstr "Einzelne PDFs, sortiert nach Seitenanzahl"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid ".zip"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "%d-page(s)%s"
+msgstr "%d-seitig%s"
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "donation_receipts.zip"
+msgstr "Zuwendungsbescheinigungen.zip"
+
+#: CRM/Donrec/Logic/Template.php
+msgid "donationreceipt-"
+msgstr "zwb-"
+
+#: donrec.php
+msgid "Receipted"
+msgstr "Bescheinigt"
+
+#: donrec.php
+msgid "No"
+msgstr ""
+
+#: donrec.php
+msgid "Yes"
+msgstr ""
+
+#: donrec.php
+msgid "DonationReceipts"
+msgstr "Zuwendungsbescheinigungen"
+
+#: donrec.php
+msgid "view and create copies of receipts"
+msgstr "Zuwendungesbescheinigungen erstellen und kopieren"
+
+#: donrec.php
+msgid "create and withdraw receipts"
+msgstr "Bescheinigungen erstellen und zurücksetzen"
+
+#: donrec.php
+msgid "delete receipts"
+msgstr "Bescheinigungen löschen"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Contribution Types"
+msgstr "Zuwendungsarten"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Text"
+msgstr "Wasserzeichen"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "PDF"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Store original PDF"
+msgstr "PDF Originale speichern"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "The <code>pdfinfo</code> Tool"
+msgstr "Das <code>pdfinfo</code> Programm"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Generator Packet Size"
+msgstr "Paketgröße"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Address Types"
+msgstr "Adressarten"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Legal Address"
+msgstr "Spenderadresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Legal Address Fallback"
+msgstr "Fallback Spenderadresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Postal Address"
+msgstr "Versandadresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Postal Address Fallback"
+msgstr "Fallback Versandadresse"
+
+#: templates/CRM/Donrec/Form/Task/Create.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
+msgid "Filter contributions by receive date"
+msgstr "Zuwendungen nach Eingangsdatum auswählen"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Unfinished run detected"
+msgstr "Nicht abgeschlossener Lauf gefunden"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise it <b>will be deleted</b>!"
+msgstr "Andernfalls wird er <b>gelöscht</b>!"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "An interrupted run has been detected. Do you want to continue with it?"
+msgstr "Es wurde ein unterbrochener Lauf gefunden. Möchten Sie ihn fortsetzen?"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise the selection <b>will be deleted</b>!"
+msgstr "Andernfalls wird der Lauf <b>gelöscht</b>!"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn copy"
+msgstr "zurückgesetzte Kopie"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 1"
+msgstr "Adresszusatz 1"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 2"
+msgstr "Adresszusatz 2"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Sent To"
+msgstr "Versandt an"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "DonationReceipt"
+msgstr "ZWB"
+
+#: templates/CRM/Donrec/Page/Tempfile.tpl
+msgid "Temporary file dowload failed."
+msgstr "Download der temporären Datei fehlgeschlagen."
+
+#: templates/Export/default_template.tpl
+msgid "until"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs."
+msgstr "Hier können Sie die Zuwendungsarten auswählen, für die Bescheinigungen erstellt werden sollen.<br/>Die Standardeinstellung ist, dass alle Zuwendungsarten die als absetzbar markiert sind ausgewählt sind, aber Sie können auch eine individuelle Auswahl treffen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons."
+msgstr "Der hier eingestellte Text wird bei Entwürfen und ungültigen Bescheinigungen als Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus rechtlichen Gründen kein leerer String sein."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons."
+msgstr "Der hier eingestellte Text wird bei Kopien von Zuwendungsbescheinigungen als Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus rechtlichen Gründen kein leerer String sein."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team."
+msgstr "Wenn Sie diese Option aktivieren, werden die erzeugten Original-PDFs mit dem Datensatz gespeichert. Somit haben Sie immer Zugang zu der Original-Datei, allerdings kann dieser Zugang natürlich auch genutzt werden, um beliebig viele Kopien dieser Datei anzufertigen. Dies ist eine legale Grauzone, beraten Sie sich am besten vor der Aktivierung dieser Option mit Ihrer Rechtsabteilung.<br/>Wenn Sie die Option nicht aktivieren, wird das System zur Ansicht stets ein neues PDF generieren. Solange Sie das Template (Nachrichtenvorlage) nicht ändern, sollte das Resultat identisch sein, abgesehen davon dass es als ungültig markiert ist."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run."
+msgstr "Bestimmt die Paketgröße während eines Erstellungslaufs.<br/>Wenn eine große Anzahl von Zuwendungsbescheinigungen erstellt werden soll, wird diese Aufgabe aus Sicherheitsgründen für die Abarbeitung in kleinere Pakete unterteilt.<br/>Falls Sie Probleme mit Timeout-Fehlern haben, versuchen Sie diesen Wert zu verringern. Wenn Sie etwas mehr Performance sehen wollen, können Sie vorsichtig versuchen, diesen Wert zu erhöhen - aber lassen Sie noch etwas Sicherheitsspielraum.<br/>In jedem Fall sollten Sie jede Veränderung dieses Wertes mit einem ausgiebigen Testlauf testen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet."
+msgstr "Das <code>pdfinfo</code> Programm wird für den seitensortierenden PDF-Exporter benötigt.<br/>Bitten Sie Ihren Administrator das Programm auf dem Server zu installieren und Ihnen den korrekten Wert für diese Einstellung zu sagen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "Select the address type where the legal address (wrt IRS) of the donor can be found."
+msgstr "Wählen sie die Adressart, wo die offizielle Adresse (bzgl. des Finanzamts) des Spenders hinterlegt ist."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "Select the postal address type where the donation receipt should be mailed to."
+msgstr "Wählen sie die Adressart, die für den Versand der Spendenbescheinigung verwendet werden soll."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "In case the first address is empty, this is the fallback address to be used insted."
+msgstr "Falls die zuerst gewählt Adresse nicht hinterlegt ist, wird die hier gewählte Adresse ersatzweise verwendet."
+

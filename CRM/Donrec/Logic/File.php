@@ -49,7 +49,7 @@ class CRM_Donrec_Logic_File {
 
     // move file to a permanent folder
     $newPath = $config->customFileUploadDir . basename($path);
-    rename($path, $newPath);
+    copy($path, $newPath);
 
     // find mime type
     if (empty($mimetype)) {
@@ -164,10 +164,8 @@ class CRM_Donrec_Logic_File {
    * @param file-id, entity-id
    * @return civicrm-file-url
    */
-  public static function getUrl($id, $eid=1) {
-    // TODO: seems to work only with $eid=1. Why?
-    $url = CRM_Utils_System::url("civicrm/file", "reset=1&id=$id&eid=$eid");
-    return $url;
+  public static function getPermanentURL($file_id, $contact_id) {
+    return CRM_Utils_System::url("civicrm/file", "reset=1&id=$file_id&eid=$contact_id");
   }
 
   /**

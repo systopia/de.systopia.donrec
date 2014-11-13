@@ -12,6 +12,7 @@
 require_once 'donrec.civix.php';
 require_once 'CRM/Donrec/DataStructure.php';
 require_once 'CRM/Donrec/Logic/Template.php';
+require_once 'CRM/Donrec/Logic/Settings.php';
 
 /**
  * Implementation of hook_civicrm_config

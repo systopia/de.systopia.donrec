@@ -105,9 +105,10 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $preferredFileName = ts("donation_receipts.zip");
-    $archiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-    $fileURL = sys_get_temp_dir() . '/' . $archiveFileName;
+    $preferredFileName = ts("donation_receipts");
+    $preferredSuffix = ts('.zip');
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredSuffix);
+    $fileURL = $archiveFileName;
     $outerArchive = new ZipArchive;
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
@@ -131,9 +132,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     $pageCountArrKeys = array_keys($pageCountArr);
     foreach($pageCountArrKeys as $groupId => $value) {
       $tmp = new ZipArchive;
-      $pcPreferredFileName = sprintf(ts('%d-page(s).zip'), $value);
-      $pcArchiveFileName = CRM_Utils_DonrecHelper::makeFileName($preferredFileName);
-      $pcFileURL = sys_get_temp_dir() . '/' . $pcArchiveFileName;
+      $pcPreferredFileName = sprintf(ts('%d-page(s)%s'), $value, $preferredSuffix);
+      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($pcPreferredFileName);
+      $pcFileURL = $pcArchiveFileName;
 
       if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
         $zipPool[$value] = array('page_count' => $value, 'handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
@@ -148,7 +149,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach ($entry as $item) {
         if($item[0] && $item[2]) { // if page count and file name exists
           $opResult = $zipPool[$item[0]]['handle']->addFile($item[2], basename($item[2])) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]['page_count']}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
     }
@@ -165,8 +166,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach($zipPool as $zip) {
         $filename = $zip['file'];
         if ($filename) {
-          $toRemove[] = sys_get_temp_dir() . '/' . $filename;
-          $opResult = $outerArchive->addFile(sys_get_temp_dir() . '/' . $filename, $zip['pref_name']) ;
+          $toRemove[] = $filename;
+          $opResult = $outerArchive->addFile($filename, $zip['pref_name']) ;
           CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$filename}'>{$zip['page_count']}-page ZIP</span> to <span title='{$archiveFileName}'>final ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
         }
       }
@@ -178,18 +179,16 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       return $reply;
     }
 
-    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName);
+    $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName . $preferredSuffix);
     if (!empty($file)) {
-      $reply['download_name'] = $preferredFileName;
+      $reply['download_name'] = $preferredFileName . $preferredSuffix;
       $reply['download_url'] = $file;
     }
 
     // remove loose pdf files or store them
-    if(!CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing loose files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-      foreach($toRemove as $file) {
-        unlink($file);
-      }
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing temporary files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+    foreach($toRemove as $file) {
+      unlink($file);
     }
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);

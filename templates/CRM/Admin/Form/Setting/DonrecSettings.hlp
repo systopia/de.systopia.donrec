@@ -8,66 +8,37 @@
 +--------------------------------------------------------*}
 
 {htxt id='id-contribution-types'}
-    <p>{ts}
-    You can select the financial types that are eligable for donation receipts.
-    <br/>
-    The default is, that all financial types marked as tax deductible are included,
-    but you can adjust this selection to your organisation's needs.
-    {/ts}</p>
+    <p>{ts}You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs.{/ts}</p>
 {/htxt}
 
 {htxt id='id-draft-text'}
-    <p>{ts}
-    This watermark text is included in all invalid or test donation receipts.
-    <br/>
-    It cannot be left empty for legal reasons.
-    {/ts}</p>
+    <p>{ts}This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons.{/ts}</p>
 {/htxt}
 
 {htxt id='id-copy-text'}
-    <p>{ts}
-    This watermark text is included in all donation receipt copies.
-    <br/>
-    It cannot be left empty for legal reasons.
-    {/ts}</p>
+    <p>{ts}This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons.{/ts}</p>
 {/htxt}
 
 {htxt id='id-store-pdf'}
-    <p>{ts}
-    When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.
-    This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.
-    On the other hand, activating this option gives you free access to the original PDF file,
-    which you can then print out without any further restrictions. This might cause legal issues.
-    <br/>
-    If you don't activate this option, a new PDF will be generated for you.
-    As long as you don't change the template, this should be the same as the original, except that it's marked invalid.
-    <br/>
-    Discuss the best setting here with your legal team.
-    {/ts}</p>
+    <p>{ts}When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team.{/ts}</p>
 {/htxt}
 
 {htxt id='id-packet-size'}
-    <p>{ts}
-    Defines the runner packed size.
-    <br/>
-    When creating large amounts of donation receipts, the runner will not process all of them at once.
-    It will break the lot down into little packets and process them individually.
-    <br/>
-    If you're having trouble with timeouts, try decreasing this value.
-    If you want more performance, try increasing it carefully - but don't tweak it to the limit.
-    <br/>
-    You should always test your settings in a test run.
-    {/ts}</p>
+    <p>{ts}Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run.{/ts}</p>
 {/htxt}
 
 {htxt id='id-pdfinfo-text'}
-    <p>{ts}
-    The <code>pdfinfo</code> tool is need for the grouped PDF exporter.
-    <br/>
-    Ask your system administrator to set the correct setting, and install the tool if it's not there yet.
-    {/ts}</p>
+    <p>{ts}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
 
-{htxt id='id-address_type'}
-    <p>{ts}TODO{/ts}</p>
+{htxt id='id-address-legal'}
+    <p>{ts}Select the address type where the legal address (wrt IRS) of the donor can be found.{/ts}</p>
+{/htxt}
+
+{htxt id='id-address-shipping'}
+    <p>{ts}Select the postal address type where the donation receipt should be mailed to.{/ts}</p>
+{/htxt}
+
+{htxt id='id-address-fallback'}
+    <p>{ts}In case the first address is empty, this is the fallback address to be used insted.{/ts}</p>
 {/htxt}

@@ -8,19 +8,32 @@
 +--------------------------------------------------------*}
 
 {if $statistic}
-  <table id="statistic" style="max-width: 50%;">
-    <caption>{ts}Statistics{/ts}</caption>
-    {if $statistic.requested_contacts}
-      <tr><td class="statskey">{ts}selected contacts{/ts}</td><td class="statsvalue">{$statistic.requested_contacts}</td></tr>
-    {/if}
-    <tr><td class="statskey">{ts}contact count{/ts}</td><td class="statsvalue">{$statistic.contact_count}</td></tr>
-    <tr><td class="statskey">{ts}contribution count{/ts}</td><td class="statsvalue">{$statistic.contribution_count}</td></tr>
-    <tr><td class="statskey">{ts}total amount{/ts}</td><td class="statsvalue">{$statistic.total_amount}</td></tr>
-  </table>
-{/if}
+  <br/>
+  <div style="max-width:320px;">
+        <h2>{ts}Statistics{/ts}</h2>
 
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}selected contacts{/ts}</div>
+          <div class="crm-content">{$statistic.requested_contacts}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}contact count{/ts}</div>
+          <div class="crm-content">{$statistic.contact_count}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}contribution count{/ts}</div>
+          <div class="crm-content">{$statistic.contribution_count}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}total amount{/ts}</div>
+          <div class="crm-content">{$statistic.total_amount|crmMoney:EUR}</div>
+        </div>
+  </div>
+{/if}
+<br/>
 <form action="{$formAction}" method="post">
 {if $error}
+<br/>
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
   <p style="color: #ffffff;">{ts}Error{/ts}: {$error}</p>
 </div>
@@ -49,12 +62,9 @@
   {/if}
 {else}
 <div class="form-item">
+<h2>{ts}Settings{/ts}</h2>
 <!-- result format radioboxes-->
-<table>
-  <tr>
-    <th style="width: 250px"></th>
-    <th></th>
-  </tr>
+<table style="max-width:960px;">
   <tr>
     <td class="label">{ts}Donation receipt type{/ts}:</td>
     <td>
