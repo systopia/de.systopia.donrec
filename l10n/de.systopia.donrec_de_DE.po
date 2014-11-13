@@ -304,7 +304,7 @@ msgstr "Testlauf"
 
 #: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Abort"
-msgstr ""
+msgstr "Abbrechen"
 
 #: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
 msgid "current year"
