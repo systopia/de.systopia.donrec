@@ -649,7 +649,7 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "External Tool: path to <code>pdfinfo</code>"
-msgstr ""
+msgstr "Externes Programm: Pfad zu <code>pdfinfo</code>"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "primary address"
@@ -657,19 +657,19 @@ msgstr "Hauptadresse"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Legal Address-Type:"
-msgstr ""
+msgstr "Adresstyp Spender:"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Postal Address-Type:"
-msgstr ""
+msgstr "Adresstyp Versand:"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Fallback:"
-msgstr ""
+msgstr "Ersatz:"
 
 #: CRM/Donrec/Exporters/CSV.php
 msgid "CSV File"
-msgstr ""
+msgstr "CSV Datei"
 
 #: CRM/Donrec/Exporters/CSV.php
 msgid ".csv"
@@ -685,7 +685,7 @@ msgstr ""
 
 #: CRM/Donrec/Exporters/GroupedPDF.php
 msgid "%d-page(s)%s"
-msgstr ""
+msgstr "%d-seitig%s"
 
 #: CRM/Donrec/Exporters/PDF.php
 msgid "donation_receipts.zip"
@@ -697,7 +697,7 @@ msgstr "zwb-"
 
 #: donrec.php
 msgid "Receipted"
-msgstr ""
+msgstr "Bescheinigt"
 
 #: donrec.php
 msgid "No"
@@ -713,7 +713,7 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: donrec.php
 msgid "view and create copies of receipts"
-msgstr ""
+msgstr "Zuwendungesbescheinigungen erstellen und kopieren"
 
 #: donrec.php
 msgid "create and withdraw receipts"
