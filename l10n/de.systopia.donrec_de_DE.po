@@ -847,3 +847,15 @@ msgstr "Bescheinigte Werte"
 msgid "The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt."
 msgstr "Zuwendung [%1] kann nicht umgebucht werden, da für sie eine Zuwendungsbescheinigung vorliegt."
 
+#: donrec.php
+msgid "The column '%s' of this contribution [%d] must not be changed because it has a receipt or is going to be receipted!"
+msgstr "Der Wert '%s' der Zuwendung [%d] darf nicht verändert werden, da für diese entweder bereits eine Zuwendungsbestätigung besteht, oder gerade erstellt wird."
+
+#: donrec.php
+msgid "This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"
+msgstr "Zuwendung [%1] kann nicht gelöscht werden, da für sie eine Zuwendungsbescheinigung vorliegt, or gerade erstellt wird."
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Use remaining snapshot"
+msgstr "Bestehenden Lauf weiterverwenden"
+
