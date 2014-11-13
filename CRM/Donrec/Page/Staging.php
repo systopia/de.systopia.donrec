@@ -39,7 +39,6 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
     // called when the 'abort' button was selected
     if(!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
       $by_admin = !empty($_REQUEST['donrec_abort_by_admin']);
-      $return_id = $_REQUEST['return_to'];
 
       // we need a (valid) snapshot id here
       if (empty($id)) {
@@ -54,6 +53,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
           // delete the snapshot and redirect to search form
           $snapshot->delete();
           if ($by_admin) {
+            $return_id = $_REQUEST['return_to'];
             CRM_Core_Session::setStatus(ts('The older snapshot has been deleted. You can now proceed.'), ts('Warning'), 'warning');
             CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount"));
           }else{
