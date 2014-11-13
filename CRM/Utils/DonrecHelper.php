@@ -163,10 +163,10 @@ class CRM_Utils_DonrecHelper
       if ($date_object) {
         if($clamp < 0) {
           // set to [date format] 00:00:00
-          $date = mktime(0, 0, 0, $date_object->format('n'), $date_object->format('j'));
+          $date = mktime(0, 0, 0, $date_object->format('n'), $date_object->format('j'), $date_object->format('Y'));
         }else if($clamp > 0) {
           // set to [date format] 23:59:59
-          $date = mktime(23, 59, 59, $date_object->format('n'), $date_object->format('j'));
+          $date = mktime(23, 59, 59, $date_object->format('n'), $date_object->format('j'), $date_object->format('Y'));
         }
       }
     }
