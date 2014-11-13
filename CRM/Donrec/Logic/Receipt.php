@@ -313,7 +313,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     return CRM_Core_DAO::singleValueQuery($query);
   }
 
-  //TODO: for what do we need this method?
   /**
    * Checks if there is a VALID donation receipt for the given contribution
    *
@@ -322,37 +321,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if there is a VALID donation receipt, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
-    self::getCustomFields();
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-
-    $query = "SELECT count(receipt.`id`)
-              FROM `civicrm_value_donation_receipt_%d` as receipt
-              INNER JOIN `civicrm_value_donation_receipt_item_%d` as item
-              ON item.`%s` = receipt.`id`
-              AND SHA1(CONCAT(item.`entity_id`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`, item.`%s`)) = item.`%s`
-              AND item.`%s` <> 'INVALID'
-              WHERE item.`entity_id` = %d
-              AND receipt.`%s` <> 'INVALID'";
-
-    $query = sprintf($query,
-                    self::$_custom_group_id,
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_group_id,
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['type'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_in'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_by'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['total_amount'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['non_deductible_amount'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['currency'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['issued_on'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['receive_date'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['contribution_hash'],
-                    CRM_Donrec_Logic_ReceiptItem::$_custom_fields['status'],
-                    $contribution_id,
-                    self::$_custom_fields['status']
-                    );
-    return CRM_Core_DAO::singleValueQuery($query);
+    return CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
   }
 
   /**
