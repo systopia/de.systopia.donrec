@@ -32,7 +32,7 @@
   </table>
 {/if}
 
-<input class="form-submit" type="submit" name='use_remaining_snapshot' value='Use remaining snapshot'/>
+<input class="form-submit" type="submit" name='use_remaining_snapshot' value='{ts}Use remaining snapshot{/ts}'/>
 
 </div>
 {/if}

@@ -354,11 +354,13 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
                 continue;
               }
             }
-            CRM_Utils_DonrecHelper::exitWithMessage("The column $col of this contribution ($id) must not be changed because it has a receipt or is going to be receipted!");
+            $message = sprintf(ts("The column '%s' of this contribution [%d] must not be changed because it has a receipt or is going to be receipted!"), $col, $id);
+            CRM_Utils_DonrecHelper::exitWithMessage($message);
           }
         }
       } elseif ($op == 'delete') {
-        CRM_Utils_DonrecHelper::exitWithMessage("This contribution ($id) must not be deleted because it has a receipt or is going to be receipted!");
+        $message = sprintf(ts("This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"), $id);
+        CRM_Utils_DonrecHelper::exitWithMessage($message);
       }
     }
   }

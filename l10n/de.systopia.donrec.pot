@@ -880,3 +880,19 @@ msgid ""
 "The contribution with ID %1 cannot be rebooked, because it has a valid "
 "contribution receipt."
 msgstr ""
+
+#: donrec.php
+msgid ""
+"The column '%s' of this contribution [%d] must not be changed because it has "
+"a receipt or is going to be receipted!"
+msgstr ""
+
+#: donrec.php
+msgid ""
+"This contribution [%d] must not be deleted because it has a receipt or is "
+"going to be receipted!"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Use remaining snapshot"
+msgstr ""
