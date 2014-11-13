@@ -193,7 +193,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
           $contribution_id = $row['contribution_id'];
           $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
           $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
-        }        
+        }
       }
     }
   }
@@ -287,14 +287,24 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
       // check if forbidden columns are going to be changed
       foreach ($forbidden as $col) {
         if ($form->_values[$col] != $fields[$col]) {
-          // we need a special check for dates
 
+          // we need a special check for dates
           if (strpos($col, 'date')) {
             // this approach does not considers seconds!
             // (some input-formats does not allow the input of seconds at all)
             $new_date = date('d/m/Y H:i', strtotime($fields['receive_date'] . ' ' . $fields['receive_date_time']));
             $old_date = date('d/m/Y H:i', strtotime($form->_values['receive_date']));
             if ($new_date == $old_date) {
+              continue;
+            }
+          }
+
+          // and another one for amounts
+          if (strpos($col, 'amount')) {
+            $replace_symbols = array('.');
+            $new_amount = str_replace($replace_symbols, ',', $form->_values[$col]);
+            $old_amount = $fields[$col];
+            if ($new_amount == $old_amount) {
               continue;
             }
           }
