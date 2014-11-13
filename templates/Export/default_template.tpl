@@ -127,7 +127,9 @@ h3 {
 
 .signature {
   position: absolute;
-  top: 725px;
+  {/literal}
+  {if !$items}top: 725px;{else}top: 750px;{/if}
+  {literal}
 }
 
 .absenderblock_rechts {
@@ -220,7 +222,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
 
 <table class='merged'>
   <tr>
-    <th>{if $items}Gesamtbetrag{else}Betrag{/if} der Zuwendung - in Ziffern -</th>
+    <th>{if $items}Gesamtbetrag{else}Betrag{/if} der Zuwendung{if $items}<br/>{/if} - in Ziffern -</th>
     <th>- in Buchstaben -</th>
     <th>{if $items}Zeitraum der Sammelbestätigung{else}Tag der Zuwendung{/if}:</th>
   </tr>
