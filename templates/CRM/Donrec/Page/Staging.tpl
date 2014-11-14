@@ -7,6 +7,17 @@
 | TODO: License                                          |
 +--------------------------------------------------------*}
 
+<div class="messages status no-popup">
+  <div class="icon inform-icon"></div>
+  <p>
+    {ts}A number of contributions without (valid) receipt have been found for the selected time span. These will be marked as receipted once you hit the "Issue donation receipt(s)" button below.{/ts}
+    <br/>
+    {ts}You can choose from a variety of result formats, depending on your needs. You can also choose "Don't generate files" if you only want to mark them as receipted.{/ts}
+    <br/>
+    {ts}The "Test run" button will do all the same things except no contributions will be marked as receipted. We strongly recommend testing the creation of any larger batch of donation receipts.{/ts}
+  </p>
+</div>
+
 {if $statistic}
   <br/>
   <div style="max-width:320px;">

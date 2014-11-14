@@ -900,3 +900,48 @@ msgstr ""
 #: templates/CRM/Donrec/Page/Runner.tpl
 msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
 msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "using pdfinfo %s"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo %s is not supported"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "unknown pdfinfo version"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo is not executable. check permissions"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo not found"
+msgstr ""
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo path is not set"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid ""
+"A number of contributions without (valid) receipt have been found for the "
+"selected time span. These will be marked as receipted once you hit the "
+"\"Issue donation receipt(s)\" button below."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid ""
+"You can choose from a variety of result formats, depending on your needs. "
+"You can also choose \"Don't generate files\" if you only want to mark them "
+"as receipted."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid ""
+"The \"Test run\" button will do all the same things except no contributions "
+"will be marked as receipted. We strongly recommend testing the creation of "
+"any larger batch of donation receipts."
+msgstr ""

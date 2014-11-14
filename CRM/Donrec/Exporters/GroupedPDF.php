@@ -54,26 +54,26 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
           $pdfinfo_version = $matches[1];
           if(!empty($matches) && count($matches) == 2) {
             if (version_compare($pdfinfo_version, '0.24.5') >= 0) {
-              $result['message'] = "using pdfinfo $pdfinfo_version";
+              $result['message'] = sprintf(ts("using pdfinfo %s"), $pdfinfo_version);
             }else{
               $result['is_error'] = TRUE;
-              $result['message'] = "pdfinfo $pdfinfo_version is not supported";
+              $result['message'] = sprintf(ts("pdfinfo %s is not supported"), $pdfinfo_version);
             }
           }else{
             $result['is_error'] = TRUE;
-            $result['message'] = "found pdfinfo but could not retrieve version";
+            $result['message'] = ts("unknown pdfinfo version");
           }
         }else{
           $result['is_error'] = TRUE;
           if($ret_status == 126) { //  126 - Permission problem or command is not an executable
-            $result['message'] = "pdfinfo is not executable. check permissions";
+            $result['message'] = ts("pdfinfo is not executable. check permissions");
           }else{
-            $result['message'] = "pdfinfo ping failed";
+            $result['message'] = ts("pdfinfo not found");
           }
         }
     }else{
         $result['is_error'] = TRUE;
-        $result['message'] = 'pdfinfo path is not set';
+        $result['message'] = ts("pdfinfo path is not set");
     }
     return $result;
   }

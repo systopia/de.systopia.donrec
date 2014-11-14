@@ -863,3 +863,39 @@ msgstr "Bestehenden Lauf weiterverwenden"
 msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
 msgstr "DIESE SEITE BITTE NICHT SCHLIESSEN ODER NEU LADEN!"
 
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "using pdfinfo %s"
+msgstr "pdfinfo %s"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo %s is not supported"
+msgstr "pdfinfo %s wird nicht unterstützt"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "unknown pdfinfo version"
+msgstr "unbekannte pdfinfo version"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo is not executable. check permissions"
+msgstr "pdfinfo kann nicht ausgeführt werden, Berechtigungen überprüfen"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo not found"
+msgstr "pdfinfo nicht gefunden"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo path is not set"
+msgstr "pdfinfo Pfad nicht gesetzt"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "A number of contributions without (valid) receipt have been found for the selected time span. These will be marked as receipted once you hit the \"Issue donation receipt(s)\" button below."
+msgstr "Für den gewählten Zeitraum wurden nicht bescheinigte Zuwendungen gefunden. Diese werden als bescheinigt markiert, wenn Sie auf \"Zuwendungsbescheinigungen erstellen\" klicken."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "You can choose from a variety of result formats, depending on your needs. You can also choose \"Don't generate files\" if you only want to mark them as receipted."
+msgstr "Sie können zwischen verschiedenen Ausgabeformaten für die Bescheinigungen wählen. Wählen Sie \"Keine Dateien erzeugen\", wenn Sie die Zuwendungen nur als bescheinigt markieren möchten."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "The \"Test run\" button will do all the same things except no contributions will be marked as receipted. We strongly recommend testing the creation of any larger batch of donation receipts."
+msgstr "Der \"Testlauf\" Button wird die gleichen Aktionen ausführen wird das gleiche tun, außer dass keine der Zuwendungen als bescheinigt markiert werden. Wir empfehlen einen Testlauf für jeden größeren Erstellungslauf."
+
