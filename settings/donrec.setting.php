@@ -31,7 +31,7 @@ return array(
     'name' => 'packet_size',
     'type' => 'Integer',
     'html_type' => 'Select',
-    'default' => 10,
+    'default' => 5,
     'add' => '4.3',
     'is_domain' => 1,
     'is_contact' => 0,
