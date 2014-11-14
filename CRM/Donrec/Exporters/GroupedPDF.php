@@ -53,7 +53,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         if (!empty($output) && preg_match('/pdfinfo version ([0-9]+\.[0-9]+\.[0-9]+)/', $output[0], $matches)) {
           $pdfinfo_version = $matches[1];
           if(!empty($matches) && count($matches) == 2) {
-            if (version_compare($pdfinfo_version, '0.24.5') >= 0) {
+            if (version_compare($pdfinfo_version, '0.18.4') >= 0) {
               $result['message'] = sprintf(ts("using pdfinfo %s"), $pdfinfo_version);
             }else{
               $result['is_error'] = TRUE;
