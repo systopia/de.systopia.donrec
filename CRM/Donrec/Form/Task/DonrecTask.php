@@ -46,6 +46,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   }
 
   function postProcess() {
+    // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_Create:postProcess()
 
     // process remaining snapshots if exsisting
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
@@ -117,19 +118,22 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     }
 
     // map contact ids to contributions
+    // remark: this query is hardcoded to EUR atm
+    // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_Create:postProcess()
     $query = "SELECT `civicrm_contribution`.`id`
-          FROM (`civicrm_contribution`)
-          LEFT JOIN `$custom_group_table` AS b1 ON `civicrm_contribution`.`id` = `b1`.`entity_id`
-          WHERE `contact_id` IN ($contactIds)
-          $query_date_limit
-          AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
-          AND `contribution_status_id` = 1
-          AND `is_test` = 0
-          AND `currency` = 'EUR'
-          AND (`b1`.`id` IS NULL
-          OR `b1`.`$status_column` != 'ORIGINAL')
-          ";
-    // TODO: this query is hardcoded to EUR. Should we change this?
+              FROM (`civicrm_contribution`)
+              LEFT JOIN `$custom_group_table` AS existing_receipt 
+                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id` 
+                  AND existing_receipt.`$status_column` = 'ORIGINAL'
+              WHERE 
+                  `contact_id` IN ($contactIds)
+                  $query_date_limit
+                  AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
+                  AND `contribution_status_id` = 1
+                  AND `is_test` = 0
+                  AND `currency` = 'EUR'
+                  AND existing_receipt.`entity_id` IS NULL;";
+
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);
 
