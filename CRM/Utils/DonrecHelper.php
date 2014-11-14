@@ -211,7 +211,7 @@ class CRM_Utils_DonrecHelper
       $timeout = 600.0; // 10mins, TODO: do we need a setting here?
     }
 
-    error_log("de.systopia.donrec.$type".'-'.$id." timeout $timeout created.");
+    //error_log("de.systopia.donrec.$type".'-'.$id." timeout $timeout created.");
     return new CRM_Core_Lock("de.systopia.donrec.$type".'-'.$id, $timeout);
   }
 
