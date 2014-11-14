@@ -47,21 +47,28 @@ var download_caption = "{ts}Download{/ts}:&nbsp;";
 var exporters = "{$exporters}";
 var instructions_done = "{ts}The donation receipts have been generated. You can now download the results.{/ts}";
 var instructions_error = "{ts}There was a problem. Please check the log below for more information.{/ts}";
+var dontleave = "{ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}";
 
 var progress = 0;
 {literal}
-cj("#progressbar").progressbar({value:0});
+cj("#progressbar").progressbar({value:1});
 cj(".crm-donrec-process-log").crmAccordionToggle();
 cj(function() {
    cj().crmAccordions();
 });
 
+// add a "don't leave" message if the user wants to close the page
+window.onbeforeunload = function(e) {
+  return dontleave;
+};
+
 function runNextChunk() {
   CRM.api('DonationReceiptEngine', 'next', {'q': 'civicrm/ajax/rest', 'sid': sid, 'bulk': bulk, 'test': test, 'exporters': exporters},
     { success: processReply,
       error: function(data) {
-        // TODO: implement
-        console.log("DAMN");
+        // TODO: implement error handling
+        console.log("Error detected.");
+        console.log(data);
       }
     }
   );
@@ -96,8 +103,10 @@ function processReply(reply) {
 function processDone(reply) {
   cj('#donrec_buttons').show();
   cj('#donrec_instructions').text(instructions_done);
-  cj("#progressbar").progressbar("disable");
-  
+  //cj("#progressbar").progressbar("disable");
+  cj("#progressbar").remove();
+  window.onbeforeunload = null;  // remove the "dont't leave" message
+
   // add download buttons for all files
   for (var exporter in reply.values.files) {
     var download = reply.values.files[exporter];
@@ -107,7 +116,7 @@ function processDone(reply) {
           <div class='icon check-icon'></div>" + download_caption + exporter + "                    \
         </span>                                                                         \
       </a>");
-  }
+  }  
 }
 
 // kick off process
