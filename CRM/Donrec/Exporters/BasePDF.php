@@ -103,11 +103,8 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       if ($result === FALSE) {
         $failures++;
       } else {
-        // save file names for wrapup()
-        $individualIDs = $snapshotReceipt->getIDs();
-        foreach ($individualIDs as $line_id) {
-          $this->postprocessPDF($result, $line_id);
-        }
+        // fix: only postprocess once(!)
+        $this->postprocessPDF($result, $snapshotReceipt->getID());
         $success++;
       }
     }
