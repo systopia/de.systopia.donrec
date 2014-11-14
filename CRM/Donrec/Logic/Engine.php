@@ -104,14 +104,31 @@ class CRM_Donrec_Logic_Engine {
    * @return array of stats:
    */
   public function nextStep() {
-
-    // check status
-    $is_bulk = !empty($this->parameters['bulk']);
-    $is_test = !empty($this->parameters['test']);
-
     // container for log messages
     $logs = array();
     $files = array();
+
+    // Synchronize this step
+    $lock = CRM_Utils_DonrecHelper::getLock('next', $this->snapshot->getId());
+    if (!$lock->isAcquired()) {
+      // lock is still closed => another thread is here (or crashed here)
+      error_log("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
+        
+      // sleep for 5s to avoid spinning
+      sleep(5.0);
+
+      // compile and return "state of affairs" report
+      $stats = $this->createStats();
+      $stats['log'] = $logs;
+      $stats['files'] = $files;
+      $stats['chunk_size'] = 0;
+      CRM_Donrec_Logic_Exporter::addLogEntry($stats, "Couldn't acquire lock. Parallel processing denied. Lock timeout is {$lock->_timeout}s.");
+      return $stats;
+    }
+    
+    // check status
+    $is_bulk = !empty($this->parameters['bulk']);
+    $is_test = !empty($this->parameters['test']);
 
     // get next chunk
     $chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
@@ -221,6 +238,9 @@ class CRM_Donrec_Logic_Engine {
     } else {
       $stats['chunk_size'] = count($chunk);
     }
+
+    // release our lock
+    $lock->release();
 
     return $stats;
   }

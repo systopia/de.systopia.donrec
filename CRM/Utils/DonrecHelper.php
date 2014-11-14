@@ -184,4 +184,35 @@ class CRM_Utils_DonrecHelper
     exit($template);
   }
 
+
+
+  /**
+   * Get a batching lock
+   * 
+   * the lock is needed so that only one relevant process can access the 
+   * payment/statment data structures at a time
+   * 
+   * @return lock object. check if it ->isAcquired() before use
+   */
+  public static function getLock($type, $id) {
+    if ($type=='') {
+      // for the 'next' lock, we calculate the lock timeout as follows
+      $max_lock_timeout = ini_get('max_execution_time');
+      if (empty($max_lock_timeout)) {
+        $max_lock_timeout = 30 * 60; // 30 minutes
+      }
+
+      // calculate based on chunk size (max 1min/item)
+      $calculation_time = CRM_Donrec_Logic_Settings::getChunkSize() * 60;
+      $timeout = min($calculation_time, $max_lock_timeout);
+
+    } else {
+      // default timeout for other locks
+      $timeout = 600.0; // 10mins, TODO: do we need a setting here?
+    }
+
+    error_log("de.systopia.donrec.$type".'-'.$id." timeout $timeout created.");
+    return new CRM_Core_Lock("de.systopia.donrec.$type".'-'.$id, $timeout);
+  }
+
 }
