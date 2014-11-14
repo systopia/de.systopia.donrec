@@ -896,3 +896,7 @@ msgstr ""
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Use remaining snapshot"
 msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
+msgstr ""

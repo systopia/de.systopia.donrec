@@ -859,3 +859,7 @@ msgstr "Zuwendung [%1] kann nicht gelöscht werden, da für sie eine Zuwendungsb
 msgid "Use remaining snapshot"
 msgstr "Bestehenden Lauf weiterverwenden"
 
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
+msgstr "DIESE SEITE BITTE NICHT SCHLIESSEN ODER NEU LADEN!"
+

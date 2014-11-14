@@ -10,7 +10,7 @@
 {if $error}
 <p>Error: {$error}</p>
 {else}
-<p id='donrec_instructions'>{ts}creation in progress, please wait...{/ts}  {ts}PLEASE DO NOT CLOSE THIS PAGE!{/ts}</p>
+<p id='donrec_instructions'>{ts}creation in progress, please wait...{/ts}  {ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}</p>
 <div id="progressbar"></div>
 
 <!-- the buttons -->
