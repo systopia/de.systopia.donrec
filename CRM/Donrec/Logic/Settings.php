@@ -57,22 +57,44 @@ class CRM_Donrec_Logic_Settings {
     $location_types['postal']['fallback'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address_fallback');
     return $location_types;
   }
+
   /**
-  * @return bool
-  */
+   * get the setting on whether to save the original PDF file
+   *
+   * @return bool
+   */
   public static function saveOriginalPDF() {
     return CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'store_original_pdf');
   }
 
   /**
-  * @return id
-  */
+   * get the default template ID
+   *
+   * @return int
+   */
   public static function getDefaultTemplate() {
     return CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'default_template');
   }
 
+  /**
+   * set the default template ID
+   */
   public static function setDefaultTemplate($id) {
     CRM_Core_BAO_Setting::setItem($id,'Donation Receipt Settings', 'default_template');
+  }
+
+  /**
+   * get the chunk size
+   *
+   * @return int
+   */
+  public static function getChunkSize() {
+    $packet_size = (int) CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size');
+    if ($packet_size >= 1) {
+      return $packet_size;
+    } else {
+      return 1;
+    }
   }
 
   /**

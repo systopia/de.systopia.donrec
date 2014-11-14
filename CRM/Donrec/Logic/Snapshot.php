@@ -194,7 +194,7 @@ class CRM_Donrec_Logic_Snapshot {
    * @return array: <id> => array with values
    */
   public function getNextChunk($is_bulk, $is_test) {
-    $chunk_size = 5;     // TODO: get from settings
+    $chunk_size = CRM_Donrec_Logic_Settings::getChunkSize();
     $snapshot_id = $this->getId();
     $chunk = array();
     if ($is_test) {
