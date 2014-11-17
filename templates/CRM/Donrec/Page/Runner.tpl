@@ -69,6 +69,7 @@ function runNextChunk() {
         // TODO: implement error handling
         console.log("Error detected.");
         console.log(data);
+        CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
       }
     }
   );
