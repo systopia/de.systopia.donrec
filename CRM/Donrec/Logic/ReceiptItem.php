@@ -48,7 +48,8 @@ class CRM_Donrec_Logic_ReceiptItem {
     $set_str = "`entity_id`=$params[contribution_id]";
     foreach ($fields as $key => $field) {
       if (!is_null($params[$key])) {
-        $set_str .= ", `$field`='$params[$key]'";
+        $value = mysql_real_escape_string($params[$key]);
+        $set_str .= ", `$field`='$value'";
       }
     }
 

@@ -71,6 +71,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         $value = $tokens['contributor'][$key];
       }
       if (!is_null($value)) {
+        $value = mysql_real_escape_string($value);
         $sql_set .= ", `$field`='$value'";
       }
     }
