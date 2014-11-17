@@ -28,6 +28,7 @@
       <div id="custom_period">
         {$form.donrec_contribution_horizon_from.label}
         {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_from}
+        <br/>
         {$form.donrec_contribution_horizon_to.label}
         {include file="CRM/common/jcalendar.tpl" elementName=donrec_contribution_horizon_to}
       </div>
