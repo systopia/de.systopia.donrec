@@ -28,10 +28,12 @@
     <path>civicrm/admin/setting/donrec</path>
     <page_callback>CRM_Admin_Form_Setting_DonrecSettings</page_callback>
     <title>Donation Receipts Settings</title>
-    <desc>Donation Receipts Settings</desc>
+    <desc>The donation receipts extension allows you to create and manage tax receipts for your donors.</desc>
     <access_arguments>administer CiviCRM</access_arguments>
     <adminGroup>CiviContribute</adminGroup>
+    <component>CiviContribute</component>
     <icon>admin/small/online_contribution_pages.png</icon>
+    <weight>100</weight>
   </item>
   <item>
     <path>civicrm/donrec/showfile</path>

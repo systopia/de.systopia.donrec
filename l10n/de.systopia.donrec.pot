@@ -12,6 +12,11 @@ msgid "Warning"
 msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
+msgctxt "menu"
+msgid "Donation Receipts Settings"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Donation Receipts - Settings"
 msgstr ""
 
