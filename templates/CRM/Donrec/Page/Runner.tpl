@@ -91,7 +91,7 @@ function processReply(reply) {
 
   // visualize progress
   progress = reply.values.progress;
-  cj("#progressbar").progressbar({value:progress});
+  cj("#progressbar").progressbar({value:(progress+1)});
 
   // kick off the next batch
   if (progress < 100) {
