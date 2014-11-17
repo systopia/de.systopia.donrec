@@ -249,7 +249,7 @@ msgid "Success"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Staging.tpl
-#: CRM/Donrec/Form/Task/Rebook.php
+#: CRM/Donrec/Form/Task/Rebook.php templates/CRM/Donrec/Page/Runner.tpl
 msgid "Error"
 msgstr ""
 
@@ -949,4 +949,11 @@ msgid ""
 "The \"Test run\" button will do all the same things except no contributions "
 "will be marked as receipted. We strongly recommend testing the creation of "
 "any larger batch of donation receipts."
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgctxt "menu"
+msgid ""
+"The donation receipts extension allows you to create and manage tax receipts "
+"for your donors."
 msgstr ""
