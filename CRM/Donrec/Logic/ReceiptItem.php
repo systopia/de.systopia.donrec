@@ -237,6 +237,9 @@ class CRM_Donrec_Logic_ReceiptItem {
   * return boolean or item id
   */
   public static function hasValidReceiptItem($contribution_id, $return_id=FALSE) {
+    $contribution_id = (int) $contribution_id;
+    if (empty($contribution_id)) return FALSE;    // prevent SQL errors
+    
     self::getCustomFields();
     $custom_group_id = self::$_custom_group_id;
     $status_field = self::$_custom_fields['status'];

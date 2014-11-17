@@ -322,7 +322,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @return TRUE if there is a VALID donation receipt, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
-    return CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
+    if (empty($contribution_id)) {
+      return TRUE;
+    } else {
+      return CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id);
+    }
   }
 
   /**
