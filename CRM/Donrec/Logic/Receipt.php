@@ -363,7 +363,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   * Updates the class attribute to contain all custom fields of the
   * donation receipt database table.
   */
-  protected static function getCustomFields() {
+  public static function getCustomFields() {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = array(
@@ -381,10 +381,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
       self::$_custom_group_id = $custom_group['id'];
 
       $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
+        'version'         => 3,
         'custom_group_id' => $custom_group['id'],
+        'option.limit'    => 999
       );
       $custom_fields = civicrm_api('CustomField', 'get', $params);
       if ($custom_fields['is_error'] != 0) {
@@ -397,6 +396,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         self::$_custom_fields[$field['name']] = $field['column_name'];
       }
     }
+    return self::$_custom_fields;
   }
 
   /**

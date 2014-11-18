@@ -412,7 +412,56 @@ function donrec_civicrm_buildForm($formName, &$form) {
     if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
 
   } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
-    // TODO: fix up contact search
-
+    $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
+    // remove the duplicate stuff
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'original_file');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'contact_type');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'gender');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'prefix');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'display_name');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'postal_greeting_display');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'email_greeting_display');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'addressee_display');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'street_address');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_1');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_2');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_3');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'postal_code');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'city');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'country');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_street_address');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_1');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_2');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_3');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_postal_code');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_city');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_country');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_addressee_display');
+    
+    // TODO: remove the date fields (not working)
+    // 'issued_on'
+    
+    // override the standard fields
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Status'),
+        // TODO: use future status definitions
+        array(  ''                => ts('- any -'), 
+                'original'        => ts('original'),
+                'invalid'         => ts('invalid'),
+                'copy'            => ts('copy'),
+                'withdrawn'       => ts('withdrawn'),
+                'withdrawn_copy'  => ts('withdrawn_copy'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Type'),
+        // TODO: use future status definitions
+        array(  ''        => ts('- any -'), 
+                'single'  => ts('single receipt'),
+                'bulk'    => ts('bulk receipt'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
   }
 }

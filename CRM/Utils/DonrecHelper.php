@@ -241,7 +241,9 @@ class CRM_Utils_DonrecHelper
   public static function removeFromForm(&$form, $fields, $field_name) {
     $field_id = self::getFieldID($fields, $field_name);
     if ($field_id) {
-      $form->removeElement("custom_{$field_id}");
+      if ($form->elementExists("custom_{$field_id}")) {
+        $form->removeElement("custom_{$field_id}");        
+      }
     }
   }
 }

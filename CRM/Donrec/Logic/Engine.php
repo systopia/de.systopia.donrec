@@ -111,11 +111,8 @@ class CRM_Donrec_Logic_Engine {
     // Synchronize this step
     $lock = CRM_Utils_DonrecHelper::getLock('next', $this->snapshot->getId());
     if (!$lock->isAcquired()) {
-      // lock is still closed => another thread is here (or crashed here)
+      // lock timed out
       error_log("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
-        
-      // sleep for 5s to avoid spinning
-      sleep(5.0);
 
       // compile and return "state of affairs" report
       $stats = $this->createStats();
