@@ -383,8 +383,9 @@ function donrec_civicrm_buildForm($formName, &$form) {
     CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'non_deductible_amount');
     CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'contribution_hash');
 
-    // TODO: remove the date fields (not working)
-    //'issued_on', 'receive_date'
+    // update date fields
+    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
+    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', ts("Received - From"), ts("Received - To"));
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
@@ -438,8 +439,8 @@ function donrec_civicrm_buildForm($formName, &$form) {
     CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_country');
     CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_addressee_display');
     
-    // TODO: remove the date fields (not working)
-    // 'issued_on'
+    // update date fields
+    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
     
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
@@ -462,6 +463,6 @@ function donrec_civicrm_buildForm($formName, &$form) {
                 'bulk'    => ts('bulk receipt'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Has Donation Receipt Issued by Contact ID'));
   }
 }

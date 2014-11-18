@@ -233,10 +233,7 @@ class CRM_Utils_DonrecHelper
   }
 
   /**
-   * extracts the field ID from the field set provided in the format:
-   * <field_name> => <column_name>
-   * 
-   * @return (int) field_id  or 0 if not found
+   * removes a field from a form - if it exists
    */
   public static function removeFromForm(&$form, $fields, $field_name) {
     $field_id = self::getFieldID($fields, $field_name);
@@ -246,4 +243,20 @@ class CRM_Utils_DonrecHelper
       }
     }
   }
+
+  /**
+   * updates a date field's labels - if it exists
+   */
+  public static function relabelDateField(&$form, $fields, $field_name, $from_label, $to_label) {
+    $field_id = self::getFieldID($fields, $field_name);
+    if ($field_id) {
+      if ($form->elementExists("custom_{$field_id}_from")) {
+        $form->getElement("custom_{$field_id}_from")->setLabel($from_label);
+      }
+      if ($form->elementExists("custom_{$field_id}_to")) {
+        $form->getElement("custom_{$field_id}_to")->setLabel($to_label);
+      }
+    }
+  }
+
 }
