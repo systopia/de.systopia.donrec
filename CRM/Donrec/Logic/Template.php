@@ -172,7 +172,7 @@ class CRM_Donrec_Logic_Template
                       .watermark {
                         position: fixed;
                         z-index: 999;
-                        color: #808080;
+                        color: rgba(128,128,128,0.65);
                         -ms-transform: rotate(-45deg); /* IE 9 */
                         -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
                         transform: rotate(-45deg);
