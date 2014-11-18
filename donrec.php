@@ -368,3 +368,51 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
   }
   return;
 }
+
+/**
+ * Prune the "find contributions" and "advanced contact search" forms 
+ * by removing the fields that don't make sense or don't work
+ */
+function donrec_civicrm_buildForm($formName, &$form) {
+  if ($formName=='CRM_Contribute_Form_Search') {
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    // remove the duplicate stuff
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'financial_type_id');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'total_amount');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'currency');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'non_deductible_amount');
+    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'contribution_hash');
+
+    // TODO: remove the date fields (not working)
+    //'issued_on', 'receive_date'
+
+    // override the standard fields
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Status'),
+        // TODO: use future status definitions
+        array(  ''                => ts('- any -'), 
+                'original'        => ts('original'),
+                'invalid'         => ts('invalid'),
+                'copy'            => ts('copy'),
+                'withdrawn'       => ts('withdrawn'),
+                'withdrawn_copy'  => ts('withdrawn_copy'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Type'),
+        // TODO: use future status definitions
+        array(  ''        => ts('- any -'), 
+                'single'  => ts('single receipt'),
+                'bulk'    => ts('bulk receipt'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID'));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
+
+  } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
+    // TODO: fix up contact search
+
+  }
+}

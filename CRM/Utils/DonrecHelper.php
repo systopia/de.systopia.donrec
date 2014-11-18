@@ -215,4 +215,33 @@ class CRM_Utils_DonrecHelper
     return new CRM_Core_Lock("de.systopia.donrec.$type".'-'.$id, $timeout);
   }
 
+  /**
+   * extracts the field ID from the field set provided in the format:
+   * <field_name> => <column_name>
+   * 
+   * @return (int) field_id  or 0 if not found
+   */
+  public static function getFieldID($fields, $field_name) {
+    if (!empty($fields[$field_name])) {
+      // TODO: more efficient way?
+      $inv_column = strrev($fields[$field_name]);
+      $inv_id = substr($inv_column, 0, strpos($inv_column, '_'));
+      return (int) strrev($inv_id); 
+    } else {
+      return 0;
+    }
+  }
+
+  /**
+   * extracts the field ID from the field set provided in the format:
+   * <field_name> => <column_name>
+   * 
+   * @return (int) field_id  or 0 if not found
+   */
+  public static function removeFromForm(&$form, $fields, $field_name) {
+    $field_id = self::getFieldID($fields, $field_name);
+    if ($field_id) {
+      $form->removeElement("custom_{$field_id}");
+    }
+  }
 }

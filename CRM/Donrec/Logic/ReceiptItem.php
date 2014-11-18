@@ -230,6 +230,7 @@ class CRM_Donrec_Logic_ReceiptItem {
         self::$_custom_fields[$field['name']] = $field['column_name'];
       }
     }
+    return self::$_custom_fields;
   }
   /**
   * Check if a contribution has a receipt-item with status ORIGINAL.

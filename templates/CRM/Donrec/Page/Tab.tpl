@@ -22,7 +22,7 @@
             <li><u><b>
               {if $receipt.type eq 'BULK'}{ts}bulk receipt{/ts}{/if}
               {if $receipt.type eq 'SINGLE'}{ts}single receipt{/ts}{/if}
-            </b></u></li>
+            </b></u>[{$receipt_id}]</li>
             <li>{ts}Status{/ts}: <b>
               {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
               {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
