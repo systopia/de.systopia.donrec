@@ -1,3 +1,12 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Author: B. Endres (endres -at- systopia.de)            |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| TODO: License                                          |
++--------------------------------------------------------*}
+
 <div class="crm-form-block crm-block crm-contact-task-pdf-form-block">
   {* HEADER *}
   <div class="crm-submit-buttons">
