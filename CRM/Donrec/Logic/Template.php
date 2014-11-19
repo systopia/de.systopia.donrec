@@ -153,6 +153,7 @@ class CRM_Donrec_Logic_Template
   */
   public function generatePDF($values, &$parameters) {
     $smarty = CRM_Core_Smarty::singleton();
+    $config = CRM_Core_Config::singleton();
 
     // assign all values
     foreach ($values as $token => $value) {
@@ -166,13 +167,25 @@ class CRM_Donrec_Logic_Template
     $html = $this->_template->msg_html;
 
     // --- watermark injection ---
+    // identify pdf engine
+    $pdf_engine = $config->wkhtmltopdfPath;
+    if (!empty($pdf_engine)) {
+      $wk_is_enabled = TRUE;
+    }else{
+      $wk_is_enabled = FALSE;
+    }
+
     // prepare watermark
     $watermark_css = '<style>
                       {literal}
                       .watermark {
                         position: fixed;
                         z-index: 999;
-                        color: rgba(128,128,128,0.65);
+                        ' .
+                        ($wk_is_enabled) ?
+                        'color: rgba(128, 128, 128, 0.65);' :
+                        'opacity: 0.65;'
+                        . '
                         -ms-transform: rotate(-45deg); /* IE 9 */
                         -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
                         transform: rotate(-45deg);
@@ -236,7 +249,7 @@ class CRM_Donrec_Logic_Template
     }
 
     // --- watermark injection end ---
-
+    error_log($html);
     // compile template
     $html = $smarty->fetch("string:$html");
 
