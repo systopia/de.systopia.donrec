@@ -200,10 +200,8 @@ class CRM_Donrec_Logic_ReceiptItem {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'name' => 'zwb_donation_receipt_item',
+        'version'    => 3,
+        'name'       => 'zwb_donation_receipt_item',
       );
       $custom_group = civicrm_api('CustomGroup', 'getsingle', $params);
       if (isset($custom_group['is_error'])) {
@@ -214,9 +212,8 @@ class CRM_Donrec_Logic_ReceiptItem {
       self::$_custom_group_id = $custom_group['id'];
 
       $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
+        'version'         => 3,
+        'option.limit'    => 999,
         'custom_group_id' => $custom_group['id'],
       );
       $custom_fields = civicrm_api('CustomField', 'get', $params);

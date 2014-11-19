@@ -82,11 +82,8 @@ class CRM_Donrec_Logic_Template
   public static function setDefaultTemplate() {
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
 
-    // TODO: don't use an ajax-request here.
     $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
+        'version'   => 3,
         'msg_title' => $default_template_title,
     );
     $result = civicrm_api('MessageTemplate', 'get', $params);
