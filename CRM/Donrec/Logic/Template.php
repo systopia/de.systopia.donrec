@@ -83,8 +83,9 @@ class CRM_Donrec_Logic_Template
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
 
     $params = array(
-        'version'   => 3,
-        'msg_title' => $default_template_title,
+        'version'    => 3,
+        'sequential' => 1,
+        'msg_title'  => $default_template_title,
     );
     $result = civicrm_api('MessageTemplate', 'get', $params);
     if (($result['is_error'] != 0)) {
