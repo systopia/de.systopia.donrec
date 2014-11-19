@@ -376,16 +376,23 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 function donrec_civicrm_buildForm($formName, &$form) {
   if ($formName=='CRM_Contribute_Form_Search') {
     $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-    // remove the duplicate stuff
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'financial_type_id');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'total_amount');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'currency');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'non_deductible_amount');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'contribution_hash');
 
-    // update date fields
-    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
-    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', ts("Received - From"), ts("Received - To"));
+    // remove unwanted fields
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'financial_type_id');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'total_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'non_deductible_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'currency');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contribution_hash');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'receive_date');
+    $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
+    CRM_Core_Region::instance('page-body')->add(array(
+      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
+    ));
+
+    // DISABLED: date field search doesn't work
+    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
+    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', ts("Received - From"), ts("Received - To"));
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
@@ -414,33 +421,39 @@ function donrec_civicrm_buildForm($formName, &$form) {
 
   } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
     $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
-    // remove the duplicate stuff
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'original_file');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'contact_type');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'gender');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'prefix');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'display_name');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'postal_greeting_display');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'email_greeting_display');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'addressee_display');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'street_address');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_1');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_2');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'supplemental_address_3');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'postal_code');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'city');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'country');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_street_address');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_1');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_2');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_supplemental_address_3');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_postal_code');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_city');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_country');
-    CRM_Utils_DonrecHelper::removeFromForm($form, $item_fields, 'shipping_addressee_display');
+
+    // remove unwanted fields
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'original_file');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contact_type');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'gender');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'prefix');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'display_name');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'postal_greeting_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'email_greeting_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'addressee_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'street_address');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_1');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_2');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_3');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'postal_code');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'city');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'country');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_addressee_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_street_address');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_1');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_2');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_3');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_postal_code');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_city');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_country');
+    $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
+    CRM_Core_Region::instance('page-body')->add(array(
+      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
+    ));
     
-    // update date fields
-    CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
+    // DISABLED: date field search doesn't work
+    //CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
     
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
