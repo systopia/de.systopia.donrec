@@ -257,7 +257,8 @@
         if (rid != null) {
           rid = rid[2];
           // withdraw this donation receipt
-          CRM.api('DonationReceipt', 'withdraw', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
+          CRM.confirm(function() {
+            CRM.api('DonationReceipt', 'withdraw', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully withdrawn{/ts}", "{ts}Success{/ts}{literal}", "success");
@@ -269,8 +270,11 @@
               }
             }
           );
+          },
+          {
+            message: {/literal}"{ts}Are you sure you want to withdraw this donation receipt?{/ts}"{literal}
+          });
         }
-
     });
     {/literal}{/if}{if $can_view_copy}{literal}
     // called for every copy-button
