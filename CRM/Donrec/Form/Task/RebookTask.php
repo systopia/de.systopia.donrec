@@ -25,7 +25,7 @@ class CRM_Donrec_Form_Task_RebookTask extends CRM_Contribute_Form_Task {
     $session = CRM_Core_Session::singleton();
     $userContext = $session->readUserContext();  
 
-    $admin = CRM_Core_Permission::check('administer CiviCRM');
+    $admin = CRM_Core_Permission::check('edit contributions');
     if (!$admin) {
       CRM_Core_Error::fatal(ts('You do not have the permissions required to access this page.'));
       CRM_Utils_System::redirect($userContext);

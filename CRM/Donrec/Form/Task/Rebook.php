@@ -22,7 +22,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     parent::preProcess();
     CRM_Utils_System::setTitle(ts('Rebook'));
   
-    $admin = CRM_Core_Permission::check('administer CiviCRM');
+    $admin = CRM_Core_Permission::check('edit contributions');
     if (!$admin) {
       CRM_Core_Error::fatal(ts('You do not have the permissions required to access this page.'));
       CRM_Utils_System::redirect();
