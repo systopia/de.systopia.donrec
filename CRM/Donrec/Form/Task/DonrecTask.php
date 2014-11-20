@@ -21,11 +21,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
 
     $this->addElement('hidden', 'rsid');
-    // TODO: instead of 'last year',.. we should have '2013', '2012', '2011'
     $options = array(
-       'current_year' => ts('current year'),
-       'last_year' => ts('last year'),
-       'customized_period' => ts('specify period')
+       'current_year'      => ts('This Year'),
+       'last_year'         => ts('last year'),
+       'customized_period' => ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
