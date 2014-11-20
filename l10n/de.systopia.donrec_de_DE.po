@@ -198,7 +198,7 @@ msgstr "Ausführungs-Log"
 msgid "Date"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl donrec.php
 msgid "Type"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr "Es gab ein Problem. Der Abschnitt unten enthält weitere Informationen."
 msgid "Create new donation receipt"
 msgstr "Zuwendungsbescheinigung erstellen"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "Status"
 msgstr ""
 
@@ -429,23 +429,23 @@ msgstr "Einzelbescheinigungen"
 msgid "bulk receipts"
 msgstr "Sammelbescheinigungen"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "bulk receipt"
 msgstr "Sammelbescheinigung"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "single receipt"
 msgstr "Einzelbescheinigung"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "withdrawn"
 msgstr "zurückgesetzt"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "original"
 msgstr "Original"
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "copy"
 msgstr "Kopie"
 
@@ -908,4 +908,61 @@ msgstr "Der \"Testlauf\" Button wird das gleiche tun, außer dass keine der Zuwe
 msgctxt "menu"
 msgid "The donation receipts extension allows you to create and manage tax receipts for your donors."
 msgstr "Die ZWB-Extension ermöglicht das Erstellen und Verwalten von Zuwendungsbescheinigungen."
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "This Year"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Choose Date Range"
+msgstr ""
+
+#: donrec.php
+msgid "- any -"
+msgstr ""
+
+#: donrec.php
+msgid "invalid"
+msgstr "ungültig"
+
+#: donrec.php
+#, fuzzy
+msgid "withdrawn_copy"
+msgstr "zurückgesetzte Kopie"
+
+#: donrec.php
+msgid "Receipt ID"
+msgstr "Bescheinigungs-ID"
+
+#: donrec.php
+msgid "Issued by contact ID"
+msgstr "Ausgestellt von Kontakt-ID"
+
+#: donrec.php
+msgid "Has Donation Receipt Issued by Contact ID"
+msgstr "Hat ZWB ausgestellt von Kontakt-ID"
+
+#: donrec.php
+msgid "Issed On - From"
+msgstr "Ausgestellt - Von"
+
+#: donrec.php
+msgid "Issed On - To"
+msgstr "Ausgestellt - Bis"
+
+#: donrec.php
+msgid "Received - From"
+msgstr "Erhalten - Von"
+
+#: donrec.php
+msgid "Received - To"
+msgstr "Erhalten - Bis"
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Done"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Are you sure you want to withdraw this donation receipt?"
+msgstr "Sind Sie sicher dass Sie diese Zuwendungsbescheinigung zurücksetzen möchten?"
 

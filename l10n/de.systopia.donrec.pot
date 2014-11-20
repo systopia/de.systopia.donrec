@@ -187,7 +187,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl donrec.php
 msgid "Type"
 msgstr ""
 
@@ -212,7 +212,7 @@ msgstr ""
 msgid "Create new donation receipt"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "Status"
 msgstr ""
 
@@ -429,23 +429,23 @@ msgstr ""
 msgid "bulk receipts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "bulk receipt"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "single receipt"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "withdrawn"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "original"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl donrec.php
 msgid "copy"
 msgstr ""
 
@@ -956,4 +956,60 @@ msgctxt "menu"
 msgid ""
 "The donation receipts extension allows you to create and manage tax receipts "
 "for your donors."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "This Year"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/Create.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Choose Date Range"
+msgstr ""
+
+#: donrec.php
+msgid "- any -"
+msgstr ""
+
+#: donrec.php
+msgid "invalid"
+msgstr ""
+
+#: donrec.php
+msgid "withdrawn_copy"
+msgstr ""
+
+#: donrec.php
+msgid "Receipt ID"
+msgstr ""
+
+#: donrec.php
+msgid "Issued by contact ID"
+msgstr ""
+
+#: donrec.php
+msgid "Has Donation Receipt Issued by Contact ID"
+msgstr ""
+
+#: donrec.php
+msgid "Issed On - From"
+msgstr ""
+
+#: donrec.php
+msgid "Issed On - To"
+msgstr ""
+
+#: donrec.php
+msgid "Received - From"
+msgstr ""
+
+#: donrec.php
+msgid "Received - To"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Done"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Are you sure you want to withdraw this donation receipt?"
 msgstr ""
