@@ -180,6 +180,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     $receive_dates = array();
     $sorted_lines = $values['lines'];
     foreach ($sorted_lines as $key => $line) {
+      $sorted_lines[$key]['id'] = $key;
       $receive_dates[$key] = $line['receive_date'];
     }
     array_multisort($receive_dates, SORT_ASC, $sorted_lines);
