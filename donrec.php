@@ -122,10 +122,12 @@ function donrec_civicrm_caseTypes(&$caseTypes) {
 function donrec_civicrm_searchTasks($objectType, &$tasks) {
   // add DONATION RECEIPT task to contact list
   if ($objectType == 'contact') {
-    $tasks[] = array(
-    'title' => ts('Issue donation receipt(s)'),
-    'class' => 'CRM_Donrec_Form_Task_DonrecTask',
-    'result' => false);
+    if (CRM_Core_Permission::check('create and withdraw receipts')) {
+      $tasks[] = array(
+          'title' => ts('Issue donation receipt(s)'),
+          'class' => 'CRM_Donrec_Form_Task_DonrecTask',
+          'result' => false);
+    }
   }
 
   // add REBOOK task to contribution list

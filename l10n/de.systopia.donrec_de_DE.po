@@ -701,7 +701,7 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: donrec.php
 msgid "view and create copies of receipts"
-msgstr "Zuwendungesbescheinigungen erstellen und kopieren"
+msgstr "Zuwendungesbescheinigungen anzeigen und kopieren"
 
 #: donrec.php
 msgid "create and withdraw receipts"
