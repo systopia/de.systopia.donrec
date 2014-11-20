@@ -151,6 +151,7 @@ class CRM_Donrec_Logic_Template
   */
   public function generatePDF($values, &$parameters) {
     $smarty = CRM_Core_Smarty::singleton();
+    $config = CRM_Core_Config::singleton();
 
     // assign all values
     foreach ($values as $token => $value) {
@@ -164,31 +165,68 @@ class CRM_Donrec_Logic_Template
     $html = $this->_template->msg_html;
 
     // --- watermark injection ---
+    // identify pdf engine
+    $pdf_engine = $config->wkhtmltopdfPath;
+    if (!empty($pdf_engine)) {
+      $wk_is_enabled = TRUE;
+      $watermark_css = '<style>
+                        {literal}
+                        .watermark {
+                          position: fixed;
+                          z-index: 999;
+                          color: rgba(128, 128, 128, 0.60);
+                          -ms-transform: rotate(-45deg); /* IE 9 */
+                          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+                          transform: rotate(-45deg);
+                          font-size: 100pt!important;
+                        }
+
+                        .watermark-center {
+                          left: 10px;
+                          top: 400px;
+                        }
+
+                        .watermark-top {
+                          left: 0px;
+                          top: 880px;
+                          -ms-transform: rotate(0deg); /* IE 9 */
+                          -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+                          transform: rotate(0deg);
+                        }
+                        {/literal}
+                        </style>
+                        ';
+    }else{
+      $wk_is_enabled = FALSE;
+      $watermark_css = '<style>
+                        {literal}
+                        .watermark {
+                          position: fixed;
+                          z-index: 999;
+                          opacity: 0.35;
+                          -ms-transform: rotate(-45deg); /* IE 9 */
+                          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+                          transform: rotate(-45deg);
+                          font-size: 100pt!important;
+                        }
+
+                        .watermark-center {
+                          left: 30px;
+                          top: 650px;
+                        }
+
+                        .watermark-top {
+                          -ms-transform: rotate(0deg); /* IE 9 */
+                          -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+                          transform: rotate(0deg);
+                        }
+                        {/literal}
+                        </style>
+                        ';
+    }
+    $smarty->assign('wk_enabled', $wk_is_enabled);
+
     // prepare watermark
-    $watermark_css = '<style>
-                      {literal}
-                      .watermark {
-                        position: fixed;
-                        z-index: 999;
-                        color: rgba(128,128,128,0.65);
-                        -ms-transform: rotate(-45deg); /* IE 9 */
-                        -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
-                        transform: rotate(-45deg);
-                        font-size: 100pt!important;
-                      }
-
-                      .watermark-center {
-                        left: 60px;
-                        top: 600px;
-                      }
-
-                      .watermark-top {
-                        left: 60px;
-                        top: 180px;
-                      }
-                      {/literal}
-                      </style>
-                      ';
     $watermark_site1 = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
     $watermark_site2 = '<div class="watermark watermark-top">{if $watermark}{$watermark}{/if}</div>';
 
@@ -228,13 +266,9 @@ class CRM_Donrec_Logic_Template
     if (count($matches) == 1) {
       $newpage_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_site2, $newpage_offset + strlen($matches[0][0]), 0);
-    }else if (count($matches) < 1) {
-      error_log('de.systopia.donrec: watermark could not be created for site two (<div id="newpage"> not found). possible manipulation of the template file? pdf rendering cancelled.');
-      return FALSE;
     }
 
     // --- watermark injection end ---
-
     // compile template
     $html = $smarty->fetch("string:$html");
 
