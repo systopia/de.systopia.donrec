@@ -176,6 +176,18 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       }
     }
 
+    // sort contribution lines by receive date (#1497)
+    $receive_dates = array();
+    $sorted_lines = $values['lines'];
+    foreach ($sorted_lines as $key => $line) {
+      $receive_dates[$key] = $line['receive_date'];
+    }
+    array_multisort($receive_dates, SORT_ASC, $sorted_lines);
+    $values['lines'] = array();
+    foreach ($sorted_lines as $key => $line) {
+      $values['lines'][$line['id']] = $line;
+    }
+
     // add legacy 'items'
     if (count($values['lines']) > 1) {
       $values['items'] = $values['lines'];
