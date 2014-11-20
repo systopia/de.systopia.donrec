@@ -152,7 +152,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
+        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(ts('There are no selectable contributions for these contacts in the selected time period.'), ts('Warning'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', 'reset=1'));
