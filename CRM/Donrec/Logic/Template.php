@@ -205,7 +205,7 @@ class CRM_Donrec_Logic_Template
                         .watermark {
                           position: fixed;
                           z-index: 999;
-                          opacity: 0.65;
+                          opacity: 0.35;
                           -ms-transform: rotate(-45deg); /* IE 9 */
                           -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
                           transform: rotate(-45deg);
@@ -214,12 +214,13 @@ class CRM_Donrec_Logic_Template
 
                         .watermark-center {
                           left: 30px;
-                          top: 550px;
+                          top: 650px;
                         }
 
                         .watermark-top {
-                          left: 30px;
-                          top: 180px;
+                          -ms-transform: rotate(0deg); /* IE 9 */
+                          -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+                          transform: rotate(0deg);
                         }
                         {/literal}
                         </style>

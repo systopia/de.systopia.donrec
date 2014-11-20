@@ -127,7 +127,9 @@ h3 {
 
 .signature {
   position: absolute;
-  top: 725px;
+  {/literal}
+  {if !$items || $wk_enabled}top: 725px;{else}top: 750px;{/if}
+  {literal}
 }
 
 .absenderblock_rechts {
@@ -137,7 +139,9 @@ h3 {
 
 .footer {
   position: absolute;
-  top: 810px;
+  {/literal}
+  {if $wk_enabled}top: 810px;{else}top: 855px;{/if}
+  {literal}
   font-size: 7pt!important;
 }
 
@@ -157,7 +161,11 @@ h3 {
 
 .notice {
     {/literal}
-    {if !$items}font-size: 120%!important;{else}font-size: 110%!important;{/if}
+    {if $wk_enabled}
+      {if !$items}font-size: 120%!important;{else}font-size: 110%!important;{/if}
+    {else}
+      font-size: 90%!important;
+    {/if}
     {literal}
 }
 .newpage {
