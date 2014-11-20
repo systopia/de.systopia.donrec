@@ -926,7 +926,6 @@ msgid "invalid"
 msgstr "ungültig"
 
 #: donrec.php
-#, fuzzy
 msgid "withdrawn_copy"
 msgstr "zurückgesetzte Kopie"
 
