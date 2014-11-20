@@ -16,7 +16,7 @@
 <!-- the buttons -->
 <div id='donrec_buttons' class="crm-submit-buttons" hidden>
   <a class="button" href="{$url_back}">
-    <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
+    <span align="right"><div class="icon back-icon"></div>{if $test}{ts}Back{/ts}{else}{ts}Done{/ts}{/if}</span>
   </a>
 </div>
 
