@@ -212,7 +212,7 @@ class CRM_Utils_DonrecHelper
     }
 
     //error_log("de.systopia.donrec.$type".'-'.$id." timeout $timeout created.");
-    return new CRM_Core_Lock("de.systopia.donrec.$type".'-'.$id, $timeout);
+    return new CRM_Utils_SafeLock("de.systopia.donrec.$type".'-'.$id, $timeout);
   }
 
   /**

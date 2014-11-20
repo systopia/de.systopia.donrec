@@ -22,11 +22,10 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     $this->addElement('hidden', 'cid');
     $this->addElement('hidden', 'rsid');
-    // TODO: instead of 'last year',.. we should have '2013', '2012', '2011'
     $options = array(
-       'current_year' => ts('current year'),
-       'last_year' => ts('last year'),
-       'customized_period' => ts('specify period')
+       'current_year'      => ts('This Year'),
+       'last_year'         => ts('last year'),
+       'customized_period' => ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
@@ -156,7 +155,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . 'sid=' . $sid . '&ccount=1'));
+        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $sid . '&ccount=1'));
     }elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(ts('This contact has no selectable contributions in the selected time period.'), ts('Warning'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId"));

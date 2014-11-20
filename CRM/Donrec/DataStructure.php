@@ -438,6 +438,7 @@ class CRM_Donrec_DataStructure {
       $customGroup = civicrm_api3('CustomGroup', 'getsingle', array('name' => $params['custom_group_name']));
       // replace custom_group_name with custom_group_id
       $params['custom_group_id'] = $customGroup['id'];
+      //$params['label'] = ts($params['label']);   // localize group names
       unset($params['custom_group_name']);
       $get_params['name'] = $params['name'];
       $get_params['custom_group_id'] = $params['custom_group_id'];

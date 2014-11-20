@@ -122,10 +122,12 @@ function donrec_civicrm_caseTypes(&$caseTypes) {
 function donrec_civicrm_searchTasks($objectType, &$tasks) {
   // add DONATION RECEIPT task to contact list
   if ($objectType == 'contact') {
-    $tasks[] = array(
-    'title' => ts('Issue donation receipt(s)'),
-    'class' => 'CRM_Donrec_Form_Task_DonrecTask',
-    'result' => false);
+    if (CRM_Core_Permission::check('create and withdraw receipts')) {
+      $tasks[] = array(
+          'title' => ts('Issue donation receipt(s)'),
+          'class' => 'CRM_Donrec_Form_Task_DonrecTask',
+          'result' => false);
+    }
   }
 
   // add REBOOK task to contribution list
@@ -256,6 +258,7 @@ function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
 }
 
 function donrec_civicrm_tabs(&$tabs, $contactID) {
+  if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
     $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
                                   "reset=1&snippet=1&force=1&cid=$contactID" );
     $tabs[] = array( 'id'    => 'donation_receipts',
@@ -263,6 +266,7 @@ function donrec_civicrm_tabs(&$tabs, $contactID) {
                      'title' => ts('Donation receipts'),
                      'count' => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($contactID),
                      'weight' => 300);
+  }
 }
 
 /*

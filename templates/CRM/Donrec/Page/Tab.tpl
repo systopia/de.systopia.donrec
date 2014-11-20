@@ -19,10 +19,11 @@
       <td>
         <div class="donrec-stats" id="donrec_stats_{$receipt_id}">
           <ul>
-            <li><u><b>
-              {if $receipt.type eq 'BULK'}{ts}bulk receipt{/ts}{/if}
-              {if $receipt.type eq 'SINGLE'}{ts}single receipt{/ts}{/if}
-            </b></u>[{$receipt_id}]</li>
+            <li>
+              {if $receipt.type eq 'BULK'}<u><b>{ts}bulk receipt{/ts}</b></u>{/if}
+              {if $receipt.type eq 'SINGLE'}<u><b>{ts}single receipt{/ts}</b></u>{/if}
+              [{$receipt_id}]
+            </li>
             <li>{ts}Status{/ts}: <b>
               {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
               {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
@@ -256,7 +257,8 @@
         if (rid != null) {
           rid = rid[2];
           // withdraw this donation receipt
-          CRM.api('DonationReceipt', 'withdraw', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
+          CRM.confirm(function() {
+            CRM.api('DonationReceipt', 'withdraw', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts}The donation receipt has been successfully withdrawn{/ts}", "{ts}Success{/ts}{literal}", "success");
@@ -268,8 +270,11 @@
               }
             }
           );
+          },
+          {
+            message: {/literal}"{ts}Are you sure you want to withdraw this donation receipt?{/ts}"{literal}
+          });
         }
-
     });
     {/literal}{/if}{if $can_view_copy}{literal}
     // called for every copy-button

@@ -367,10 +367,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = array(
-        'version' => 3,
-        'q' => 'civicrm/ajax/rest',
-        'sequential' => 1,
-        'name' => 'zwb_donation_receipt',
+        'version'  => 3,
+        'name'     => 'zwb_donation_receipt',
       );
       $custom_group = civicrm_api('CustomGroup', 'getsingle', $params);
       if (isset($custom_group['is_error'])) {
