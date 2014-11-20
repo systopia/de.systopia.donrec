@@ -13,7 +13,11 @@ var ids = "{$field_ids_to_remove}".split(",");
 
 function removeFiedsToRemove() {
   for (var i=0; i<ids.length; i++) {
-    cj("#custom_" + ids[i]).parent().parent().remove();
+    try {
+      cj("#custom_" + ids[i]).parent().parent().hide();
+    } catch(e) {
+      console.log(e);
+    }
   }  
 }
 
