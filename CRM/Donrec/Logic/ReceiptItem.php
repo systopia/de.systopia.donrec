@@ -89,6 +89,7 @@ class CRM_Donrec_Logic_ReceiptItem {
                           self::$_custom_fields['issued_by'],
                           self::$_custom_fields['total_amount'],
                           self::$_custom_fields['non_deductible_amount'],
+                          self::$_custom_fields['financial_type_id'],
                           self::$_custom_fields['currency'],
                           self::$_custom_fields['issued_on'],
                           self::$_custom_fields['receive_date'],
@@ -97,6 +98,7 @@ class CRM_Donrec_Logic_ReceiptItem {
     $query = "INSERT INTO `civicrm_value_donation_receipt_item_%d`
     (`id`,
       `entity_id`,
+      `%s`,
       `%s`,
       `%s`,
       `%s`,
@@ -118,6 +120,7 @@ class CRM_Donrec_Logic_ReceiptItem {
     `%s`,
     `%s`,
     `%s`,
+    `%s`,
    %s as `%s`
     FROM `civicrm_value_donation_receipt_item_%d`
     WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
@@ -131,6 +134,7 @@ class CRM_Donrec_Logic_ReceiptItem {
       self::$_custom_fields['total_amount'],
       self::$_custom_fields['non_deductible_amount'],
       self::$_custom_fields['currency'],
+      self::$_custom_fields['financial_type_id'],
       self::$_custom_fields['receive_date'],
       self::$_custom_fields['contribution_hash'],
       self::$_custom_fields['status'],
@@ -141,6 +145,7 @@ class CRM_Donrec_Logic_ReceiptItem {
       self::$_custom_fields['total_amount'],
       self::$_custom_fields['non_deductible_amount'],
       self::$_custom_fields['currency'],
+      self::$_custom_fields['financial_type_id'],
       self::$_custom_fields['receive_date'],
       $sha1_string,
       self::$_custom_fields['contribution_hash'],
