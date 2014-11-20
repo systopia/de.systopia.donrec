@@ -16,7 +16,7 @@
     <path>civicrm/donrec/tab</path>
     <page_callback>CRM_Donrec_Page_Tab</page_callback>
     <title>Donation Receipts</title>
-    <access_arguments>view and copy receipts</access_arguments>
+    <access_arguments>view and copy receipts;create and withdraw receipts</access_arguments>
   </item>
   <item>
     <path>civicrm/donrec/create</path>
