@@ -126,7 +126,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     }
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus(ts("Settings successfully saved", ts('Settings'), 'success'));
+    $session->setStatus(ts("Settings successfully saved"), ts('Settings'), 'success');
     $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
   }
 
