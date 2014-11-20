@@ -127,9 +127,7 @@ h3 {
 
 .signature {
   position: absolute;
-  {/literal}
-  {if !$items}top: 725px;{else}top: 750px;{/if}
-  {literal}
+  top: 725px;
 }
 
 .absenderblock_rechts {
@@ -139,7 +137,7 @@ h3 {
 
 .footer {
   position: absolute;
-  top: 855px;
+  top: 810px;
   font-size: 7pt!important;
 }
 
@@ -158,7 +156,9 @@ h3 {
 }
 
 .notice {
-    font-size: 90%!important;
+    {/literal}
+    {if !$items}font-size: 120%!important;{else}font-size: 110%!important;{/if}
+    {literal}
 }
 .newpage {
   page-break-before: always;
