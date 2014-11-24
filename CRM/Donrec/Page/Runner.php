@@ -30,7 +30,11 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
 
     //get session-vars
     $session = CRM_Core_Session::singleton();
-    $url_back = $parameters['test']?$session->get('url_back_test'):$session->get('url_back');
+    if ($parameters['test']) {
+      $url_back = $session->get('url_back_test') . '&exporters=' . $_REQUEST['exporters'];
+    } else {
+      $url_back = $session->get('url_back');
+    }
     $this->assign('url_back', $url_back);
 
     // get the snapshot_id
