@@ -75,6 +75,11 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
     $preferredFileSuffix = ts('.csv');
     $temp_file = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredFileSuffix);
     $handle = fopen($temp_file, 'w');
+
+    // get headers
+    $headers = CRM_Donrec_Logic_ReceiptTokens::getFullTokenList();
+    $headers = $this->flattenTokenData($headers);
+    $headers = array_keys($headers);
     $header_written = false;
 
     // write them all into the file
@@ -85,11 +90,20 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
       if (!empty($csv_data)) {
         if (!$header_written) {
           // write header
-          $headers = array_keys($csv_data);
           fputcsv($handle, $headers, ';', '"');
           $header_written = true;
         }
-        fputcsv($handle, $csv_data, ';', '"');
+
+        // create and write a line
+        $line = array();
+        foreach ($headers as $field) {
+          if (isset($csv_data[$field])) {
+            $line[$field] = $csv_data[$field];
+          } else {
+            $line[$field] = '';
+          }
+        }
+        fputcsv($handle, $line, ';', '"');
       }
     }
 
