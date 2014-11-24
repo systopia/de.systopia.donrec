@@ -79,18 +79,26 @@
   <tr>
     <td class="label">{ts}Donation receipt type{/ts}:</td>
     <td>
-      <input {if $statistic.singleOrBulk == 'bulk'}disabled {elseif $statistic.singleOrBulk == 'single' || !$statistic.singleOrBulk}checked="checked" {/if}value="1" type="radio" id="donrec_type_single" name="donrec_type" class="form-radio"/>
-      <label for="donrec_type_single">{ts}single receipts{/ts}</label>
-      &nbsp;
-      <input {if $statistic.singleOrBulk == 'single'}disabled {elseif $statistic.singleOrBulk == 'bulk'}checked="checked" {/if}value="2" type="radio" id="donrec_type_bulk" name="donrec_type" class="form-radio" />
-      <label for="donrec_type_bulk">{ts}bulk receipts{/ts}</label>
+      {if $from_test}
+        <input {if $statistic.singleOrBulk == 'single'}checked="checked" {/if}value="1" type="radio" id="donrec_type_single" name="donrec_type" class="form-radio"/>
+        <label for="donrec_type_single">{ts}single receipts{/ts}</label>
+        &nbsp;
+        <input {if $statistic.singleOrBulk == 'bulk'}checked="checked" {/if}value="2" type="radio" id="donrec_type_bulk" name="donrec_type" class="form-radio" />
+        <label for="donrec_type_bulk">{ts}bulk receipts{/ts}</label>
+      {else}
+        <input {if $statistic.singleOrBulk == 'bulk'}disabled {elseif $statistic.singleOrBulk == 'single' || !$statistic.singleOrBulk}checked="checked" {/if}value="1" type="radio" id="donrec_type_single" name="donrec_type" class="form-radio"/>
+        <label for="donrec_type_single">{ts}single receipts{/ts}</label>
+        &nbsp;
+        <input {if $statistic.singleOrBulk == 'single'}disabled {elseif $statistic.singleOrBulk == 'bulk'}checked="checked" {/if}value="2" type="radio" id="donrec_type_bulk" name="donrec_type" class="form-radio" />
+        <label for="donrec_type_bulk">{ts}bulk receipts{/ts}</label>
+      {/if}
     </td>
   </tr>
   <tr>
     <td class="label">{ts}Result formats{/ts}:</td>
     <td>
       {foreach from=$exporters item=item name=exporters}
-        <input value="{$item[0]}" type="radio" id="result_type_{$item[0]}" name="result_type" {if $smarty.foreach.exporters.first}checked="checked"{/if} class="form-radio" {if !$item[3]}disabled{/if}/>
+        <input value="{$item[0]}" type="radio" id="result_type_{$item[0]}" name="result_type" {if $smarty.foreach.exporters.first && !$selected_exporter || $selected_exporter == $item[0]}checked="checked" || !$selected{/if} class="form-radio" {if !$item[3]}disabled{/if}/>
         <label for="result_type_{$item[0]}">{$item[1]}</label>
         {if !$item[3]} <span style="color:#ff0000;">({$item[4]})</span>{else}{$item[2]} {if $item[5]}<span style="color:#32cd32;">({$item[5]})</span>{/if}{/if}&nbsp;<br />
       {/foreach}
@@ -100,12 +108,10 @@
 </div>
 <!-- the buttons -->
 <div class="form-item">
-  {if $statistic.status == 'TEST' || !$statistic.status}
+  {if $statistic.status != 'DONE'}
     <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
   {/if}
-  {if $statistic.status == 'DONE' || !$statistic.status || $from_test}
     <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
-  {/if}
   <input name="donrec_abort" value="{ts}Abort{/ts}" class="form-submit" type="submit">
 </div>
 {/if}

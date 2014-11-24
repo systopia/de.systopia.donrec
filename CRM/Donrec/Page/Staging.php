@@ -19,6 +19,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
+    $selected_exporter = empty($_REQUEST['exporters'])?NULL:$_REQUEST['exporters'];
 
     // working on a test-snapshot
     $from_test = empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test'];
@@ -28,11 +29,11 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
     if (!empty($id)) {
       $statistic = CRM_Donrec_Logic_Snapshot::getStatistic($id);
       $statistic['requested_contacts'] = $ccount;
-      // for working on a test-snapshot, we don't set singleOrBulk
-      if ($from_test) {
-        $statistic['singleOrBulk'] = null;
-      }
       $this->assign('statistic', $statistic);
+    }
+
+    if (!empty($selected_exporter)) {
+      $this->assign('selected_exporter', $selected_exporter);
     }
 
     // check which button was clicked
