@@ -424,6 +424,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[issued_on]`               AS `issued_on`,
         receipt.`$receipt_fields[issued_by]`               AS `issued_by`,
         receipt.`$receipt_fields[original_file]`           AS `original_file`,
+        receipt.`$receipt_fields[date_from]`               AS `date_from`,
+        receipt.`$receipt_fields[date_to]`                 AS `date_to`,
 
         receipt.`$receipt_fields[display_name]`            AS `contributor__display_name`,
         receipt.`$receipt_fields[street_address]`          AS `contributor__street_address`,
@@ -442,8 +444,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
         SUM(item.`$item_fields[total_amount]`)             AS `total_amount`,
         SUM(item.`$item_fields[non_deductible_amount]`)    AS `non_deductible_amount`,
-        MIN(item.`$item_fields[receive_date]`)             AS `date_from`,
-        MAX(item.`$item_fields[receive_date]`)             AS `date_to`,
         item.`$item_fields[currency]`                      AS `currency`
 
       FROM `$receipt_table_name`                           AS receipt

@@ -42,6 +42,14 @@
           <div class="crm-label">{ts}total amount{/ts}</div>
           <div class="crm-content">{$statistic.total_amount|crmMoney:EUR}</div>
         </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}From{/ts}</div>
+          <div class="crm-content">{$statistic.date_from}</div>
+        </div>
+        <div class="crm-summary-row">
+          <div class="crm-label">{ts}To{/ts}</div>
+          <div class="crm-content">{$statistic.date_to}</div>
+        </div>
   </div>
 {/if}
 <br/>
