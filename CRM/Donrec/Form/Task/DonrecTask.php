@@ -84,6 +84,9 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
     $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
 
+    $formatted_date_from = date('Y-m-d', $date_from);
+    $formatted_date_to = date('Y-m-d', $date_to);
+
     $query_date_limit = "";
     if ($date_from) {
       $query_date_limit .= "AND UNIX_TIMESTAMP(`receive_date`) >= $date_from";
@@ -121,10 +124,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_Create:postProcess()
     $query = "SELECT `civicrm_contribution`.`id`
               FROM (`civicrm_contribution`)
-              LEFT JOIN `$custom_group_table` AS existing_receipt 
-                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id` 
+              LEFT JOIN `$custom_group_table` AS existing_receipt
+                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
                   AND existing_receipt.`$status_column` = 'ORIGINAL'
-              WHERE 
+              WHERE
                   `contact_id` IN ($contactIds)
                   $query_date_limit
                   AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
@@ -147,7 +150,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID(), $formatted_date_from, $formatted_date_to);
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(

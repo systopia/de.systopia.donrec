@@ -55,7 +55,7 @@ class CRM_Donrec_Logic_Snapshot {
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
-  public static function create(&$contributions, $creator_id, $expired = 0) {
+  public static function create(&$contributions, $creator_id, $date_from, $date_to, $expired = 0) {
 
     $return = array(
       'snapshot' => NULL,
@@ -103,7 +103,9 @@ class CRM_Donrec_Logic_Snapshot {
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
-              `receive_date`)
+              `receive_date`,
+              `date_from`,
+              `date_to`)
           SELECT
               NULL as `id`,
               '%1' as `snapshot_id`,
@@ -117,7 +119,9 @@ class CRM_Donrec_Logic_Snapshot {
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
-              `receive_date`
+              `receive_date`,
+              '$date_from' as `date_from`,
+              '$date_to' as `date_to`
           FROM
               `civicrm_contribution`
           WHERE

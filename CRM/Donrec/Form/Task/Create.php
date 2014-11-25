@@ -49,7 +49,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
   function postProcess() {
     // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
-    
+
     // process remaining snapshots
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
@@ -86,6 +86,9 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
     $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
+
+    $formatted_date_from = date('Y-m-d', $date_from);
+    $formatted_date_to = date('Y-m-d', $date_to);
 
     $query_date_limit = "";
     if ($date_from) {
@@ -124,10 +127,10 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
     $query = "SELECT `civicrm_contribution`.`id`
               FROM (`civicrm_contribution`)
-              LEFT JOIN `$custom_group_table` AS existing_receipt 
-                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id` 
+              LEFT JOIN `$custom_group_table` AS existing_receipt
+                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
                   AND existing_receipt.`$status_column` = 'ORIGINAL'
-              WHERE 
+              WHERE
                   `contact_id` IN ($contactId)
                   $query_date_limit
                   AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
@@ -150,7 +153,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID(), $formatted_date_from, $formatted_date_to);
     $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();
 
     if (!empty($result['intersection_error'])) {
