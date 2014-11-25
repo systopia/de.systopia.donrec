@@ -177,13 +177,16 @@ class CRM_Utils_DonrecHelper
   *
   */
   public static function exitWithMessage($error_message) {
-    $template = '<html>
-                 <head><title>Donation Receipt - Fatal Error</title>
-                 <meta charset="UTF-8">
-                 </head>
-                 <body><p>'. $error_message. '</p></body>
-                 </html>';
-    exit($template);
+    $smarty = CRM_Core_Smarty::singleton();
+    $template = file_get_contents(dirname(__DIR__) . '../../templates/fatal_error.tpl');
+
+    // assign values
+    $smarty->assign('title', ts('Error'));
+    $smarty->assign('headline', ts('Error'));
+    $smarty->assign('description', $error_message);
+
+    $html = $smarty->fetch("string:$template");
+    exit($html);
   }
 
 
