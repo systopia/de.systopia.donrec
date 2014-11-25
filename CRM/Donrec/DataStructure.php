@@ -85,6 +85,20 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'Int',
       'html_type' => 'Text',
     ),
+    array(
+      'name' => 'from_date',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'from_date',
+      'data_type' => 'Date',
+      'html_type' => 'Select Date',
+    ),
+    array(
+      'name' => 'to_date',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'to_date',
+      'data_type' => 'Date',
+      'html_type' => 'Select Date',
+    ),
     /*contact-specific*/
     array(
       'name' => 'display_name',
@@ -477,7 +491,7 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
-   * This is a workaround for the problem that using the translated title right away makes the 
+   * This is a workaround for the problem that using the translated title right away makes the
    * table names change.
    *
    * FIXME: we should not be working with static table names

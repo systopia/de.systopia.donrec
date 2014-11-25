@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   `non_deductible_amount` decimal(20,2) DEFAULT NULL,
   `currency` char(3) COLLATE utf8_unicode_ci NOT NULL,
   `receive_date` datetime NOT NULL,
+  `from_date` datetime NOT NULL,
+  `to_date` datetime NOT NULL,
   PRIMARY KEY (`snapshot_id`,`contribution_id`),
   KEY `id` (`id`),
   KEY `contribution_id` (`contribution_id`),
@@ -29,7 +31,9 @@ CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   KEY `created_by` (`created_by`),
   KEY `receive_date` (`receive_date`),
   KEY `snapshot_id` (`snapshot_id`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  KEY `from_date` (`from_date`),
+  KEY `to_date` (`to_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- removed: CONSTRAINT `FK_donrec_zwb_snapshot_contribution_id` FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution` (`id`)
