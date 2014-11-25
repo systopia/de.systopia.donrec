@@ -121,10 +121,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_Create:postProcess()
     $query = "SELECT `civicrm_contribution`.`id`
               FROM (`civicrm_contribution`)
-              LEFT JOIN `$custom_group_table` AS existing_receipt 
-                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id` 
+              LEFT JOIN `$custom_group_table` AS existing_receipt
+                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
                   AND existing_receipt.`$status_column` = 'ORIGINAL'
-              WHERE 
+              WHERE
                   `contact_id` IN ($contactIds)
                   $query_date_limit
                   AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
@@ -154,7 +154,8 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
         CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(ts('There are no selectable contributions for these contacts in the selected time period.'), ts('Warning'), 'warning');
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', 'reset=1'));
+      $qfKey = $values['qfKey'];
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds))
