@@ -250,6 +250,7 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl templates/CRM/Donrec/Page/Staging.tpl
 #: CRM/Donrec/Form/Task/Rebook.php templates/CRM/Donrec/Page/Runner.tpl
+#: CRM/Utils/DonrecHelper.php
 msgid "Error"
 msgstr ""
 
@@ -902,7 +903,7 @@ msgstr ""
 msgid "Use remaining snapshot"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
 msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
 msgstr ""
 
@@ -1012,4 +1013,27 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Are you sure you want to withdraw this donation receipt?"
+msgstr ""
+
+#: donrec.php
+msgid ""
+"A donation receipt has been issued for this contribution, or is being "
+"processed for a receipt right now. You are not allowed to change the value "
+"for '%s'."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid ""
+"You haven't downloaded the resulting file yet. Are you sure you want to "
+"leave this page? The file would be lost."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid ""
+"Please navigate this page using the buttons below and do not leave the page "
+"via the browser's back button."
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Any existing copies of this receipt will have to be deleted manually."
 msgstr ""
