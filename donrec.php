@@ -317,7 +317,7 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
               continue;
             }
           }
-          $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."), ts($col));
+          $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."), ts($col));
         }
       }
     }
@@ -377,7 +377,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 }
 
 /**
- * Prune the "find contributions" and "advanced contact search" forms 
+ * Prune the "find contributions" and "advanced contact search" forms
  * by removing the fields that don't make sense or don't work
  */
 function donrec_civicrm_buildForm($formName, &$form) {
@@ -406,7 +406,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     if ($status_id) $form->add('select', "custom_{$status_id}",
         ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => ts('- any -'), 
+        array(  ''                => ts('- any -'),
                 'original'        => ts('original'),
                 'invalid'         => ts('invalid'),
                 'copy'            => ts('copy'),
@@ -417,7 +417,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     if ($status_id) $form->add('select', "custom_{$status_id}",
         ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => ts('- any -'), 
+        array(  ''        => ts('- any -'),
                 'single'  => ts('single receipt'),
                 'bulk'    => ts('bulk receipt'),
                 ));
@@ -458,16 +458,16 @@ function donrec_civicrm_buildForm($formName, &$form) {
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
     ));
-    
+
     // DISABLED: date field search doesn't work
     //CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From"), ts("Issed On - To"));
-    
+
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
     if ($status_id) $form->add('select', "custom_{$status_id}",
         ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => ts('- any -'), 
+        array(  ''                => ts('- any -'),
                 'original'        => ts('original'),
                 'invalid'         => ts('invalid'),
                 'copy'            => ts('copy'),
@@ -478,7 +478,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     if ($status_id) $form->add('select', "custom_{$status_id}",
         ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => ts('- any -'), 
+        array(  ''        => ts('- any -'),
                 'single'  => ts('single receipt'),
                 'bulk'    => ts('bulk receipt'),
                 ));
