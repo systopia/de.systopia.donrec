@@ -326,7 +326,7 @@
           );
           },
           {
-            message: {/literal}"{ts}Are you sure you want to delete this donation receipt?{/ts}"{literal} + msgExt
+            message: {/literal}"<p>{ts}Are you sure you want to delete this donation receipt?{/ts}</p><p>{ts}Any existing copies of this receipt will have to be deleted manually.{/ts}</p>"{literal} + msgExt
           });
         }
     });{/literal}{/if}{literal}
