@@ -101,7 +101,11 @@
     <td class="label">{ts}Result formats{/ts}:</td>
     <td>
       {foreach from=$exporters item=item name=exporters}
-        <input value="{$item[0]}" type="radio" id="result_type_{$item[0]}" name="result_type" {if $smarty.foreach.exporters.first && !$selected_exporter || $selected_exporter == $item[0]}checked="checked" || !$selected{/if} class="form-radio" {if !$item[3]}disabled{/if}/>
+        {if $selected_exporter}
+            <input value="{$item[0]}" type="radio" id="result_type_{$item[0]}" name="result_type" {if $selected_exporter == $item[0]}checked="checked" || !$selected{/if} class="form-radio" {if !$item[3]}disabled{/if}/>
+        {else}
+            <input value="{$item[0]}" type="radio" id="result_type_{$item[0]}" name="result_type" {if $smarty.foreach.exporters.first}checked="checked" || !$selected{/if} class="form-radio" {if !$item[3]}disabled{/if}/>
+        {/if}
         <label for="result_type_{$item[0]}">{$item[1]}</label>
         {if !$item[3]} <span style="color:#ff0000;">({$item[4]})</span>{else}{$item[2]} {if $item[5]}<span style="color:#32cd32;">({$item[5]})</span>{/if}{/if}&nbsp;<br />
       {/foreach}
@@ -133,7 +137,7 @@ window.onbeforeunload = function(e) {
 function openURL(url) {
   window.onbeforeunload = null;
   var view_url = cj("<div/>").html(url).text();
-  location.href = view_url;  
+  location.href = view_url;
 }
 
 // and provide a function to go around it
