@@ -16,6 +16,9 @@
     <br/>
     {ts}The "Test run" button will do all the same things except no contributions will be marked as receipted. We strongly recommend testing the creation of any larger batch of donation receipts.{/ts}
   </p>
+  <p>
+    {ts}Please navigate this page using the buttons below and do not leave the page via the browser's back button.{/ts}
+  </p>
 </div>
 
 {if $statistic}
@@ -42,14 +45,14 @@
   </div>
 {/if}
 <br/>
-<form action="{$formAction}" method="post">
+<form id="stagingform" action="{$formAction}" method="post">
 {if $error}
 <br/>
 <div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
   <p style="color: #ffffff;">{ts}Error{/ts}: {$error}</p>
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons">
-  <a class="button" href="{$url_back}">
+  <a class="button" onClick="openURL('{$url_back}');" href="{$url_back}">
     <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
   </a>
 </div>
@@ -61,13 +64,13 @@
   <p>{ts}It will automatically expire on{/ts} <b>{$conflict_error[2]}</b></p>
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons form-item">
-  <a class="button" href="{$url_back}">
+  <a class="button" onClick="openURL('{$url_back}');" href="{$url_back}">
     <span align="right"><div class="icon back-icon"></div>{ts}Back{/ts}</span>
   </a>
 </div>
   {if $is_admin}
   <div class="form-item">
-    <input name="donrec_abort_by_admin" value="{ts}Delete other process and restart{/ts}" class="form-submit" type="submit">
+    <input name="donrec_abort_by_admin" onClick="submit_form();" value="{ts}Delete other process and restart{/ts}" class="form-submit" type="submit">
     <input type="hidden" name="return_to" value="{$return_to}">
   </div>
   {/if}
@@ -109,10 +112,35 @@
 <!-- the buttons -->
 <div class="form-item">
   {if $statistic.status != 'DONE'}
-    <input name="donrec_testrun" value="{ts}Test run{/ts}" class="form-submit" type="submit">
+    <input name="donrec_testrun" onClick="submit_form();" value="{ts}Test run{/ts}" class="form-submit" type="submit">
   {/if}
-    <input name="donrec_run" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
-  <input name="donrec_abort" value="{ts}Abort{/ts}" class="form-submit" type="submit">
+  <input name="donrec_run" onClick="submit_form();" value="{ts}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
+  <input name="donrec_abort" onClick="submit_form();" value="{ts}Abort{/ts}" class="form-submit" type="submit">
 </div>
 {/if}
 </form>
+
+<script type="text/javascript">
+var dontleave = "{ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}";
+
+{literal}
+// add a "don't leave" message if the user wants to close the page
+window.onbeforeunload = function(e) {
+  return dontleave;
+};
+
+// and provide a function to go around it
+function openURL(url) {
+  window.onbeforeunload = null;
+  var view_url = cj("<div/>").html(url).text();
+  location.href = view_url;  
+}
+
+// and provide a function to go around it
+function submit_form() {
+  window.onbeforeunload = null;
+  cj('#stagingform').submit();
+}
+
+{/literal}
+</script>
