@@ -15,7 +15,7 @@
 
 <!-- the buttons -->
 <div id='donrec_buttons' class="crm-submit-buttons" hidden>
-  <a class="button" href="{$url_back}">
+  <a class="button" onClick="openURL('{$url_back}');">
     <span align="right"><div class="icon back-icon"></div>{if $test}{ts}Back{/ts}{else}{ts}Done{/ts}{/if}</span>
   </a>
 </div>
@@ -48,6 +48,7 @@ var exporters = "{$exporters}";
 var instructions_done = "{ts}The donation receipts have been generated. You can now download the results.{/ts}";
 var instructions_error = "{ts}There was a problem. Please check the log below for more information.{/ts}";
 var dontleave = "{ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}";
+var file_downloaded = false || (test=='1');
 
 var progress = 0;
 {literal}
@@ -83,8 +84,8 @@ function processReply(reply) {
       cj("#donrec-logtable-body").append("      \
         <tr>                                    \
           <td>" + log_entry.timestamp + "</td>  \
-          <td>" + log_entry.type + "</td>       \
-          <td>" + log_entry.message + "</td>    \
+          <td>" + log_entry.type +      "</td>  \
+          <td>" + log_entry.message +   "</td>  \
         </tr>");
     };
   }
@@ -104,20 +105,41 @@ function processReply(reply) {
 function processDone(reply) {
   cj('#donrec_buttons').show();
   cj('#donrec_instructions').text(instructions_done);
-  //cj("#progressbar").progressbar("disable");
   cj("#progressbar").remove();
-  window.onbeforeunload = null;  // remove the "dont't leave" message
 
   // add download buttons for all files
-  for (var exporter in reply.values.files) {
-    var download = reply.values.files[exporter];
-    cj('#donrec_buttons').append("                                                      \
-      <a class='button' href='" + download[1] + "' download='" + download[0] + "'>      \
-        <span align='right'>                                                            \
-          <div class='icon check-icon'></div>" + download_caption + exporter + "        \
-        </span>                                                                         \
-      </a>");
-  }  
+  if (reply.values.files.length == 0) {
+    file_downloaded = true;
+  } else {
+    for (var exporter in reply.values.files) {
+      var download = reply.values.files[exporter];
+      cj('#donrec_buttons').append("                                                      \
+        <a class='button' onClick='file_downloaded=true;' href='" + download[1] + "' download='" + download[0] + "'>      \
+          <span align='right'>                                                            \
+            <div class='icon check-icon'></div>" + download_caption + exporter + "        \
+          </span>                                                                         \
+        </a>");
+    }    
+  }
+}
+
+// function to open link after disabling the navigation warning
+function openURL(url) {
+  if (!file_downloaded) {
+    CRM.confirm(function() {
+      window.onbeforeunload = null;
+      var view_url = cj("<div/>").html(url).text();
+      location.href = view_url;            
+    },
+    {
+      message: {/literal}"{ts}You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost.{/ts}"{literal}
+    });
+
+  } else {
+    window.onbeforeunload = null;
+    var view_url = cj("<div/>").html(url).text();
+    location.href = view_url;          
+  }
 }
 
 // kick off process
