@@ -101,7 +101,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
       $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search'));
 
       if(CRM_Core_Permission::check('delete receipts')) {
-        $this->assign('is_admin', CRM_Utils_System::url('civicrm/contact/search'));
+        $this->assign('is_admin', 1);
         $this->assign('return_to', $conflict[2][0]);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
                                 "sid=" . $conflict[1][0] . "&ccount=$ccount",
