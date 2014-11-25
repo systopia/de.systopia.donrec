@@ -177,10 +177,12 @@ class CRM_Utils_DonrecHelper
   *
   */
   public static function exitWithMessage($error_message) {
-    $template = "<html>
-                 <head><title>Donation Receipt - Fatal Error</title></head>
-                 <body><p>$error_message</p></body>
-                 </html>";
+    $template = '<html>
+                 <head><title>Donation Receipt - Fatal Error</title>
+                 <meta charset="UTF-8">
+                 </head>
+                 <body><p>'. $error_message. '</p></body>
+                 </html>';
     exit($template);
   }
 
@@ -188,10 +190,10 @@ class CRM_Utils_DonrecHelper
 
   /**
    * Get a batching lock
-   * 
-   * the lock is needed so that only one relevant process can access the 
+   *
+   * the lock is needed so that only one relevant process can access the
    * payment/statment data structures at a time
-   * 
+   *
    * @return lock object. check if it ->isAcquired() before use
    */
   public static function getLock($type, $id) {
@@ -218,7 +220,7 @@ class CRM_Utils_DonrecHelper
   /**
    * extracts the field ID from the field set provided in the format:
    * <field_name> => <column_name>
-   * 
+   *
    * @return (int) field_id  or 0 if not found
    */
   public static function getFieldID($fields, $field_name) {
@@ -226,7 +228,7 @@ class CRM_Utils_DonrecHelper
       // TODO: more efficient way?
       $inv_column = strrev($fields[$field_name]);
       $inv_id = substr($inv_column, 0, strpos($inv_column, '_'));
-      return (int) strrev($inv_id); 
+      return (int) strrev($inv_id);
     } else {
       return 0;
     }
@@ -239,7 +241,7 @@ class CRM_Utils_DonrecHelper
     $field_id = self::getFieldID($fields, $field_name);
     if ($field_id) {
       if ($form->elementExists("custom_{$field_id}")) {
-        $form->removeElement("custom_{$field_id}");        
+        $form->removeElement("custom_{$field_id}");
       }
     }
   }
