@@ -341,8 +341,8 @@ msgid "Only original donation receipts can be withdrawn."
 msgstr "Es können nur Kopien von Originalen angefertigt werden."
 
 #: donrec.php
-msgid "A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%1'."
-msgstr "Für diese Zuwendung wurde bereits eine Zuwendungsbescheinigung ausgestellt, bzw. ist in Arbeit. Sie dürfen daher den Wert für '%1' nicht verändern."
+msgid "A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."
+msgstr "Für diese Zuwendung wurde bereits eine Zuwendungsbescheinigung ausgestellt, bzw. ist in Arbeit. Sie dürfen daher den Wert für '%s' nicht verändern."
 
 #: templates/CRM/Donrec/Form/Task/Create.tpl
 #: templates/CRM/Donrec/Form/Task/DonrecTask.tpl
@@ -981,4 +981,3 @@ msgstr "Bitte verwenden Sie auf dieser Seite nicht die Vor- und Zurück-Buttons 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Any existing copies of this receipt will have to be deleted manually."
 msgstr "Die erstellten Kopien dieser Bestätigung werden nicht mit gelöscht, und sollten manuell gelöscht werden."
-
