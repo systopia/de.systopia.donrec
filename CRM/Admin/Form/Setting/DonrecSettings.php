@@ -49,11 +49,12 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // add a custom form validation rule that allows only positive integers (i > 0)
     $this->registerRule('onlypositive', 'callback', 'onlyPositiveIntegers', 'CRM_Admin_Form_Setting_DonrecSettings');
+    $this->registerRule('onlyLettersUmlauts', 'callback', 'onlyLettersWithUmlauts', 'CRM_Admin_Form_Setting_DonrecSettings');
   }
 
   function addRules() {
-    $this->addRule('draft_text', ts('Draft text can only contain text'), 'lettersonly');
-    $this->addRule('copy_text', ts('Copy text can only contain text'), 'lettersonly');
+    $this->addRule('draft_text', ts('Draft text can only contain text'), 'onlyLettersUmlauts');
+    $this->addRule('copy_text', ts('Copy text can only contain text'), 'onlyLettersUmlauts');
     $this->addRule('packet_size', ts('Packet size can only contain positive integers'), 'onlypositive');
     //TODO add rule for unix paths
   }
@@ -133,5 +134,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   // custom validation rule that allows only positive integers
   static function onlyPositiveIntegers($value) {
     return !($value <= 0);
+  }
+
+  static function onlyLettersWithUmlauts($value) {
+    return preg_match("/^[A-Za-zäöüÄÖÜ]+$/",$value);
   }
 }
