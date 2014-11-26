@@ -50,6 +50,8 @@
     var time_period = cj('#time_period');
     var custom_period = cj('#custom_period');
     var current_year = (new Date).getFullYear();
+    var current_month = (new Date).getMonth();
+    var current_day = (new Date).getDate();
     var from = cj('#donrec_contribution_horizon_from');
     var to = cj('#donrec_contribution_horizon_to');
     var from_display = cj('#donrec_contribution_horizon_from_display');
@@ -66,7 +68,7 @@
         break;
       case "current_year":
         from_display.datepicker('setDate', new Date(current_year, 0, 1));
-        to_display.datepicker('setDate', new Date(current_year, 11, 31));
+        to_display.datepicker('setDate', new Date(current_year, current_month, current_day));
         custom_period.hide();
         break;
       case "last_year":
