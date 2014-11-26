@@ -113,8 +113,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // format date timestamps
-    // $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
-    // $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
+    $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
+    $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
     // add contributor and addressee
     $values['contributor'] = $this->getContributor($values['contact_id']);
     $values['addressee'] = $this->getAddressee($values['contact_id']);

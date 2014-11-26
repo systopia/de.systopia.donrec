@@ -87,8 +87,8 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
     $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
 
-    $formatted_date_from = date('Y-m-d', $date_from);
-    $formatted_date_to = date('Y-m-d', $date_to);
+    $formatted_date_from = date('Y-m-d H:i:s', $date_from);
+    $formatted_date_to = date('Y-m-d H:i:s', $date_to);
 
     $query_date_limit = "";
     if ($date_from) {
