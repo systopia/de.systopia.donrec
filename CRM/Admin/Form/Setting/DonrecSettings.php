@@ -137,6 +137,6 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   }
 
   static function onlyLettersWithUmlauts($value) {
-    return preg_match("/^[A-Za-zäöüÄÖÜ]+$/",$value);
+    return preg_match("/^[A-Za-zäöüÄÖÜß]+$/",$value);
   }
 }
