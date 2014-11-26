@@ -186,12 +186,9 @@ class CRM_Donrec_Logic_Template
                           top: 400px;
                         }
 
-                        .watermark-top {
-                          left: 0px;
-                          top: 880px;
-                          -ms-transform: rotate(0deg); /* IE 9 */
-                          -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
-                          transform: rotate(0deg);
+                        .watermark-center2 {
+                          left: 10px;
+                          top: 1280px;
                         }
                         {/literal}
                         </style>
@@ -215,11 +212,11 @@ class CRM_Donrec_Logic_Template
                           top: 650px;
                         }
 
-                        .watermark-top {
-                          -ms-transform: rotate(0deg); /* IE 9 */
-                          -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
-                          transform: rotate(0deg);
+                        .watermark-center2 {
+                          left: 30px;
+                          top: 650px;
                         }
+
                         {/literal}
                         </style>
                         ';
@@ -228,7 +225,7 @@ class CRM_Donrec_Logic_Template
 
     // prepare watermark
     $watermark_site1 = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
-    $watermark_site2 = '<div class="watermark watermark-top">{if $watermark}{$watermark}{/if}</div>';
+    $watermark_site2 = '<div class="watermark watermark-center2">{if $watermark}{$watermark}{/if}</div>';
 
     // find </style> element
     $matches = array();
