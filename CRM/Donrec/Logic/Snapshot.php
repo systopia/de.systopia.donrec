@@ -16,9 +16,9 @@ class CRM_Donrec_Logic_Snapshot {
   private $Id;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id');
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
-  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date');
+  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'date_from', 'date_to');
   // private constructor to prevent
   // external instantiation
   private function __construct($id) {
@@ -55,7 +55,7 @@ class CRM_Donrec_Logic_Snapshot {
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
-  public static function create(&$contributions, $creator_id, $expired = 0) {
+  public static function create(&$contributions, $creator_id, $date_from, $date_to, $expired = 0) {
 
     $return = array(
       'snapshot' => NULL,
@@ -103,7 +103,9 @@ class CRM_Donrec_Logic_Snapshot {
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
-              `receive_date`)
+              `receive_date`,
+              `date_from`,
+              `date_to`)
           SELECT
               NULL as `id`,
               '%1' as `snapshot_id`,
@@ -117,7 +119,9 @@ class CRM_Donrec_Logic_Snapshot {
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
-              `receive_date`
+              `receive_date`,
+              '$date_from' as `date_from`,
+              '$date_to' as `date_to`
           FROM
               `civicrm_contribution`
           WHERE
@@ -537,7 +541,9 @@ class CRM_Donrec_Logic_Snapshot {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount,
-      created_timestamp AS creation_date
+      created_timestamp AS creation_date,
+      date_from AS date_from,
+      date_to AS date_to
       FROM civicrm_donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -575,6 +581,8 @@ class CRM_Donrec_Logic_Snapshot {
       'contribution_count' => $result1->contribution_count,
       'total_amount' => $result1->total_amount,
       'creation_date' => $result1->creation_date,
+      'date_from' => $result1->date_from,
+      'date_to' => $result1->date_to,
       'status' => $status,
       'singleOrBulk' => self::singleOrBulk($id)
     );

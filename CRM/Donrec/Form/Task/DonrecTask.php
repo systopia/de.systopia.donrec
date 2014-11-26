@@ -84,6 +84,9 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
     $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
 
+    $formatted_date_from = date('Y-m-d H:i:s', $date_from);
+    $formatted_date_to = date('Y-m-d H:i:s', $date_to);
+
     $query_date_limit = "";
     if ($date_from) {
       $query_date_limit .= "AND UNIX_TIMESTAMP(`receive_date`) >= $date_from";
@@ -147,7 +150,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
 
     // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID());
+    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID(), $formatted_date_from, $formatted_date_to);
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(

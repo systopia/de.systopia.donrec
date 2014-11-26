@@ -106,15 +106,12 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
       $values['id']        = $snapshot_line_id;    // just use one of them as ID
       $values['contact_id'] = $snapshot_line['contact_id'];
       $values['currency']  = $snapshot_line['currency'];
-      if ($receive_date < $values['date_from'])  $values['date_from'] = $receive_date;
-      if ($receive_date > $values['date_to'])    $values['date_to']   = $receive_date;
+      $values['date_from'] = $snapshot_line['date_from'];
+      $values['date_to'] = $snapshot_line['date_to'];
       $values['total_amount'] += $snapshot_line['total_amount'];
       $values['non_deductible_amount'] += $snapshot_line['non_deductible_amount'];
     }
 
-    // format date timestamps
-    $values['date_from'] = date('Y-m-d H:i:s', $values['date_from']);
-    $values['date_to']   = date('Y-m-d H:i:s', $values['date_to']);
     // add contributor and addressee
     $values['contributor'] = $this->getContributor($values['contact_id']);
     $values['addressee'] = $this->getAddressee($values['contact_id']);

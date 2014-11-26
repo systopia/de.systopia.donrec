@@ -426,6 +426,9 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
     if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
 
+
+
+
   } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
     $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
 
@@ -454,6 +457,8 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_postal_code');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_city');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_country');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_from');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_to');
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
