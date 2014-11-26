@@ -1037,3 +1037,11 @@ msgstr ""
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Any existing copies of this receipt will have to be deleted manually."
 msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Period from"
+msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Period to"
+msgstr ""

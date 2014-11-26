@@ -43,12 +43,12 @@
           <div class="crm-content">{$statistic.total_amount|crmMoney:EUR}</div>
         </div>
         <div class="crm-summary-row">
-          <div class="crm-label">{ts}From{/ts}</div>
-          <div class="crm-content">{$statistic.date_from}</div>
+          <div class="crm-label">{ts}Period from{/ts}</div>
+          <div class="crm-content">{$statistic.date_from|crmDate:$config->dateformatFull}</div>
         </div>
         <div class="crm-summary-row">
-          <div class="crm-label">{ts}To{/ts}</div>
-          <div class="crm-content">{$statistic.date_to}</div>
+          <div class="crm-label">{ts}Period to{/ts}</div>
+          <div class="crm-content">{$statistic.date_to|crmDate:$config->dateformatFull}</div>
         </div>
   </div>
 {/if}
