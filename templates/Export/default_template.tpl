@@ -237,7 +237,16 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
   <tr class='var'>
     <td id='total'>**{$total|crmMoney:EUR}</td>
     <td>{$totaltext}</td>
-    <td>{if $items}{$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}{else}{$date_from|crmDate:'%d.%m.%Y'}{/if}</td>
+    <td>
+        {if $items}
+            {$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}
+        {else}
+            {* absolutly not elegant *}
+            {foreach from=$lines item=item}
+                {$item.receive_date|crmDate:'%d.%m.%Y'}
+            {/foreach}
+        {/if}
+    </td>
   </tr>
 </table>
 
