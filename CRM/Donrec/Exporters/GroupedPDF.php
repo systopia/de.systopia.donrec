@@ -126,55 +126,23 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         }
       }
     }
-
-    // create and open a zip file for each (page count) group
-    $zipPool = array();
-    $pageCountArrKeys = array_keys($pageCountArr);
-    foreach($pageCountArrKeys as $groupId => $value) {
-      $tmp = new ZipArchive;
-      $pcPreferredFileName = sprintf(ts('%d-page(s)%s'), $value, $preferredSuffix);
-      $pcArchiveFileName = CRM_Donrec_Logic_File::makeFileName($pcPreferredFileName);
-      $pcFileURL = $pcArchiveFileName;
-
-      if ($tmp->open($pcFileURL, ZIPARCHIVE::CREATE) === TRUE) {
-        $zipPool[$value] = array('page_count' => $value, 'handle' => $tmp, 'file' => $pcArchiveFileName, 'pref_name' => $pcPreferredFileName);
-      }else{
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file %s', $fileURL), CRM_Donrec_Logic_Exporter::FATAL);
-        return $reply;
-      }
-    }
-
+    
     // add files to sub-archives
-    foreach($pageCountArr as $entry) {
-      foreach ($entry as $item) {
-        if($item[0] && $item[2]) { // if page count and file name exists
-          $opResult = $zipPool[$item[0]]['handle']->addFile($item[2], basename($item[2])) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created PDF file</span> to <span title='{$item[0]['file']}'>{$item[0]}-page ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-        }
-      }
-    }
-
-    // close sub-archives
-    foreach($zipPool as $archive) {
-      if(!$archive['handle']->close()) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'archive->close() returned false for file' . $archive['file'], CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
-      }
-    }
-
     // open main archive and add sub-archives
     if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
-      foreach($zipPool as $zip) {
-        $filename = $zip['file'];
-        if ($filename) {
-          $toRemove[] = $filename;
-          $opResult = $outerArchive->addFile($filename, $zip['pref_name']) ;
-          CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$filename}'>{$zip['page_count']}-page ZIP</span> to <span title='{$archiveFileName}'>final ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+      foreach($pageCountArr as $entry) {
+        foreach ($entry as $item) {
+          if($item[0] && $item[2]) { // if page count and file name exists
+            $folder = sprintf(ts('%d-page'), $item[0]).PATH_SEPARATOR;
+            $opResult = $outerArchive->addFile($item[2], $folder.basename($item[2])) ;
+            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created {$item[0]}-page PDF file</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+          }
         }
       }
       if(!$outerArchive->close()) {
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
       }
-    }else{
+    } else{
       CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::FATAL);
       return $reply;
     }
