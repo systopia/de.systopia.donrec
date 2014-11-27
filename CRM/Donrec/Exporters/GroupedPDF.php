@@ -126,14 +126,14 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         }
       }
     }
-    
+
     // add files to sub-archives
     // open main archive and add sub-archives
     if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
       foreach($pageCountArr as $entry) {
         foreach ($entry as $item) {
           if($item[0] && $item[2]) { // if page count and file name exists
-            $folder = sprintf(ts('%d-page'), $item[0]).PATH_SEPARATOR;
+            $folder = sprintf(ts('%d-page'), $item[0]).DIRECTORY_SEPARATOR;
             $opResult = $outerArchive->addFile($item[2], $folder.basename($item[2])) ;
             CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created {$item[0]}-page PDF file</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
           }
