@@ -192,6 +192,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     // add legacy 'items'
     if (count($values['lines']) > 1) {
       $values['items'] = $values['lines'];
+    } else {
+      // Bugfix #1529
+      // If 'items' aren't set, smarty will use the most recently value for it.
+      $values['items'] = array();
     }
 
     // add organisation address
