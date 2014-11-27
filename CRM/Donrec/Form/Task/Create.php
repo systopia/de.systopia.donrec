@@ -164,7 +164,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/create', "reset=1&cid=$contactId"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $sid . '&ccount=1')
+        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $sid . '&origin=' . $contactId . '&ccount=1')
       );
     }
   }

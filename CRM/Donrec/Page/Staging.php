@@ -20,6 +20,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
     $selected_exporter = empty($_REQUEST['exporters'])?NULL:$_REQUEST['exporters'];
+    $origin = empty($_REQUEST['origin'])?NULL:$_REQUEST['origin'];
 
     // working on a test-snapshot
     $from_test = empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test'];
@@ -59,7 +60,11 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
             CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount"));
           }else{
             CRM_Core_Session::setStatus(ts('The previously created snapshot has been deleted.'), ts('Warning'), 'warning');
-            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search'));
+            if (!empty($_REQUEST['origin'])) {
+              CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$origin&selectedChild=donation_receipts"));
+             }else{
+               CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search'));
+             }
           }
         }
       }
@@ -136,7 +141,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
         $this->assign('exporters', $exp_array);
         $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
-                                "sid=$id&ccount=$ccount",
+                                "sid=$id&ccount=$ccount&origin=$origin",
                                 false, null, false,true ));
       }
     }
