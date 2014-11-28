@@ -269,6 +269,9 @@ class CRM_Donrec_Logic_Template
     // compile template
     $html = $smarty->fetch("string:$html");
 
+    // reset template variables
+    $smarty->clearTemplateVars();
+
     // set up file names
     $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-")."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
 
