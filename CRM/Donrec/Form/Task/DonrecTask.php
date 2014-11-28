@@ -27,7 +27,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
        'customized_period' => ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', TRUE, FALSE);
 
     // call the (overwritten) Form's method, so the continue button is on the right...
     CRM_Core_Form::addDefaultButtons(ts('Continue'));
