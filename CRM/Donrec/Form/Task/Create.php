@@ -28,7 +28,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
        'customized_period' => ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options);
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', FALSE, FALSE);
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:'), 'searchDate', TRUE, FALSE);
     $this->addDefaultButtons(ts('Continue'));
   }
 
