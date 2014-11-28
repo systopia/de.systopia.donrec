@@ -59,7 +59,7 @@ class CRM_Donrec_Form_Task_RebookTask extends CRM_Contribute_Form_Task {
     $userContext = $session->readUserContext();  
 
     $values = $this->exportValues();
-    CRM_Donrec_Form_Task_Rebook::rebook($this->_contributionIds, $values['contactId'], $userContext);
+    CRM_Donrec_Form_Task_Rebook::rebook($this->_contributionIds, trim($values['contactId']), $userContext);
     parent::postProcess();
 
     // finally, redirect to original contact's contribution overview

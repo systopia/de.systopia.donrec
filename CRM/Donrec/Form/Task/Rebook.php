@@ -57,7 +57,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
   function postProcess() {
     $values = $this->exportValues();
-    CRM_Donrec_Form_Task_Rebook::rebook($this->contribution_ids, $values['contactId']);
+    CRM_Donrec_Form_Task_Rebook::rebook($this->contribution_ids, trim($values['contactId']));
     parent::postProcess();
 
     // finally, redirect to original contact's contribution overview
@@ -118,6 +118,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
    * @param $contact_id        the target contact ID
    */
   static function rebook($contribution_ids, $contact_id, $redirect_url = NULL) {
+    $contact_id = (int) $contact_id;
     $excludeList = array('id', 'contribution_id', 'trxn_id', 'invoice_id', 'cancel_date', 'cancel_reason', 'address_id', 'contribution_contact_id', 'contribution_status_id');
     $cancelledStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Cancelled', 'name');
     $completedStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
@@ -233,7 +234,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
    */
   static function rebookRules($values) {
     $errors = array();
-    $contactId = $values['contactId'];
+    $contactId = trim($values['contactId']);
     $contributionIds = $values['contributionIds'];
 
     if (!preg_match('/^\d+$/', $contactId)) { // check if is int
@@ -243,7 +244,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
     // validation for contact
     $contact = new CRM_Contact_BAO_Contact();
-    $contact->id = $contactId;
+    $contact->id = (int) $contactId;
 
     if (!$contact->find(true)) {
       $errors['contactId'] = ts('A contact with CiviCRM ID %1 doesn\'t exist!', array(1 => $contactId));
