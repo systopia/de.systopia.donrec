@@ -270,7 +270,7 @@ class CRM_Donrec_Logic_Template
     $html = $smarty->fetch("string:$html");
 
     // set up file names
-    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-")."{$values['contributor']['id']}-{$values['today']}", ".pdf");
+    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-")."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
 
     // render PDF receipt
     $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
