@@ -122,7 +122,7 @@ class CRM_Donrec_Logic_Engine {
       CRM_Donrec_Logic_Exporter::addLogEntry($stats, "Couldn't acquire lock. Parallel processing denied. Lock timeout is {$lock->_timeout}s.");
       return $stats;
     }
-    
+
     // check status
     $is_bulk = !empty($this->parameters['bulk']);
     $is_test = !empty($this->parameters['test']);
@@ -182,7 +182,7 @@ class CRM_Donrec_Logic_Engine {
           foreach($bulk_line_ids as $contact_id => $line_ids) {
             if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
               // get pdf file name from snapshot line
-              $pdf_file = $this->getPDF($line_ids[0]);
+              $pdf_file = $this->getPDF($line_ids);
               if ($pdf_file) {
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
@@ -203,11 +203,12 @@ class CRM_Donrec_Logic_Engine {
         if (!empty($single_line_ids)) {
           $receipt_params['type'] = 'SINGLE';
           foreach ($single_line_ids as $index => $line_id) {
+            $line_ids = array($line_id);
             if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
               // get pdf file name from snapshot line
-              $pdf_file = $this->getPDF($line_id);
+              $pdf_file = $this->getPDF($line_ids);
               if ($pdf_file) {
-                $tempReceipt = $this->snapshot->getSnapshotReceipt(array($line_id), $is_test);
+                $tempReceipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test);
                 $contact_id =  $tempReceipt->getContactID();
                 $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
                 if (!empty($file)) {
@@ -215,7 +216,7 @@ class CRM_Donrec_Logic_Engine {
                 }
               }
             }
-            CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, array($line_id), $receipt_params);
+            CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, $line_ids, $receipt_params);
             unset($receipt_params['original_file']);
           }
         }
@@ -324,9 +325,26 @@ class CRM_Donrec_Logic_Engine {
   /**
   * get or create a pdf file for the snapshot line
   */
-  public function getPDF($snapshot_line_id) {
-    $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
-    $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
+  public function getPDF($snapshot_line_ids) {
+    // get the proc-info for only one of the snapshot-lines
+    // should be the same for all others
+    $proc_info = $this->snapshot->getProcessInformation($snapshot_line_ids[0]);
+
+    // was a pdf already created?
+    if (isset($proc_info['PDF']['pdf_file'])) {
+      $filename = $proc_info['PDF']['pdf_file'];
+
+    // otherwise create a new one
+    } else {
+      // get snapshot-receipt and tokens
+      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($snapshot_line_ids, FALSE);
+      $tokens = $snapshot_receipt->getAllTokens();
+      // get template and create pdf
+      $tpl_param = array();
+      $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+      $filename = $template->generatePDF($tokens, $tpl_param);
+    }
+
     return $filename;
   }
 
