@@ -10,15 +10,16 @@
 {* then move the column from the temporary table into the original one *}
 {literal}
 <script type="text/javascript">
-  // get the penultimate column index
-  var columnNr = cj('.selector:first thead tr:first th:last').prev('th').index();
+  (function(cj) {
+    // get the penultimate column index
+    var columnNr = cj('.selector:first thead tr:first th:last').prev('th').index();
+    // iterate over all items
+    cj('#receipted_data tr td').each(function (rowIndex) {
+      cj(this).insertAfter(cj('.selector:first tbody tr:nth-child(' + (rowIndex+1) + ') td:nth-child(' + columnNr + ')'));
+    });
 
-  // iterate over all items
-  cj('#receipted_data tr td').each(function (rowIndex) {
-    cj(this).insertAfter(cj('.selector:first tbody tr:nth-child(' + (rowIndex+1) + ') td:nth-child(' + columnNr + ')'));
-  });
-
-  // finally delete the temp table
-  cj('#receipted_data').remove();
+    // finally delete the temp table
+    cj('#receipted_data').remove();
+  })(cj);
 </script>
 {/literal}
