@@ -212,18 +212,13 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
 function donrec_civicrm_alterContent(&$content, $context, $tplName, &$object) {
   // get page- resp. form-class of the object
   $class_name = get_class($object);
-  // the page- resp. form-classes the injection should be made for
-  $classes = array(
-    'CRM_Contribute_Page_Tab',
-    'CRM_Contribute_Form_Search',
-    'CRM_Contribute_Page_DashBoard'
-  );
-  if (in_array($class_name, $classes)) {
-    // load the template and parse it through smarty
+  if ($class_name == 'CRM_Contribute_Page_Tab' ||
+      $class_name == 'CRM_Contribute_Form_Search' ||
+      $class_name == 'CRM_Contribute_Page_DashBoard') {
+    // parse the template with smarty
     $smarty = CRM_Core_Smarty::singleton();
     $path = __DIR__ . '/templates/CRM/Contribute/ReceiptedColumn.tpl';
-    $template = file_get_contents($path);
-    $html = $smarty->fetch("string:$template");
+    $html = $smarty->fetch($path);
     // append the html to the content
     $content .= $html;
   }
