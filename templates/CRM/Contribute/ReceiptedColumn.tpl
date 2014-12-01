@@ -1,5 +1,3 @@
-{include file="CRM/Contribute/Page/Tab.extra.tpl"}
-
 {* create a temporary table with the data *}
 <table id="receipted_data" hidden="1">
   {foreach from=$rows item=row}
