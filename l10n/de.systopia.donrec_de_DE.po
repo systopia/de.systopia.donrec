@@ -187,6 +187,7 @@ msgid "PLEASE DO NOT CLOSE THIS PAGE!"
 msgstr "DIESE SEITE BITTE NICHT SCHLIESSEN!"
 
 #: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: templates/CRM/Donrec/Form/Task/Create.tpl
 msgid "Back"
 msgstr "Zurück"
 
@@ -989,4 +990,8 @@ msgstr "Zeitraum von"
 #: templates/CRM/Donrec/Page/Staging.tpl
 msgid "Period to"
 msgstr "Zeitraum bis"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "%d-page"
+msgstr "%d-seitig"
 
