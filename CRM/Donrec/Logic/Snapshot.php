@@ -326,7 +326,7 @@ class CRM_Donrec_Logic_Snapshot {
       // reset process information for all IDs
       $query = "UPDATE `civicrm_donrec_snapshot` SET `process_data` = NULL WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
-    }    
+    }
   }
 
   /**
@@ -533,6 +533,8 @@ class CRM_Donrec_Logic_Snapshot {
   * Checks if a snapshot is marked as bulk or single
   * @return string bulk|single or null
   */
+  // TODO: refactor this. Process-infos are already accessed in getExporters.
+  // Use a common method to not fetch process-infos twice.
   public static function singleOrBulk($id) {
     $query = "
       SELECT `process_data`
@@ -563,6 +565,43 @@ class CRM_Donrec_Logic_Snapshot {
     } else {
       return 'single';
     }
+  }
+
+  /**
+  * Returns an array all exporters used to process the snapshot
+  * @return array
+  */
+  public function getExporters() {
+    // get snapshot id
+    $id = $this->getId();
+
+    // get ids of items which are already processed
+    $query = "
+      SELECT `id`
+      FROM `civicrm_donrec_snapshot`
+      WHERE snapshot_id = $id
+      AND status = 'DONE'
+    ";
+    $result = CRM_Core_DAO::executeQuery($query);
+
+    // merge process-data of all items into array
+    $merged_process_data = array();
+    $count = 0;
+    while ($result->fetch()) {
+      $process_data = $this->getProcessInformation($result->id);
+      $merged_process_data = array_merge($merged_process_data, $process_data);
+      $count += 1;
+    }
+
+    // exclude values that aren't exporters
+    $list_keys = array_keys($merged_process_data);
+    $exporters = array_intersect($list_keys, CRM_Donrec_Logic_Exporter::listExporters());
+
+    // if we have processed lines but no exporter, we use the Dummy
+    if (!empty($count) && empty($exporters)) {
+      $exporters = array('Dummy');
+    }
+    return $exporters;
   }
 
   /**
@@ -616,7 +655,8 @@ class CRM_Donrec_Logic_Snapshot {
       'date_from' => $result1->date_from,
       'date_to' => $result1->date_to,
       'status' => $status,
-      'singleOrBulk' => self::singleOrBulk($id)
+      'singleOrBulk' => self::singleOrBulk($id),
+      'exporters' => $snapshot->getExporters($id)
     );
     return $statistic;
   }
