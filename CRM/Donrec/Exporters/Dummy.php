@@ -50,8 +50,6 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
       $this->updateProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
     }
 
-    usleep(300);
-
     // add a log entry
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
@@ -67,7 +65,12 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   public function exportBulk($chunk, $snapshotId, $is_test) {
     $reply = array();
 
-    usleep(500);
+    // edit the process information
+    foreach ($chunk as $contact_id => $items) {
+      foreach ($items as $item) {
+        $this->updateProcessInformation($item['id'], array('test' => 'Dummy was here!'));
+      }
+    }
 
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy bulk-processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
