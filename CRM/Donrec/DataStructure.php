@@ -369,12 +369,6 @@ class CRM_Donrec_DataStructure {
       'value' => 'WITHDRAWN_COPY',
     ),
     array(
-      'name' => 'INVALID',
-      'option_group_name' => 'donrec_status',
-      'label' => 'invalid',
-      'value' => 'INVALID',
-    ),
-    array(
       'name' => 'SINGLE',
       'option_group_name' => 'donrec_type',
       'label' => 'single',
