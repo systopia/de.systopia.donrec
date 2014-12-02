@@ -44,8 +44,12 @@
   </tr>
 </table>
 
-{literal}
 <script type="text/javascript">
+  // workaround for #1531: go back to summary tab
+  var back_link = '{crmURL p="civicrm/contact/view" q="reset=1&cid=$cid&selectedChild=donation_receipts"}';
+  var replaced_back_button = '<span onClick="donrec_go_back()" class="crm-button crm-button-type-back"><input type="button" value="{ts}Back{/ts}" /></span>';
+
+{literal}
   cj(document).ready(function() {
     var time_period = cj('#time_period');
     var custom_period = cj('#custom_period');
@@ -85,5 +89,12 @@
     //on change
     time_period.change(set_period);
   });
+
+  // workaround for #1531: go back to summary tab
+  cj("input.cancel").parent().replaceWith(replaced_back_button);
+  function donrec_go_back() {
+    back_link = cj("<div/>").html(back_link).text();
+    location.href = back_link;
+  }
 </script>
 {/literal}

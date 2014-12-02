@@ -35,6 +35,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function setDefaultValues() {
     $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
     $this->getElement('cid')->setValue($contactId);
+    $this->assign('cid', $contactId);
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
     //TODO: what if we have more than 1 remaining snapshot (what should not happen at all)?
