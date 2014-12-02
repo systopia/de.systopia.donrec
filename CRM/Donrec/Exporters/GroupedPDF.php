@@ -148,6 +148,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     }
 
     $file = CRM_Donrec_Logic_File::createTemporaryFile($fileURL, $preferredFileName . $preferredSuffix);
+    error_log("de.systopia.donrec: resulting ZIP file URL is '$file'.");
     if (!empty($file)) {
       $reply['download_name'] = $preferredFileName . $preferredSuffix;
       $reply['download_url'] = $file;
