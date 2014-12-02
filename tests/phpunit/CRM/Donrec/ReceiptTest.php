@@ -76,10 +76,6 @@ class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
     
   }
 
-  function testMarkInvalid() {
-
-  }
-
   function testGetDisplayProperties() {
 
   }

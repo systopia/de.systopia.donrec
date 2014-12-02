@@ -414,7 +414,6 @@ function donrec_civicrm_buildForm($formName, &$form) {
         // TODO: use future status definitions
         array(  ''                => ts('- any -'),
                 'original'        => ts('original'),
-                'invalid'         => ts('invalid'),
                 'copy'            => ts('copy'),
                 'withdrawn'       => ts('withdrawn'),
                 'withdrawn_copy'  => ts('withdrawn_copy'),
@@ -480,7 +479,6 @@ function donrec_civicrm_buildForm($formName, &$form) {
         // TODO: use future status definitions
         array(  ''                => ts('- any -'),
                 'original'        => ts('original'),
-                'invalid'         => ts('invalid'),
                 'copy'            => ts('copy'),
                 'withdrawn'       => ts('withdrawn'),
                 'withdrawn_copy'  => ts('withdrawn_copy'),

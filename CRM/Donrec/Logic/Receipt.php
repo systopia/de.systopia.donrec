@@ -187,20 +187,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
-   * Mark this receipt as invalid
-   *
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-   *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
-   */
-  public function markInvalid(&$parameters) {
-    $query = "UPDATE civicrm_value_donation_receipt_%d SET `%s` = 'INVALID' WHERE `id` = %d";
-    $query = sprintf($query, self::$_custom_group_id, self::$_custom_fields['status'], $this->Id);
-    $result = CRM_Core_DAO::executeQuery($query);
-    return TRUE;
-  }
-
-  /**
    * Mark this receipt and its items as withdrawn
    * @param $parameters         an assoc. array of creation parameters TODO: to be defined
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
