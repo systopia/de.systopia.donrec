@@ -290,11 +290,43 @@ class CRM_Donrec_Logic_Snapshot {
       $chunk = $return_chunk;
     }
 
+    // reset the process information for the given chunk
+    $this->resetChunk($chunk, $is_bulk);
+
     if (count($chunk)==0) {
       return NULL;
     } else {
       return $chunk;
     }
+  }
+
+  /**
+   * reset the process information for the given chunk
+   */
+  public function resetChunk($chunk, $is_bulk) {
+    if ($chunk==NULL) return;
+
+    if ($is_bulk) {
+      // get all second level ids
+      $ids = array();
+      foreach($chunk as $ck => $cv) {
+        foreach ($cv as $lk => $lv) {
+          array_push($ids, $lv['id']);
+        }
+      }
+    } else {
+      $ids = array_keys($chunk);
+    }
+
+    if (empty($ids)) {
+      error_log('de.systopia.donrec: invalid chunk detected!');
+    } else {
+      $ids_str = implode(',', $ids);
+
+      // reset process information for all IDs
+      $query = "UPDATE `civicrm_donrec_snapshot` SET `process_data` = NULL WHERE `id` IN ($ids_str);";
+      CRM_Core_DAO::executeQuery($query);
+    }    
   }
 
   /**
