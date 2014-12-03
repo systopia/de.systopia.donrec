@@ -995,3 +995,7 @@ msgstr "Zeitraum bis"
 msgid "%d-page"
 msgstr "%d-seitig"
 
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "<b>Caution:</b> this is a resumed non-test run. If you press the abort button, the run will be deleted for good."
+msgstr "<b>Achtung!</b> Dies scheint ein wiederaufgenommener (nicht-Test-) Lauf zu sein. Wenn Sie nun den 'Abbrechen' Button verwenden, wird dieser Lauf endgültig gelöscht und kann nicht erneut wieder aufgenommen werden."
+
