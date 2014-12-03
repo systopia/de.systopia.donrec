@@ -67,9 +67,6 @@ class CRM_Utils_DonrecHelper
         return false;
     }
 
-    // make sure, number is formatted correctly (#1582)
-    $number = number_format((float)$number, 2, '.', '');
-
     if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
         // overflow
         return false;
@@ -79,11 +76,10 @@ class CRM_Utils_DonrecHelper
         return $negative . self::convert_number_to_words(abs($number), $lang);
     }
 
-    $string = $fraction = null;
-
-    if (strpos($number, '.') !== false) {
-        list($number, $fraction) = explode('.', $number);
-    }
+    $string = null;
+    // make sure, the values are set correctly (#1582)
+    $fraction = (int) ((float) $number - (int) $number) * 100;
+    $number = (int) $number;
 
     switch (true) {
         case $number < 21:
@@ -110,7 +106,7 @@ class CRM_Utils_DonrecHelper
             $baseUnit = pow(1000, floor(log($number, 1000)));
             $numBaseUnits = (int) ($number / $baseUnit);
             $remainder = $number % $baseUnit;
-            $string .= self::convert_number_to_words($numBaseUnits);
+            $string .= self::convert_number_to_words($numBaseUnits, $lang);
             if ($baseUnit == 1000000 && $numBaseUnits == 1) {
               $string .= 'e ';                                  // ein_e_
               $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
@@ -121,12 +117,12 @@ class CRM_Utils_DonrecHelper
 
             if ($remainder) {
                 $string .= ($remainder < 100) ? $conjunction : $separator;
-                $string .= self::convert_number_to_words($remainder);
+                $string .= self::convert_number_to_words($remainder, $lang);
             }
             break;
     }
 
-    if (null !== $fraction) {
+    if ($fraction) {
         $string .= $decimal;
 
         if(is_numeric($fraction) && $fraction != 0.00) {
