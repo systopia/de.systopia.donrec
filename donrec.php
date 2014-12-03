@@ -504,5 +504,30 @@ function donrec_civicrm_buildForm($formName, &$form) {
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
     if ($status_id) $form->add('text', "custom_{$status_id}", ts('Has Donation Receipt Issued by Contact ID'));
+
+
+    // override the receipt_item standard fields
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'status');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Status'),
+        // TODO: use future status definitions
+        array(  ''                => ts('- any -'),
+                'original'        => ts('original'),
+                'copy'            => ts('copy'),
+                'withdrawn'       => ts('withdrawn'),
+                'withdrawn_copy'  => ts('withdrawn_copy'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'type');
+    if ($status_id) $form->add('select', "custom_{$status_id}",
+        ts('Type'),
+        // TODO: use future status definitions
+        array(  ''        => ts('- any -'),
+                'single'  => ts('single receipt'),
+                'bulk'    => ts('bulk receipt'),
+                ));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_in');
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID'));
+    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_by');
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID'));
   }
 }
