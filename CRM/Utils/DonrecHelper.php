@@ -67,13 +67,16 @@ class CRM_Utils_DonrecHelper
         return false;
     }
 
+    // make sure, number is formatted correctly (#1582)
+    $number = number_format((float)$number, 2, '.', '');
+
     if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
         // overflow
         return false;
     }
 
     if ($number < 0) {
-        return $negative . self::convert_number_to_words(abs($number));
+        return $negative . self::convert_number_to_words(abs($number), $lang);
     }
 
     $string = $fraction = null;
@@ -100,7 +103,7 @@ class CRM_Utils_DonrecHelper
             $remainder = $number % 100;
             $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
             if ($remainder) {
-                $string .= $conjunction . self::convert_number_to_words($remainder);
+                $string .= $conjunction . self::convert_number_to_words($remainder, $lang);
             }
             break;
         default:

@@ -161,6 +161,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // add the monetary tokens: 'total', 'totaltext', 'totalmoney'
     if (isset($values['total_amount'])) {
+      // format total_amount
+      $values['total_amount'] = number_format((float)$values['total_amount'], 2, '.', '');
       $values['total'] = $values['total_amount'];
       $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($values['total_amount']);
       $values['totalmoney'] =  CRM_Utils_Money::format($values['total_amount'], '');
