@@ -80,7 +80,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
         //on testrun we want to return to the stats-page instead of the contact-search-page
         //but we must not overwrite the url_back-var
         $session = CRM_Core_Session::singleton();
-        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount&from_test=1"));
+        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount&from_test=1&origin=$origin"));
 
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters"));
       }
