@@ -19,7 +19,7 @@ class CRM_Utils_DonrecHelper
   * @author Karl Rixon (http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/)
   *         modified by Niko Bochan to support the German language
   */
-  public static function convert_number_to_words($number, $lang='de') {
+  public static function convert_number_to_words($number, $lang='de', $recursion=false) {
     // FIXME: @Niko bitte etwas mehr Doku im Code
     if ($lang!='de') return false;
     $hyphen      = 'und';
@@ -73,12 +73,12 @@ class CRM_Utils_DonrecHelper
     }
 
     if ($number < 0) {
-        return $negative . self::convert_number_to_words(abs($number), $lang);
+        return $negative . self::convert_number_to_words(abs($number), $lang, true);
     }
 
     $string = null;
     // make sure, the values are set correctly (#1582)
-    $fraction = (int) ((float) $number - (int) $number) * 100;
+    $fraction = (int) ($number - floor($number));
     $number = (int) $number;
 
     switch (true) {
@@ -99,14 +99,14 @@ class CRM_Utils_DonrecHelper
             $remainder = $number % 100;
             $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
             if ($remainder) {
-                $string .= $conjunction . self::convert_number_to_words($remainder, $lang);
+                $string .= $conjunction . self::convert_number_to_words($remainder, $lang, true);
             }
             break;
         default:
             $baseUnit = pow(1000, floor(log($number, 1000)));
             $numBaseUnits = (int) ($number / $baseUnit);
             $remainder = $number % $baseUnit;
-            $string .= self::convert_number_to_words($numBaseUnits, $lang);
+            $string .= self::convert_number_to_words($numBaseUnits, $lang, true);
             if ($baseUnit == 1000000 && $numBaseUnits == 1) {
               $string .= 'e ';                                  // ein_e_
               $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
@@ -117,8 +117,8 @@ class CRM_Utils_DonrecHelper
 
             if ($remainder) {
                 $string .= ($remainder < 100) ? $conjunction : $separator;
-                $string .= self::convert_number_to_words($remainder, $lang);
-            }
+                $string .= self::convert_number_to_words($remainder, $lang, true);
+            },
             break;
     }
 
@@ -141,6 +141,8 @@ class CRM_Utils_DonrecHelper
                 break;
           }
         }
+    } elseif (!$recursion) {
+      $string .= $decimal;
     }
 
     return $string;
