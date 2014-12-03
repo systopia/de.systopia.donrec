@@ -21,6 +21,15 @@
   </p>
 </div>
 
+{if $statistic.exporters}
+<div class="messages status no-popup">
+  <div class="icon inform-icon"></div>
+  <p>
+    {ts}<b>Caution:</b> this is a resumed non-test run. If you press the abort button, the run will be deleted for good.{/ts}
+  </p>
+</div>
+{/if}
+
 {if $statistic}
   <br/>
   <div style="max-width:320px;">

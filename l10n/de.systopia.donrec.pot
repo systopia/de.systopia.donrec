@@ -1050,3 +1050,9 @@ msgstr ""
 #: CRM/Donrec/Exporters/GroupedPDF.php
 msgid "%d-page"
 msgstr ""
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid ""
+"<b>Caution:</b> this is a resumed non-test run. If you press the abort "
+"button, the run will be deleted for good."
+msgstr ""
