@@ -78,7 +78,7 @@ class CRM_Utils_DonrecHelper
 
     $string = null;
     // make sure, the values are set correctly (#1582)
-    $fraction = (int) ($number - floor($number));
+    $fraction = (int) (($number - floor($number)) * 100);
     $number = (int) $number;
 
     switch (true) {
