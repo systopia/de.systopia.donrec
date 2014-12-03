@@ -118,7 +118,7 @@ class CRM_Utils_DonrecHelper
             if ($remainder) {
                 $string .= ($remainder < 100) ? $conjunction : $separator;
                 $string .= self::convert_number_to_words($remainder, $lang, true);
-            },
+            }
             break;
     }
 
