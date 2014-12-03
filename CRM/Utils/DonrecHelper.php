@@ -78,7 +78,7 @@ class CRM_Utils_DonrecHelper
 
     $string = null;
     // make sure, the values are set correctly (#1582)
-    $fraction = (int) (($number - floor($number)) * 100);
+    $fraction = (int) round( ($number - floor($number)) * 100);
     $number = (int) $number;
 
     switch (true) {
@@ -107,6 +107,7 @@ class CRM_Utils_DonrecHelper
             $numBaseUnits = (int) ($number / $baseUnit);
             $remainder = $number % $baseUnit;
             $string .= self::convert_number_to_words($numBaseUnits, $lang, true);
+            // FIXME: the following doesn't work for units > 10^6
             if ($baseUnit == 1000000 && $numBaseUnits == 1) {
               $string .= 'e ';                                  // ein_e_
               $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
