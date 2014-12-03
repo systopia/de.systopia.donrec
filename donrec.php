@@ -435,9 +435,9 @@ function donrec_civicrm_buildForm($formName, &$form) {
 
 
   } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
-    $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
 
     // remove unwanted fields
+    $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'original_file');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contact_type');
@@ -464,6 +464,17 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_country');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_from');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_to');
+
+    // remove unwanted fields from receipt items (in contribution tab)
+    $item_fields_receipt = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'financial_type_id');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'total_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'non_deductible_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'currency');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'contribution_hash');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'receive_date');
+
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
