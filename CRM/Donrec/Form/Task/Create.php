@@ -35,6 +35,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function setDefaultValues() {
     $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
     $this->getElement('cid')->setValue($contactId);
+    $this->assign('cid', $contactId);
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
     //TODO: what if we have more than 1 remaining snapshot (what should not happen at all)?
@@ -50,24 +51,15 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   function postProcess() {
     // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
 
-    // get form- and url-parameter
-    $values = $this->exportValues();
-    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-    $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
-
-    // do we have a contact-id?
-    if ($contactId === NULL) {
-      error_log("de.systopia.donrec: error: contact id is empty!");
-      return;
-    }
-
     // process remaining snapshots
+    $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
+
       //work on with a remaining snapshot...
       $use_remaining_snapshot = CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL);
       if (!empty($use_remaining_snapshot)) {
         CRM_Core_Session::singleton()->pushUserContext(
-          CRM_Utils_System::url('civicrm/donrec/task', "sid=$rsid&origin=$contactId")
+          CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
         );
         return;
 
@@ -78,9 +70,16 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       }
     }
 
-    // try to build a snapshot with all contributions
+    // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)
+    $values = $this->exportValues();
+    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+
+    if ($contactId === NULL) {
+      error_log("de.systopia.donrec: error: contact id is empty!");
+      return;
+    }
 
     // prepare timestamps
     $raw_from_ts = $values['donrec_contribution_horizon_from'];
