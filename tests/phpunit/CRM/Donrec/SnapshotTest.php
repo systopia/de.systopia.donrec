@@ -57,7 +57,7 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     // generate no snapshot
 
     // check if the contribution is part of a snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($contributions[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contributions[0]);
     $this->assertEquals(FALSE, $result);
   }
 
@@ -78,7 +78,7 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
 
     // check if the contribution is part of the snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($target_contribution[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($target_contribution[0]);
     $this->assertEquals(FALSE, $result);
   }
 
@@ -98,7 +98,7 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
 
     // check if the contribution is part of a snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($contributions[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contributions[0]);
     $this->assertEquals(TRUE, $result);
   }
 
@@ -118,7 +118,7 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
 
     // todo: check if the contribution is part of an invalid/expired snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($contributions[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contributions[0]);
     $this->assertEquals(FALSE, $result);
   }
 
@@ -138,14 +138,14 @@ class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
     $this->assertNotNull($snapshot, "CRM_Donrec_Logic_Snapshot::create() returned NULL");
 
     // check if a contribution is part of the snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($contributions[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contributions[0]);
     $this->assertEquals(TRUE, $result);
 
     // delete it
     $snapshot->delete();
 
     // check if a contribution is still part of a snapshot
-    $result = CRM_Donrec_Logic_Snapshot::query($contributions[0]);
+    $result = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contributions[0]);
     $this->assertEquals(FALSE, $result);
 
     // check via sql whether the snapshot has been removed completely

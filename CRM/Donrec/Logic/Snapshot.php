@@ -152,20 +152,6 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * checks whether the given contribution is part of a snapshot
-  *
-  * @param $contribution_id
-  * @return snapshot_id OR NULL
-  */
-  public static function query($contribution_id) {
-    self::cleanup();
-    return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT `snapshot_id`
-         FROM `civicrm_donrec_snapshot`
-        WHERE `contribution_id` = %1;", array(1 => array($contribution_id, 'Integer')));
-  }
-
-  /**
   * deletes the snapshot (permanently on database level!)
   */
   public function delete() {
@@ -706,6 +692,9 @@ class CRM_Donrec_Logic_Snapshot {
   * @return boolean
   */
   public static function isInOpenSnapshot($contribution_id) {
+    // do a cleanup here (ticket #1616)
+    self::cleanup();
+
     // TODO: what if status is DONE, but the snapshot is not finished yet?
     $query = "
       SELECT COUNT(*)

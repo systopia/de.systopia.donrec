@@ -34,6 +34,9 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   }
 
   function setDefaultValues() {
+    // do a cleanup here (ticket #1616)
+    CRM_Donrec_Logic_Snapshot::cleanup();
+
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {

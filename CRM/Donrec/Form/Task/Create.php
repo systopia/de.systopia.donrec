@@ -33,6 +33,9 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   }
 
   function setDefaultValues() {
+    // do a cleanup here (ticket #1616)
+    CRM_Donrec_Logic_Snapshot::cleanup();
+
     $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
     $this->getElement('cid')->setValue($contactId);
     $this->assign('cid', $contactId);
