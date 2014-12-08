@@ -271,7 +271,7 @@ msgstr "Die Zuwendungsbescheinigung wurde kopiert"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "You could also just withdraw it."
-msgstr "Sie können Sie außerdem einfach zurücksetzen."
+msgstr "Sie könnten sie alternativ auch einfach zurücksetzen."
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "The donation receipt has been successfully deleted"

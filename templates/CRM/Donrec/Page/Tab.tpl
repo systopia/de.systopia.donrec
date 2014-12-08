@@ -309,7 +309,10 @@
           // delete this donation receipt
           var msgExt = "";
           if(/original/i.test(cj("#donrec_stats_" + rid + " ul li:nth-child(2)").text())) {
-            msgExt = "<br/>" + {/literal}"{ts}You could also just withdraw it.{/ts}"{literal};
+            {/literal}
+            msgExt = "<p>{ts}Any existing copies of this receipt will have to be deleted manually.{/ts}</p>";
+            msgExt += "<br/><p>{ts}You could also just withdraw it.{/ts}</p>";
+            {literal}
           }
           CRM.confirm(function() {
             CRM.api('DonationReceipt', 'delete', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid, 'id': 0},
@@ -326,7 +329,7 @@
           );
           },
           {
-            message: {/literal}"<p>{ts}Are you sure you want to delete this donation receipt?{/ts}</p><p>{ts}Any existing copies of this receipt will have to be deleted manually.{/ts}</p>"{literal} + msgExt
+            message: {/literal}"<p>{ts}Are you sure you want to delete this donation receipt?{/ts}</p>"{literal} + msgExt
           });
         }
     });{/literal}{/if}{literal}
