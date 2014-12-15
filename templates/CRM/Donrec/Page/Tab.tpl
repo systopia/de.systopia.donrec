@@ -31,7 +31,15 @@
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts}withdrawn copy{/ts}{/if}
             </b></li>
             <li>{ts}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
-            <li>{ts}Date{/ts}: {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}</li>
+            <li>{ts}Date{/ts}:
+                {if $receipt.type eq 'SINGLE'}
+                  {* for single receipts, print the date of the contribution *}
+                  {foreach from=$receipt.lines key=id item=item}{$item.receive_date|crmDate:$config->dateformatFull}{/foreach}
+                {else}
+                  {* for bulk receipts, print the date range of the search it's based on *}
+                  {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}
+                {/if}
+                </li>
             <li>{ts}Total amount{/ts}: {$receipt.total_amount|crmMoney:$receipt.currency}</li>
             <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
           </ul>
