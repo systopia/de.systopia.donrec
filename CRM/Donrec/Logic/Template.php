@@ -186,10 +186,6 @@ class CRM_Donrec_Logic_Template
                           top: 400px;
                         }
 
-                        .watermark-center2 {
-                          left: 10px;
-                          top: 1280px;
-                        }
                         {/literal}
                         </style>
                         ';
@@ -212,11 +208,6 @@ class CRM_Donrec_Logic_Template
                           top: 650px;
                         }
 
-                        .watermark-center2 {
-                          left: 30px;
-                          top: 650px;
-                        }
-
                         {/literal}
                         </style>
                         ';
@@ -224,8 +215,7 @@ class CRM_Donrec_Logic_Template
     $smarty->assign('wk_enabled', $wk_is_enabled);
 
     // prepare watermark
-    $watermark_site1 = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
-    $watermark_site2 = '<div class="watermark watermark-center2">{if $watermark}{$watermark}{/if}</div>';
+    $watermark_site = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
 
     // find </style> element
     $matches = array();
@@ -251,18 +241,10 @@ class CRM_Donrec_Logic_Template
     preg_match('/<body[^>]*>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $body_offset = $matches[0][1];
-      $html = substr_replace($html, $watermark_site1, $body_offset + strlen($matches[0][0]), 0);
+      $html = substr_replace($html, $watermark_site, $body_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
       error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
       return FALSE;
-    }
-
-    // find <div class="newpage"> element
-    $matches = array();
-    preg_match('/<div\s*class=["\']newpage["\']\s*>/', $html, $matches, PREG_OFFSET_CAPTURE);
-    if (count($matches) == 1) {
-      $newpage_offset = $matches[0][1];
-      $html = substr_replace($html, $watermark_site2, $newpage_offset + strlen($matches[0][0]), 0);
     }
 
     // --- watermark injection end ---
