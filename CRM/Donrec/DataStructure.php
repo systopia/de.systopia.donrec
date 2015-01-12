@@ -177,6 +177,7 @@ class CRM_Donrec_DataStructure {
       'label' => 'postal_code',
       'data_type' => 'String',
       'html_type' => 'Text',
+      'text_length' => 12,
     ),
     array(
       'name' => 'city',
@@ -225,8 +226,9 @@ class CRM_Donrec_DataStructure {
       'name' => 'shipping_postal_code',
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'shipping_postal_code',
-      'data_type' => 'Int',
+      'data_type' => 'String',
       'html_type' => 'Text',
+      'text_length' => 12,
     ),
     array(
       'name' => 'shipping_city',
@@ -452,9 +454,10 @@ class CRM_Donrec_DataStructure {
       $get_params['custom_group_id'] = $params['custom_group_id'];
       self::createIfNotExists('CustomField', $params, $get_params);
 
-      // postal-code-column-update
-      if ($get_params['name'] == 'postal_code') {
-        self::updatePostalCodeColumn($get_params);
+      // Database-fix #1725
+      // postal-code-columns-update
+      if ($get_params['name'] == 'postal_code' || $get_params['name'] == 'shipping_postal_code') {
+        self::updateEntity('CustomField', $params, $get_params);
       }
     }
   }
@@ -515,39 +518,20 @@ class CRM_Donrec_DataStructure {
       error_log('de.systopia.donrec - Error translating custom groups: '.$e->getMessage());
     }
   }
+
   /**
-   * Database-fix #1725
-   * Update the postal-code column to varchar(255) if needed.
+   * Update an Entity
    */
-  protected static function updatePostalCodeColumn($params) {
-    // we got to know the exact table- and column-name
-    $query = "SELECT table_name
-      FROM civicrm_custom_group
-      WHERE id = $params[custom_group_id]";
-    $table_name = CRM_Core_DAO::singleValueQuery($query);
-
-    $query = "SELECT column_name
-      FROM civicrm_custom_field
-      WHERE custom_group_id = $params[custom_group_id]
-      AND name = '$params[name]'";
-    $column_name = CRM_Core_DAO::singleValueQuery($query);
-
-    // check the data-type of the column
-    $query = "SELECT DATA_TYPE
-      FROM INFORMATION_SCHEMA.COLUMNS
-      WHERE table_name = '$table_name'
-      AND COLUMN_NAME = '$column_name'";
-    $data_type = CRM_Core_DAO::singleValueQuery($query);
-
-    // if data_type is int, we need to update the column
-    if ($data_type == 'int') {
-      $query = "ALTER TABLE `$table_name`
-        CHANGE `$column_name` `$column_name` VARCHAR( 255 ) NULL DEFAULT NULL ";
-      try {
-        CRM_Core_DAO::executeQuery($query);
-      } catch (Exception $e) {
-        error_log('de.systopia.donrec - Error updating postal_code-column: '.$e->getMessage());
-      }
+  protected static function updateEntity($entity, $params, $get_params) {
+    $get_params = $get_params ? $get_params : $params;
+    $get = civicrm_api3($entity, 'get', $get_params);
+    if ($get['count'] == 0) {
+      error_log("de.systopia.donrec: warning: tried to update $entity, but does not exists: " . print_r($get_params, True));
+    } elseif ($get['count'] > 1) {
+      error_log("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
+    } elseif ($get['count'] == 1) {
+      $params['id'] = $get['id'];
+      civicrm_api3($entity, 'create', $params);
     }
   }
 }
