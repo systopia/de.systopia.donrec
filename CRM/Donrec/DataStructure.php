@@ -452,27 +452,12 @@ class CRM_Donrec_DataStructure {
       unset($params['custom_group_name']);
       $get_params['name'] = $params['name'];
       $get_params['custom_group_id'] = $params['custom_group_id'];
-      self::createIfNotExists('CustomField', $params, $get_params);
 
-      // Database-fix #1725
-      // postal-code-columns-update
-      if ($get_params['name'] == 'postal_code' || $get_params['name'] == 'shipping_postal_code') {
-        self::updateEntity('CustomField', $params, $get_params);
-      }
+      // We use createOrUpdateEntity instead of createIfNotExists.
+      // Issue #1725: the field-declarations for postal-code-fields
+      // has been changed.
+      self::createOrUpdateEntity  ('CustomField', $params, $get_params);
     }
-  }
-
-  /**
-   * Create if not exists.
-   */
-  protected static function createIfNotExists($entity, $params, $get_params = Null) {
-    $get_params = $get_params ? $get_params : $params;
-    $get = civicrm_api3($entity, 'get', $get_params);
-    if ($get['count']) {
-      if ($get['count'] > 1) error_log("de.systopia.donrec: warning: $entity exists multiple times: " . print_r($get_params, True));
-      return;
-    }
-    civicrm_api3($entity, 'create', $params);
   }
 
   /**
@@ -520,15 +505,44 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
+   * Create if not exists.
+   */
+  protected static function createIfNotExists($entity, $params, $get_params = Null) {
+    $get_params = $get_params ? $get_params : $params;
+    $get = civicrm_api3($entity, 'get', $get_params);
+    if ($get['count'] == 0) {
+      civicrm_api3($entity, 'create', $params);
+    } elseif ($get['count'] > 1) {
+      error_log("de.systopia.donrec: warning: $entity exists multiple times: " . print_r($get_params, True));
+    }
+  }
+
+  /**
    * Update an Entity
    */
-  protected static function updateEntity($entity, $params, $get_params) {
+  protected static function updateEntity($entity, $params, $get_params = Null) {
     $get_params = $get_params ? $get_params : $params;
     $get = civicrm_api3($entity, 'get', $get_params);
     if ($get['count'] == 0) {
       error_log("de.systopia.donrec: warning: tried to update $entity, but does not exists: " . print_r($get_params, True));
     } elseif ($get['count'] > 1) {
       error_log("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
+    } elseif ($get['count'] == 1) {
+      $params['id'] = $get['id'];
+      civicrm_api3($entity, 'create', $params);
+    }
+  }
+
+  /**
+   * Create or Update an Entity
+   */
+  protected static function createOrUpdateEntity($entity, $params, $get_params = Null) {
+    $get_params = $get_params ? $get_params : $params;
+    $get = civicrm_api3($entity, 'get', $get_params);
+    if ($get['count'] > 1) {
+      error_log("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
+    } elseif ($get['count'] == 0) {
+      civicrm_api3($entity, 'create', $params);
     } elseif ($get['count'] == 1) {
       $params['id'] = $get['id'];
       civicrm_api3($entity, 'create', $params);
