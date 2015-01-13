@@ -362,7 +362,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 
         // check if forbidden values are going to be changed.
         foreach ($forbidden as $col) {
-          if ($result->$col != $params[$col]) {
+          if (isset($params[$col]) && $result->$col != $params[$col]) {
             // we need a extra-check for dates (which are not in the same format)
             if (strpos($col, 'date')) {
               if($col == 'receive_date' && substr(preg_replace('/[-: ]/', '', $result->$col), 0, -2) . "00" == $params[$col]) {
