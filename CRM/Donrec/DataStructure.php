@@ -462,6 +462,8 @@ class CRM_Donrec_DataStructure {
 
   /**
   * Find the first available option value id
+  *
+  * @return option-value-id
   */
   public static function getFirstUsedOptionValueId() {
     $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'donrec_status'));
@@ -505,7 +507,12 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
-   * Create if not exists.
+   * Create an entity if it does not exist.
+   *
+   * @param $entity string, name of the entity used with the api
+   * @param $params array, parameters the entity will be created with
+   * @param $get_params array, parameters to identify already existing entities,
+   *        if missing $params will be used.
    */
   protected static function createIfNotExists($entity, $params, $get_params = Null) {
     $get_params = $get_params ? $get_params : $params;
@@ -518,23 +525,13 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
-   * Update an Entity
-   */
-  protected static function updateEntity($entity, $params, $get_params = Null) {
-    $get_params = $get_params ? $get_params : $params;
-    $get = civicrm_api3($entity, 'get', $get_params);
-    if ($get['count'] == 0) {
-      error_log("de.systopia.donrec: warning: tried to update $entity, but does not exists: " . print_r($get_params, True));
-    } elseif ($get['count'] > 1) {
-      error_log("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
-    } elseif ($get['count'] == 1) {
-      $params['id'] = $get['id'];
-      civicrm_api3($entity, 'create', $params);
-    }
-  }
-
-  /**
-   * Create or Update an Entity
+   * Create or Update an Entity. We do a lookup for an entity. If it exists it
+   * will be updated, otherwise it will be created
+   *
+   * @param $entity string, name of the entity used with the api
+   * @param $params array, parameters the entity will be created with
+   * @param $get_params array, parameters to identify already existing entities,
+   *        if missing $params will be used.
    */
   protected static function createOrUpdateEntity($entity, $params, $get_params = Null) {
     $get_params = $get_params ? $get_params : $params;
