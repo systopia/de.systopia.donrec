@@ -89,6 +89,10 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
       $csv_data = $proc_info['CSV']['csv_data'];
       if (!empty($csv_data)) {
         if (!$header_written) {
+          // extend header by extra fields
+          $headers = array_merge($headers, array_keys($csv_data));
+          $headers = array_unique($headers);
+
           // write header
           fputcsv($handle, $headers, ';', '"');
           $header_written = true;
@@ -154,18 +158,21 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
       $flattened_data['individual_total_amount']          = '';
       $flattened_data['individual_non_deductible_amount'] = '';
       $flattened_data['individual_financial_type_id']     = '';
-      foreach ($snapshotReceipt->getLines() as $line_id => $line) {
+      $flattened_data['individual_financial_type']        = '';
+      foreach ($values['lines'] as $line_id => $line) {
         $flattened_data['individual_count'] += 1;
         if ($flattened_data['individual_count'] > 1) {
           $flattened_data['individual_receive_date']          .= "\n";
           $flattened_data['individual_total_amount']          .= "\n";
           $flattened_data['individual_non_deductible_amount'] .= "\n";
           $flattened_data['individual_financial_type_id']     .= "\n";
+          $flattened_data['individual_financial_type']        .= "\n";
         }
         $flattened_data['individual_receive_date']          .= $line['receive_date'];
         $flattened_data['individual_total_amount']          .= $line['total_amount'];
         $flattened_data['individual_non_deductible_amount'] .= $line['non_deductible_amount'];
         $flattened_data['individual_financial_type_id']     .= $line['financial_type_id'];
+        $flattened_data['individual_financial_type']        .= $line['financial_type'];
       }
 
       // store the data in the process information
