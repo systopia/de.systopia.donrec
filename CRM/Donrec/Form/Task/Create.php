@@ -126,6 +126,19 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
         return;
     }
 
+    // get all valid financial type ids
+    $financialTypeIds = array();
+    $validContribTypes = CRM_Donrec_Logic_Settings::getContributionTypes();
+    for($i=1;$i<count($validContribTypes);$i++) {
+      // this type is valid if the flag is set
+      if($validContribTypes[$i][3] == 1) {
+        $financialTypeIds[] = $validContribTypes[$i][0];
+      }
+    }
+
+    // serialize them in to a string
+    $financialTypeIds = implode(',', $financialTypeIds);
+
     // map contact ids to contributions
     // remark: this query is hardcoded to EUR atm
     // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
@@ -137,7 +150,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
               WHERE
                   `contact_id` IN ($contactId)
                   $query_date_limit
-                  AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
+                  AND `financial_type_id` IN ($financialTypeIds)
                   AND `contribution_status_id` = 1
                   AND `is_test` = 0
                   AND `currency` = 'EUR'
