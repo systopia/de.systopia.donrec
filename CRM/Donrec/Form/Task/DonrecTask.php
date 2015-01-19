@@ -147,6 +147,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
                   `contact_id` IN ($contactIds)
                   $query_date_limit
                   AND `financial_type_id` IN ($financialTypeIds)
+                  AND (`non_deductible_amount` < `total_amount` OR `non_deductible_amount` IS NULL)
                   AND `contribution_status_id` = 1
                   AND `is_test` = 0
                   AND `currency` = 'EUR'
