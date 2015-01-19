@@ -47,6 +47,37 @@ class CRM_Donrec_Logic_Settings {
   }
 
   /**
+   * Similar to ::getContributionTypes(), but will
+   * construct and return an SQL clause
+   * that works in the WHERE clause on 
+   * civicrm_contribution queries.
+   *
+   * @return SQL clause 
+   * @author N. Bochan / B. Endres
+   */
+  static function getContributionTypesClause() {
+    // get all valid financial type ids
+    $financialTypeIds = array();
+    $validContribTypes = CRM_Donrec_Logic_Settings::getContributionTypes();
+    for($i=1;$i<count($validContribTypes);$i++) {
+      // this type is valid if the flag is set
+      if($validContribTypes[$i][3] == 1) {
+        $financialTypeIds[] = $validContribTypes[$i][0];
+      }
+    }
+
+    // construct the SQL clause
+    if (empty($financialTypeIds)) {
+      // no contribution types allowed
+      return 'FALSE';
+    } else {
+      // otherwise the clause consists of the financial type IDs
+      $financialTypeIdsString = implode(',', $financialTypeIds);
+      return "`financial_type_id` IN ($financialTypeIdsString)";
+    }
+  }
+
+  /**
   * Returns location_types used for the legal- and postal-address and their fallbacks.
   * @return array
   */
