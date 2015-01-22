@@ -180,7 +180,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
     }
 
     // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'CSV processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
   }
 
