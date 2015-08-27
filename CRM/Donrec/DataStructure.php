@@ -14,7 +14,7 @@
 class CRM_Donrec_DataStructure {
 
   public static $customGroupDefaults = array(
-    'style' => 0,
+    'style' => 'Inline',
     'collapse_display' => 1,
     'is_active' => 1,
     'is_multiple' => 1,
