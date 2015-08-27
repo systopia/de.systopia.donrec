@@ -54,8 +54,8 @@
     var current_day = (new Date).getDate();
     var from = cj('#donrec_contribution_horizon_from');
     var to = cj('#donrec_contribution_horizon_to');
-    var from_display = cj('#donrec_contribution_horizon_from_display');
-    var to_display = cj('#donrec_contribution_horizon_to_display');
+    var from_display = cj("[id^='donrec_contribution_horizon_from_display']");
+    var to_display = cj("[id^='donrec_contribution_horizon_to_display']");
 
     var set_period = function () {
       switch (time_period.val()) {
