@@ -17,6 +17,12 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
   function run() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts'));
 
+    // Since 4.6 the css-class crm-summary-row lives in contactSummary.css
+    // instead of civicrm.css
+    if (version_compare(CRM_Utils_System::version(), '4.6', '>=')) {
+      CRM_Core_Resources::singleton()->addStyleFile('civicrm', 'css/contactSummary.css');
+    }
+
     $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
     $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
     $selected_exporter = empty($_REQUEST['exporters'])?NULL:$_REQUEST['exporters'];
