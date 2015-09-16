@@ -92,10 +92,10 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
     $query_date_limit = "";
     if ($date_from) {
-      $query_date_limit .= "AND UNIX_TIMESTAMP(`receive_date`) >= $date_from";
+      $query_date_limit .= "AND `receive_date` >= DATETIME('$formatted_date_from')";
     }
     if ($date_to) {
-      $query_date_limit .= " AND UNIX_TIMESTAMP(`receive_date`) <= $date_to";
+      $query_date_limit .= " AND `receive_date` <= DATETIME('$formatted_date_to')";
     }
 
     // get table- and column name
