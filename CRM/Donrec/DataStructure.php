@@ -392,7 +392,24 @@ class CRM_Donrec_DataStructure {
     self::updateOptionValues();
     self::updateCustomGroups();
     self::updateCustomFields();
+    self::fixCustomGroupType();
   }
+
+  /**
+   * 4.6+ workaround: Update the type of our custom
+   * groups to '0' after installation to prevent them
+   * from being shown in the contact dashboard (#2541)
+   */
+   protected static function fixCustomGroupType() {
+       CRM_Core_DAO::singleValueQuery("UPDATE `civicrm_custom_group`
+                                          SET `style` = 0
+                                        WHERE (`name` = 'zwb_donation_receipt'
+                                           OR  `name` = 'zwb_donation_receipt_item')
+                                          AND `style` = 'Inline';
+                                     ");
+   }
+
+
   /**
    * Create OptionGroups if not already exists.
    */
