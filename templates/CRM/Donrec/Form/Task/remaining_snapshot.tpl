@@ -1,10 +1,10 @@
 {*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Copyright (C) 2013-2015 SYSTOPIA                       |
 | Author: Thomas Leichtfuss (leichtfuss -at- systopia.de)|
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
-| TODO: License                                          |
+| License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*}
 
 {if $remaining_snapshot}

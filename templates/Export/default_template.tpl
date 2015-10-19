@@ -1,11 +1,11 @@
 {*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Default Template                                       |
-| Copyright (C) 2013-2014 SYSTOPIA                       |
+| Copyright (C) 2013-2015 SYSTOPIA                       |
 | Author: N.Bochan (bochan -at- systopia.de)             |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
-| TODO: License                                          |
+| License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------+
 
 *}<?xml version="1.0" encoding="UTF-8"?>

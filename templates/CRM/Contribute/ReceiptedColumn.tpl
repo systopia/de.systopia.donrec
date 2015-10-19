@@ -1,3 +1,12 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2015 SYSTOPIA                       |
+| Author: N.Bochan (bochan -at- systopia.de)             |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| License: AGPLv3, see LICENSE file                      |
++--------------------------------------------------------*}
+
 {* create a temporary table with the data *}
 <table id="receipted_data" hidden="1">
   {foreach from=$rows item=row}
