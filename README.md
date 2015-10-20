@@ -9,4 +9,8 @@ Features:
 * Modification control: certain attributes of recipted contributions can not be changed any more (unless receipt withdrawn)
 * Allows generation receipts in big numbers by asynchronous generator
 * Snapshot approach prevents modification or duplicates while generating donation receipts
-* Choose from various output formats
+* Choose from various output formats (CSV, PDF, sorted PDF, ...)
+
+Restrictions:
+* Currently hardcoded for EUR
+* Shipped template German and optimised for ``wkhtm2pdf``
