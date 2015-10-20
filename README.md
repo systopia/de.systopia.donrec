@@ -11,6 +11,7 @@ Features:
 * Snapshot approach prevents modification or duplicates while generating donation receipts
 * Choose from various output formats (CSV, PDF, sorted PDF, ...)
 
-Restrictions:
+Restrictions (ask us for a fix):
 * Currently hardcoded for EUR
 * Shipped template German and optimised for ``wkhtm2pdf``
+* "Amount in words" currently German only
