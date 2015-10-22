@@ -16,3 +16,4 @@ Restrictions (ask us for a fix):
 * Currently hardcoded for EUR
 * Shipped template German and optimised for ``wkhtm2pdf``
 * "Amount in words" currently German only
+* Client side (JavaScript) only thoroughly tested on Firefox
