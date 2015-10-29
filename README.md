@@ -17,4 +17,4 @@ Restrictions (ask us for a fix):
 * Shipped template German and optimised for ``wkhtm2pdf``
 * "Amount in words" currently German only
 * Client side (JavaScript) only thoroughly tested on Firefox
-* (Currently) handles partially deductible contributions incorrectly (see [#23](https://github.com/systopia/de.systopia.donrec/issues/23))
+* Doesn't process partially deductible contributions yet (see [#23](https://github.com/systopia/de.systopia.donrec/issues/23))
