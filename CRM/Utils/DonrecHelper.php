@@ -266,4 +266,31 @@ class CRM_Utils_DonrecHelper
     }
   }
 
+  /**
+   * SQL-escape the given string
+   * (slightly abridged version of CRM_Core_DAO::escapeString)
+   *
+   * @see CRM_Core_DAO::escapeString
+   */
+  public static function escapeString($string) {
+    static $_dao = NULL;
+
+    if (!$_dao) {
+      if (!defined('CIVICRM_DSN')) {
+        if (function_exists('mysql_real_escape_string')) {
+          return mysql_real_escape_string($string);
+        }
+        elseif (function_exists('mysql_escape_string')) {
+          return mysql_escape_string($string);
+        }
+        else {
+          throw new CRM_Core_Exception("Cannot generate SQL. \"mysql_{real_}escape_string\" is missing. Have you installed PHP \"mysql\" extension?");
+        }
+      }
+
+      $_dao = new CRM_Core_DAO();
+    }
+
+    return $_dao->escape($string);
+  }
 }
