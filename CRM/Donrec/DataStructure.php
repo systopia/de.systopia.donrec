@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+require_once __DIR__ . "/../Utils/DonrecHelper.php";
+
   /**
    * Class to manage the data-structure.
    */
