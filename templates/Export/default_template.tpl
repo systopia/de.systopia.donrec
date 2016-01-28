@@ -239,7 +239,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
     <td>{$totaltext}</td>
     <td>
         {if $items}
-            {$date_from|crmDate:'%d.%m.%Y'} {ts}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}
+            {$date_from|crmDate:'%d.%m.%Y'} {ts domain="de.systopia.donrec"}until{/ts} {$date_to|crmDate:'%d.%m.%Y'}
         {else}
             {* absolutly not elegant *}
             {foreach from=$lines item=item}

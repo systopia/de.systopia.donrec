@@ -11,11 +11,11 @@
 
 <table style="max-width: 450px;">
   <tr>
-    <h3>{ts}Filter contributions by receive date{/ts}</h3>
+    <h3>{ts domain="de.systopia.donrec"}Filter contributions by receive date{/ts}</h3>
   </tr>
   <tr>
     <td class="label">
-      {ts}Select time span{/ts}:
+      {ts domain="de.systopia.donrec"}Select time span{/ts}:
     </td>
     <td>
       {$form.time_period.html}
