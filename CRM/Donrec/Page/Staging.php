@@ -65,7 +65,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
             CRM_Core_Session::setStatus(ts('The older snapshot has been deleted. You can now proceed.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
             CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount"));
           }else{
-            CRM_Core_Session::setStatus(ts('The previously created snapshot has been deleted.'), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning', array('domain' => 'de.systopia.donrec'));
+            CRM_Core_Session::setStatus(ts('The previously created snapshot has been deleted.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
             if (!empty($_REQUEST['origin'])) {
               CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$origin&selectedChild=donation_receipts"));
              }else{
