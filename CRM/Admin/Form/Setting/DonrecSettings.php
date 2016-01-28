@@ -15,26 +15,26 @@ require_once 'CRM/Core/BAO/CustomField.php';
 class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
   function buildQuickForm( ) {
-    CRM_Utils_System::setTitle(ts('Donation Receipts - Settings'));
+    CRM_Utils_System::setTitle(ts('Donation Receipts - Settings', array('domain' => 'de.systopia.donrec')));
 
     //TODO: why not use the definitions in donrec.setting.php?
     // add all required elements
-    $this->addElement('text', 'draft_text', ts('Draft text'));
-    $this->addElement('text', 'copy_text', ts('Copy text'));
-    $this->addElement('text', 'packet_size', ts('Packet size'));
+    $this->addElement('text', 'draft_text', ts('Draft text', array('domain' => 'de.systopia.donrec')));
+    $this->addElement('text', 'copy_text', ts('Copy text', array('domain' => 'de.systopia.donrec')));
+    $this->addElement('text', 'packet_size', ts('Packet size', array('domain' => 'de.systopia.donrec')));
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     $this->addElement('checkbox','financial_types_all'); // "
-    $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>'));
+    $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>', array('domain' => 'de.systopia.donrec')));
 
     // add location-type-selections
     $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
     $result = CRM_Core_DAO::executeQuery($query);
-    $options = array(0 => ts('primary address'));
-    while ($result->fetch()) {$options[$result->id] = ts($result->name);}
-    $this->addElement('select', 'legal_address', ts('Legal Address-Type:'), $options);
-    $this->addElement('select', 'postal_address', ts('Postal Address-Type:'), $options);
-    $this->addElement('select', 'legal_address_fallback', ts('Fallback:'), $options);
-    $this->addElement('select', 'postal_address_fallback', ts('Fallback:'), $options);
+    $options = array(0 => ts('primary address', array('domain' => 'de.systopia.donrec')));
+    while ($result->fetch()) {$options[$result->id] = ts($result->name, array('domain' => 'de.systopia.donrec'));}
+    $this->addElement('select', 'legal_address', ts('Legal Address-Type:', array('domain' => 'de.systopia.donrec')), $options);
+    $this->addElement('select', 'postal_address', ts('Postal Address-Type:', array('domain' => 'de.systopia.donrec')), $options);
+    $this->addElement('select', 'legal_address_fallback', ts('Fallback:', array('domain' => 'de.systopia.donrec')), $options);
+    $this->addElement('select', 'postal_address_fallback', ts('Fallback:', array('domain' => 'de.systopia.donrec')), $options);
 
     // add a checkbox for every contribution type
     $ct = CRM_Donrec_Logic_Settings::getContributionTypes();
@@ -43,8 +43,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     }
 
     $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE),
-      array('type' => 'cancel', 'name' => ts('Cancel')),
+      array('type' => 'next', 'name' => ts('Save', array('domain' => 'de.systopia.donrec')), 'isDefault' => TRUE),
+      array('type' => 'cancel', 'name' => ts('Cancel', array('domain' => 'de.systopia.donrec'))),
     ));
 
     // add a custom form validation rule that allows only positive integers (i > 0)
@@ -53,9 +53,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   }
 
   function addRules() {
-    $this->addRule('draft_text', ts('Draft text can only contain text'), 'onlyLettersUmlauts');
-    $this->addRule('copy_text', ts('Copy text can only contain text'), 'onlyLettersUmlauts');
-    $this->addRule('packet_size', ts('Packet size can only contain positive integers'), 'onlypositive');
+    $this->addRule('draft_text', ts('Draft text can only contain text', array('domain' => 'de.systopia.donrec')), 'onlyLettersUmlauts');
+    $this->addRule('copy_text', ts('Copy text can only contain text', array('domain' => 'de.systopia.donrec')), 'onlyLettersUmlauts');
+    $this->addRule('packet_size', ts('Packet size can only contain positive integers', array('domain' => 'de.systopia.donrec')), 'onlypositive');
     //TODO add rule for unix paths
   }
 
@@ -127,7 +127,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     }
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus(ts("Settings successfully saved"), ts('Settings'), 'success');
+    $session->setStatus(ts("Settings successfully saved"), ts('Settings', array('domain' => 'de.systopia.donrec')), 'success');
     $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
   }
 

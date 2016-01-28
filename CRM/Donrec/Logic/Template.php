@@ -80,7 +80,7 @@ class CRM_Donrec_Logic_Template
    * @return bool
    */
   public static function setDefaultTemplate() {
-    $default_template_title = sprintf("%s - %s", ts('Donation Receipts'), ts('Default template'));
+    $default_template_title = sprintf("%s - %s", ts('Donation Receipts', array('domain' => 'de.systopia.donrec')), ts('Default template', array('domain' => 'de.systopia.donrec')));
 
     $params = array(
         'version'    => 3,
@@ -255,7 +255,7 @@ class CRM_Donrec_Logic_Template
     $smarty->clearTemplateVars();
 
     // set up file names
-    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-")."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
+    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-", array('domain' => 'de.systopia.donrec'))."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
 
     // render PDF receipt
     $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));

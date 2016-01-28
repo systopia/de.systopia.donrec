@@ -17,7 +17,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    * @return the display name
    */
   static function name() {
-    return ts("Don't generate files");
+    return ts("Don't generate files", array('domain' => 'de.systopia.donrec'));
   }
 
   /**

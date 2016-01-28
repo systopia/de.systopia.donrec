@@ -17,7 +17,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
    * @return the display name
    */
   static function name() {
-    return ts('Individual PDFs');
+    return ts('Individual PDFs', array('domain' => 'de.systopia.donrec'));
   }
 
   /**
@@ -50,8 +50,8 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $preferredFileName = ts("donation_receipts.zip");
-    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts"), ".zip");
+    $preferredFileName = ts("donation_receipts.zip", array('domain' => 'de.systopia.donrec'));
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts", array('domain' => 'de.systopia.donrec')), ".zip");
     $zip = new ZipArchive();
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();

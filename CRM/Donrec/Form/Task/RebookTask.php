@@ -20,14 +20,14 @@ class CRM_Donrec_Form_Task_RebookTask extends CRM_Contribute_Form_Task {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Rebook'));
+    CRM_Utils_System::setTitle(ts('Rebook', array('domain' => 'de.systopia.donrec')));
 
     $session = CRM_Core_Session::singleton();
     $userContext = $session->readUserContext();  
 
     $admin = CRM_Core_Permission::check('edit contributions');
     if (!$admin) {
-      CRM_Core_Error::fatal(ts('You do not have the permissions required to access this page.'));
+      CRM_Core_Error::fatal(ts('You do not have the permissions required to access this page.', array('domain' => 'de.systopia.donrec')));
       CRM_Utils_System::redirect($userContext);
     }
 
@@ -40,10 +40,10 @@ class CRM_Donrec_Form_Task_RebookTask extends CRM_Contribute_Form_Task {
     $contributionIds = implode(',', $this->_contributionIds);
     $this->setContactIDs();
 
-    $this->add('text', 'contactId', ts('CiviCRM ID'), null, $required = true);
+    $this->add('text', 'contactId', ts('CiviCRM ID', array('domain' => 'de.systopia.donrec')), null, $required = true);
     $this->add('hidden', 'contributionIds', $contributionIds);
     // call the (overwritten) Form's method, so the continue button is on the right...
-    CRM_Core_Form::addDefaultButtons(ts('Rebook'));
+    CRM_Core_Form::addDefaultButtons(ts('Rebook', array('domain' => 'de.systopia.donrec')));
 
     parent::buildQuickForm();
   }

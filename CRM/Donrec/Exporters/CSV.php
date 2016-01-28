@@ -17,7 +17,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    * @return the display name
    */
   static function name() {
-    return ts("CSV File");
+    return ts("CSV File", array('domain' => 'de.systopia.donrec'));
   }
 
   /**
@@ -72,7 +72,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
 
     // open file
     $preferredFileName = ts('donation_receipts');
-    $preferredFileSuffix = ts('.csv');
+    $preferredFileSuffix = ts('.csv', array('domain' => 'de.systopia.donrec'));
     $temp_file = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredFileSuffix);
     $handle = fopen($temp_file, 'w');
 
