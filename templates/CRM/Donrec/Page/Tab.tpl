@@ -9,7 +9,7 @@
 
 <div class="action-link">
   {if $can_create_withdraw }
-    <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts}Create new donation receipt{/ts}</span></a>
+    <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts domain="de.systopia.donrec"}Create new donation receipt{/ts}</span></a>
   {/if}
 </div>
 <div class="donrec-stats-block">
@@ -20,18 +20,18 @@
         <div class="donrec-stats" id="donrec_stats_{$receipt_id}">
           <ul>
             <li>
-              {if $receipt.type eq 'BULK'}<u><b>{ts}bulk receipt{/ts}</b></u>{/if}
-              {if $receipt.type eq 'SINGLE'}<u><b>{ts}single receipt{/ts}</b></u>{/if}
+              {if $receipt.type eq 'BULK'}<u><b>{ts domain="de.systopia.donrec"}bulk receipt{/ts}</b></u>{/if}
+              {if $receipt.type eq 'SINGLE'}<u><b>{ts domain="de.systopia.donrec"}single receipt{/ts}</b></u>{/if}
               [{$receipt_id}]
             </li>
-            <li>{ts}Status{/ts}: <b>
-              {if $receipt.status eq 'WITHDRAWN'}{ts}withdrawn{/ts}{/if}
-              {if $receipt.status eq 'ORIGINAL'}{ts}original{/ts}{/if}
-              {if $receipt.status eq 'COPY'}{ts}copy{/ts}{/if}
-              {if $receipt.status eq 'WITHDRAWN_COPY'}{ts}withdrawn copy{/ts}{/if}
+            <li>{ts domain="de.systopia.donrec"}Status{/ts}: <b>
+              {if $receipt.status eq 'WITHDRAWN'}{ts domain="de.systopia.donrec"}withdrawn{/ts}{/if}
+              {if $receipt.status eq 'ORIGINAL'}{ts domain="de.systopia.donrec"}original{/ts}{/if}
+              {if $receipt.status eq 'COPY'}{ts domain="de.systopia.donrec"}copy{/ts}{/if}
+              {if $receipt.status eq 'WITHDRAWN_COPY'}{ts domain="de.systopia.donrec"}withdrawn copy{/ts}{/if}
             </b></li>
-            <li>{ts}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
-            <li>{ts}Date{/ts}:
+            <li>{ts domain="de.systopia.donrec"}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
+            <li>{ts domain="de.systopia.donrec"}Date{/ts}:
                 {if $receipt.type eq 'SINGLE'}
                   {* for single receipts, print the date of the contribution *}
                   {foreach from=$receipt.lines key=id item=item}{$item.receive_date|crmDate:$config->dateformatFull}{/foreach}
@@ -40,119 +40,119 @@
                   {$receipt.date_from|crmDate:$config->dateformatFull} {if $receipt.date_to neq $receipt.date_from} - {$receipt.date_to|crmDate:$config->dateformatFull}{/if}
                 {/if}
                 </li>
-            <li>{ts}Total amount{/ts}: {$receipt.total_amount|crmMoney:$receipt.currency}</li>
-            <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts}Details{/ts}</span></a></li>
+            <li>{ts domain="de.systopia.donrec"}Total amount{/ts}: {$receipt.total_amount|crmMoney:$receipt.currency}</li>
+            <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}Details{/ts}</span></a></li>
           </ul>
         </div>
       </td>
       <td>
         {if $can_view_copy}
           {if $receipt.view_url}
-            <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts}Download{/ts}</span></a>
+            <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}Download{/ts}</span></a>
           {else}
-            <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts}View{/ts}</span></a>
+            <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}View{/ts}</span></a>
           {/if}
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_view_copy}
-          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts}Create copy{/ts}</span></a>
+          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts domain="de.systopia.donrec"}Create copy{/ts}</span></a>
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_create_withdraw}
-          <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts}Withdraw{/ts}</span></a>
+          <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts domain="de.systopia.donrec"}Withdraw{/ts}</span></a>
         {/if}
         {if $can_delete}
-          <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts}Delete{/ts}</span></a>
+          <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts domain="de.systopia.donrec"}Delete{/ts}</span></a>
         {/if}
 
         {*ALTERNATIVELY: CiviCRM List style: if $receipt.original_file}
-          <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts}View{/ts}</a>
+          <a id="view_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts domain="de.systopia.donrec"}View{/ts}</a>
         {else}
-          <a id="view_receipt_{$receipt_id}" title="{ts}View{/ts}" class="action-item action-item-first" href="#">{ts}View{/ts}</a>
+          <a id="view_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="#">{ts domain="de.systopia.donrec"}View{/ts}</a>
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_view_copy}
-          <a id="copy_receipt_{$receipt_id}" title="{ts}Create copy{/ts}" class="action-item" href="#">{ts}Create copy{/ts}</a>
+          <a id="copy_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Create copy{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Create copy{/ts}</a>
         {/if}
         {if $can_create_withdraw}
-          <a id="withdraw_receipt_{$receipt_id}" title="{ts}Withdraw{/ts}" class="action-item" href="#">{ts}Withdraw{/ts}</a>
+          <a id="withdraw_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Withdraw{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Withdraw{/ts}</a>
         {/if}
         {if $can_delete}
-          <a id="delete_receipt_{$receipt_id}" title="{ts}Delete{/ts}" class="action-item" href="#">{ts}Delete{/ts}</a>
+          <a id="delete_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Delete{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Delete{/ts}</a>
         {/if*}
       </td>
     </tr>
     <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
       <td colspan="2">
         <div style="float:left;width:50%;">
-              <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts}Issued To{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts domain="de.systopia.donrec"}Issued To{/ts}</b></div>
 
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Name{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Name{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
               {if $receipt.contributor.supplemental_address_1}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Supplemental Address 1{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Supplemental Address 1{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.supplemental_address_1}</div>
               </div>
               {/if}
               {if $receipt.contributor.supplemental_address_2}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Supplemental Address 2{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Supplemental Address 2{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.supplemental_address_2}</div>
               </div>
               {/if}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Postal Code{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Postal Code{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.postal_code}</div>
               </div>
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Street{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Street{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.street_address}</div>
               </div>
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}City{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}City{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.city}</div>
               </div>
               {if $receipt.addressee.country}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Country{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Country{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.country}</div>
               </div>
               {/if}
         </div>
         <div style="float:right;width:50%;">
-              <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts}Sent To{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts domain="de.systopia.donrec"}Sent To{/ts}</b></div>
 
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Name{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Name{/ts}</div>
                 <div class="crm-content">{$receipt.contributor.display_name}</div>
               </div>
               {if $receipt.addressee.supplemental_address_1}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Supplemental Address 1{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Supplemental Address 1{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.supplemental_address_1}</div>
               </div>
               {/if}
               {if $receipt.addressee.supplemental_address_2}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Supplemental Address 2{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Supplemental Address 2{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.supplemental_address_2}</div>
               </div>
               {/if}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Postal Code{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Postal Code{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.postal_code}</div>
               </div>
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Street{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Street{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.street_address}</div>
               </div>
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}City{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}City{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.city}</div>
               </div>
               {if $receipt.addressee.country}
               <div class="crm-summary-row">
-                <div class="crm-label">{ts}Country{/ts}</div>
+                <div class="crm-label">{ts domain="de.systopia.donrec"}Country{/ts}</div>
                 <div class="crm-content">{$receipt.addressee.country}</div>
               </div>
               {/if}
@@ -162,14 +162,14 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_2" style="display: none;">
       <td colspan="2">
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon search-icon"></div><b>{ts}Contributions{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon search-icon"></div><b>{ts domain="de.systopia.donrec"}Contributions{/ts}</b></div>
               <div>
                 <table>
                   <thead>
                     <tr style="font-weight: 600;">
-                      <td>{ts}Total Amount{/ts}</td>
-                      <td>{ts}Received Date{/ts}</td>
-                      <td>{ts}Financial Type{/ts}</td>
+                      <td>{ts domain="de.systopia.donrec"}Total Amount{/ts}</td>
+                      <td>{ts domain="de.systopia.donrec"}Received Date{/ts}</td>
+                      <td>{ts domain="de.systopia.donrec"}Financial Type{/ts}</td>
                     </tr>
                   </thead>
                   <tbody>
@@ -239,7 +239,7 @@
         if (rid != null) {
           rid = rid[2];
           {/literal}
-          var filename = "{ts}DonationReceipt{/ts}-{$cid}-" + rid + ".pdf";
+          var filename = "{ts domain="de.systopia.donrec"}DonationReceipt{/ts}-{$cid}-" + rid + ".pdf";
           {literal}
           // view this donation receipt
           CRM.api('DonationReceipt', 'view', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid, name: filename},
@@ -249,7 +249,7 @@
                   var view_url = cj("<div/>").html(data.values).text();
                   location.href = view_url;
                 }else{
-                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                  CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
               }
             }
@@ -269,18 +269,18 @@
             CRM.api('DonationReceipt', 'withdraw', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
             {success: function(data) {
                 if (data['is_error'] == 0) {
-                  CRM.alert("{/literal}{ts}The donation receipt has been successfully withdrawn{/ts}", "{ts}Success{/ts}{literal}", "success");
+                  CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully withdrawn{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
                   cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
                 }else{
-                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                  CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
               }
             }
           );
           },
           {
-            message: {/literal}"{ts}Are you sure you want to withdraw this donation receipt?{/ts}"{literal}
+            message: {/literal}"{ts domain="de.systopia.donrec"}Are you sure you want to withdraw this donation receipt?{/ts}"{literal}
           });
         }
     });
@@ -295,11 +295,11 @@
           CRM.api('DonationReceipt', 'copy', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid},
             {success: function(data) {
                 if (data['is_error'] == 0) {
-                  CRM.alert("{/literal}{ts}The donation receipt has been successfully copied{/ts}", "{ts}Success{/ts}{literal}", "success");
+                  CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully copied{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
                   cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
                 }else{
-                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                  CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
               }
             }
@@ -318,26 +318,26 @@
           var msgExt = "";
           if(/original/i.test(cj("#donrec_stats_" + rid + " ul li:nth-child(2)").text())) {
             {/literal}
-            msgExt = "<p>{ts}Any existing copies of this receipt will have to be deleted manually.{/ts}</p>";
-            msgExt += "<br/><p>{ts}You could also just withdraw it.{/ts}</p>";
+            msgExt = "<p>{ts domain="de.systopia.donrec"}Any existing copies of this receipt will have to be deleted manually.{/ts}</p>";
+            msgExt += "<br/><p>{ts domain="de.systopia.donrec"}You could also just withdraw it.{/ts}</p>";
             {literal}
           }
           CRM.confirm(function() {
             CRM.api('DonationReceipt', 'delete', {'q': 'civicrm/ajax/rest', 'sequential': 1, 'rid': rid, 'id': 0},
             {success: function(data) {
                 if (data['is_error'] == 0) {
-                  CRM.alert("{/literal}{ts}The donation receipt has been successfully deleted{/ts}", "{ts}Success{/ts}{literal}", "success");
+                  CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully deleted{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
                   cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
                 }else{
-                  CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+                  CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
               }
             }
           );
           },
           {
-            message: {/literal}"<p>{ts}Are you sure you want to delete this donation receipt?{/ts}</p>"{literal} + msgExt
+            message: {/literal}"<p>{ts domain="de.systopia.donrec"}Are you sure you want to delete this donation receipt?{/ts}</p>"{literal} + msgExt
           });
         }
     });{/literal}{/if}{literal}

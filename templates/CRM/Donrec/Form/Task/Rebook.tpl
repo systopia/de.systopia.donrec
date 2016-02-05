@@ -16,14 +16,14 @@
   <div class="messages status no-popup">
       <div class="icon inform-icon"></div>
       {if $totalSelectedContributions gt 1}
-      <p>{ts}Are you sure you want to rebook the selected contributions?{/ts}</p>
-      <p>{ts}Number of selected contributions:{/ts} {$totalSelectedContributions}</p><b/>
+      <p>{ts domain="de.systopia.donrec"}Are you sure you want to rebook the selected contributions?{/ts}</p>
+      <p>{ts domain="de.systopia.donrec"}Number of selected contributions:{/ts} {$totalSelectedContributions}</p><b/>
       {else}
-      <p>{ts}Are you sure you want to rebook the contribution?{/ts}</p>
+      <p>{ts domain="de.systopia.donrec"}Are you sure you want to rebook the contribution?{/ts}</p>
       {/if}
   </div>
   
-  <p><strong>{ts}Please enter the target CiviCRM ID?{/ts}</strong></p>
+  <p><strong>{ts domain="de.systopia.donrec"}Please enter the target CiviCRM ID?{/ts}</strong></p>
   
 
   {$form.contactId.label}<br />

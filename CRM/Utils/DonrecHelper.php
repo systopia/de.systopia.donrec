@@ -183,8 +183,8 @@ class CRM_Utils_DonrecHelper
     $template = file_get_contents(dirname(__DIR__) . '../../templates/fatal_error.tpl');
 
     // assign values
-    $smarty->assign('title', ts('Error'));
-    $smarty->assign('headline', ts('Error'));
+    $smarty->assign('title', ts('Error', array('domain' => 'de.systopia.donrec')));
+    $smarty->assign('headline', ts('Error', array('domain' => 'de.systopia.donrec')));
     $smarty->assign('description', $error_message);
 
     $html = $smarty->fetch("string:$template");

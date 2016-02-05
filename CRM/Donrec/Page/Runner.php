@@ -20,7 +20,7 @@ require_once 'CRM/Core/Page.php';
  */
 class CRM_Donrec_Page_Runner extends CRM_Core_Page {
   function run() {
-    CRM_Utils_System::setTitle(ts('Creating Donation Receipts'));
+    CRM_Utils_System::setTitle(ts('Creating Donation Receipts', array('domain' => 'de.systopia.donrec')));
 
     // extract the parameters
     $parameters = array();
@@ -39,7 +39,7 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
 
     // get the snapshot_id
     if (empty($_REQUEST['sid'])) {
-      $this->assign('error', ts("No snapshot ID given. Please call this page from a proper selection."));
+      $this->assign('error', ts("No snapshot ID given. Please call this page from a proper selection.", array('domain' => 'de.systopia.donrec')));
     } else {
       // Init the engine
       $sid = (int) $_REQUEST['sid'];

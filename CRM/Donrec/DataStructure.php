@@ -446,7 +446,7 @@ class CRM_Donrec_DataStructure {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
       // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE:
-      //$params['title'] = ts($params['title']);
+      //$params['title'] = ts($params['title'], array('domain' => 'de.systopia.donrec'));
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
     }
@@ -509,14 +509,14 @@ class CRM_Donrec_DataStructure {
       // TRANSLATE zwb_donation_receipt title
       $custom_group_receipt = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt'));
       // since the API is not reliable here, we do this via SQL
-      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt'));
+      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt', array('domain' => 'de.systopia.donrec')));
       $custom_group_receipt_id = (int) $custom_group_receipt['id'];
       CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_id;");
 
       // TRANSLATE zwb_donation_receipt_item title
       $custom_group_receipt_item = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt_item'));
       // since the API is not reliable here, we do this via SQL
-      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt Item'));
+      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt Item', array('domain' => 'de.systopia.donrec')));
       $custom_group_receipt_item_id = (int) $custom_group_receipt_item['id'];
       CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_item_id;");
 

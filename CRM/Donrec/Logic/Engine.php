@@ -44,7 +44,7 @@ class CRM_Donrec_Logic_Engine {
     $this->parameters = $params;
     $this->snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     if ($this->snapshot==NULL) {
-      return sprintf(ts("Snapshot [%d] does not exist (any more)!"), $snapshot_id);
+      return sprintf(ts("Snapshot [%d] does not exist (any more)!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
     }
 
     // now, check if it's ours:
@@ -53,16 +53,16 @@ class CRM_Donrec_Logic_Engine {
     if ($user_id != $snapshot_creator_id && (!$testMode)) {
       // load creator name
       $creator = civicrm_api3('Contact', 'getsingle', array('id' => $snapshot_creator_id));
-      return sprintf(ts("Snapshot [%d] belongs to user '%s'[%s]!"), $snapshot_id, $creator['display_name'], $snapshot_creator_id);
+      return sprintf(ts("Snapshot [%d] belongs to user '%s'[%s]!", array('domain' => 'de.systopia.donrec')), $snapshot_id, $creator['display_name'], $snapshot_creator_id);
     }
 
     // now, if this is supposed to be test mode, there must not be a real status
     if ($this->isTestRun()) {
       $snapshot_status = $this->getSnapshotStatus();
       if ($snapshot_status=='RUNNING') {
-        return sprintf(ts("Snapshot [%d] is already processing!"), $snapshot_id);
+        return sprintf(ts("Snapshot [%d] is already processing!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
       } elseif ($snapshot_status=='COMPLETE') {
-        return sprintf(ts("Snapshot [%d] is already completed!"), $snapshot_id);
+        return sprintf(ts("Snapshot [%d] is already completed!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
       }
     }
 

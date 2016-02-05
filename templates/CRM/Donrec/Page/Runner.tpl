@@ -10,27 +10,27 @@
 {if $error}
 <p>Error: {$error}</p>
 {else}
-<p id='donrec_instructions'>{ts}creation in progress, please wait...{/ts}  {ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}</p>
+<p id='donrec_instructions'>{ts domain="de.systopia.donrec"}creation in progress, please wait...{/ts}  {ts domain="de.systopia.donrec"}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}</p>
 <div id="progressbar"></div>
 
 <!-- the buttons -->
 <div id='donrec_buttons' class="crm-submit-buttons" hidden>
   <a class="button" onClick="openURL('{$url_back}');">
-    <span align="right"><div class="icon back-icon"></div>{if $test}{ts}Back{/ts}{else}{ts}Done{/ts}{/if}</span>
+    <span align="right"><div class="icon back-icon"></div>{if $test}{ts domain="de.systopia.donrec"}Back{/ts}{else}{ts domain="de.systopia.donrec"}Done{/ts}{/if}</span>
   </a>
 </div>
 
 <!-- the log messages -->
 <p/>
 <div class="crm-accordion-wrapper.collapsed crm-donrec-process-log">
-<div class="crm-accordion-header active">{ts}Progress Log{/ts}</div>
+<div class="crm-accordion-header active">{ts domain="de.systopia.donrec"}Progress Log{/ts}</div>
 <div class="crm-accordion-body">
 <table>
   <thead>
     <tr>
-      <td><strong>{ts}Date{/ts}</strong></td>
-      <td><strong>{ts}Type{/ts}</strong></td>
-      <td><strong>{ts}Message{/ts}</strong></td>
+      <td><strong>{ts domain="de.systopia.donrec"}Date{/ts}</strong></td>
+      <td><strong>{ts domain="de.systopia.donrec"}Type{/ts}</strong></td>
+      <td><strong>{ts domain="de.systopia.donrec"}Message{/ts}</strong></td>
     </tr>
   </thead>
   <tbody id="donrec-logtable-body">
@@ -43,11 +43,11 @@
 var sid = {$sid};
 var bulk = "{$bulk}";
 var test = "{$test}";
-var download_caption = "{ts}Download{/ts}:&nbsp;";
+var download_caption = "{ts domain="de.systopia.donrec"}Download{/ts}:&nbsp;";
 var exporters = "{$exporters}";
-var instructions_done = "{ts}The donation receipts have been generated. You can now download the results.{/ts}";
-var instructions_error = "{ts}There was a problem. Please check the log below for more information.{/ts}";
-var dontleave = "{ts}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}";
+var instructions_done = "{ts domain="de.systopia.donrec"}The donation receipts have been generated. You can now download the results.{/ts}";
+var instructions_error = "{ts domain="de.systopia.donrec"}There was a problem. Please check the log below for more information.{/ts}";
+var dontleave = "{ts domain="de.systopia.donrec"}PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!{/ts}";
 var file_downloaded = false || (test=='1');
 
 var progress = 0;
@@ -70,7 +70,7 @@ function runNextChunk() {
         // TODO: implement error handling
         console.log("Error detected.");
         console.log(data);
-        CRM.alert("{/literal}" + data['error_message'], "{ts}Error{/ts}{literal}", "error");
+        CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
       }
     }
   );
@@ -132,7 +132,7 @@ function openURL(url) {
       location.href = view_url;            
     },
     {
-      message: {/literal}"{ts}You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost.{/ts}"{literal}
+      message: {/literal}"{ts domain="de.systopia.donrec"}You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost.{/ts}"{literal}
     });
 
   } else {
