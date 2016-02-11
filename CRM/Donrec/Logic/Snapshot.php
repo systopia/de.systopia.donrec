@@ -222,58 +222,31 @@ class CRM_Donrec_Logic_Snapshot {
                 AND $status_clause
                 ORDER BY snapshot.`contact_id` ASC;";
       $query = CRM_Core_DAO::executeQuery($query);
-      $chunk_lines = array();
+
+      $last_added_contact_id = NULL;
+      $contribution_count = 0;
       while ($query->fetch()) {
-        $tmp = array();
+        if ($last_added_contact_id != $query->contact_id) {
+          // this is a new contact ID
+          if ( (count($chunk) >= $chunk_size) || ($contribution_count > 5 * $chunk_size ) ) {
+            // we already have $chunk_size contacts, or 5x $chunk_size contributions 
+            //  => that's enough for this chunk!
+            break;
+          }
+
+          // ok, we're still under the limit => create a section for the contact
+          $chunk[$query->contact_id] = array();
+          $last_added_contact_id = $query->contact_id;
+        }
+
+        // add contribution
+        $contribution = array();
         foreach (self::$CHUNK_FIELDS as $field) {
-          $tmp[$field] = $query->$field;
+          $contribution[$field] = $query->$field;
         }
-
-        $chunk_lines[] = $tmp;
+        $chunk[$query->contact_id][] = $contribution;
+        $contribution_count += 1;
       }
-
-      // group them by contact id
-      foreach ($chunk_lines as $key => $value) {
-        if (!array_key_exists($value['contact_id'], $chunk)) {
-          $chunk[$value['contact_id']] = array();
-          $chunk[$value['contact_id']][] = $value;
-        }else{
-          $chunk[$value['contact_id']][] = $value;
-        }
-      }
-
-      // force processing if there is only one item
-      $force_processing = FALSE;
-      if (count($chunk) == 1) {
-        $force_processing = TRUE;
-      }
-
-      // force processing if all remaining chunks exceed the limit
-      $tbcount = 0;
-      foreach ($chunk as $key => $value) {
-        $n = count($value);
-        if ($n > $chunk_size) {
-          $tbcount++;
-        }
-      }
-      $chunksize = count($chunk);
-      if ($tbcount == $chunksize) {
-        $force_processing = TRUE;
-      }
-
-      $return_chunk = array();
-      $processed = 0;
-
-      // pick line groups until the line count exceeds $chunk_size
-      foreach ($chunk as $key => $value) {
-        $n = count($value);
-        if ( (($processed + $n) <= $chunk_size) || $force_processing){
-          $return_chunk[$key] = $value;
-          $processed += $n;
-        }
-      }
-
-      $chunk = $return_chunk;
     }
 
     // reset the process information for the given chunk
