@@ -73,95 +73,20 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       }
     }
 
+
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)
     $values = $this->exportValues();
     $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-
-    if ($contactId === NULL) {
-      error_log("de.systopia.donrec: error: contact id is empty!");
-      return;
-    }
-
-    // prepare timestamps
-    $raw_from_ts = $values['donrec_contribution_horizon_from'];
-    $raw_to_ts = $values['donrec_contribution_horizon_to'];
-
-    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
-    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
-
-    $formatted_date_from = date('Y-m-d H:i:s', $date_from);
-    $formatted_date_to = date('Y-m-d H:i:s', $date_to);
-
-    $query_date_limit = "";
-    if ($date_from) {
-      $query_date_limit .= " AND `receive_date` >= '$formatted_date_from'";
-    }
-    if ($date_to) {
-      $query_date_limit .= " AND `receive_date` <= '$formatted_date_to'";
-    }
-
-    // get table- and column name
-    $table_query = "SELECT `cg`.`table_name`,
-                 `cf`.`column_name`
-              FROM `civicrm_custom_group` AS cg,
-                   `civicrm_custom_field` AS cf
-              WHERE `cg`.`name` = 'zwb_donation_receipt_item'
-              AND `cf`.`custom_group_id` = `cg`.`id`
-              AND `cf`.`name` = 'status'";
-
-    $results = CRM_Core_DAO::executeQuery($table_query);
-
-    $custom_group_table = NULL;
-    $status_column = NULL;
-    while ($results->fetch()) {
-      $custom_group_table = $results->table_name;
-      $status_column = $results->column_name;
-    }
-
-    if ($custom_group_table == NULL || $status_column == NULL) {
-      // something went wrong here
-      error_log("de.systopia.donrec: error: custom_group_table or status_column is empty!");
-        return;
-    }
-
-    // get financial type selector clause
-    $financialTypeClause = CRM_Donrec_Logic_Settings::getContributionTypesClause();
-
-    // map contact ids to contributions
-    // remark: this query is hardcoded to EUR atm
-    // CAUTION: changes to this query should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
-    $query = "SELECT `civicrm_contribution`.`id`
-              FROM (`civicrm_contribution`)
-              LEFT JOIN `$custom_group_table` AS existing_receipt
-                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
-                  AND existing_receipt.`$status_column` = 'ORIGINAL'
-              WHERE
-                  `contact_id` IN ($contactId)
-                  $query_date_limit
-                  AND $financialTypeClause
-                  AND (`non_deductible_amount` = 0 OR `non_deductible_amount` IS NULL)
-                  AND `contribution_status_id` = 1
-                  AND `is_test` = 0
-                  AND `currency` = 'EUR'
-                  AND existing_receipt.`entity_id` IS NULL;";
-
-    // execute the query
-    $result = CRM_Core_DAO::executeQuery($query);
-
-    // build array
-    $contributionIds = array();
-    while ($result->fetch()) {
-      $contributionIds[] = $result->id;
-    }
+    $values['contact_id'] = $contactId;
 
     //set url_back as session-variable
     $session = CRM_Core_Session::singleton();
     $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
 
-    // try to create a snapshot and redirect depending on the result (conflict)
-    $result = CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID(), $formatted_date_from, $formatted_date_to);
+    // generate the snapshot
+    $result = CRM_Donrec_Logic_Selector::createSnapshot($values);
     $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();
 
     if (!empty($result['intersection_error'])) {

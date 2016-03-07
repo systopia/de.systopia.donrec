@@ -1,8 +1,8 @@
 <?php
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2015 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)             |
+| Copyright (C) 2013-2016 SYSTOPIA                       |
+| Author: B. Endres (endres -at- systopia.de)            |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | License: AGPLv3, see LICENSE file                      |
@@ -15,7 +15,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
+class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
   function buildQuickForm() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
@@ -73,7 +73,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)
     $values = $this->exportValues();
-    $values['contact_ids'] = $this->_contactIds;
+    $values['contribution_ids'] = $this->_contributionIds;
 
     //set url_back as session-variable
     $session = CRM_Core_Session::singleton();
