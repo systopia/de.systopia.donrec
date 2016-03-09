@@ -80,6 +80,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getAllTokens() {
     $values = array();
     // create items
+    $id_generator = new CRM_Donrec_Logic_IDGenerator;
+    $values['receipt_id']            = $id_generator->generateID($this->snapshot_lines);
     $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
     $values['issued_on']             = date('Y-m-d H:i:s');
     $values['issued_by']             = CRM_Core_Session::singleton()->get('userID');
