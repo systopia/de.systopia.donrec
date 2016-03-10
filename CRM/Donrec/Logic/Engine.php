@@ -129,6 +129,8 @@ class CRM_Donrec_Logic_Engine {
 
     // initialize stuff
     $chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
+    // FIXME: id-generator should be initialized elsewhere.
+    // Its called for every chunk else.
     $id_generator = new CRM_Donrec_Logic_IDGenerator;
     $exporters = $this->getExporters();
 
@@ -153,8 +155,7 @@ class CRM_Donrec_Logic_Engine {
         } else {
           $result = $exporter->exportSingle($old_style_chunk, $this->snapshot->getId(), $is_test);
         }
-        # TODO: Within old code next part was outside the loop.
-        # Doesn't it make more sense within the loop?
+        # TODO: log for chunks
         if (isset($result['log'])) {
           $logs = array_merge($logs, $result['log']);
         }
@@ -163,7 +164,7 @@ class CRM_Donrec_Logic_Engine {
       // Setup some parameters
       //**********************************
       // Prepare chunk_items:
-      // It es more convenient to have a simalar array-structure for bulk-
+      // It is more convenient to have a simalar array-structure for bulk-
       // and single-processing. In future the getNextChunk-method might be
       // refactored and build up the arrays correspondingly.
       $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items['contact_id'] => $chunk_items);

@@ -393,6 +393,9 @@ class CRM_Donrec_DataStructure {
     ),
   );
 
+  /**
+   * Array to cache the database-details of custom-groups and -fields.
+   */
   protected static $_custom_groups = array(
     'zwb_donation_receipt' => array(
       'id' => NULL,
