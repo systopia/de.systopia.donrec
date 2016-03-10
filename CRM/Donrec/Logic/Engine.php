@@ -135,19 +135,7 @@ class CRM_Donrec_Logic_Engine {
     // loop over receipts
     foreach ($chunk as $chunk_id => $chunk_items) {
 
-      // Prepare chunk_items to equal them for single- and bulk-processing.
-      // To prevent this snapshot->getNextChunk should be refactored.
-      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items['contact_id'] => $chunk_items);
-
-      // setup params
-      $receipt_params = array();
-      $line_ids = array();
-      $receipt_params['receipt_id'] = $id_generator->generateID($chunk_items);
-      $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
-      $contact_id = ($is_bulk)? $chunk_id : $chunk_items['contact_id'];
-      foreach ($chunk_items as $chunk_item) {
-        $line_ids[] = $chunk_item['id'];
-      }
+      $receipt_id = $id_generator->generateID($chunk_items);
 
       // call exporters
       //**********************************
@@ -155,7 +143,9 @@ class CRM_Donrec_Logic_Engine {
 
         // TODO: pass the receipt-id to exporters!
 
-        // until the exporters have been refactored we need to prepare $chunk_items
+        // This code was refactored. The exporters should be refactored as well
+        // accepting $chunk_items as a "single-receipt-item" as we use it here.
+        // Till then we prepare the chunk_items for the exporters.
         $old_style_chunk = array($chunk_id => $chunk_items);
 
         if ($is_bulk) {
@@ -168,6 +158,23 @@ class CRM_Donrec_Logic_Engine {
         if (isset($result['log'])) {
           $logs = array_merge($logs, $result['log']);
         }
+      }
+
+      // Setup some parameters
+      //**********************************
+      // Prepare chunk_items:
+      // It es more convenient to have a simalar array-structure for bulk-
+      // and single-processing. In future the getNextChunk-method might be
+      // refactored and build up the arrays correspondingly.
+      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items['contact_id'] => $chunk_items);
+
+      $receipt_params = array();
+      $receipt_params['receipt_id'] = $receipt_id;
+      $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
+      $contact_id = ($is_bulk)? $chunk_id : $chunk_items['contact_id'];
+      $line_ids = array();
+      foreach ($chunk_items as $chunk_item) {
+        $line_ids[] = $chunk_item['id'];
       }
 
       // safe pfd and create receipt (if not test-run)
