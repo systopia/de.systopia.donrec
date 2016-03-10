@@ -15,7 +15,7 @@
 class CRM_Donrec_Logic_IDGenerator {
 
   /** the pattern to be used for the ID generation */
-  protected $pattern = 'superID_{serial}_{issue_year}';
+  protected $pattern = NULL;
   protected $tokens = array(
     'issue_year' => NULL,
     'contact_id' => NULL
@@ -26,7 +26,16 @@ class CRM_Donrec_Logic_IDGenerator {
    * @param $pattern the pattern to be used for the ID
    */
   public function __construct($pattern) {
-    // $this->pattern = $pattern;
+    # {serial} must not be between numbers or other tokens (which could be a number aswell)
+    $serial_regexp = '/(^|[^0-9}])({serial(:[^}]+)?})($|[^0-9{])/';
+
+    $pattern = '{serial}_superID_{issue_year}';
+    $count = preg_match_all($serial_regexp, $pattern);
+    if ($count != 1) {
+      // TODO: stop the action!
+      error_log("Invalid ID-pattern: '$pattern'");
+    }
+    $this->pattern = $pattern;
   }
 
 
@@ -57,10 +66,17 @@ class CRM_Donrec_Logic_IDGenerator {
   public function generateID($snapshot_lines) {
 
     // prepare tokens
+    // FIXME: check for occurance
     $contact_id = $snapshot_lines[0]['contact_id'];
     $this->tokens['contact_id'] = $snapshot_lines[0]['contact_id'];
     $this->tokens['issue_year'] = date("Y");
 
+    // get database-infos
+    $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+    $field = $fields['receipt_id'];
+
+    // TODO: serial-regexp
     // prepare pattern and regexp
     $pattern = $this->pattern;
     foreach ($this->tokens as $token => $value) {
@@ -69,15 +85,14 @@ class CRM_Donrec_Logic_IDGenerator {
     $regexp = '^' . str_replace("{serial}", "[0-9]+", $pattern) . '$';
     $serial_pos = strpos($pattern, "{serial}") + 1;
     $serial_suffix = substr($pattern, $serial_pos - 1 + strlen('{serial}'));
+    if ($serial_suffix) {
+      $length_query = "FOR LOCATE('$serial_suffix', `$field`) - $serial_pos";
+    }
 
-    // get database-infos
-    $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
-    $fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
-    $field = $fields['receipt_id'];
-
+    // TODO: convert to int (basis 10)
     // build and run query
     $query = "
-      SELECT MAX(SUBSTRING(`$field` FROM $serial_pos FOR LOCATE('$serial_suffix', `$field`) - $serial_pos))
+      SELECT MAX(SUBSTRING(`$field` FROM $serial_pos $length_query))
       FROM `$table`
       WHERE `$field` REGEXP '$regexp'
     ";
@@ -89,7 +104,6 @@ class CRM_Donrec_Logic_IDGenerator {
     } else {
       $receipt_id = str_replace('{serial}', 1, $pattern);
     }
-    // error_log($receipt_id);
 
     return $receipt_id;
   }
