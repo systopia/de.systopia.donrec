@@ -42,3 +42,7 @@
 {htxt id='id-address-fallback'}
     <p>{ts domain="de.systopia.donrec"}In case the first address is empty, this is the fallback address to be used insted.{/ts}</p>
 {/htxt}
+
+{htxt id='id-profile'}
+    <p>{ts domain="de.systopia.donrec"}Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile.{/ts}</p>
+{/htxt}

@@ -69,17 +69,34 @@ class CRM_Donrec_Logic_Profile {
   /**
    * return all existing profiles
    * 
-   * @return array(name => profile)
+   * @return array(name => name)
    */
-  public static function getAll() {
-    $allProfiles = array();
+  public static function getAllNames() {
+    $allProfiles = array('Default' => 'Default');
 
     // FIXME: is there a better way than a SQL query?
     $sql = "SELECT name FROM civicrm_setting WHERE group_name = %1;";
     $sql_params = array(1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'));
     $query = CRM_Core_DAO::executeQuery($sql, $sql_params);
-    while ($query->fetch) {
-      $allProfiles[$query->name] = new CRM_Donrec_Logic_Profile($query->name);
+    while ($query->fetch()) {
+      $allProfiles[$query->name] = $query->name;
+    }
+
+    // TODO: remove
+    return $allProfiles;
+  }
+
+  /**
+   * return all existing profiles
+   * 
+   * @return array(name => profile)
+   */
+  public static function getAll() {
+    $allProfileNames = self::getAllNames();
+    $allProfiles = array();
+
+    foreach ($allProfileNames as $profile_name) {
+      $allProfiles[$profile_name] = new CRM_Donrec_Logic_Profile($profile_name);
     }
 
     return $allProfiles;
@@ -145,7 +162,7 @@ class CRM_Donrec_Logic_Profile {
   public function getContributionTypesClause() {
     // get all valid financial type ids
     $financialTypeIds = array();
-    $validContribTypes = self->getContributionTypes();
+    $validContribTypes = $this->getContributionTypes();
     for($contribution_type_id=1; $contribution_type_id < count($validContribTypes); $contribution_type_id++) {
       // this type is valid if the flag is set
       if($validContribTypes[$contribution_type_id][3] == 1) {
