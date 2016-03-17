@@ -148,18 +148,17 @@
     profile_data[new_name] = jQuery.extend(true, {}, profile_data[current_name]);
     donrec_setProfileData(profile_data);
 
-    // finally: select the new profile
+    // finally: add and select the new profile
     cj("#clone_name").val('');
-    cj("#profile").select2('data', {id: new_name, text: new_name});
-    cj("#profile").val(new_name);
-
-    // $('#client=id').val(data.id);
-    // $('#modal-solicitante').modal('hide'); //This is my
-    // $(".select2-ajax").select2('data', {id: data.id, name: data.name, email: data.email});
-
+    cj("[name=profile]").append(new Option(new_name, new_name, true, true));
+    cj("[name=profile]").val(new_name);
+    cj("[name=profile]").select2('val', new_name);
   });
 
-
+  
+  cj("#financial_types").change(function() {
+    console.log(cj("#financial_types").val());
+  })
   /** 
    * get the profile data map
    */
@@ -191,12 +190,27 @@
     var current_name = cj("#profile").val();
     var profile = profiles[current_name];
 
+    // first: set all values
+    var fields = ['financial_types', 'draft_text', 'copy_text', 'legal_address', 'postal_address', 'legal_address_fallback', 'postal_address_fallback'];
+    for (var i=0; i<fields.length; i++) {
+      cj('#' + fields[i]).val(profile[fields[i]]);
+    }
 
-    console.log(profile);
+    // verify values, set sensible defaults
+    var address_fields = ['legal_address', 'postal_address', 'legal_address_fallback', 'postal_address_fallback'];
+    for (var i=0; i<address_fields.length; i++) {
+      var current_value = cj('#' + address_fields[i]).val();
+      if (current_value == null || current_value.length == 0) {
+        cj('#' + address_fields[i]).val(["0"]); // "0" should be "primary"
+      }
+    }
+
+    // TODO:
+
   }
 
 
-  cj(setProfileValues);
+  cj(donrec_setProfileValues);
 
 </script>
 {/literal}

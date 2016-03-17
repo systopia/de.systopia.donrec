@@ -27,7 +27,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     // $this->addElement('checkbox','financial_types_all'); // "
     $this->addElement('select', 'financial_types', ts('Contribution Types', array('domain' => 'de.systopia.donrec')), CRM_Contribute_PseudoConstant::financialType(), array('multiple' => "multiple", 'class' => 'crm-select2'));
-
+    error_log(print_r(CRM_Contribute_PseudoConstant::financialType(),1 ));
     // add profile location-type-selections
     $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
     $result = CRM_Core_DAO::executeQuery($query);
