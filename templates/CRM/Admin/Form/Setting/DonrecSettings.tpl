@@ -13,11 +13,16 @@
     {$form.profile_data.html}
     <table>
       <tr>
-        <td>{$form.profile.html}</td>
-        <td>
-          <label for="clone_name">{ts domain="de.systopia.donrec"}Copy to:{/ts}</label>
+        <td style="vertical-align:middle">
+          {$form.profile.html}
+        </td>
+        <td style="vertical-align:middle">
+          <input type="button" id="delete_button" value="{ts domain="de.systopia.donrec"}Delete{/ts}" title="{ts domain="de.systopia.donrec"}Remove the current configuration{/ts}"/>
+        </td>
+        <td style="vertical-align:middle">
+          <label for="clone_name">{ts domain="de.systopia.donrec"}Create copy:{/ts}</label>
           <input type="text" size="20" id="clone_name" />
-          <input type="button" id="clone_button" value="{ts domain="de.systopia.donrec"}Clone{/ts}" title="{ts domain="de.systopia.donrec"}Create a copy of the current configuration{/ts}"/>
+          <input type="button" id="clone_button" value="{ts domain="de.systopia.donrec"}Copy{/ts}" title="{ts domain="de.systopia.donrec"}Create a clone of the current configuration{/ts}"/>
         </td>
       </tr>
     </table>
@@ -122,12 +127,21 @@
   //table-style
   cj('td.label').width(300);
 
-  cj("#profile").change(function() {
-    console.log("change");
+  // defaults
+  var donrec_value_defaults = {'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
+
+  /**
+   * change event handler for the profile method
+   */
+  cj("#profile").change(function(changeData) {
+    var oldProfile = changeData.removed.id;
+    var newProfile = changeData.added.id;
+    donrec_updateProfile(oldProfile);
+    donrec_setProfileValues();
   });
 
   /**
-   * clone profile function
+   * CLONE button click handler
    */
   cj("#clone_button").click(function() {
     var current_name = cj("#profile").val();
@@ -144,6 +158,9 @@
       return;
     }
 
+    // before cloning, update model
+    donrec_updateProfile(current_name);
+
     // create new profile by cloning the old
     profile_data[new_name] = jQuery.extend(true, {}, profile_data[current_name]);
     donrec_setProfileData(profile_data);
@@ -153,23 +170,77 @@
     cj("[name=profile]").append(new Option(new_name, new_name, true, true));
     cj("[name=profile]").val(new_name);
     cj("[name=profile]").select2('val', new_name);
+    donrec_setProfileValues();
+
+    // inform the user
+    {/literal}
+    var title = "{ts domain="de.systopia.donrec"}Profile profile_name created.{/ts}";
+    title = title.replace('profile_name', new_name);
+    title = title + "<br/>{ts domain="de.systopia.donrec"}Remeber to save to settings page for all profile changes to take effect.{/ts}";
+    CRM.alert(title, "{ts}Profile{/ts}", "info");
+    {literal}
   });
 
+  /**
+   * DELETE button click handler
+   */
+  cj("#delete_button").click(function() {
+    // get profile data
+    var profile_data = donrec_getProfileData();
+    if (Object.keys(profile_data).length <= 1) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This is the only profile, you cannot delete this.{/ts}", "{ts}Error{/ts}{literal}", "error");
+      return;
+    }
+
+    // delete from model
+    var current_name = cj("#profile").val();
+    delete profile_data[current_name];
+    donrec_setProfileData(profile_data);
+
+    // delete from select
+    cj("[name=profile] option[value='" + current_name + "']").remove();
+
+    for (new_name in profile_data) {
+      cj("[name=profile]").val(new_name);
+      cj("[name=profile]").select2('val', new_name);
+      donrec_setProfileValues();
+      break;
+    }
+
+    // inform the user
+    {/literal}
+    var title = "{ts domain="de.systopia.donrec"}Profile profile_name deleted{/ts}";
+    title = title.replace('profile_name', current_name);
+    title = title + "<br/>{ts domain="de.systopia.donrec"}Remeber to save to settings page for all profile changes to take effect.{/ts}";
+    CRM.alert(title, "{ts}Profile{/ts}", "info");
+    {literal}
+  });
+
+  /**
+   * copies the current values into the profile
+   */
+  function donrec_updateProfile(profileName) {
+    var profile_data = donrec_getProfileData();
+    for (field in donrec_value_defaults) {
+      if (field == 'store_pdf') {
+        profile_data[profileName][field] = cj('#' + field).prop('checked');
+      } else {
+        profile_data[profileName][field] = cj('#' + field).val();
+      }
+    }
+    donrec_setProfileData(profile_data);
+  }
+
   
-  cj("#financial_types").change(function() {
-    console.log(cj("#financial_types").val());
-  })
   /** 
    * get the profile data map
    */
   function donrec_getProfileData() {
     var profile_data = jQuery.parseJSON(cj("input[name=profile_data]").val());
-    console.log(profile_data);
     if (profile_data == null) {
       CRM.alert("Your profiles are invalid. Reset.", "Internal Error", "error");
-      profile_data = {'Default': {}};
+      profile_data = {'Default': jQuery.extend(true, {}, donrec_value_defaults)};
     }
-
     return profile_data;
   }
 
@@ -177,9 +248,7 @@
    * set the profile data map
    */
   function donrec_setProfileData(profile_data) {
-    console.log(JSON.stringify(profile_data));
     cj("input[name=profile_data]").val(JSON.stringify(profile_data));
-    console.log(cj("input[name=profile_data]").val());
   }
 
   /**
@@ -191,26 +260,32 @@
     var profile = profiles[current_name];
 
     // first: set all values
-    var fields = ['financial_types', 'draft_text', 'copy_text', 'legal_address', 'postal_address', 'legal_address_fallback', 'postal_address_fallback'];
-    for (var i=0; i<fields.length; i++) {
-      cj('#' + fields[i]).val(profile[fields[i]]);
-    }
-
-    // verify values, set sensible defaults
-    var address_fields = ['legal_address', 'postal_address', 'legal_address_fallback', 'postal_address_fallback'];
-    for (var i=0; i<address_fields.length; i++) {
-      var current_value = cj('#' + address_fields[i]).val();
-      if (current_value == null || current_value.length == 0) {
-        cj('#' + address_fields[i]).val(["0"]); // "0" should be "primary"
+    for (field in donrec_value_defaults) {
+      if (field == 'store_pdf') {
+        cj('#' + field).prop('checked', profile[field]);
+      } else if (field == 'financial_types') {
+        cj('#' + field).select2('val', profile[field]);
+      } else {
+        cj('#' + field).val(profile[field]);
       }
     }
 
-    // TODO:
-
+    // verify values, set sensible defaults if nothing is there (shouldn't happen)
+    for (var field in donrec_value_defaults) {
+      var current_value = cj('#' + field).val();
+      if (current_value == null || current_value.length == 0) {
+        cj('#' + field).val(donrec_value_defaults[field]); // "0" should be "primary"
+      }
+    }
   }
 
+  // initialisation
+  cj(function() {
+    // first, create the options
+    // TODO: needed?
 
-  cj(donrec_setProfileValues);
-
+    // finally, set all values of the chosen profile
+    donrec_setProfileValues();
+  });
 </script>
 {/literal}

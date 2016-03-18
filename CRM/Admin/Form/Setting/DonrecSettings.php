@@ -27,7 +27,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     // $this->addElement('checkbox','financial_types_all'); // "
     $this->addElement('select', 'financial_types', ts('Contribution Types', array('domain' => 'de.systopia.donrec')), CRM_Contribute_PseudoConstant::financialType(), array('multiple' => "multiple", 'class' => 'crm-select2'));
-    error_log(print_r(CRM_Contribute_PseudoConstant::financialType(),1 ));
+
     // add profile location-type-selections
     $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
     $result = CRM_Core_DAO::executeQuery($query);
@@ -91,12 +91,12 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfinfo_path']){
       CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
     }
-
+    
     // TODO:
     // 1. update current profile
     // 2. sync profiles
     // 3. 
-
+    
     // save text fields
     // if ($values['draft_text']){
     //   CRM_Core_BAO_Setting::setItem($values['draft_text'],'Donation Receipt Settings', 'draft_text');

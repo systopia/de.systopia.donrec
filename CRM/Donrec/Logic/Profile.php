@@ -28,9 +28,8 @@ class CRM_Donrec_Logic_Profile {
     $data = CRM_Core_BAO_Setting::getItem(self::$SETTINGS_PROFILE_GROUP, $profile_name);
     if ($data==NULL || !is_array($data)) {
       // this setting doesn't exist yet or is malformed
-      $this->data = array(
-        // TODO: add default values
-        );
+      $this->data = self::defaultProfileDate();
+      
     } else {
       $this->data = $data;
     }
@@ -72,7 +71,7 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => name)
    */
   public static function getAllNames() {
-    $allProfiles = array('Default' => 'Default');
+    $allProfiles = array();
 
     // FIXME: is there a better way than a SQL query?
     $sql = "SELECT name FROM civicrm_setting WHERE group_name = %1;";
@@ -82,7 +81,10 @@ class CRM_Donrec_Logic_Profile {
       $allProfiles[$query->name] = $query->name;
     }
 
-    // TODO: remove
+    if (empty($allProfiles)) {
+      $allProfiles['Default'] = 'Default';
+    }
+
     return $allProfiles;
   }
 
@@ -99,6 +101,10 @@ class CRM_Donrec_Logic_Profile {
       $allProfiles[$profile_name] = new CRM_Donrec_Logic_Profile($profile_name);
     }
 
+    if (empty($allProfiles)) {
+      $profile_data['Default'] = new CRM_Donrec_Logic_Profile('Default');
+    }
+
     return $allProfiles;
   }
 
@@ -113,6 +119,7 @@ class CRM_Donrec_Logic_Profile {
     foreach ($profiles as $profile_name => $profile) {
       $profile2data[$profile_name] = $profile->getData();
     }
+
     return $profile2data;
   }
 
@@ -211,4 +218,20 @@ class CRM_Donrec_Logic_Profile {
     return $this->get('template');
   }
 
+
+  /**
+   * create a default profile data
+   */
+  protected static function defaultProfileDate() {
+    return array(
+      'financial_types'         => array(),
+      'store_pdf'               => FALSE,
+      'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
+      'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
+      'legal_address'           => array('0'),  // '0' is the primary address
+      'postal_address'          => array('0'),  
+      'legal_address_fallback'  => array('0'),  
+      'postal_address_fallback' => array('0'),
+      );
+  }
 }
