@@ -129,8 +129,6 @@ class CRM_Donrec_Logic_Engine {
 
     // initialize stuff
     $chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
-    // FIXME: id-generator should be initialized elsewhere.
-    // Its called for every chunk else.
     $id_generator = new CRM_Donrec_Logic_IDGenerator;
     $exporters = $this->getExporters();
 
