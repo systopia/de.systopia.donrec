@@ -41,6 +41,10 @@ class CRM_Donrec_Logic_Profile {
    * @param $data array(key => value)
    */
   public function update($data) {
+    // verify that copy_text and draft_text are set
+    if (empty($data['copy_text'])) $data['copy_text']   = ts('COPY',  array('domain' => 'de.systopia.donrec'));
+    if (empty($data['draft_text'])) $data['draft_text'] = ts('DRAFT', array('domain' => 'de.systopia.donrec'));
+
     $this->data = $data;
   }
 

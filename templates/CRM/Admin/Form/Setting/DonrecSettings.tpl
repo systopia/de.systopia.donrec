@@ -177,7 +177,7 @@
     var title = "{ts domain="de.systopia.donrec"}Profile profile_name created.{/ts}";
     title = title.replace('profile_name', new_name);
     title = title + "<br/>{ts domain="de.systopia.donrec"}Remeber to save to settings page for all profile changes to take effect.{/ts}";
-    CRM.alert(title, "{ts}Profile{/ts}", "info");
+    CRM.alert(title, "{ts domain="de.systopia.donrec"}Profile{/ts}", "info");
     {literal}
   });
 
@@ -188,7 +188,7 @@
     // get profile data
     var profile_data = donrec_getProfileData();
     if (Object.keys(profile_data).length <= 1) {
-      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This is the only profile, you cannot delete this.{/ts}", "{ts}Error{/ts}{literal}", "error");
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This is the only profile, you cannot delete this.{/ts}", "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
       return;
     }
 
@@ -279,11 +279,31 @@
     }
   }
 
+  // verify that draft/copy texts are valid
+  function donrec_validate_text(e) {
+    var current_value = cj(e.currentTarget).val();
+
+    // make sure that there is a value
+    if (current_value == null || current_value.length == 0) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This value cannot be empty!{/ts}", "{ts}Error{/ts}{literal}", "error");
+    } else if (!current_value.match("^[A-Za-zäöüÄÖÜß]+$")) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This can only contain letters{/ts}", "{ts}Error{/ts}{literal}", "error");
+    } else {
+      return; // everything is fine...
+    }
+
+    // if we get here, we'll reset to default
+    if ('copy_text' == cj(e.currentTarget).attr('id')) {
+      cj(e.currentTarget).val("{/literal}{ts domain="de.systopia.donrec"}COPY{/ts}{literal}");
+    } else {
+      cj(e.currentTarget).val("{/literal}{ts domain="de.systopia.donrec"}DRAFT{/ts}{literal}");
+    }
+  }
+  cj("#draft_text").change(donrec_validate_text);
+  cj("#copy_text").change(donrec_validate_text);
+
   // initialisation
   cj(function() {
-    // first, create the options
-    // TODO: needed?
-
     // finally, set all values of the chosen profile
     donrec_setProfileValues();
   });
