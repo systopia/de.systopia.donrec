@@ -28,7 +28,7 @@ class CRM_Donrec_Logic_Profile {
     $data = CRM_Core_BAO_Setting::getItem(self::$SETTINGS_PROFILE_GROUP, $profile_name);
     if ($data==NULL || !is_array($data)) {
       // this setting doesn't exist yet or is malformed
-      $this->data = self::defaultProfileDate();
+      $this->data = self::defaultProfileData();
       
     } else {
       $this->data = $data;
@@ -121,6 +121,29 @@ class CRM_Donrec_Logic_Profile {
     }
 
     return $profile2data;
+  }
+
+  /**
+   * adjust the existing profiles given the data (as produced by self::getAllData())
+   *
+   * this method will also create and delete new and obsolete profiles respectively
+   */
+  public static function syncProfileData($data) {
+    $old_profiles = self::getAll();
+
+    // first update/create all the new ones
+    foreach ($data as $profile_name => $profile_data) {
+      if (empty($profile_name)) continue; // just to be sure...
+      $profile = new CRM_Donrec_Logic_Profile($profile_name);
+      $profile->update($profile_data);
+      $profile->save();
+      unset($old_profiles[$profile_name]);
+    }
+
+    // the old profiles left over can be deleted
+    foreach ($old_profiles as $profile_name => $profile_data) {
+      self::deleteProfile($profile_name);
+    }
   }
 
 
@@ -220,9 +243,20 @@ class CRM_Donrec_Logic_Profile {
 
 
   /**
+   * Deletes the given profile
+   */
+  public static function deleteProfile($profile_name) {
+    $bao = new CRM_Core_BAO_Setting();
+    $bao->group_name = self::$SETTINGS_PROFILE_GROUP;
+    $bao->name = $profile_name;
+    $bao->find(TRUE);
+    $bao->delete();
+  }
+
+  /**
    * create a default profile data
    */
-  protected static function defaultProfileDate() {
+  public static function defaultProfileData() {
     return array(
       'financial_types'         => array(),
       'store_pdf'               => FALSE,

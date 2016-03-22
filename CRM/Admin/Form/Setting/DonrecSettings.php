@@ -18,8 +18,14 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Utils_System::setTitle(ts('Donation Receipts - Settings', array('domain' => 'de.systopia.donrec')));
 
     // add profile selector + data
-    $this->addElement('select', 'profile', ts('Profile', array('domain' => 'de.systopia.donrec')), CRM_Donrec_Logic_Profile::getAllNames(), array('class' => 'crm-select2'));
-    $this->addElement('hidden', 'profile_data', json_encode(CRM_Donrec_Logic_Profile::getAllData()));
+    $this->addElement('select', 
+                      'profile', 
+                      ts('Profile', array('domain' => 'de.systopia.donrec')), 
+                      CRM_Donrec_Logic_Profile::getAllNames(), 
+                      array('class' => 'crm-select2'));
+    $this->addElement('hidden', 
+                      'profile_data', 
+                      json_encode(CRM_Donrec_Logic_Profile::getAllData()));
 
     // add all profile elements
     $this->addElement('text', 'draft_text', ts('Draft text', array('domain' => 'de.systopia.donrec')));
@@ -45,8 +51,15 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     // }
 
     // add generic elements
-    $this->addElement('text', 'pdfinfo_path', ts('External Tool: path to <code>pdfinfo</code>', array('domain' => 'de.systopia.donrec')));
-    $this->addElement('text', 'packet_size', ts('Packet size', array('domain' => 'de.systopia.donrec')));
+    $this->addElement('text', 
+                      'pdfinfo_path', 
+                      ts('External Tool: path to <code>pdfinfo</code>', array('domain' => 'de.systopia.donrec')),
+                      CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'));
+
+    $this->addElement('text', 
+                      'packet_size', 
+                      ts('Packet size', array('domain' => 'de.systopia.donrec')),
+                      CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'));
 
 
     $this->addButtons(array(
@@ -68,9 +81,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
   function preProcess() {
     // $this->assign('financialTypes', CRM_Donrec_Logic_Settings::getContributionTypes());
-    $this->assign('pdfinfo_path', CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'));
-    $this->assign('packet_size',  CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'));
-    // $this->setDefaults(array(
+    // $this->assign('pdfinfo_path', CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'));
+    // $this->assign('packet_size',  CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'));
+    // // $this->setDefaults(array(
     //     'draft_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text'),
     //     'copy_text' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text'),
     //     'packet_size' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'),
@@ -80,6 +93,10 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     //     'legal_address_fallback' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'legal_address_fallback'),
     //     'postal_address_fallback' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'postal_address_fallback')
     //   ));
+    $this->setDefaults(array(
+      'pdfinfo_path' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'),
+      'packet_size'  => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size')
+    ));
   }
 
   function postProcess() {
@@ -91,11 +108,24 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfinfo_path']){
       CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
     }
-    
-    // TODO:
-    // 1. update current profile
-    // 2. sync profiles
-    // 3. 
+        
+    // first, update current values into slected profile
+    if (!empty($values['profile'])) {
+      $profile = $values['profile'];
+      $profile_data = json_decode($values['profile_data'], 1);
+      $profile_defaults = CRM_Donrec_Logic_Profile::defaultProfileData();
+
+      foreach (array_keys($profile_defaults) as $field_name) {
+        $value = CRM_Utils_Array::value($field_name, $values, NULL);
+        if ($value != NULL) {
+          $profile_data[$profile][$field_name] = $value;
+        }
+      }
+
+      // then store the profiles
+      CRM_Donrec_Logic_Profile::syncProfileData($profile_data);        
+    }
+
     
     // save text fields
     // if ($values['draft_text']){
