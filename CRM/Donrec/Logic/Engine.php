@@ -129,19 +129,14 @@ class CRM_Donrec_Logic_Engine {
 
     // initialize stuff
     $chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
-    $id_generator = new CRM_Donrec_Logic_IDGenerator;
     $exporters = $this->getExporters();
 
     // loop over receipts
     foreach ($chunk as $chunk_id => $chunk_items) {
 
-      $receipt_id = $id_generator->generateID($chunk_items);
-
       // call exporters
       //**********************************
       foreach ($exporters as $exporter) {
-
-        // TODO: pass the receipt-id to exporters!
 
         // This code was refactored. The exporters should be refactored as well
         // accepting $chunk_items as a "single-receipt-item" as we use it here.
@@ -168,7 +163,6 @@ class CRM_Donrec_Logic_Engine {
       $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items['contact_id'] => $chunk_items);
 
       $receipt_params = array();
-      $receipt_params['receipt_id'] = $receipt_id;
       $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
       $contact_id = ($is_bulk)? $chunk_id : $chunk_items['contact_id'];
       $line_ids = array();

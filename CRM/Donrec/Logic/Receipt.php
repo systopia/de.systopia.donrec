@@ -405,6 +405,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $query_receipt = "SELECT
         receipt.`id`                                       AS `id`,
         receipt.`entity_id`                                AS `contributor__id`,
+        receipt.`$receipt_fields[receipt_id]`              AS `receipt_id`,
         receipt.`$receipt_fields[type]`                    AS `type`,
         receipt.`$receipt_fields[status]`                  AS `status`,
         receipt.`$receipt_fields[issued_on]`               AS `issued_on`,

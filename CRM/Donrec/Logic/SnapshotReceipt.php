@@ -17,6 +17,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   protected $snapshot;
   protected $snapshot_lines;
   protected $is_test;
+  protected $receipt_id;
 
   private $cached_contributors = array();
   private $cached_addressees = array();
@@ -25,6 +26,34 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->snapshot = $snapshot;
     $this->snapshot_lines = $snapshot_lines;
     $this->is_test = $is_test;
+    $this->receipt_id = $this->getReceiptId();
+  }
+
+  /**
+   * Loads receipt_id if written to the snapshot-table.
+   * Otherwise creates it and write it to the snapshot-table.
+   *
+   * @return receipt_id
+   */
+  protected function getReceiptId() {
+    $line_ids = $this->getIDs();
+    $line_ids_query = '( ' . implode(', ', $line_ids) . ' )';
+    $query = "
+      SELECT `receipt_id`
+      FROM `civicrm_donrec_snapshot`
+      WHERE `id` IN $line_ids_query
+      GROUP BY `receipt_id`";
+    $receipt_id = CRM_Core_DAO::singleValueQuery($query);
+    if (!$receipt_id) {
+      $id_generator = new CRM_Donrec_Logic_IDGenerator;
+      $receipt_id = $id_generator->generateID($this->snapshot_lines);
+      $update_query = "
+        UPDATE `civicrm_donrec_snapshot`
+        SET `receipt_id` = '$receipt_id'
+        WHERE `id` IN $line_ids_query";
+      CRM_Core_DAO::executeQuery($update_query);
+    }
+    return $receipt_id;
   }
 
   public function isBulk() {
@@ -80,8 +109,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getAllTokens() {
     $values = array();
     // create items
-    // $id_generator = new CRM_Donrec_Logic_IDGenerator;
-    // $values['receipt_id']            = $id_generator->generateID($this->snapshot_lines);
+    $values['receipt_id']            = $this->receipt_id;
     $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
     $values['issued_on']             = date('Y-m-d H:i:s');
     $values['issued_by']             = CRM_Core_Session::singleton()->get('userID');

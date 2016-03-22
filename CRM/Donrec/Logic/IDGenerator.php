@@ -127,8 +127,6 @@ class CRM_Donrec_Logic_IDGenerator {
       $receipt_id = preg_replace($serial_regexp, 1, $pattern);
     }
 
-    error_log($last_serial);
-    error_log($receipt_id);
     return $receipt_id;
   }
 

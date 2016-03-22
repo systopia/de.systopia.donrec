@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
 
 CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `receipt_id` char(24),
   `snapshot_id` int(10) unsigned NOT NULL,
   `contribution_id` int(10) unsigned NOT NULL,
   `contact_id` int(10) unsigned NOT NULL,
@@ -24,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   `date_to` datetime NOT NULL,
   PRIMARY KEY (`snapshot_id`,`contribution_id`),
   KEY `id` (`id`),
+  KEY `receipt_id` (`receipt_id`),
   KEY `contribution_id` (`contribution_id`),
   KEY `contact_id` (`contact_id`),
   KEY `financial_type_id` (`financial_type_id`),
