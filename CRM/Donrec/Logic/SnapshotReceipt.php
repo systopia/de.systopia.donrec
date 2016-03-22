@@ -158,7 +158,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add the addresses
-    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['legal'];
+    $types = $this->getProfile()->getLocationTypes()['legal'];
     $contributor_address = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
     if ($contributor_address != NULL) {
       $contributor = array_merge($contributor, $contributor_address);
@@ -179,9 +179,10 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // get the addresses
-    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['postal'];
-    // TODO: if the contributor-address has the same type, this will result in
-    // a superfluous database-request.
+    $types = $this->getProfile()->getLocationTypes()['postal'];
+
+    // FIXME: if the contributor-address has the same type, this will result in
+    // an unnecessary database-request.
     // An extra address-cache would be fine.
     $addressee = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
 
@@ -189,5 +190,16 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->cached_addressees[$contact_id] = $addressee;
 
     return $addressee;
+  }
+
+  /**
+   * get the profile object that was used to create this receipt
+   */
+  public function getProfile() {
+    // TODO: implement
+    error_log("TODO: Implement!");
+
+    // TODO: cache
+    return new CRM_Donrec_Logic_Profile('Default');
   }
 }

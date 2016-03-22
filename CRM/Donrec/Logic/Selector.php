@@ -77,7 +77,9 @@ class CRM_Donrec_Logic_Selector {
     }
 
     // get financial type selector clause
-    $financialTypeClause = CRM_Donrec_Logic_Settings::getContributionTypesClause();
+    $profile = new CRM_Donrec_Logic_Profile($values['profile']);
+    $financialTypeClause = $profile->getContributionTypesClause();
+
 
     // run the main query
     $query = "SELECT `civicrm_contribution`.`id`

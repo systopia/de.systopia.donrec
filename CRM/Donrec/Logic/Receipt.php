@@ -554,4 +554,15 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $file_id = CRM_Core_DAO::singleValueQuery($query);
     return $file_id;
   }
+
+
+  /**
+   * get the profile object that was used to create this receipt
+   */
+  public function getProfile() {
+    // TODO: implement
+    error_log("TODO: Implement!");
+
+    return new CRM_Donrec_Logic_Profile('Default');
+  }
 }
