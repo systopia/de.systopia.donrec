@@ -46,3 +46,7 @@
 {htxt id='id-profile'}
     <p>{ts domain="de.systopia.donrec"}Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile.{/ts}</p>
 {/htxt}
+
+{htxt id='id-template'}
+    <p>{ts domain="de.systopia.donrec"}Select the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
+{/htxt}

@@ -42,22 +42,7 @@
   </div>
 
   <div>
-    <h3>{ts domain="de.systopia.donrec"}Text{/ts}</h3>
-    <div>
-      <table>
-        <tr>
-          <td class="label">{$form.draft_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Draft Text{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
-          <td>{$form.draft_text.html}</td>
-        </tr>
-        <tr>
-          <td class="label">{$form.copy_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Copy Text{/ts}", {literal}{"id":"id-copy-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
-          <td>{$form.copy_text.html}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <div>
-    <h3>{ts domain="de.systopia.donrec"}PDF{/ts}</h3>
+    <h3>{ts domain="de.systopia.donrec"}Receipts{/ts}</h3>
     <div>
       <div>
         <table>
@@ -73,6 +58,23 @@
       </div>
     </div>
   </div>
+
+  <div>
+    <h3>{ts domain="de.systopia.donrec"}Watermarks{/ts}</h3>
+    <div>
+      <table>
+        <tr>
+          <td class="label">{$form.draft_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Draft Text{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.draft_text.html}</td>
+        </tr>
+        <tr>
+          <td class="label">{$form.copy_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Copy Text{/ts}", {literal}{"id":"id-copy-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.copy_text.html}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
   <div>
     <h3>{ts domain="de.systopia.donrec"}Address Types{/ts}</h3>
     <div>
