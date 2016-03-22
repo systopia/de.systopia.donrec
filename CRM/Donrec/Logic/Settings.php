@@ -23,6 +23,32 @@ class CRM_Donrec_Logic_Settings {
   }
 
   /**
+   * get all eligable(?) templates
+   *
+   * @return array
+   */
+  public static function getAllTemplates() {
+    $relevant_templates = array();
+    $all_templates = civicrm_api3('MessageTemplate', 'get', array(
+      'is_active'    => 1,
+      'is_reserved'  => 0,
+      'option.limit' => 9999));
+    foreach ($all_templates['values'] as $template) {
+      // TODO: filter?
+      $relevant_templates[$template['id']] = $template['msg_title'];
+    }
+
+    // add default, if not yet in there
+    $default_template_id = self::getDefaultTemplate();
+    if (empty($relevant_templates[$default_template_id])) {
+      $default_template = civicrm_api3('MessageTemplate', 'getsingle', array('id' => $default_template_id));
+      $relevant_templates[$default_template_id] = $default_template['msg_title'];
+    }
+
+    return $relevant_templates;
+  }
+
+  /**
    * set the default template ID
    */
   public static function setDefaultTemplate($id) {
