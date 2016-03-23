@@ -30,6 +30,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     // add all profile elements
     $this->addElement('text', 'draft_text', ts('Draft text', array('domain' => 'de.systopia.donrec')));
     $this->addElement('text', 'copy_text', ts('Copy text', array('domain' => 'de.systopia.donrec')));
+    $this->addElement('text', 'id_pattern', ts('Receipt ID', array('domain' => 'de.systopia.donrec')));
     $this->addElement('checkbox','store_pdf');           // actually inserted via template
     $this->addElement('select', 'financial_types', ts('Contribution Types', array('domain' => 'de.systopia.donrec')), CRM_Contribute_PseudoConstant::financialType(), array('multiple' => "multiple", 'class' => 'crm-select2'));
     $this->addElement('select', 'template', ts('Template', array('domain' => 'de.systopia.donrec')), CRM_Donrec_Logic_Settings::getAllTemplates(), array('class' => 'crm-select2'));

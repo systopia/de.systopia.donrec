@@ -47,7 +47,11 @@
       <div>
         <table>
           <tr>
-            <td class="label"><label for="template">{$form.template.label}<a onclick='CRM.help("{ts domain="de.systopia.donrec"}Template{/ts}", {literal}{"id":"id-template","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+            <td class="label"><label for="id_pattern">{$form.id_pattern.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Receipt ID{/ts}", {literal}{"id":"id-pattern","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+            <td>{$form.id_pattern.html}</td>
+          </tr>
+          <tr>
+            <td class="label"><label for="template">{$form.template.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Template{/ts}", {literal}{"id":"id-template","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
             <td>{$form.template.html}</td>
           </tr>
           <tr>
@@ -134,7 +138,7 @@
   cj('td.label').width(300);
 
   // defaults
-  var donrec_value_defaults = {'template': 0, 'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
+  var donrec_value_defaults = {'id_pattern': '{year}-{serial}', 'template': 0, 'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
 
   /**
    * change event handler for the profile method
@@ -150,6 +154,7 @@
    * CLONE button click handler
    */
   cj("#clone_button").click(function() {
+
     var current_name = cj("#profile").val();
     var new_name = cj("#clone_name").val();
     if (new_name == null || new_name.length == 0) {
@@ -157,15 +162,15 @@
       return;
     }
 
+    // before cloning, update model
+    donrec_updateProfile(current_name);
+
     // get profile data
     var profile_data = donrec_getProfileData();
     if (new_name in profile_data) {
       CRM.alert("{/literal}{ts domain="de.systopia.donrec"}There already is a profile with that name.{/ts}", "{ts}Error{/ts}{literal}", "error");
       return;
     }
-
-    // before cloning, update model
-    donrec_updateProfile(current_name);
 
     // create new profile by cloning the old
     profile_data[new_name] = jQuery.extend(true, {}, profile_data[current_name]);
