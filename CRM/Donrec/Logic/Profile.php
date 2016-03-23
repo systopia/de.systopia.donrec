@@ -90,6 +90,15 @@ class CRM_Donrec_Logic_Profile {
   } 
 
   /**
+   * check if a profile of the given name exists
+   */
+  public static function exists($profile_name) {
+    return CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_setting WHERE group_name = %1 AND name = %2",
+      array( 1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'),
+             2 => array($profile_name, 'String')));
+  }
+
+  /**
    * return all existing profiles
    * 
    * @return array(name => name)

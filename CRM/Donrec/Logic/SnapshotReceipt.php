@@ -133,18 +133,19 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
         );
 
       // update general values
-      $values['id']        = $snapshot_line_id;    // just use one of them as ID
-      $values['contact_id'] = $snapshot_line['contact_id'];
-      $values['currency']  = $snapshot_line['currency'];
-      $values['date_from'] = $snapshot_line['date_from'];
-      $values['date_to'] = $snapshot_line['date_to'];
-      $values['total_amount'] += $snapshot_line['total_amount'];
+      $values['id']                     = $snapshot_line_id;    // just use one of them as ID
+      $values['profile']                = $snapshot_line['profile'];
+      $values['contact_id']             = $snapshot_line['contact_id'];
+      $values['currency']               = $snapshot_line['currency'];
+      $values['date_from']              = $snapshot_line['date_from'];
+      $values['date_to']                = $snapshot_line['date_to'];
+      $values['total_amount']          += $snapshot_line['total_amount'];
       $values['non_deductible_amount'] += $snapshot_line['non_deductible_amount'];
     }
 
     // add contributor and addressee
     $values['contributor'] = $this->getContributor($values['contact_id']);
-    $values['addressee'] = $this->getAddressee($values['contact_id']);
+    $values['addressee']   = $this->getAddressee($values['contact_id']);
 
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
@@ -226,10 +227,17 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
    * get the profile object that was used to create this receipt
    */
   public function getProfile() {
-    // TODO: implement
-    error_log("TODO: Implement!");
+    $first_line = reset($this->snapshot_lines);
+    $profile = $first_line['profile'];
 
-    // TODO: cache
-    return new CRM_Donrec_Logic_Profile('Default');
+    if (empty($profile)) {
+      // TODO: MESSAGE?
+      $profile = 'Default';
+    } elseif (!CRM_Donrec_Logic_Profile::exists($profile)) {
+      // TODO: MESSAGE?
+      $profile = 'Default';
+    }
+
+    return new CRM_Donrec_Logic_Profile($profile);
   }
 }

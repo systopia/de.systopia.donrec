@@ -107,6 +107,10 @@ class CRM_Donrec_Logic_Selector {
     }
 
     // finally, build the snapshot with it
-    return CRM_Donrec_Logic_Snapshot::create($contributionIds, CRM_Donrec_Logic_Settings::getLoggedInContactID(), $formatted_date_from, $formatted_date_to);
+    return CRM_Donrec_Logic_Snapshot::create( $contributionIds, 
+                                              CRM_Donrec_Logic_Settings::getLoggedInContactID(), 
+                                              $formatted_date_from, 
+                                              $formatted_date_to,
+                                              $values['profile']);
   }
 }

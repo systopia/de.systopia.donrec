@@ -561,9 +561,18 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * get the profile object that was used to create this receipt
    */
   public function getProfile() {
-    // TODO: implement
-    error_log("TODO: Implement!");
+    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $receipt_table_name = 'civicrm_value_donation_receipt_'.self::$_custom_group_id;
+    $profile = CRM_Core_DAO::singleValueQuery("SELECT `profile` FROM `$receipt_table_name` WHERE `id` = %1", array(1=>array($this->Id, 'Integer')));
 
-    return new CRM_Donrec_Logic_Profile('Default');
+    if (empty($profile)) {
+      // TODO: MESSAGE?
+      $profile = 'Default';
+    } elseif (!CRM_Donrec_Logic_Profile::exists($profile)) {
+      // TODO: MESSAGE?
+      $profile = 'Default';
+    }
+
+    return new CRM_Donrec_Logic_Profile($profile);
   }
 }

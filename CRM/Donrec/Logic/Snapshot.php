@@ -55,7 +55,7 @@ class CRM_Donrec_Logic_Snapshot {
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
-  public static function create(&$contributions, $creator_id, $date_from, $date_to, $expired = 0) {
+  public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_name, $expired = 0) {
 
     $return = array(
       'snapshot' => NULL,
@@ -93,6 +93,8 @@ class CRM_Donrec_Logic_Snapshot {
           "INSERT INTO `civicrm_donrec_snapshot` (
               `id`,
               `snapshot_id`,
+              `receipt_id`,
+              `profile`,
               `contribution_id`,
               `contact_id`,
               `financial_type_id`,
@@ -107,15 +109,17 @@ class CRM_Donrec_Logic_Snapshot {
               `date_from`,
               `date_to`)
           SELECT
-              NULL as `id`,
-              '%1' as `snapshot_id`,
-              `id`,
+              NULL,
+              %1 as `snapshot_id`,
+              NULL as `receipt_id`,
+              %2 as `profile`,
+              `id` as `contribution_id`,
               `contact_id`,
               `financial_type_id`,
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
-              '%2',
+              %3,
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
@@ -130,10 +134,13 @@ class CRM_Donrec_Logic_Snapshot {
     // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters
-    $params = array(1 => array($new_snapshot_id, 'Integer'),
-            2 => array($creator_id, 'Integer'));
+    $params = array(
+                1 => array($new_snapshot_id, 'Integer'),
+                2 => array($profile_name, 'String'),
+                3 => array($creator_id, 'Integer'));
 
     // execute the query
+    error_log($insert_query);
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
     $return['snapshot'] = new self($new_snapshot_id);
 
