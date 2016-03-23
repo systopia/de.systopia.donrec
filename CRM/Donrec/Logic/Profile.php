@@ -34,10 +34,21 @@ class CRM_Donrec_Logic_Profile {
     if ($data==NULL || !is_array($data)) {
       // this setting doesn't exist yet or is malformed
       $this->data = self::defaultProfileData();
+
+      // if this is 'Default', take over the old config values (if present)
+      if ($profile_name == 'Default') {
+        foreach (array_keys($this->data) as $field_name) {
+          $legacy_value = CRM_Core_BAO_Setting::getItem(CRM_Donrec_Logic_Settings::$SETTINGS_GROUP, $field_name);
+          if ($legacy_value !== NULL) {
+            $this->data[$field_name] = $legacy_value;
+          }
+        }        
+      }
       
     } else {
       $this->data = $data;
     }
+    
     $this->profile_name = $profile_name;
   }
 

@@ -13,6 +13,8 @@
  */
 class CRM_Donrec_Logic_Settings {
 
+  public static $SETTINGS_GROUP = "Donation Receipt Settings";
+
   /**
    * get the default template ID
    *
