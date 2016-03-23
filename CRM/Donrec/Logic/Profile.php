@@ -42,7 +42,11 @@ class CRM_Donrec_Logic_Profile {
           if ($legacy_value !== NULL) {
             $this->data[$field_name] = $legacy_value;
           }
-        }        
+        }
+        $legacy_contribution_types = CRM_Core_BAO_Setting::getItem(CRM_Donrec_Logic_Settings::$SETTINGS_GROUP, 'contribution_types');
+        if ($legacy_contribution_types !== NULL && $legacy_contribution_types != 'all') {
+          $this->data['financial_types'] = explode(',', $legacy_contribution_types);
+        }
       }
       
     } else {
@@ -169,35 +173,27 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * Returns all financial type ids that should be used by the donation receipt generation engine.
+   *
    * @return array
    */
   public function getContributionTypes() {
     // get settings
-    $raw_string = $this->get('contribution_types');
-    $get_all = ($raw_string == 'all');
+    $financial_types = $this->get('financial_types');
 
-    if (!$get_all) {
-      $id_array = explode(',', $raw_string);
-      if ($id_array[0] == NULL) {
-        unset($id_array[0]);
+    if (empty($financial_types)) {
+      // empty means 'all deductible'
+      $financial_types = array();
+      
+      $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
+      $results = CRM_Core_DAO::executeQuery($query);
+      while ($results->fetch()) {
+        if ($results->is_deductible) {
+          $results[$results->id];
+        }
       }
-    }else{
-      $id_array = array();
     }
 
-    // get all deductible ids
-    $financial_type_ids = array((int)$get_all);
-    $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
-    $results = CRM_Core_DAO::executeQuery($query);
-    while ($results->fetch()) {
-      $tmp = array($results->id, $results->name, $results->is_deductible, 0);
-      // select all ids that are either deductible or part of our settings array
-      if(($get_all && $results->is_deductible) || in_array($results->id, $id_array)) {
-        $tmp[3] = 1;
-      }
-      $financial_type_ids[] = $tmp;
-    }
-    return $financial_type_ids;
+    return $financial_types;
   }
 
   /**
@@ -207,18 +203,12 @@ class CRM_Donrec_Logic_Profile {
    * civicrm_contribution queries.
    *
    * @return SQL clause 
-   * @author N. Bochan / B. Endres
+   * @author B. Endres
    */
   public function getContributionTypesClause() {
-    // get all valid financial type ids
-    $financialTypeIds = array();
-    $validContribTypes = $this->getContributionTypes();
-    for($contribution_type_id=1; $contribution_type_id < count($validContribTypes); $contribution_type_id++) {
-      // this type is valid if the flag is set
-      if($validContribTypes[$contribution_type_id][3] == 1) {
-        $financialTypeIds[] = $validContribTypes[$i][0];
-      }
-    }
+    // get all valid financial type IDs
+
+    $financialTypeIds = $this->getContributionTypes();
 
     // construct the SQL clause
     if (empty($financialTypeIds)) {

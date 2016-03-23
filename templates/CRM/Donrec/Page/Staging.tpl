@@ -35,10 +35,12 @@
   <div style="max-width:320px;">
         <h2>{ts domain="de.systopia.donrec"}Statistics{/ts}</h2>
 
+        {if $statistic.requested_contacts}
         <div class="crm-summary-row">
           <div class="crm-label">{ts domain="de.systopia.donrec"}selected contacts{/ts}</div>
           <div class="crm-content">{$statistic.requested_contacts}</div>
         </div>
+        {/if}
         <div class="crm-summary-row">
           <div class="crm-label">{ts domain="de.systopia.donrec"}contact count{/ts}</div>
           <div class="crm-content">{$statistic.contact_count}</div>

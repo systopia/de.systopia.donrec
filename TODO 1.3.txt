@@ -1,4 +1,3 @@
-* upgrader or copy profile?
 * store profile_name?
 * adjust engine class
 * fix buttons
