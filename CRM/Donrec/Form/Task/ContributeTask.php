@@ -26,8 +26,15 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
        'last_year'         => ts('last year', array('domain' => 'de.systopia.donrec')),
        'customized_period' => ts('Choose Date Range', array('domain' => 'de.systopia.donrec'))
     );
-    $this->addElement('select', 'time_period', 'Time Period:', $options);
+    $this->addElement('select', 'time_period', 'Time Period:', $options, array('class' => 'crm-select2'));
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:', array('domain' => 'de.systopia.donrec')), 'searchDate', TRUE, FALSE);
+
+    // add profile selector
+    $this->addElement('select', 
+                      'profile', 
+                      ts('Profile', array('domain' => 'de.systopia.donrec')), 
+                      CRM_Donrec_Logic_Profile::getAllNames(), 
+                      array('class' => 'crm-select2'));
 
     // call the (overwritten) Form's method, so the continue button is on the right...
     CRM_Core_Form::addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));

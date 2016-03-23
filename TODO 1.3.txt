@@ -1,0 +1,6 @@
+* upgrader or copy profile?
+* store profile_name?
+* adjust engine class
+* fix buttons
+* l10n + menu items
+* adjust copyright dates
