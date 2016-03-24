@@ -1,10 +1,8 @@
--17:08
 * receipt_id (24)???
-* DELETE profile: do you really? -> old cannot be recreated....
 * receipt_id unique? copies? 
-* store profile_name?
 * check recipt/item custom group display
 * adjust engine class
+* remove die()
 * fix buttons
 * l10n + menu items
 * adjust copyright dates

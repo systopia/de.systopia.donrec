@@ -203,28 +203,34 @@
       return;
     }
 
-    // delete from model
-    var current_name = cj("#profile").val();
-    delete profile_data[current_name];
-    donrec_setProfileData(profile_data);
+    CRM.confirm(function() {
+      // delete from model
+      var profile_data = donrec_getProfileData();
+      var current_name = cj("#profile").val();
+      delete profile_data[current_name];
+      donrec_setProfileData(profile_data);
 
-    // delete from select
-    cj("[name=profile] option[value='" + current_name + "']").remove();
+      // delete from select
+      cj("[name=profile] option[value='" + current_name + "']").remove();
 
-    for (new_name in profile_data) {
-      cj("[name=profile]").val(new_name);
-      cj("[name=profile]").select2('val', new_name);
-      donrec_setProfileValues();
-      break;
-    }
+      for (new_name in profile_data) {
+        cj("[name=profile]").val(new_name);
+        cj("[name=profile]").select2('val', new_name);
+        donrec_setProfileValues();
+        break;
+      }
 
-    // inform the user
-    {/literal}
-    var title = "{ts domain="de.systopia.donrec"}Profile profile_name deleted{/ts}";
-    title = title.replace('profile_name', current_name);
-    title = title + "<br/>{ts domain="de.systopia.donrec"}Remeber to save to settings page for all profile changes to take effect.{/ts}";
-    CRM.alert(title, "{ts}Profile{/ts}", "info");
-    {literal}
+      // inform the user
+      {/literal}
+      var title = "{ts domain="de.systopia.donrec"}Profile profile_name deleted{/ts}";
+      title = title.replace('profile_name', current_name);
+      title = title + "<br/>{ts domain="de.systopia.donrec"}Remeber to save to settings page for all profile changes to take effect.{/ts}";
+      CRM.alert(title, "{ts}Profile{/ts}", "info");
+      {literal}    
+    },{
+      title: {/literal}"{ts domain="de.systopia.donrec"}Are you sure?{/ts}"{literal},
+      message: {/literal}"{ts domain="de.systopia.donrec"}Do you really want to delete this profile?<br/>If you have already created donation receipts with this profile, the profile-specific information will be lost (e.g. the template used).{/ts}"{literal}
+    });
   });
 
   /**

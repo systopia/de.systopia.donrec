@@ -27,6 +27,7 @@ class CRM_Donrec_Logic_Profile {
   public function __construct($profile_name) {
     // TODO: remove
     if (empty($profile_name)) {
+      foreach (debug_backtrace() as $stack) error_log("{$stack['file']}:{$stack['line']}");
       die("there's still something wrong in the workflow...");
     }
 
@@ -54,6 +55,27 @@ class CRM_Donrec_Logic_Profile {
     }
     
     $this->profile_name = $profile_name;
+  }
+
+  /**
+   * Get the profile for the given name, 
+   * Falling back to 'Default' if that profile doesn't exist
+   */
+  public static function getProfile($profile_name, $warn = FALSE) {
+
+    if (empty($profile_name)) {
+      if ($warn) {
+        // TODO: MESSAGE?
+      }
+      $profile_name = 'Default';
+    } elseif (!self::exists($profile_name)) {
+      if ($warn) {
+        // TODO: MESSAGE?
+      }
+      $profile_name = 'Default';
+    }
+
+    return new CRM_Donrec_Logic_Profile($profile_name);
   }
 
   /**

@@ -229,15 +229,6 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getProfile() {
     $first_line = reset($this->snapshot_lines);
     $profile = $first_line['profile'];
-
-    if (empty($profile)) {
-      // TODO: MESSAGE?
-      $profile = 'Default';
-    } elseif (!CRM_Donrec_Logic_Profile::exists($profile)) {
-      // TODO: MESSAGE?
-      $profile = 'Default';
-    }
-
-    return new CRM_Donrec_Logic_Profile($profile);
+    return CRM_Donrec_Logic_Profile::getProfile($profile, TRUE);
   }
 }

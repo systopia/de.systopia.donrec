@@ -23,6 +23,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   protected static $STORED_TOKENS = array(
       'id'                        => 'Receipt ID',
       'receipt_id'                => 'Custom Receipt ID',
+      'profile'                   => 'Profile',
       'status'                    => 'Status',
       'type'                      => 'Single or bulk',
       'issued_by'                 => 'Creator Contact ID',
@@ -204,7 +205,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    $profile = new CRM_Donrec_Logic_Profile($values['profile']);
+    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile']);
     if ($values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
     } elseif ($values['status'] == 'COPY') {
