@@ -1,7 +1,7 @@
 {*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2015 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)             |
+| Author: B. Endres (endres -at- systopia.de)            |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | License: AGPLv3, see LICENSE file                      |
@@ -318,6 +318,28 @@
   }
   cj("#draft_text").change(donrec_validate_text);
   cj("#copy_text").change(donrec_validate_text);
+
+
+  // verify ID entry upon change
+  cj("#id_pattern").change(function() {
+    var current_value = cj("#id_pattern").val();
+
+    if (current_value == null || current_value.length == 0) {
+      // You have to have a value...
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This value cannot be empty!{/ts}", "{ts}Error{/ts}{literal}", "error");
+      cj("#id_pattern").val("{issue_year}-{serial}");
+    } else if (!current_value.match("[{]serial[}]")) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}You need to include <code>&#123;serial&#125;</code>{/ts}", "{ts}Error{/ts}{literal}", "error");
+      cj("#id_pattern").val("{issue_year}-{serial}");
+    } else if (current_value.match("[{]serial[}].*[{]serial[}]")) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}You can include <code>&#123;serial&#125;</code> only once!{/ts}", "{ts}Error{/ts}{literal}", "error");
+      cj("#id_pattern").val("{issue_year}-{serial}");
+    } else if (current_value.length > 32) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This cannot contain more than 32 characters!{/ts}", "{ts}Error{/ts}{literal}", "error");
+      cj("#id_pattern").val(current_value.substr(0,32));
+    }
+  });
+
 
   // initialisation
   cj(function() {

@@ -100,6 +100,18 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
         }
       }
 
+      // verify some stuff
+      foreach ($profile_data as $profile_name => $profile) {
+        // test the ID pattern
+        try {
+          $generator = new CRM_Donrec_Logic_IDGenerator($profile['id_pattern']);
+        } catch (Exception $e) {
+          $session = CRM_Core_Session::singleton();
+          $session->setStatus(ts("One of the Receipt ID patterns are invalid! Changes NOT saved!", array('domain' => 'de.systopia.donrec')), ts('Error', array('domain' => 'de.systopia.donrec')), 'error');
+          return;
+        }
+      }
+
       // then store the profiles
       CRM_Donrec_Logic_Profile::syncProfileData($profile_data);        
     }

@@ -1,10 +1,9 @@
 now:
 [T] token separate check
 [T] test receipt {serial} = TEST
-[B/T] receipt_id: 64, pattern: 32
-[B] ID-save check
+[T] receipt_id: 64, pattern: 32
 [T] receipt_id unique? copies? 
-[B] remove die()
+[B] remove die() in Profile
 
 later:
 * check recipt/item custom group display
