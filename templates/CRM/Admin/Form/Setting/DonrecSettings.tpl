@@ -138,7 +138,7 @@
   cj('td.label').width(300);
 
   // defaults
-  var donrec_value_defaults = {'id_pattern': '{year}-{serial}', 'template': 0, 'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
+  var donrec_value_defaults = {'id_pattern': '{issue_year}-{serial}', 'template': 0, 'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
 
   /**
    * change event handler for the profile method

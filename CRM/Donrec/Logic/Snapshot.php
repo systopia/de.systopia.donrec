@@ -15,6 +15,9 @@ class CRM_Donrec_Logic_Snapshot {
   // unique snapshot id
   private $Id;
 
+  /** cache value for the snapshot's profile */
+  private $_profile = NULL;
+
   // these fields of the table get copied into the chunk
   private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
@@ -140,7 +143,6 @@ class CRM_Donrec_Logic_Snapshot {
                 3 => array($creator_id, 'Integer'));
 
     // execute the query
-    error_log($insert_query);
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
     $return['snapshot'] = new self($new_snapshot_id);
 
@@ -719,4 +721,16 @@ class CRM_Donrec_Logic_Snapshot {
     return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test);
   }
 
+  /**
+   * Get the profile connected to this snapshot
+   */
+  public function getProfile() {
+    if ($this->_profile == NULL) {
+      $profile_name = CRM_Core_DAO::singleValueQuery(
+        "SELECT profile FROM civicrm_donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
+        array(1 => array($this->Id, 'Integer')));
+      $this->_profile = CRM_Donrec_Logic_Profile::getProfile($profile_name, TRUE);
+    }
+    return $this->_profile;
+  }
 }

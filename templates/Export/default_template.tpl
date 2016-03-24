@@ -215,7 +215,7 @@ h3 {
 </p>
 
 <div class="main">
-<h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/Mitgliedsbeitrag ({$receipt_id})</h1><br />
+<h1>{if $items}Sammelbestätigung{else}Bestätigung{/if} über Geldzuwendungen/Mitgliedsbeitrag [{$receipt_id}]</h1><br />
 <p class="notice">Über Zuwendungen im Sinne des § 10 b des Einkommensteuergesetztes an eine der in § 5 Abs. 1 Nr. 9 des
 Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen und Vermögensmassen</p>
 

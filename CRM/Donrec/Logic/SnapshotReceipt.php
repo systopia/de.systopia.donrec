@@ -45,7 +45,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
       GROUP BY `receipt_id`";
     $receipt_id = CRM_Core_DAO::singleValueQuery($query);
     if (!$receipt_id) {
-      $id_generator = new CRM_Donrec_Logic_IDGenerator;
+      $id_generator = new CRM_Donrec_Logic_IDGenerator($this->getProfile()->get('id_pattern'));
       $receipt_id = $id_generator->generateID($this->snapshot_lines);
       $update_query = "
         UPDATE `civicrm_donrec_snapshot`
@@ -227,8 +227,6 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
    * get the profile object that was used to create this receipt
    */
   public function getProfile() {
-    $first_line = reset($this->snapshot_lines);
-    $profile = $first_line['profile'];
-    return CRM_Donrec_Logic_Profile::getProfile($profile, TRUE);
+    return $this->snapshot->getProfile();
   }
 }

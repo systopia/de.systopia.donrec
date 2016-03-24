@@ -1,8 +1,10 @@
+* test receipt {serial} = TEST
 * receipt_id (24)???
 * receipt_id unique? copies? 
 * check recipt/item custom group display
-* adjust engine class
 * remove die()
+
+later:
 * fix buttons
 * l10n + menu items
 * adjust copyright dates

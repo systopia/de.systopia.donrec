@@ -304,7 +304,7 @@ class CRM_Donrec_Logic_Profile {
       'template'                => CRM_Donrec_Logic_Settings::getDefaultTemplate(),
       'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
       'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
-      'id_pattern'              => '{year}-{serial}',
+      'id_pattern'              => '{issue_year}-{serial}',
       'legal_address'           => array('0'),  // '0' is the primary address
       'postal_address'          => array('0'),  
       'legal_address_fallback'  => array('0'),  

@@ -57,7 +57,7 @@
         {ts domain="de.systopia.donrec"}The following tokens are available:{/ts}
         <ul>
             <li><code>&#123;serial&#125;</code>: {ts domain="de.systopia.donrec"}Serial number. The system will make sure this is unique and continuous{/ts}</li>
-            <li><code>&#123;year&#125;</code>: {ts domain="de.systopia.donrec"}Year in which the donation receipt was generated{/ts}</li>
+            <li><code>&#123;issue_year&#125;</code>: {ts domain="de.systopia.donrec"}Year in which the donation receipt was generated{/ts}</li>
             <li><code>&#123;contact_id&#125;</code>: {ts domain="de.systopia.donrec"}The CiviCRM ID of the donor{/ts}</li>
         </ul>
     </p>

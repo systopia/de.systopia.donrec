@@ -27,9 +27,6 @@ class CRM_Donrec_Logic_IDGenerator {
    * @param $pattern the pattern to be used for the ID
    */
   public function __construct($pattern) {
-    # TODO: get the pattern from donrec-configuration
-    $pattern = 'foobar_{contact_id}_{serial:123}_{issue_year}';
-
     # serial-token must occur exactly one time
     $serial_count_regexp = '/' . $this->serial_regexp . '/';
     $count = preg_match_all($serial_count_regexp, $pattern);
