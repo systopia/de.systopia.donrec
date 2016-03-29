@@ -5,9 +5,11 @@ now:
 [T] receipt_id unique? copies? 
 [B] remove die() in Profile
 
+[T] redo logging
+
+
 later:
 * check recipt/item custom group display
-* redo logging
 * fix buttons
 * l10n + menu items
 * adjust copyright dates
