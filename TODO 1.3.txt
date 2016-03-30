@@ -1,8 +1,6 @@
 now:
-[T] token separate check
 [T] test receipt {serial} = TEST
 [T] receipt_id: 64, pattern: 32
-[T] receipt_id unique? copies? 
 [B] remove die() in Profile
 
 [T] redo logging

@@ -31,11 +31,11 @@ class CRM_Donrec_Logic_IDGenerator {
     $serial_count_regexp = '/' . $this->serial_regexp . '/';
     $count = preg_match_all($serial_count_regexp, $pattern);
 
-    # serial-token must not be between numbers or other tokens (which could be a number aswell)
-    $serial_valid_regexp = '/(^|[^0-9}])(' . $this->serial_regexp . ')($|[^0-9{])/';
-    $valid = preg_match($serial_valid_regexp, $pattern);
+    # tokens must be separated and not be next to numbers
+    $invalid_token_regex = '/([0-9}]{[^}]+}|{[^}]+}[0-9{])/';
+    $invalid = preg_match($invalid_token_regex, $pattern);
 
-    if ($count != 1 || ! $valid) {
+    if ($count != 1 || $invalid) {
       $msg = "Invalid ID-pattern: '$pattern'";
       error_log($msg);
       throw new Exception($msg);
