@@ -4,6 +4,7 @@ now:
 [B] remove die() in Profile
 
 [T] redo logging
+[?] Bugfix: Download Original-PDFs
 
 
 later:

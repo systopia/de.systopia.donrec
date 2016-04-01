@@ -52,7 +52,7 @@ class CRM_Donrec_DataStructure {
     array(
       'name' => 'profile',
       'custom_group_name' => 'zwb_donation_receipt',
-      'label' => 'Receipt Profile',
+      'label' => 'Profile',
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
