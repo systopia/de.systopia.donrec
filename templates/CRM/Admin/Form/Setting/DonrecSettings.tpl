@@ -55,8 +55,8 @@
             <td>{$form.template.html}</td>
           </tr>
           <tr>
-            <td class="label"><label for="store_pdf"> {ts domain="de.systopia.donrec"}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
-            <td><input value="1" type="checkbox" id="store_pdf" name="store_pdf" {if $store_pdf}checked="checked"{/if} class="form-checkbox"/></td>
+            <td class="label"><label for="store_original_pdf"> {ts domain="de.systopia.donrec"}Store original *.pdf files{/ts} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+            <td><input value="1" type="checkbox" id="store_original_pdf" name="store_original_pdf" {if $store_original_pdf}checked="checked"{/if} class="form-checkbox"/></td>
           </tr>
         </table>
       </div>
@@ -138,7 +138,7 @@
   cj('td.label').width(300);
 
   // defaults
-  var donrec_value_defaults = {'id_pattern': '{issue_year}-{serial}', 'template': 0, 'financial_types': [], 'store_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
+  var donrec_value_defaults = {'id_pattern': '{issue_year}-{serial}', 'template': 0, 'financial_types': [], 'store_original_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
 
   /**
    * change event handler for the profile method
@@ -239,7 +239,7 @@
   function donrec_updateProfile(profileName) {
     var profile_data = donrec_getProfileData();
     for (field in donrec_value_defaults) {
-      if (field == 'store_pdf') {
+      if (field == 'store_original_pdf') {
         profile_data[profileName][field] = cj('#' + field).prop('checked');
       } else {
         profile_data[profileName][field] = cj('#' + field).val();
@@ -278,7 +278,7 @@
 
     // first: set all values
     for (field in donrec_value_defaults) {
-      if (field == 'store_pdf') {
+      if (field == 'store_original_pdf') {
         cj('#' + field).prop('checked', profile[field]);
       } else if (field == 'financial_types' || field == 'template') {
         cj('#' + field).select2('val', profile[field]);

@@ -270,7 +270,7 @@ class CRM_Donrec_Logic_Profile {
    * @return bool
    */
   public function saveOriginalPDF() {
-    return $this->get('store_pdf');
+    return $this->get('store_original_pdf');
   }
 
   /**
@@ -300,7 +300,7 @@ class CRM_Donrec_Logic_Profile {
   public static function defaultProfileData() {
     return array(
       'financial_types'         => array(),
-      'store_pdf'               => FALSE,
+      'store_original_pdf'      => FALSE,
       'template'                => CRM_Donrec_Logic_Settings::getDefaultTemplate(),
       'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
       'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
