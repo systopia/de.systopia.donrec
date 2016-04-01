@@ -108,7 +108,7 @@ class CRM_Donrec_Logic_Engine {
     $logs = array();
     $files = array();
     $profile = $this->snapshot->getProfile();
-    
+
     // Synchronize this step
     $lock = CRM_Utils_DonrecHelper::getLock('next', $this->snapshot->getId());
     if (!$lock->isAcquired()) {
@@ -175,9 +175,9 @@ class CRM_Donrec_Logic_Engine {
       //**********************************
       if ($is_test) { continue; }
 
-      // create pdf
-      $pdf_file = $this->getPDF($line_ids);
-      if ($profile->saveOriginalPDF() && $pdf_file) {
+      // save original pdfs
+      if ($profile->saveOriginalPDF()) {
+        $pdf_file = $this->getPDF($line_ids);
         $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
         if (!empty($file)) {
           $receipt_params['original_file'] = $file['id'];

@@ -21,7 +21,7 @@ class CRM_Donrec_Logic_Profile {
   protected $profile_name = NULL;
   protected $data = NULL;
 
-  /** 
+  /**
    * load setting entity with given ID
    */
   public function __construct($profile_name) {
@@ -49,16 +49,16 @@ class CRM_Donrec_Logic_Profile {
           $this->data['financial_types'] = explode(',', $legacy_contribution_types);
         }
       }
-      
+
     } else {
       $this->data = $data;
     }
-    
+
     $this->profile_name = $profile_name;
   }
 
   /**
-   * Get the profile for the given name, 
+   * Get the profile for the given name,
    * Falling back to 'Default' if that profile doesn't exist
    */
   public static function getProfile($profile_name, $warn = FALSE) {
@@ -109,7 +109,7 @@ class CRM_Donrec_Logic_Profile {
    */
   public function getData() {
     return $this->data;
-  } 
+  }
 
   /**
    * check if a profile of the given name exists
@@ -122,7 +122,7 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * return all existing profiles
-   * 
+   *
    * @return array(name => name)
    */
   public static function getAllNames() {
@@ -145,7 +145,7 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * return all existing profiles
-   * 
+   *
    * @return array(name => profile)
    */
   public static function getAll() {
@@ -165,7 +165,7 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * return all existing data sets
-   * 
+   *
    * @return array(name => array(profile_data))
    */
   public static function getAllData() {
@@ -214,7 +214,7 @@ class CRM_Donrec_Logic_Profile {
     if (empty($financial_types)) {
       // empty means 'all deductible'
       $financial_types = array();
-      
+
       $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
       $results = CRM_Core_DAO::executeQuery($query);
       while ($results->fetch()) {
@@ -230,10 +230,10 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Similar to ::getContributionTypes(), but will
    * construct and return an SQL clause
-   * that works in the WHERE clause on 
+   * that works in the WHERE clause on
    * civicrm_contribution queries.
    *
-   * @return SQL clause 
+   * @return SQL clause
    * @author B. Endres
    */
   public function getContributionTypesClause() {
@@ -270,7 +270,7 @@ class CRM_Donrec_Logic_Profile {
    * @return bool
    */
   public function saveOriginalPDF() {
-    return $this->get('store_original_pdf');
+    return $this->get('store_pdf');
   }
 
   /**
@@ -279,7 +279,7 @@ class CRM_Donrec_Logic_Profile {
    * @return int
    */
   public function getTemplate() {
-    return $this->get('template');
+    return CRM_Donrec_Logic_Template::getTemplate($this->get('template'));
   }
 
 
@@ -306,8 +306,8 @@ class CRM_Donrec_Logic_Profile {
       'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
       'id_pattern'              => '{issue_year}-{serial}',
       'legal_address'           => array('0'),  // '0' is the primary address
-      'postal_address'          => array('0'),  
-      'legal_address_fallback'  => array('0'),  
+      'postal_address'          => array('0'),
+      'legal_address_fallback'  => array('0'),
       'postal_address_fallback' => array('0'),
       );
   }
