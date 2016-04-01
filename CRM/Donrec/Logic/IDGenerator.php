@@ -16,6 +16,7 @@ class CRM_Donrec_Logic_IDGenerator {
 
   /** the pattern to be used for the ID generation */
   protected $pattern = NULL;
+  protected $is_test = NULL;
   protected $serial_regexp = "{serial(:[^}]+)?}";
   protected $tokens = array(
     'issue_year' => NULL,
@@ -26,7 +27,7 @@ class CRM_Donrec_Logic_IDGenerator {
    *
    * @param $pattern the pattern to be used for the ID
    */
-  public function __construct($pattern) {
+  public function __construct($pattern, $is_test) {
     # serial-token must occur exactly one time
     $serial_count_regexp = '/' . $this->serial_regexp . '/';
     $count = preg_match_all($serial_count_regexp, $pattern);
@@ -41,6 +42,7 @@ class CRM_Donrec_Logic_IDGenerator {
       throw new Exception($msg);
     }
     $this->pattern = $pattern;
+    $this->is_test = $is_test;
   }
 
 
@@ -83,13 +85,17 @@ class CRM_Donrec_Logic_IDGenerator {
     $field = $fields['receipt_id'];
 
     // prepare pattern and regexp
+    $serial_regexp = '/' . $this->serial_regexp . '/';
     $pattern = $this->pattern;
     foreach ($this->tokens as $token => $value) {
       $pattern = str_replace("{" . $token . "}", $value, $pattern);
     }
 
-    // get the length an position of the serial-token
-    $serial_regexp = '/' . $this->serial_regexp . '/';
+    if ($this->is_test) {
+      return preg_replace($serial_regexp, "TEST", $pattern);
+    }
+
+    // get the length and position of the serial-token
     preg_match($serial_regexp, $pattern, $match, PREG_OFFSET_CAPTURE);
     $serial_token_length = strlen($match[0][0]);
     $serial_token_position = $match[0][1];
