@@ -43,16 +43,13 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *          'log': array with keys: 'type', 'timestamp', 'message'
    */
   public function exportSingle($chunk, $snapshotId, $is_test) {
-    $reply = array();
 
     // edit the process information
     foreach ($chunk as $chunk_id => $chunk_item) {
       $this->updateProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
     }
 
-    // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+    return true;
   }
 
   /**
@@ -63,7 +60,6 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
   public function exportBulk($chunk, $snapshotId, $is_test) {
-    $reply = array();
 
     // edit the process information
     foreach ($chunk as $contact_id => $items) {
@@ -72,8 +68,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
       }
     }
 
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy bulk-processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+    return true;
 }
 
   /**

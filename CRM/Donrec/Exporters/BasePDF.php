@@ -45,7 +45,6 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
   public function exportSingle($chunk, $snapshotId, $is_test) {
-    $reply = array();
 
     // get the default template
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
@@ -70,9 +69,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       }
     }
 
-    // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded, %d failed', count($chunk), $success, $failures), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+    return boolval($success);
   }
 
   /**
@@ -83,7 +80,6 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
    */
   public function exportBulk($chunk, $snapshotId, $is_test) {
-    $reply = array();
 
     // get the default template
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
@@ -108,9 +104,8 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
         $success++;
       }
     }
-    // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processed %d items - %d succeeded', count($chunk), $success, $failures), CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+
+    return boolval($success);
   }
 
   /**

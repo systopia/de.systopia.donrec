@@ -104,8 +104,8 @@ class CRM_Donrec_Logic_Engine {
    * @return array of stats:
    */
   public function nextStep() {
-    // container for log messages
-    $logs = array();
+    // some containers
+    $exporter_results = array();
     $files = array();
     $profile = $this->snapshot->getProfile();
 
@@ -117,7 +117,7 @@ class CRM_Donrec_Logic_Engine {
 
       // compile and return "state of affairs" report
       $stats = $this->createStats();
-      $stats['log'] = $logs;
+      $stats['log'] = array();
       $stats['files'] = $files;
       $stats['chunk_size'] = 0;
       CRM_Donrec_Logic_Exporter::addLogEntry($stats, "Couldn't acquire lock. Parallel processing denied. Lock timeout is {$lock->_timeout}s.");
@@ -143,15 +143,23 @@ class CRM_Donrec_Logic_Engine {
         // accepting $chunk_items as a "single-receipt-item" as we use it here.
         // Till then we prepare the chunk_items for the exporters.
         $old_style_chunk = array($chunk_id => $chunk_items);
+        $exporter_id = $exporter->getID();
 
         if ($is_bulk) {
           $result = $exporter->exportBulk($old_style_chunk, $this->snapshot->getId(), $is_test);
         } else {
           $result = $exporter->exportSingle($old_style_chunk, $this->snapshot->getId(), $is_test);
         }
-        # TODO: log for chunks
-        if (isset($result['log'])) {
-          $logs = array_merge($logs, $result['log']);
+
+        if (!isset($exporter_results[$exporter_id])) {
+          $exporter_results[$exporter_id] = array();
+          $exporter_results[$exporter_id]['success'] = 0;
+          $exporter_results[$exporter_id]['failure'] = 0;
+        }
+        if ($result) {
+          $exporter_results[$exporter_id]['success']++;
+        } else {
+          $exporter_results[$exporter_id]['failure']++;
         }
       }
 
@@ -204,7 +212,14 @@ class CRM_Donrec_Logic_Engine {
 
     // compile and return stats
     $stats = $this->createStats();
-    $stats['log'] = $logs;
+
+    // create log-messages
+    foreach ($exporter_results as $exporter_id => $result) {
+      $msg = sprintf('%s processed %d items - %d succeeded, %d failed', $exporter_id, count($chunk), $result['success'], $result['failure']);
+      $type = ($result['failure'])? 'ERROR' : 'INFO';
+      CRM_Donrec_Logic_Exporter::addLogEntry($stats, $msg, $type);
+    }
+
     $stats['files'] = $files;
     if ($chunk==NULL) {
       $stats['progress'] = 100.0;

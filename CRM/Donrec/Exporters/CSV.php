@@ -142,7 +142,6 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    * are stored in the process information field
    */
   private function exportLine($chunk, $snapshotId, $is_test, $is_bulk) {
-    $reply = array();
 
     // get data from snapshot (#1399)
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
@@ -179,9 +178,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
       $this->updateProcessInformation($snapshotReceipt->getID(), array('csv_data' => $flattened_data));
     }
 
-    // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'CSV processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+    return true;
   }
 
   private function flattenTokenData($values) {
@@ -199,6 +196,6 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
         $flattened_data[$key] = $value;
       }
     }
-    return $flattened_data;  
+    return $flattened_data;
   }
 }
