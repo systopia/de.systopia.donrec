@@ -130,6 +130,13 @@ class CRM_Donrec_Logic_IDGenerator {
       $receipt_id = preg_replace($serial_regexp, 1, $pattern);
     }
 
+    // check length of receipt-id
+    if (strlen($receipt_id) > 64) {
+      $msg = "Receipt-ID is too long (Maximum length is 64 chars): '$receipt_id'";
+      error_log($msg);
+      throw new Exception($msg);
+    }
+
     return $receipt_id;
   }
 
