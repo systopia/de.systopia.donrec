@@ -16,7 +16,7 @@
 <!-- the buttons -->
 <div id='donrec_buttons' class="crm-submit-buttons" hidden>
   <a class="button" onClick="openURL('{$url_back}');">
-    <span align="right"><div class="icon back-icon"></div>{if $test}{ts domain="de.systopia.donrec"}Back{/ts}{else}{ts domain="de.systopia.donrec"}Done{/ts}{/if}</span>
+    <span align="right"><div class="icon back-icon ui-icon-arrowreturnthick-1-w"></div>{if $test}{ts domain="de.systopia.donrec"}Back{/ts}{else}{ts domain="de.systopia.donrec"}Done{/ts}{/if}</span>
   </a>
 </div>
 
@@ -116,7 +116,7 @@ function processDone(reply) {
       cj('#donrec_buttons').append("                                                      \
         <a class='button' onClick='file_downloaded=true;' href='" + download[1] + "' download='" + download[0] + "'>      \
           <span align='right'>                                                            \
-            <div class='icon check-icon'></div>" + download_caption + exporter + "        \
+            <div class='icon check-icon ui-icon-arrow-1-se'></div>" + download_caption + exporter + "        \
           </span>                                                                         \
         </a>");
     }    

@@ -72,7 +72,7 @@
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons">
   <a class="button" onClick="openURL('{$url_back}');" href="{$url_back}">
-    <span align="right"><div class="icon back-icon"></div>{ts domain="de.systopia.donrec"}Back{/ts}</span>
+    <span align="right"><div class="icon back-icon ui-icon-arrowreturnthick-1-w"></div>{ts domain="de.systopia.donrec"}Back{/ts}</span>
   </a>
 </div>
 {elseif $conflict_error}
@@ -84,7 +84,7 @@
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons form-item">
   <a class="button" onClick="openURL('{$url_back}');" href="{$url_back}">
-    <span align="right"><div class="icon back-icon"></div>{ts domain="de.systopia.donrec"}Back{/ts}</span>
+    <span align="right"><div class="icon back-icon ui-icon-arrowreturnthick-1-w"></div>{ts domain="de.systopia.donrec"}Back{/ts}</span>
   </a>
 </div>
   {if $is_admin}

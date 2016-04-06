@@ -9,7 +9,7 @@
 
 <div class="action-link">
   {if $can_create_withdraw }
-    <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon"></div>{ts domain="de.systopia.donrec"}Create new donation receipt{/ts}</span></a>
+    <a accesskey="N" href="{crmURL p='civicrm/donrec/create' q="cid=$cid" h=0}" class="button"><span><div class="icon add-icon ui-icon-circle-plus"></div>{ts domain="de.systopia.donrec"}Create new donation receipt{/ts}</span></a>
   {/if}
 </div>
 <div class="donrec-stats-block">
@@ -41,23 +41,23 @@
                 {/if}
                 </li>
             <li>{ts domain="de.systopia.donrec"}Total amount{/ts}: {$receipt.total_amount|crmMoney:$receipt.currency}</li>
-            <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}Details{/ts}</span></a></li>
+            <li><a id="details_receipt_{$receipt_id}"><span><div class="icon details-icon ui-icon-zoomin"></div>{ts domain="de.systopia.donrec"}Details{/ts}</span></a></li>
           </ul>
         </div>
       </td>
       <td>
         {if $can_view_copy}
           {if $receipt.view_url}
-            <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}Download{/ts}</span></a>
+            <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon ui-icon-zoomin"></div>{ts domain="de.systopia.donrec"}Download{/ts}</span></a>
           {else}
-            <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon"></div>{ts domain="de.systopia.donrec"}View{/ts}</span></a>
+            <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon ui-icon-zoomin"></div>{ts domain="de.systopia.donrec"}View{/ts}</span></a>
           {/if}
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_view_copy}
-          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon"></div>{ts domain="de.systopia.donrec"}Create copy{/ts}</span></a>
+          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon ui-icon-mail-closed"></div>{ts domain="de.systopia.donrec"}Create copy{/ts}</span></a>
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_create_withdraw}
-          <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon"></div>{ts domain="de.systopia.donrec"}Withdraw{/ts}</span></a>
+          <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon ui-icon-arrowreturnthick-1-w"></div>{ts domain="de.systopia.donrec"}Withdraw{/ts}</span></a>
         {/if}
         {if $can_delete}
           <a id="delete_receipt_{$receipt_id}" class="button"><span><div class="icon delete-icon"></div>{ts domain="de.systopia.donrec"}Delete{/ts}</span></a>
@@ -82,7 +82,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_1" style="display: none;">
       <td colspan="2">
         <div style="float:left;width:50%;">
-              <div class="crm-edit-help"><div class="icon user-record-icon"></div><b>{ts domain="de.systopia.donrec"}Issued To{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon user-record-icon ui-icon-person"></div><b>{ts domain="de.systopia.donrec"}Issued To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts domain="de.systopia.donrec"}Name{/ts}</div>
@@ -120,7 +120,7 @@
               {/if}
         </div>
         <div style="float:right;width:50%;">
-              <div class="crm-edit-help"><div class="icon dashboard-icon"></div><b>{ts domain="de.systopia.donrec"}Sent To{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon dashboard-icon ui-icon-mail-closed"></div><b>{ts domain="de.systopia.donrec"}Sent To{/ts}</b></div>
 
               <div class="crm-summary-row">
                 <div class="crm-label">{ts domain="de.systopia.donrec"}Name{/ts}</div>
@@ -162,7 +162,7 @@
     <tr class="even" id="donrec_details_block_{$receipt_id}_2" style="display: none;">
       <td colspan="2">
         <div class="crm-clear crm-inline-block-content">
-              <div class="crm-edit-help"><div class="icon search-icon"></div><b>{ts domain="de.systopia.donrec"}Contributions{/ts}</b></div>
+              <div class="crm-edit-help"><div class="icon search-icon inform-icon"></div><b>{ts domain="de.systopia.donrec"}Contributions{/ts}</b></div>
               <div>
                 <table>
                   <thead>
