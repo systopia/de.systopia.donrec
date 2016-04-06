@@ -1,5 +1,0 @@
-* check receipt/item custom group display
-* fix buttons
-* l10n + menu items
-* adjust copyright dates
-* rename snapshot table
