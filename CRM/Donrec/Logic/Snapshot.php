@@ -15,6 +15,9 @@ class CRM_Donrec_Logic_Snapshot {
   // unique snapshot id
   private $Id;
 
+  /** cache value for the snapshot's profile */
+  private $_profile = NULL;
+
   // these fields of the table get copied into the chunk
   private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
@@ -55,7 +58,7 @@ class CRM_Donrec_Logic_Snapshot {
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
-  public static function create(&$contributions, $creator_id, $date_from, $date_to, $expired = 0) {
+  public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_name, $expired = 0) {
 
     $return = array(
       'snapshot' => NULL,
@@ -93,6 +96,8 @@ class CRM_Donrec_Logic_Snapshot {
           "INSERT INTO `civicrm_donrec_snapshot` (
               `id`,
               `snapshot_id`,
+              `receipt_id`,
+              `profile`,
               `contribution_id`,
               `contact_id`,
               `financial_type_id`,
@@ -107,15 +112,17 @@ class CRM_Donrec_Logic_Snapshot {
               `date_from`,
               `date_to`)
           SELECT
-              NULL as `id`,
-              '%1' as `snapshot_id`,
-              `id`,
+              NULL,
+              %1 as `snapshot_id`,
+              NULL as `receipt_id`,
+              %2 as `profile`,
+              `id` as `contribution_id`,
               `contact_id`,
               `financial_type_id`,
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
-              '%2',
+              %3,
               `total_amount`,
               `non_deductible_amount`,
               `currency`,
@@ -130,8 +137,10 @@ class CRM_Donrec_Logic_Snapshot {
     // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters
-    $params = array(1 => array($new_snapshot_id, 'Integer'),
-            2 => array($creator_id, 'Integer'));
+    $params = array(
+                1 => array($new_snapshot_id, 'Integer'),
+                2 => array($profile_name, 'String'),
+                3 => array($creator_id, 'Integer'));
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
@@ -712,4 +721,16 @@ class CRM_Donrec_Logic_Snapshot {
     return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test);
   }
 
+  /**
+   * Get the profile connected to this snapshot
+   */
+  public function getProfile() {
+    if ($this->_profile == NULL) {
+      $profile_name = CRM_Core_DAO::singleValueQuery(
+        "SELECT profile FROM civicrm_donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
+        array(1 => array($this->Id, 'Integer')));
+      $this->_profile = CRM_Donrec_Logic_Profile::getProfile($profile_name, TRUE);
+    }
+    return $this->_profile;
+  }
 }

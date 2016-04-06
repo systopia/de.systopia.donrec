@@ -104,19 +104,20 @@ class CRM_Donrec_Logic_Engine {
    * @return array of stats:
    */
   public function nextStep() {
-    // container for log messages
-    $logs = array();
+    // some containers
+    $exporter_results = array();
     $files = array();
+    $profile = $this->snapshot->getProfile();
 
     // Synchronize this step
-    $lock = CRM_Utils_DonrecHelper::getLock('next', $this->snapshot->getId());
+    $lock = CRM_Utils_DonrecHelper::getLock('CRM_Donrec_Logic_Engine', 'nextStep');
     if (!$lock->isAcquired()) {
       // lock timed out
       error_log("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
 
       // compile and return "state of affairs" report
       $stats = $this->createStats();
-      $stats['log'] = $logs;
+      $stats['log'] = array();
       $stats['files'] = $files;
       $stats['chunk_size'] = 0;
       CRM_Donrec_Logic_Exporter::addLogEntry($stats, "Couldn't acquire lock. Parallel processing denied. Lock timeout is {$lock->_timeout}s.");
@@ -127,109 +128,94 @@ class CRM_Donrec_Logic_Engine {
     $is_bulk = !empty($this->parameters['bulk']);
     $is_test = !empty($this->parameters['test']);
 
-    // get next chunk
+    // initialize stuff
     $chunk = $this->snapshot->getNextChunk($is_bulk, $is_test);
-
-    // call exporters
     $exporters = $this->getExporters();
-    foreach ($exporters as $exporter) {
-      // select action
-      if ($chunk==NULL) {
+
+    // loop over receipts
+    foreach ($chunk as $chunk_id => $chunk_items) {
+
+      // Setup some parameters
+      //**********************************
+      // Prepare chunk_items:
+      // #FIXME: It is more convenient to have a simalar array-structure for bulk-
+      // and single-processing. In future the getNextChunk-method might be
+      // refactored and build up the arrays correspondingly.
+      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
+      $contact_id = $chunk_items[0]['contact_id'];
+      $line_ids = array();
+      foreach ($chunk_items as $chunk_item) {
+        $line_ids[] = $chunk_item['id'];
+      }
+
+      // create a SnapshotReceipt
+      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test);
+
+      // call exporters
+      //**********************************
+      foreach ($exporters as $exporter) {
+
+        $exporter_id = $exporter->getID();
+
+        if ($is_bulk) {
+          $result = $exporter->exportBulk($snapshot_receipt, $is_test);
+        } else {
+          $result = $exporter->exportSingle($snapshot_receipt, $is_test);
+        }
+
+        if (!isset($exporter_results[$exporter_id])) {
+          $exporter_results[$exporter_id] = array();
+          $exporter_results[$exporter_id]['success'] = 0;
+          $exporter_results[$exporter_id]['failure'] = 0;
+        }
+        if ($result) {
+          $exporter_results[$exporter_id]['success']++;
+        } else {
+          $exporter_results[$exporter_id]['failure']++;
+        }
+      }
+
+      // save original pdfs and create receipt for non-test-runs
+      //**********************************
+      if (!$is_test) {
+        $receipt_params = array();
+        $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
+
+        if ($profile->saveOriginalPDF()) {
+          $pdf_file = $this->getPDF($line_ids);
+          $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
+          if (!empty($file)) {
+            $receipt_params['original_file'] = $file['id'];
+          }
+        }
+        CRM_Donrec_Logic_Receipt::createFromSnapshotReceipt($snapshot_receipt, $receipt_params);
+      }
+    }
+
+    // The last chunk is empty.
+    // If it is the last do some wrap-up.
+    // Otherwise mark the chunk as processed.
+    //**********************************
+    if (!$chunk) {
+      foreach ($exporters as $exporter) {
         $result = $exporter->wrapUp($this->snapshot->getId(), $is_test, $is_bulk);
         if (!empty($result['download_name']) && !empty($result['download_url'])) {
           $files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
         }
-      } else {
-        if ($is_bulk) {
-          $result = $exporter->exportBulk($chunk, $this->snapshot->getId(), $is_test);
-        } else {
-          $result = $exporter->exportSingle($chunk, $this->snapshot->getId(), $is_test);
-        }
       }
-      if (isset($result['log'])) {
-        $logs = array_merge($logs, $result['log']);
-      }
-    }
-
-    // create donation receipts
-    if (!$is_test) {
-
-        $receipt_params = array();
-        $bulk_line_ids = array();
-        $single_line_ids = array();
-
-        // get all lines per contact
-        // and sort them in the respective arrays
-        foreach ($chunk as $chunk_id => $chunk_items) {
-          // override bulk when there is only one receipt
-          if($is_bulk && count($chunk_items) == 1) {
-            $single_line_ids[] = $chunk_items[0]['id'];
-          }elseif ($is_bulk){
-            foreach ($chunk_items as $key => $chunk_item) {
-              $bulk_line_ids[$chunk_id][] = $chunk_item['id'];
-            }
-          }else{
-            $single_line_ids[] = $chunk_items['id'];
-          }
-        }
-
-        // TODO: receipt::createFromSnapshot is the same method-call for single-
-        // and bulk-receipts. Only difference is the count of line-ids...
-        // With that in mind the following code could be refactored.
-        // THIS IS BULK PROCESSING
-        if (!empty($bulk_line_ids)) {
-          $receipt_params['type'] = 'BULK';
-          foreach($bulk_line_ids as $contact_id => $line_ids) {
-            if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-              // get pdf file name from snapshot line
-              $pdf_file = $this->getPDF($line_ids);
-              if ($pdf_file) {
-                $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
-                if (!empty($file)) {
-                  $receipt_params['original_file'] = $file['id'];
-                }
-              }
-            }
-            $result = CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, $line_ids, $receipt_params);
-            if(!$result) {
-              error_log("de.systopia.donrec: error while creating receipt: " . $receipt_params['is_error']);
-            }else{
-              unset($receipt_params['original_file']);
-            }
-          }
-        }
-
-        // THIS IS SINGLE PROCESSING
-        if (!empty($single_line_ids)) {
-          $receipt_params['type'] = 'SINGLE';
-          foreach ($single_line_ids as $index => $line_id) {
-            $line_ids = array($line_id);
-            if (CRM_Donrec_Logic_Settings::saveOriginalPDF()) {
-              // get pdf file name from snapshot line
-              $pdf_file = $this->getPDF($line_ids);
-              if ($pdf_file) {
-                $tempReceipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test);
-                $contact_id =  $tempReceipt->getContactID();
-                $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
-                if (!empty($file)) {
-                  $receipt_params['original_file'] = $file['id'];
-                }
-              }
-            }
-            CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, $line_ids, $receipt_params);
-            unset($receipt_params['original_file']);
-          }
-        }
-    }
-
-    // mark the chunk as processed
-    if ($chunk) {
+    } else {
       $this->snapshot->markChunkProcessed($chunk, $is_test, $is_bulk);
     }
 
-    // compile and return stats
+    // compile stats
+    //**********************************
     $stats = $this->createStats();
-    $stats['log'] = $logs;
+    // create log-messages
+    foreach ($exporter_results as $exporter_id => $result) {
+      $msg = sprintf('%s processed %d items - %d succeeded, %d failed', $exporter_id, count($chunk), $result['success'], $result['failure']);
+      $type = ($result['failure'])? 'ERROR' : 'INFO';
+      CRM_Donrec_Logic_Exporter::addLogEntry($stats, $msg, $type);
+    }
     $stats['files'] = $files;
     if ($chunk==NULL) {
       $stats['progress'] = 100.0;
@@ -341,7 +327,8 @@ class CRM_Donrec_Logic_Engine {
       $tokens = $snapshot_receipt->getAllTokens();
       // get template and create pdf
       $tpl_param = array();
-      $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+      $profile = $this->snapshot->getProfile();
+      $template = $profile->getTemplate();
       $filename = $template->generatePDF($tokens, $tpl_param);
     }
 

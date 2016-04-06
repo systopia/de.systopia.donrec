@@ -127,17 +127,17 @@ function civicrm_api3_donation_receipt_view($params) {
     $name = $params['name'];
   }
   $values = $receipt->getAllProperties();
+  $profile = $receipt->getProfile();
 
   // mark this as DRAFT id ORIGINAL
   if (empty($values['watermark'])) {
     $values['status'] = 'DRAFT';
-    $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+    $values['watermark'] = $profile->get('draft_text');
   }
 
-  $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-  $parameter = array();
-  $pdf = $template->generatePDF($values, $parameter);
+  $pdf = $profile->getTemplate()->generatePDF($values, $parameter);
   $url = CRM_Donrec_Logic_File::createTemporaryFile($pdf, $name);
+
   // and return the result
   return civicrm_api3_create_success($url);
 }

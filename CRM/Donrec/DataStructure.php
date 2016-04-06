@@ -43,6 +43,20 @@ class CRM_Donrec_DataStructure {
     /***** receipt *****/
     /*receipt-specific*/
     array(
+      'name' => 'receipt_id',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Receipt ID',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'profile',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Profile',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
       'name' => 'status',
       'custom_group_name' => 'zwb_donation_receipt',
       'option_group_name' => 'donrec_status',
@@ -387,6 +401,22 @@ class CRM_Donrec_DataStructure {
   );
 
   /**
+   * Array to cache the database-details of custom-groups and -fields.
+   */
+  protected static $_custom_groups = array(
+    'zwb_donation_receipt' => array(
+      'id' => NULL,
+      'table_name' => NULL,
+      'fields' => array()
+    ),
+    'zwb_donation_receipt_item' => array(
+      'id' => NULL,
+      'table_name' => NULL,
+      'fields' => array()
+    )
+  );
+
+  /**
    * Create all custom-groups and -fields if they don't exist.
    */
   public static function update() {
@@ -563,5 +593,47 @@ class CRM_Donrec_DataStructure {
       $params['id'] = $get['id'];
       civicrm_api3($entity, 'create', $params);
     }
+  }
+
+
+  /**
+  * Populate $_custom_groups with all the relevant data - if not already done.
+  */
+  protected static function _getCustomGroupData($group_name) {
+    if (!self::$_custom_groups[$group_name]['id']) {
+      $params = array(
+        'version'  => 3,
+        'name'     => $group_name,
+      );
+      $group = civicrm_api('CustomGroup', 'getsingle', $params);
+      self::$_custom_groups[$group_name]['id'] = $group['id'];
+      self::$_custom_groups[$group_name]['table_name'] = $group['table_name'];
+
+      $params = array(
+        'version'         => 3,
+        'custom_group_id' => $group['id'],
+        'option.limit'    => 999
+      );
+      $fields = civicrm_api('CustomField', 'get', $params);
+      foreach ($fields['values'] as $field) {
+        self::$_custom_groups[$group_name]['fields'][$field['name']] = $field['column_name'];
+      }
+    }
+  }
+
+  /**
+  * Returns an array with field-names to their column-names of $group_name
+  */
+  public static function getCustomFields($group_name) {
+    self::_getCustomGroupData($group_name);
+    return self::$_custom_groups[$group_name]['fields'];
+  }
+
+  /**
+  * Returns the table-name of the custom-group $group_name
+  */
+  public static function getTableName($group_name) {
+    self::_getCustomGroupData($group_name);
+    return self::$_custom_groups[$group_name]['table_name'];
   }
 }

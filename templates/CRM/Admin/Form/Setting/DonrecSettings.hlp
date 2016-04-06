@@ -42,3 +42,31 @@
 {htxt id='id-address-fallback'}
     <p>{ts domain="de.systopia.donrec"}In case the first address is empty, this is the fallback address to be used insted.{/ts}</p>
 {/htxt}
+
+{htxt id='id-profile'}
+    <p>{ts domain="de.systopia.donrec"}Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile.{/ts}</p>
+{/htxt}
+
+{htxt id='id-template'}
+    <p>{ts domain="de.systopia.donrec"}Select the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
+{/htxt}
+
+{htxt id='id-pattern'}
+    <p>
+        {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}
+        {ts domain="de.systopia.donrec"}The following tokens are available:{/ts}
+        <ul>
+            <li><code>&#123;serial&#125;</code>: {ts domain="de.systopia.donrec"}Serial number. The system will make sure this is unique and continuous{/ts}</li>
+            <li><code>&#123;issue_year&#125;</code>: {ts domain="de.systopia.donrec"}Year in which the donation receipt was generated{/ts}</li>
+            <li><code>&#123;contact_id&#125;</code>: {ts domain="de.systopia.donrec"}The CiviCRM ID of the donor{/ts}</li>
+        </ul>
+    </p>
+
+    <p>
+        {ts domain="de.systopia.donrec"}The following restrictions exist for the pattern:{/ts}
+        <ol>
+            <li>{ts domain="de.systopia.donrec"}There has to be exactly one <code>&#123;serial&#125;</code> token.{/ts}</li>
+            <li>{ts domain="de.systopia.donrec"}All tokens cannot be used adjacent to digits or other tokens. Use other characters like dashes or spaces to separate them.{/ts}</li>
+        </ol>
+    </p>
+{/htxt}

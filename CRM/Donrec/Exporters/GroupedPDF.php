@@ -8,6 +8,7 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+//FIXME: implement own getID-method
 /**
  * Exporter for GROUPED, ZIPPED PDF files
  */

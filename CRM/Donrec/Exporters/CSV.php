@@ -36,25 +36,21 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
 
 
   /**
-   * export this chunk of individual items
+   * export an individual receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportSingle($chunk, $snapshotId, $is_test) {
-    return $this->exportLine($chunk, $snapshotId, $is_test, false);
+  public function exportSingle($snapshot_receipt, $is_test) {
+    return $this->exportLine($snapshot_receipt, $is_test, false);
   }
 
   /**
-   * bulk-export this chunk of items
+   * export a bulk-receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportBulk($chunk, $snapshotId, $is_test) {
-    return $this->exportLine($chunk, $snapshotId, $is_test, true);
+  public function exportBulk($snapshot_receipt, $is_test) {
+    return $this->exportLine($snapshot_receipt, $is_test, true);
   }
 
   /**
@@ -141,47 +137,38 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    * wil create bulk and/or individual items as CSV lines that
    * are stored in the process information field
    */
-  private function exportLine($chunk, $snapshotId, $is_test, $is_bulk) {
-    $reply = array();
+  private function exportLine($snapshotReceipt, $is_test, $is_bulk) {
 
-    // get data from snapshot (#1399)
-    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
-    $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, $is_bulk, $is_test);
+    $values = $snapshotReceipt->getAllTokens();
+    $flattened_data = $this->flattenTokenData($values);
 
-    foreach ($snapshotReceipts as $snapshotReceipt) {
-      $values = $snapshotReceipt->getAllTokens();
-      $flattened_data = $this->flattenTokenData($values);
-
-      // add accumulated data
-      $flattened_data['individual_count']                 = 0;
-      $flattened_data['individual_receive_date']          = '';
-      $flattened_data['individual_total_amount']          = '';
-      $flattened_data['individual_non_deductible_amount'] = '';
-      $flattened_data['individual_financial_type_id']     = '';
-      $flattened_data['individual_financial_type']        = '';
-      foreach ($values['lines'] as $line_id => $line) {
-        $flattened_data['individual_count'] += 1;
-        if ($flattened_data['individual_count'] > 1) {
-          $flattened_data['individual_receive_date']          .= "\n";
-          $flattened_data['individual_total_amount']          .= "\n";
-          $flattened_data['individual_non_deductible_amount'] .= "\n";
-          $flattened_data['individual_financial_type_id']     .= "\n";
-          $flattened_data['individual_financial_type']        .= "\n";
-        }
-        $flattened_data['individual_receive_date']          .= $line['receive_date'];
-        $flattened_data['individual_total_amount']          .= $line['total_amount'];
-        $flattened_data['individual_non_deductible_amount'] .= $line['non_deductible_amount'];
-        $flattened_data['individual_financial_type_id']     .= $line['financial_type_id'];
-        $flattened_data['individual_financial_type']        .= $line['financial_type'];
+    // add accumulated data
+    $flattened_data['individual_count']                 = 0;
+    $flattened_data['individual_receive_date']          = '';
+    $flattened_data['individual_total_amount']          = '';
+    $flattened_data['individual_non_deductible_amount'] = '';
+    $flattened_data['individual_financial_type_id']     = '';
+    $flattened_data['individual_financial_type']        = '';
+    foreach ($values['lines'] as $line_id => $line) {
+      $flattened_data['individual_count'] += 1;
+      if ($flattened_data['individual_count'] > 1) {
+        $flattened_data['individual_receive_date']          .= "\n";
+        $flattened_data['individual_total_amount']          .= "\n";
+        $flattened_data['individual_non_deductible_amount'] .= "\n";
+        $flattened_data['individual_financial_type_id']     .= "\n";
+        $flattened_data['individual_financial_type']        .= "\n";
       }
-
-      // store the data in the process information
-      $this->updateProcessInformation($snapshotReceipt->getID(), array('csv_data' => $flattened_data));
+      $flattened_data['individual_receive_date']          .= $line['receive_date'];
+      $flattened_data['individual_total_amount']          .= $line['total_amount'];
+      $flattened_data['individual_non_deductible_amount'] .= $line['non_deductible_amount'];
+      $flattened_data['individual_financial_type_id']     .= $line['financial_type_id'];
+      $flattened_data['individual_financial_type']        .= $line['financial_type'];
     }
 
-    // add a log entry
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'CSV processed ' . count($chunk) . ' items.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
-    return $reply;
+    // store the data in the process information
+    $this->updateProcessInformation($snapshotReceipt->getID(), array('csv_data' => $flattened_data));
+
+    return true;
   }
 
   private function flattenTokenData($values) {
@@ -199,6 +186,6 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
         $flattened_data[$key] = $value;
       }
     }
-    return $flattened_data;  
+    return $flattened_data;
   }
 }

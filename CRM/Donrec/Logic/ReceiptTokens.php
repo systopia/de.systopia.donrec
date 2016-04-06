@@ -22,6 +22,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    */
   protected static $STORED_TOKENS = array(
       'id'                        => 'Receipt ID',
+      'receipt_id'                => 'Custom Receipt ID',
+      'profile'                   => 'Profile',
       'status'                    => 'Status',
       'type'                      => 'Single or bulk',
       'issued_by'                 => 'Creator Contact ID',
@@ -203,13 +205,14 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
+    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile']);
     if ($values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
     } elseif ($values['status'] == 'COPY') {
-      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'copy_text');
+      $values['watermark'] = $profile->get('copy_text');
     } else {
       // in all other cases, it's INVALID/DRAFT:
-      $values['watermark'] = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'draft_text');
+      $values['watermark'] = $profile->get('draft_text');
     }
 
     // copy contributor values to addressee, if not set separately

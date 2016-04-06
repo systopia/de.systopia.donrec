@@ -132,6 +132,12 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
 
   // add REBOOK task to contribution list
   if ($objectType == 'contribution') {
+    if (CRM_Core_Permission::check('create and withdraw receipts')) {
+      $tasks[] = array(
+          'title' => ts('Issue donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'class' => 'CRM_Donrec_Form_Task_ContributeTask',
+          'result' => false);
+    }
     if (CRM_Core_Permission::check('edit contributions')) {
       $tasks[] = array(
           'title'  => ts('Rebook to contact', array('domain' => 'de.systopia.donrec')),

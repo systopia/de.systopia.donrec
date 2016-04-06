@@ -1,8 +1,8 @@
 <?php
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2015 SYSTOPIA                       |
-| Author: N.Bochan (bochan -at- systopia.de)             |
+| Copyright (C) 2013-2016 SYSTOPIA                       |
+| Author: B. Endres (endres -at- systopia.de)            |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
 | License: AGPLv3, see LICENSE file                      |
@@ -15,12 +15,11 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
+class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
   function buildQuickForm() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
 
-    $this->addElement('hidden', 'cid');
     $this->addElement('hidden', 'rsid');
     $options = array(
        'current_year'      => ts('This Year', array('domain' => 'de.systopia.donrec')),
@@ -37,19 +36,15 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
                       CRM_Donrec_Logic_Profile::getAllNames(), 
                       array('class' => 'crm-select2'));
 
-    $this->addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
+    // call the (overwritten) Form's method, so the continue button is on the right...
+    CRM_Core_Form::addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
   }
 
   function setDefaultValues() {
     // do a cleanup here (ticket #1616)
     CRM_Donrec_Logic_Snapshot::cleanup();
 
-    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-    $this->getElement('cid')->setValue($contactId);
-    $this->assign('cid', $contactId);
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
-
-    //TODO: what if we have more than 1 remaining snapshot (what should not happen at all)?
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
       $remaining_snapshot = array_pop($remaining_snapshots);
@@ -60,9 +55,9 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   }
 
   function postProcess() {
-    // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_DonrecTask:postProcess()
+    // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_Create:postProcess()
 
-    // process remaining snapshots
+    // process remaining snapshots if exsisting
     $rsid = empty($_REQUEST['rsid']) ? NULL : $_REQUEST['rsid'];
     if (!empty($rsid)) {
 
@@ -81,17 +76,15 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       }
     }
 
-
     // process form values and try to build a snapshot with all contributions
     // that match the specified criteria (i.e. contributions which have been
     // created between two specific dates)
     $values = $this->exportValues();
-    $contactId = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
-    $values['contact_id'] = $contactId;
+    $values['contribution_ids'] = $this->_contributionIds;
 
     //set url_back as session-variable
     $session = CRM_Core_Session::singleton();
-    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$contactId&selectedChild=donation_receipts"));
+    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
 
     // generate the snapshot
     $result = CRM_Donrec_Logic_Selector::createSnapshot($values);
@@ -99,13 +92,14 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $sid . '&ccount=1'));
+        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(ts('This contact has no selectable contributions in the selected time period.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/create', "reset=1&cid=$contactId"));
+      CRM_Core_Session::setStatus(ts('There are no selectable contributions for these contacts in the selected time period.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
+      $qfKey = $values['qfKey'];
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $sid . '&origin=' . $contactId . '&ccount=1')
+        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds))
       );
     }
   }

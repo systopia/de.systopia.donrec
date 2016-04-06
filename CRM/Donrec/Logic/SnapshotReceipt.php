@@ -17,6 +17,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   protected $snapshot;
   protected $snapshot_lines;
   protected $is_test;
+  protected $receipt_id;
 
   private $cached_contributors = array();
   private $cached_addressees = array();
@@ -25,6 +26,11 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->snapshot = $snapshot;
     $this->snapshot_lines = $snapshot_lines;
     $this->is_test = $is_test;
+
+    // generate receiptID
+    $pattern = $this->getProfile()->get('id_pattern');
+    $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
+    $this->receipt_id = $id_generator->generateID();
   }
 
   public function isBulk() {
@@ -80,6 +86,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getAllTokens() {
     $values = array();
     // create items
+    $values['receipt_id']            = $this->receipt_id;
     $values['status']                = $this->is_test?'DRAFT':'ORIGINAL';
     $values['issued_on']             = date('Y-m-d H:i:s');
     $values['issued_by']             = CRM_Core_Session::singleton()->get('userID');
@@ -103,18 +110,19 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
         );
 
       // update general values
-      $values['id']        = $snapshot_line_id;    // just use one of them as ID
-      $values['contact_id'] = $snapshot_line['contact_id'];
-      $values['currency']  = $snapshot_line['currency'];
-      $values['date_from'] = $snapshot_line['date_from'];
-      $values['date_to'] = $snapshot_line['date_to'];
-      $values['total_amount'] += $snapshot_line['total_amount'];
+      $values['id']                     = $snapshot_line_id;    // just use one of them as ID
+      $values['profile']                = $snapshot_line['profile'];
+      $values['contact_id']             = $snapshot_line['contact_id'];
+      $values['currency']               = $snapshot_line['currency'];
+      $values['date_from']              = $snapshot_line['date_from'];
+      $values['date_to']                = $snapshot_line['date_to'];
+      $values['total_amount']          += $snapshot_line['total_amount'];
       $values['non_deductible_amount'] += $snapshot_line['non_deductible_amount'];
     }
 
     // add contributor and addressee
     $values['contributor'] = $this->getContributor($values['contact_id']);
-    $values['addressee'] = $this->getAddressee($values['contact_id']);
+    $values['addressee']   = $this->getAddressee($values['contact_id']);
 
     // add dynamically created tokens
     CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
@@ -158,7 +166,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add the addresses
-    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['legal'];
+    $types = $this->getProfile()->getLocationTypes()['legal'];
     $contributor_address = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
     if ($contributor_address != NULL) {
       $contributor = array_merge($contributor, $contributor_address);
@@ -179,9 +187,10 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // get the addresses
-    $types = CRM_Donrec_Logic_Settings::getLocationTypes()['postal'];
-    // TODO: if the contributor-address has the same type, this will result in
-    // a superfluous database-request.
+    $types = $this->getProfile()->getLocationTypes()['postal'];
+
+    // FIXME: if the contributor-address has the same type, this will result in
+    // an unnecessary database-request.
     // An extra address-cache would be fine.
     $addressee = $this->lookupAddressTokens($contact_id, $types['address'], $types['fallback']);
 
@@ -189,5 +198,12 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->cached_addressees[$contact_id] = $addressee;
 
     return $addressee;
+  }
+
+  /**
+   * get the profile object that was used to create this receipt
+   */
+  public function getProfile() {
+    return $this->snapshot->getProfile();
   }
 }
