@@ -599,8 +599,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile'];
-    error_log(print_r($receipt_table_name, 1));
-    error_log(print_r($profile_column_name, 1));
     $profile = CRM_Core_DAO::singleValueQuery("SELECT `$profile_column_name` FROM `$receipt_table_name` WHERE `id` = %1", array(1=>array($this->Id, 'Integer')));
     return CRM_Donrec_Logic_Profile::getProfile($profile, TRUE);
   }

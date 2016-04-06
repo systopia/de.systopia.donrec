@@ -25,12 +25,6 @@ class CRM_Donrec_Logic_Profile {
    * load setting entity with given ID
    */
   public function __construct($profile_name) {
-    // TODO: remove
-    if (empty($profile_name)) {
-      foreach (debug_backtrace() as $stack) error_log("{$stack['file']}:{$stack['line']}");
-      die("there's still something wrong in the workflow...");
-    }
-
     $data = CRM_Core_BAO_Setting::getItem(self::$SETTINGS_PROFILE_GROUP, $profile_name);
     if ($data==NULL || !is_array($data)) {
       // this setting doesn't exist yet or is malformed
