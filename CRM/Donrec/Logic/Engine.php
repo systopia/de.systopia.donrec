@@ -135,20 +135,32 @@ class CRM_Donrec_Logic_Engine {
     // loop over receipts
     foreach ($chunk as $chunk_id => $chunk_items) {
 
+      // Setup some parameters
+      //**********************************
+      // Prepare chunk_items:
+      // #FIXME: It is more convenient to have a simalar array-structure for bulk-
+      // and single-processing. In future the getNextChunk-method might be
+      // refactored and build up the arrays correspondingly.
+      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
+      $contact_id = $chunk_items[0]['contact_id'];
+      $line_ids = array();
+      foreach ($chunk_items as $chunk_item) {
+        $line_ids[] = $chunk_item['id'];
+      }
+
+      // create a SnapshotReceipt
+      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test);
+
       // call exporters
       //**********************************
       foreach ($exporters as $exporter) {
 
-        // This code was refactored. The exporters should be refactored as well
-        // accepting $chunk_items as a "single-receipt" as we use it here.
-        // Till then we prepare the chunk_items for the exporters.
-        $old_style_chunk = array($chunk_id => $chunk_items);
         $exporter_id = $exporter->getID();
 
         if ($is_bulk) {
-          $result = $exporter->exportBulk($old_style_chunk, $this->snapshot->getId(), $is_test);
+          $result = $exporter->exportBulk($snapshot_receipt, $is_test);
         } else {
-          $result = $exporter->exportSingle($old_style_chunk, $this->snapshot->getId(), $is_test);
+          $result = $exporter->exportSingle($snapshot_receipt, $is_test);
         }
 
         if (!isset($exporter_results[$exporter_id])) {
@@ -163,42 +175,27 @@ class CRM_Donrec_Logic_Engine {
         }
       }
 
-      // Setup some parameters
+      // save original pdfs and create receipt for non-test-runs
       //**********************************
-      // Prepare chunk_items:
-      // It is more convenient to have a simalar array-structure for bulk-
-      // and single-processing. In future the getNextChunk-method might be
-      // refactored and build up the arrays correspondingly.
-      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
+      if (!$is_test) {
+        $receipt_params = array();
+        $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
 
-      $receipt_params = array();
-      $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
-      $contact_id = $chunk_items[0]['contact_id'];
-      $line_ids = array();
-      foreach ($chunk_items as $chunk_item) {
-        $line_ids[] = $chunk_item['id'];
-      }
-
-      // safe pfd and create receipt (if not test-run)
-      //**********************************
-      if ($is_test) { continue; }
-
-      // save original pdfs
-      if ($profile->saveOriginalPDF()) {
-        $pdf_file = $this->getPDF($line_ids);
-        $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
-        if (!empty($file)) {
-          $receipt_params['original_file'] = $file['id'];
+        if ($profile->saveOriginalPDF()) {
+          $pdf_file = $this->getPDF($line_ids);
+          $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
+          if (!empty($file)) {
+            $receipt_params['original_file'] = $file['id'];
+          }
         }
+        CRM_Donrec_Logic_Receipt::createFromSnapshotReceipt($snapshot_receipt, $receipt_params);
       }
-
-      // create receipt
-      CRM_Donrec_Logic_Receipt::createFromSnapshot($this->snapshot, $line_ids, $receipt_params);
     }
 
     // The last chunk is empty.
     // If it is the last do some wrap-up.
     // Otherwise mark the chunk as processed.
+    //**********************************
     if (!$chunk) {
       foreach ($exporters as $exporter) {
         $result = $exporter->wrapUp($this->snapshot->getId(), $is_test, $is_bulk);
@@ -206,31 +203,19 @@ class CRM_Donrec_Logic_Engine {
           $files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
         }
       }
-      # We need to delete the receipt-ids from the snapshot.
-      # FIXME: Saving the receipt-id in snapshot shouldn't be nesseccary at all.
-      # In Future there should be one SnapshotReceipt-object passed to the exporters
-      # and used to create the receipt. The receipt-id can be just stored in the
-      # SnapshotReceipt-object then.
-      $snapshot_id = $this->snapshot->getId();
-      $query = "
-        UPDATE `civicrm_donrec_snapshot`
-        SET `receipt_id` = ''
-        WHERE `snapshot_id` = $snapshot_id";
-      CRM_Core_DAO::executeQuery($query);
     } else {
       $this->snapshot->markChunkProcessed($chunk, $is_test, $is_bulk);
     }
 
-    // compile and return stats
+    // compile stats
+    //**********************************
     $stats = $this->createStats();
-
     // create log-messages
     foreach ($exporter_results as $exporter_id => $result) {
       $msg = sprintf('%s processed %d items - %d succeeded, %d failed', $exporter_id, count($chunk), $result['success'], $result['failure']);
       $type = ($result['failure'])? 'ERROR' : 'INFO';
       CRM_Donrec_Logic_Exporter::addLogEntry($stats, $msg, $type);
     }
-
     $stats['files'] = $files;
     if ($chunk==NULL) {
       $stats['progress'] = 100.0;

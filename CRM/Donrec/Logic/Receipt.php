@@ -86,6 +86,40 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Creates a new receipt and belonging receipt-items
    *
+   * @param $snapshot_receipt   a snapshotReceipt object
+   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   *
+   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   */
+  public static function createFromSnapshotReceipt($snapshot_receipt, &$parameters) {
+    $tokens = $snapshot_receipt->getAllTokens();
+
+    // error if no tokens found
+    if (empty($tokens)) {
+      $parameters['is_error'] = "snapshot-line-ids does not exist.";
+      return FALSE;
+    }
+
+    // update tokens from parameters
+    $tokens = array_merge($tokens, $parameters);
+
+    // create receipt
+    $result = self::_createReceiptFromTokens($tokens);
+
+    // create receipt-items
+    $lastId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
+    foreach ($tokens['lines'] as $lid => $line_tokens) {
+      $params = array_merge($tokens, $line_tokens);
+      $params['issued_in'] = $lastId;
+      CRM_Donrec_Logic_ReceiptItem::create($params);
+    }
+
+    return new self($lastId);
+  }
+
+  /**
+   * Creates a new receipt and belonging receipt-items
+   *
    * @param $snapshot           a snapshot object
    * @param $snapshot_line_ids  an array with the IDs of the snapshot lines to be used for creation
    * @param $parameters         an assoc. array of creation parameters TODO: to be defined
@@ -565,6 +599,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile'];
+    error_log(print_r($receipt_table_name, 1));
+    error_log(print_r($profile_column_name, 1));
     $profile = CRM_Core_DAO::singleValueQuery("SELECT `$profile_column_name` FROM `$receipt_table_name` WHERE `id` = %1", array(1=>array($this->Id, 'Integer')));
     return CRM_Donrec_Logic_Profile::getProfile($profile, TRUE);
   }

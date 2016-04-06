@@ -36,40 +36,30 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
 
   /**
-   * export this chunk of individual items
+   * export an individual receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportSingle($chunk, $snapshotId, $is_test) {
+  public function exportSingle($snapshot_receipt, $is_test) {
 
     // edit the process information
-    foreach ($chunk as $chunk_id => $chunk_item) {
-      $this->updateProcessInformation($chunk_id, array('test' => 'Dummy was here!'));
+    foreach ($snapshot_receipt->getIDs() as $line_id) {
+      $this->updateProcessInformation($line_id, array('test' => 'Dummy was here!'));
     }
 
     return true;
   }
 
   /**
-   * bulk-export this chunk of items
+   * export a bulk-receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportBulk($chunk, $snapshotId, $is_test) {
+  public function exportBulk($snapshot_receipt, $is_test) {
 
-    // edit the process information
-    foreach ($chunk as $contact_id => $items) {
-      foreach ($items as $item) {
-        $this->updateProcessInformation($item['id'], array('test' => 'Dummy was here!'));
-      }
-    }
-
-    return true;
-}
+    // same logic as exportSingle()
+    return $this->exportSingle($snapshot_receipt, $is_test);
+  }
 
   /**
    * generate the final result

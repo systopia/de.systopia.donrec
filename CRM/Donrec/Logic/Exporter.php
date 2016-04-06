@@ -54,22 +54,18 @@ abstract class CRM_Donrec_Logic_Exporter {
   abstract function getID();
 
   /**
-   * export this chunk of individual items
+   * export an individual receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  abstract function exportSingle($chunk, $snapshotId, $is_test);
+  abstract function exportSingle($snapshot_receipt, $is_test);
 
   /**
-   * bulk-export this chunk of items
+   * export a bulk-receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  abstract function exportBulk($chunk, $snapshotId, $is_test);
+  abstract function exportBulk($snapshot_receipt, $is_test);
 
   /**
    * generate the final result

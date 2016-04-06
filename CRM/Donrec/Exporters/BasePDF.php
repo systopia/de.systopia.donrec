@@ -38,74 +38,37 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
 
   /**
-   * export this chunk of individual items
+   * export an individual receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportSingle($chunk, $snapshotId, $is_test) {
+  public function exportSingle($snapshot_receipt, $is_test) {
 
     // get the default template
     $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
 
-    // get snapshot data
-    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
-    $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, false, $is_test);
-
-    $success = 0;
-    $failures = 0;
-    foreach ($snapshotReceipts as $snapshotReceipt) {
-      // get tokens and generate PDF
-      $tpl_param = array();
-      $values = $snapshotReceipt->getAllTokens();
-      $result = $template->generatePDF($values, $tpl_param);
-      if ($result === FALSE) {
-        $failures++;
-      } else {
-        // save file names for wrapup()
-        $this->postprocessPDF($result, $snapshotReceipt->getID());
-        $success++;
-      }
+    // get tokens and generate PDF
+    $tpl_param = array();
+    $values = $snapshot_receipt->getAllTokens();
+    $result = $template->generatePDF($values, $tpl_param);
+    if ($result === FALSE) {
+      return FALSE;
+    } else {
+      // save file names for wrapup()
+      $this->postprocessPDF($result, $snapshot_receipt->getID());
+      return TRUE;
     }
-
-    return boolval($success);
   }
 
   /**
-   * bulk-export this chunk of items
+   * export a bulk-receipt
    *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   * @return TRUE on success; FALSE on failure
    */
-  public function exportBulk($chunk, $snapshotId, $is_test) {
+  public function exportBulk($snapshot_receipt, $is_test) {
 
-    // get the default template
-    $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
-
-    // get snapshot data
-    $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshotId);
-    $snapshotReceipts = $snapshot->getSnapshotReceipts($chunk, true, $is_test);
-
-
-    $success = 0;
-    $failures = 0;
-    foreach ($snapshotReceipts as $snapshotReceipt) {
-      // get tokens and generate PDF
-      $tpl_param = array();
-      $values = $snapshotReceipt->getAllTokens();
-      $result = $template->generatePDF($values, $tpl_param);
-      if ($result === FALSE) {
-        $failures++;
-      } else {
-        // fix: only postprocess once(!)
-        $this->postprocessPDF($result, $snapshotReceipt->getID());
-        $success++;
-      }
-    }
-
-    return boolval($success);
+    // same logic as exportSingle()
+    return $this->exportSingle($snapshot_receipt, $is_test);
   }
 
   /**

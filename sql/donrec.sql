@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
 CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `snapshot_id` int(10) unsigned NOT NULL,
-  `receipt_id` char(64),
   `profile` char(64),
   `contribution_id` int(10) unsigned NOT NULL,
   `contact_id` int(10) unsigned NOT NULL,

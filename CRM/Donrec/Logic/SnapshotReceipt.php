@@ -26,35 +26,11 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->snapshot = $snapshot;
     $this->snapshot_lines = $snapshot_lines;
     $this->is_test = $is_test;
-    $this->receipt_id = $this->getReceiptId();
-  }
 
-  /**
-   * Loads receipt_id if written to the snapshot-table.
-   * Otherwise creates it and write it to the snapshot-table.
-   *
-   * @return receipt_id
-   */
-  protected function getReceiptId() {
-    $line_ids = $this->getIDs();
-    $line_ids_query = '( ' . implode(', ', $line_ids) . ' )';
-    $query = "
-      SELECT `receipt_id`
-      FROM `civicrm_donrec_snapshot`
-      WHERE `id` IN $line_ids_query
-      GROUP BY `receipt_id`";
-    $receipt_id = CRM_Core_DAO::singleValueQuery($query);
-    if (!$receipt_id) {
-      $pattern = $this->getProfile()->get('id_pattern');
-      $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
-      $receipt_id = $id_generator->generateID($this->snapshot_lines);
-      $update_query = "
-        UPDATE `civicrm_donrec_snapshot`
-        SET `receipt_id` = '$receipt_id'
-        WHERE `id` IN $line_ids_query";
-      CRM_Core_DAO::executeQuery($update_query);
-    }
-    return $receipt_id;
+    // generate receiptID
+    $pattern = $this->getProfile()->get('id_pattern');
+    $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
+    $this->receipt_id = $id_generator->generateID();
   }
 
   public function isBulk() {
