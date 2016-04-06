@@ -213,7 +213,7 @@ class CRM_Donrec_Logic_Profile {
       $results = CRM_Core_DAO::executeQuery($query);
       while ($results->fetch()) {
         if ($results->is_deductible) {
-          $results[$results->id];
+          $financial_types[] = $results->id;
         }
       }
     }
