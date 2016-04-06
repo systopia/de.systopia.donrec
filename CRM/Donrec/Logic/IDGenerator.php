@@ -11,6 +11,9 @@
 /**
  * This class represents generator function for unique IDs
  * based on a pattern string
+ * Mind that generating reciept-ids must be within a locked sequence.
+ * Uniqueness of receipt-ids cannot be guarantied when produced by parallel
+ * processes.
  */
 class CRM_Donrec_Logic_IDGenerator {
 
@@ -43,23 +46,6 @@ class CRM_Donrec_Logic_IDGenerator {
     }
     $this->pattern = $pattern;
     $this->is_test = $is_test;
-  }
-
-
-  /**
-   * You need to lock the generator so a truely unique ID can be generated
-   */
-  public function lock() {
-    // TODO: implement
-  }
-
-
-  /**
-   * Once you're done you have to release
-   *  a previously locked generator
-   */
-  public function release() {
-    // TODO: implement
   }
 
   /**

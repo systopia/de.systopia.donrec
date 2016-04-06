@@ -110,7 +110,7 @@ class CRM_Donrec_Logic_Engine {
     $profile = $this->snapshot->getProfile();
 
     // Synchronize this step
-    $lock = CRM_Utils_DonrecHelper::getLock('next', $this->snapshot->getId());
+    $lock = CRM_Utils_DonrecHelper::getLock('CRM_Donrec_Logic_Engine', 'nextStep');
     if (!$lock->isAcquired()) {
       // lock timed out
       error_log("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
@@ -140,7 +140,7 @@ class CRM_Donrec_Logic_Engine {
       foreach ($exporters as $exporter) {
 
         // This code was refactored. The exporters should be refactored as well
-        // accepting $chunk_items as a "single-receipt-item" as we use it here.
+        // accepting $chunk_items as a "single-receipt" as we use it here.
         // Till then we prepare the chunk_items for the exporters.
         $old_style_chunk = array($chunk_id => $chunk_items);
         $exporter_id = $exporter->getID();
@@ -207,6 +207,10 @@ class CRM_Donrec_Logic_Engine {
         }
       }
       # We need to delete the receipt-ids from the snapshot.
+      # FIXME: Saving the receipt-id in snapshot shouldn't be nesseccary at all.
+      # In Future there should be one SnapshotReceipt-object passed to the exporters
+      # and used to create the receipt. The receipt-id can be just stored in the
+      # SnapshotReceipt-object then.
       $snapshot_id = $this->snapshot->getId();
       $query = "
         UPDATE `civicrm_donrec_snapshot`
