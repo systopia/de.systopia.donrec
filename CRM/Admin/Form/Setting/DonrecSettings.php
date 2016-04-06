@@ -18,13 +18,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Utils_System::setTitle(ts('Donation Receipts - Settings', array('domain' => 'de.systopia.donrec')));
 
     // add profile selector + data
-    $this->addElement('select', 
-                      'profile', 
-                      ts('Profile', array('domain' => 'de.systopia.donrec')), 
-                      CRM_Donrec_Logic_Profile::getAllNames(), 
+    $this->addElement('select',
+                      'profile',
+                      ts('Profile', array('domain' => 'de.systopia.donrec')),
+                      CRM_Donrec_Logic_Profile::getAllNames(),
                       array('class' => 'crm-select2'));
-    $this->addElement('hidden', 
-                      'profile_data', 
+    $this->addElement('hidden',
+                      'profile_data',
                       json_encode(CRM_Donrec_Logic_Profile::getAllData()));
 
     // add all profile elements
@@ -46,13 +46,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('select', 'postal_address_fallback', ts('Fallback:', array('domain' => 'de.systopia.donrec')), $options);
 
     // add generic elements
-    $this->addElement('text', 
-                      'pdfinfo_path', 
+    $this->addElement('text',
+                      'pdfinfo_path',
                       ts('External Tool: path to <code>pdfinfo</code>', array('domain' => 'de.systopia.donrec')),
                       CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'));
 
-    $this->addElement('text', 
-                      'packet_size', 
+    $this->addElement('text',
+                      'packet_size',
                       ts('Packet size', array('domain' => 'de.systopia.donrec')),
                       CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'));
 
@@ -86,7 +86,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfinfo_path']){
       CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
     }
-        
+
     // first, update current values into slected profile
     if (!empty($values['profile'])) {
       $profile = $values['profile'];
@@ -104,7 +104,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       foreach ($profile_data as $profile_name => $profile) {
         // test the ID pattern
         try {
-          $generator = new CRM_Donrec_Logic_IDGenerator($profile['id_pattern']);
+          $generator = new CRM_Donrec_Logic_IDGenerator($profile['id_pattern'], false);
         } catch (Exception $e) {
           $session = CRM_Core_Session::singleton();
           $session->setStatus(ts("One of the Receipt ID patterns are invalid! Changes NOT saved!", array('domain' => 'de.systopia.donrec')), ts('Error', array('domain' => 'de.systopia.donrec')), 'error');
@@ -113,7 +113,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       }
 
       // then store the profiles
-      CRM_Donrec_Logic_Profile::syncProfileData($profile_data);        
+      CRM_Donrec_Logic_Profile::syncProfileData($profile_data);
     }
 
     $session = CRM_Core_Session::singleton();
