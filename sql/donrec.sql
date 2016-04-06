@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS `donrec_snapshot` (
   PRIMARY KEY (`snapshot_id`,`contribution_id`),
   KEY `id` (`id`),
   KEY `snapshot_id` (`snapshot_id`),
-  KEY `receipt_id` (`receipt_id`),
   KEY `contribution_id` (`contribution_id`),
   KEY `contact_id` (`contact_id`),
   KEY `financial_type_id` (`financial_type_id`),
