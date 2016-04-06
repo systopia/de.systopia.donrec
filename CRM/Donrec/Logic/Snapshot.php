@@ -96,7 +96,6 @@ class CRM_Donrec_Logic_Snapshot {
           "INSERT INTO `donrec_snapshot` (
               `id`,
               `snapshot_id`,
-              `receipt_id`,
               `profile`,
               `contribution_id`,
               `contact_id`,
@@ -114,7 +113,6 @@ class CRM_Donrec_Logic_Snapshot {
           SELECT
               NULL,
               %1 as `snapshot_id`,
-              NULL as `receipt_id`,
               %2 as `profile`,
               `id` as `contribution_id`,
               `contact_id`,
