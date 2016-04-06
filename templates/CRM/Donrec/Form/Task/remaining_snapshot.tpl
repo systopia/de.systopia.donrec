@@ -1,6 +1,6 @@
 {*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2015 SYSTOPIA                       |
+| Copyright (C) 2013-2016 SYSTOPIA                       |
 | Author: Thomas Leichtfuss (leichtfuss -at- systopia.de)|
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
