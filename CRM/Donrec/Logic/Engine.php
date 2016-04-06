@@ -206,6 +206,13 @@ class CRM_Donrec_Logic_Engine {
           $files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
         }
       }
+      # We need to delete the receipt-ids from the snapshot.
+      $snapshot_id = $this->snapshot->getId();
+      $query = "
+        UPDATE `civicrm_donrec_snapshot`
+        SET `receipt_id` = ''
+        WHERE `snapshot_id` = $snapshot_id";
+      CRM_Core_DAO::executeQuery($query);
     } else {
       $this->snapshot->markChunkProcessed($chunk, $is_test, $is_bulk);
     }

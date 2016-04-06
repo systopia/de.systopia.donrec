@@ -2,9 +2,6 @@ now:
 [B] remove die() in Profile
 
 [?] Bugfix: Download Original-PDFs
-[?] Bugfix: Reciept-IDs werden im Test-Lauf erzeugt und im Snapshot gespeichert.
-            Beim Wieder-Aufgreifen des Snapshots existieren diese IDs noch und werden benutzt.
-            (Refactoring würde das Problem lösen...)
 
 
 later:
