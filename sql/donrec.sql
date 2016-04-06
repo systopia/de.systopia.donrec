@@ -1,11 +1,12 @@
 --
--- `civicrm_donrec_snapshot`
+-- `donrec_snapshot`
 --
 
 DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
+DROP TABLE IF EXISTS `donrec_snapshot`;
 
 
-CREATE TABLE IF NOT EXISTS `civicrm_donrec_snapshot` (
+CREATE TABLE IF NOT EXISTS `donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `snapshot_id` int(10) unsigned NOT NULL,
   `profile` char(64),

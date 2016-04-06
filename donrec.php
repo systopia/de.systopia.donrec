@@ -73,6 +73,7 @@ function donrec_civicrm_enable() {
 function donrec_civicrm_disable() {
   // delete the snapshot-table
   CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `civicrm_donrec_snapshot`");
+  CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `donrec_snapshot`");
 
   return _donrec_civix_civicrm_disable();
 }

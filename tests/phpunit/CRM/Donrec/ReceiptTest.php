@@ -14,7 +14,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
  * Engine Test Suite
  */
 class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
-  private $tablesToTruncate = array('civicrm_donrec_snapshot');
+  private $tablesToTruncate = array('donrec_snapshot');
 
   function setUp() {
     parent::setUp();

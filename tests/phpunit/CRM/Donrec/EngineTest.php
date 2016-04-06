@@ -14,7 +14,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
  * Engine Test Suite
  */
 class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
-  private $tablesToTruncate = array('civicrm_donrec_snapshot');
+  private $tablesToTruncate = array('donrec_snapshot');
 
   function setUp() {
     parent::setUp();
@@ -53,8 +53,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     foreach ($contributions as $id) {
       $stats = $engine->nextStep();
       $ctr++;
-      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
-      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
       $this->assertEquals($stats['count'], 6);
       $this->assertEquals($stats['completed_test'], $ctr);
     }
@@ -82,8 +82,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     foreach ($contributions as $id) {
       $stats = $engine->nextStep();
       $ctr++;
-      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
-      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
       $this->assertEquals($stats['count'], 1);
       $this->assertEquals($stats['completed_test'], $ctr);
     }
@@ -107,14 +107,14 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     $this->assertEquals(FALSE, $engine_error);
 
     $stats = $engineA->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[0]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[0]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[0]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[0]));
     $this->assertEquals(5, $stats['count']);
     $this->assertEquals(1, $stats['completed']);
 
     $stats = $engineA->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[1]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[1]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[1]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[1]));
     $this->assertEquals($stats['count'], 5);
     $this->assertEquals($stats['completed'], 2);
 
@@ -135,14 +135,14 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     $this->assertEquals(FALSE, $engine_error);
 
     $stats = $engineB->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[0]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[0]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[0]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[0]));
     $this->assertEquals($stats['count'], 3);
     $this->assertEquals($stats['completed'], 1);
 
     $stats = $engineB->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[1]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[1]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[1]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[1]));
     $this->assertEquals($stats['count'], 3);
     $this->assertEquals($stats['completed'], 2);
 
@@ -158,26 +158,26 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     $this->assertEquals(FALSE, $engine_error);
 
     $stats = $engineA->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[2]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[2]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[2]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[2]));
     $this->assertEquals($stats['count'], 5);
     $this->assertEquals($stats['completed'], 3);
 
     $stats = $engineA->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[3]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[3]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[3]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[3]));
     $this->assertEquals($stats['count'], 5);
     $this->assertEquals($stats['completed'], 4);
 
     $stats = $engineB->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[2]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[2]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[2]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsB[2]));
     $this->assertEquals($stats['count'], 3);
     $this->assertEquals($stats['completed'], 3);
 
     $stats = $engineA->nextStep();
-    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[4]));
-    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[4]));
+    $this->assertDBQuery('DONE', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[4]));
+    $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $contributionsA[4]));
     $this->assertEquals($stats['count'], 5);
     $this->assertEquals($stats['completed'], 5);
   }
@@ -204,8 +204,8 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
     foreach ($contributions as $id) {
       $stats = $engine->nextStep();
       $ctr++;
-      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
-      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"},"SecondDummy":{"test":"2nd Dummy was here!"}}', sprintf("SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('TEST', sprintf("SELECT `status` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
+      $this->assertDBQuery('{"Dummy":{"test":"Dummy was here!"},"SecondDummy":{"test":"2nd Dummy was here!"}}', sprintf("SELECT `process_data` FROM `donrec_snapshot` WHERE `contribution_id` = %d;", $id));
       $this->assertEquals($stats['count'], 6);
       $this->assertEquals($stats['completed_test'], $ctr);
     }

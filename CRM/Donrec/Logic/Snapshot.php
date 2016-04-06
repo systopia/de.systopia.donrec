@@ -78,7 +78,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // get next snapshot id
     // FIXME: this might cause race conditions
-    $new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `civicrm_donrec_snapshot`;");
+    $new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `donrec_snapshot`;");
     $new_snapshot_id++;
 
     // build id string from contribution array
@@ -93,7 +93,7 @@ class CRM_Donrec_Logic_Snapshot {
     // assemble the query
     // remark: if you change this, also adapt the $CHUNK_FIELDS list
     $insert_query =
-          "INSERT INTO `civicrm_donrec_snapshot` (
+          "INSERT INTO `donrec_snapshot` (
               `id`,
               `snapshot_id`,
               `receipt_id`,
@@ -165,7 +165,7 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function delete() {
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `civicrm_donrec_snapshot`
+      "DELETE FROM `donrec_snapshot`
        WHERE `snapshot_id` = %1;", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -174,7 +174,7 @@ class CRM_Donrec_Logic_Snapshot {
    */
   private function exists() {
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT EXISTS(SELECT 1 FROM `civicrm_donrec_snapshot`
+      "SELECT EXISTS(SELECT 1 FROM `donrec_snapshot`
        WHERE `snapshot_id` = %1);", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -183,7 +183,7 @@ class CRM_Donrec_Logic_Snapshot {
    */
   public function getCreator() {
     return (int) CRM_Core_DAO::singleValueQuery(
-      "SELECT `created_by` FROM `civicrm_donrec_snapshot`
+      "SELECT `created_by` FROM `donrec_snapshot`
        WHERE `snapshot_id` = %1 LIMIT 1;", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -205,7 +205,7 @@ class CRM_Donrec_Logic_Snapshot {
     // here, we need a different algorithm for bulk than for single:
     if (empty($is_bulk)) {
       // SINGLE case: just grab $chunk_size items
-      $query = "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;";
+      $query = "SELECT * FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;";
       $result = CRM_Core_DAO::executeQuery($query);
       while ($result->fetch()) {
         $chunk_line = array();
@@ -222,9 +222,9 @@ class CRM_Donrec_Logic_Snapshot {
                  snapshot.*,
                  a.contrib_count
                 FROM
-                `civicrm_donrec_snapshot` AS snapshot,
+                `donrec_snapshot` AS snapshot,
                 (SELECT `contact_id`, COUNT(*) AS contrib_count
-                  FROM `civicrm_donrec_snapshot`
+                  FROM `donrec_snapshot`
                   GROUP BY `contact_id`) AS a
                 WHERE a.`contact_id` = snapshot.`contact_id`
                 AND snapshot.`snapshot_id` = $snapshot_id
@@ -292,7 +292,7 @@ class CRM_Donrec_Logic_Snapshot {
       $ids_str = implode(',', $ids);
 
       // reset process information for all IDs
-      $query = "UPDATE `civicrm_donrec_snapshot` SET `process_data` = NULL WHERE `id` IN ($ids_str);";
+      $query = "UPDATE `donrec_snapshot` SET `process_data` = NULL WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
     }
   }
@@ -328,7 +328,7 @@ class CRM_Donrec_Logic_Snapshot {
       }
 
       // update status-field
-      $query = "UPDATE `civicrm_donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids_str);";
+      $query = "UPDATE `donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
       // error_log("de.systopia.donrec: lines $ids are now processed ($query)");
     }
@@ -345,7 +345,7 @@ class CRM_Donrec_Logic_Snapshot {
     $id = $this->Id;
     $query = "
       SELECT COUNT(`id`) AS count, `status` AS status
-      FROM `civicrm_donrec_snapshot`
+      FROM `donrec_snapshot`
       WHERE `snapshot_id` = $id GROUP BY `status`";
     $result = CRM_Core_DAO::executeQuery($query);
     while ($result->fetch()) {
@@ -363,7 +363,7 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function resetTestRun() {
     CRM_Core_DAO::executeQuery(
-      "UPDATE `civicrm_donrec_snapshot`
+      "UPDATE `donrec_snapshot`
        SET `status`=NULL, `process_data`=NULL
        WHERE `status`='TEST';");
   }
@@ -373,7 +373,7 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public static function cleanup() {
     CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `civicrm_donrec_snapshot`
+      "DELETE FROM `donrec_snapshot`
        WHERE `expires_timestamp` < NOW();");
   }
 
@@ -388,8 +388,8 @@ class CRM_Donrec_Logic_Snapshot {
     // produce the receipt again.
     $query =   "
       SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
-      FROM `civicrm_donrec_snapshot` AS original
-      INNER JOIN `civicrm_donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
+      FROM `donrec_snapshot` AS original
+      INNER JOIN `donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
       AND (original.`status` != 'DONE' OR original.`status` IS NULL)
       AND (copy.`status` != 'DONE' OR copy.`status` IS NULL)
       LEFT JOIN `civicrm_contact` AS contact ON copy.`created_by` = contact.`id`
@@ -418,7 +418,7 @@ class CRM_Donrec_Logic_Snapshot {
 
   public function getIds() {
     $snapshot_id = $this->Id;
-    $query = "SELECT `id` FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id;";
+    $query = "SELECT `id` FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id;";
     $result = CRM_Core_DAO::executeQuery($query);
     $ids = array();
     while ($result->fetch()) {
@@ -436,7 +436,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // read value
     $raw_value = CRM_Core_DAO::singleValueQuery(
-      "SELECT `process_data` FROM `civicrm_donrec_snapshot` WHERE `id` = $item_id;");
+      "SELECT `process_data` FROM `donrec_snapshot` WHERE `id` = $item_id;");
     if (empty($raw_value)) return array();
 
     $value = json_decode($raw_value, TRUE);
@@ -463,7 +463,7 @@ class CRM_Donrec_Logic_Snapshot {
       error_log("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
     } else {
       return (bool) CRM_Core_DAO::singleValueQuery(
-        "UPDATE `civicrm_donrec_snapshot`
+        "UPDATE `donrec_snapshot`
          SET `process_data` = %1
          WHERE `id` = %2;",
         array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));
@@ -486,7 +486,7 @@ class CRM_Donrec_Logic_Snapshot {
   */
   public function getLine($line_id) {
     $snapshot_id = $this->Id;
-    $query = "SELECT * FROM `civicrm_donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND id = %1 LIMIT 1;";
+    $query = "SELECT * FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND id = %1 LIMIT 1;";
     $params = array(1 => array($line_id, 'Integer'));
     $result = CRM_Core_DAO::executeQuery($query, $params);
     $result->fetch();
@@ -506,7 +506,7 @@ class CRM_Donrec_Logic_Snapshot {
   public static function singleOrBulk($id) {
     $query = "
       SELECT `process_data`
-      FROM civicrm_donrec_snapshot
+      FROM donrec_snapshot
       WHERE `process_data` IS NOT NULL
         AND `snapshot_id` = $id
       LIMIT 1";
@@ -546,7 +546,7 @@ class CRM_Donrec_Logic_Snapshot {
     // get ids of items which are already processed
     $query = "
       SELECT `id`
-      FROM `civicrm_donrec_snapshot`
+      FROM `donrec_snapshot`
       WHERE snapshot_id = $id
       AND status = 'DONE'
     ";
@@ -583,13 +583,13 @@ class CRM_Donrec_Logic_Snapshot {
       created_timestamp AS creation_date,
       date_from AS date_from,
       date_to AS date_to
-      FROM civicrm_donrec_snapshot
+      FROM donrec_snapshot
       WHERE snapshot_id = $id";
 
     $query2 = "SELECT COUNT(*)
       FROM (
         SELECT contact_id
-        FROM civicrm_donrec_snapshot
+        FROM donrec_snapshot
         WHERE snapshot_id = $id
         GROUP BY contact_id
       ) A";
@@ -639,7 +639,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     $query = "
       SELECT snapshot_id
-      FROM civicrm_donrec_snapshot
+      FROM donrec_snapshot
       WHERE (status IS NULL OR status != 'DONE')
       AND created_by = $creator_id
       GROUP BY snapshot_id";
@@ -660,7 +660,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     $query = "
       DELETE
-      FROM civicrm_donrec_snapshot
+      FROM donrec_snapshot
       WHERE (status IS NULL OR status != 'DONE')
       AND created_by = $creator_id";
 
@@ -680,7 +680,7 @@ class CRM_Donrec_Logic_Snapshot {
     // TODO: what if status is DONE, but the snapshot is not finished yet?
     $query = "
       SELECT COUNT(*)
-      FROM `civicrm_donrec_snapshot`
+      FROM `donrec_snapshot`
       WHERE contribution_id = $contribution_id
       AND (status IS NULL OR status != 'DONE')
     ";
@@ -727,7 +727,7 @@ class CRM_Donrec_Logic_Snapshot {
   public function getProfile() {
     if ($this->_profile == NULL) {
       $profile_name = CRM_Core_DAO::singleValueQuery(
-        "SELECT profile FROM civicrm_donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
+        "SELECT profile FROM donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
         array(1 => array($this->Id, 'Integer')));
       $this->_profile = CRM_Donrec_Logic_Profile::getProfile($profile_name, TRUE);
     }
