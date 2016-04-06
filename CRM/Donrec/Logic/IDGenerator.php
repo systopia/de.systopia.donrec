@@ -114,10 +114,9 @@ class CRM_Donrec_Logic_IDGenerator {
     // replace the token to get the mysql-regexp-string
     $mysql_regexp = '^' . preg_replace($serial_regexp, "[0-9]+", $pattern) . '$';
 
-    // TODO: convert to int (basis 10)
     // build and run query
     $query = "
-      SELECT MAX(SUBSTRING(`$field` FROM $serial_token_position $length_query))
+      SELECT MAX(CAST(SUBSTRING(`$field` FROM $serial_token_position $length_query) AS UNSIGNED))
       FROM `$table`
       WHERE `$field` REGEXP '$mysql_regexp'
     ";
