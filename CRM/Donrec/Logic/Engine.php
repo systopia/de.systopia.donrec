@@ -169,11 +169,11 @@ class CRM_Donrec_Logic_Engine {
       // It is more convenient to have a simalar array-structure for bulk-
       // and single-processing. In future the getNextChunk-method might be
       // refactored and build up the arrays correspondingly.
-      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items['contact_id'] => $chunk_items);
+      $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
 
       $receipt_params = array();
       $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
-      $contact_id = ($is_bulk)? $chunk_id : $chunk_items['contact_id'];
+      $contact_id = $chunk_items[0]['contact_id'];
       $line_ids = array();
       foreach ($chunk_items as $chunk_item) {
         $line_ids[] = $chunk_item['id'];

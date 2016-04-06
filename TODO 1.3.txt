@@ -1,10 +1,8 @@
 now:
 [B] remove die() in Profile
 
-[?] Bugfix: Download Original-PDFs
-
-
 later:
+* check lock-mechanism
 * check receipt/item custom group display
 * fix buttons
 * l10n + menu items
