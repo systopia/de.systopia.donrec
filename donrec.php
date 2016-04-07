@@ -405,6 +405,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contribution_hash');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'receive_date');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
