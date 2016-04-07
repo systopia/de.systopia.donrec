@@ -24,6 +24,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       CRM_Donrec_Logic_Profile::getAllNames(),
                       array('class' => 'crm-select2'));
     $this->addElement('hidden',
+                      'selected_profile',
+                      '');
+    $this->addElement('hidden',
                       'profile_data',
                       json_encode(CRM_Donrec_Logic_Profile::getAllData()));
 
@@ -88,8 +91,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     }
 
     // first, update current values into slected profile
-    if (!empty($values['profile'])) {
-      $profile = $values['profile'];
+    if (!empty($values['selected_profile'])) {
+      $profile = $values['selected_profile'];
       $profile_data = json_decode($values['profile_data'], 1);
       $profile_defaults = CRM_Donrec_Logic_Profile::defaultProfileData();
 

@@ -11,6 +11,7 @@
   <div>
     <h3>{ts domain="de.systopia.donrec"}Profile{/ts} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Profile{/ts}", {literal}{"id":"id-profile","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></h3>
     {$form.profile_data.html}
+    {$form.selected_profile.html}
     <table>
       <tr>
         <td style="vertical-align:middle">
@@ -275,6 +276,9 @@
     var profiles = donrec_getProfileData();
     var current_name = cj("#profile").val();
     var profile = profiles[current_name];
+
+    // set selected profile
+    cj("[name=selected_profile]").val(current_name);
 
     // first: set all values
     for (field in donrec_value_defaults) {
