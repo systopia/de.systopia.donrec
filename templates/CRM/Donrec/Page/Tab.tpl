@@ -30,8 +30,8 @@
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts domain="de.systopia.donrec"}withdrawn copy{/ts}{/if}
             </b></li>
             <li>{ts domain="de.systopia.donrec"}Receipt ID{/ts}:
-              {if $recipt.receipt_id}
-                <span>{$recipt.receipt_id}</span>
+              {if $receipt.receipt_id}
+                <span>{$receipt.receipt_id}</span>
               {else}
                 <span style="color:#b3b3b3">[{$receipt_id}]</span>
               {/if}
