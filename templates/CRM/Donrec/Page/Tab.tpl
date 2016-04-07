@@ -22,7 +22,6 @@
             <li>
               {if $receipt.type eq 'BULK'}<u><b>{ts domain="de.systopia.donrec"}bulk receipt{/ts}</b></u>{/if}
               {if $receipt.type eq 'SINGLE'}<u><b>{ts domain="de.systopia.donrec"}single receipt{/ts}</b></u>{/if}
-              [{$receipt_id}]
             </li>
             <li>{ts domain="de.systopia.donrec"}Status{/ts}: <b>
               {if $receipt.status eq 'WITHDRAWN'}{ts domain="de.systopia.donrec"}withdrawn{/ts}{/if}
@@ -30,6 +29,13 @@
               {if $receipt.status eq 'COPY'}{ts domain="de.systopia.donrec"}copy{/ts}{/if}
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts domain="de.systopia.donrec"}withdrawn copy{/ts}{/if}
             </b></li>
+            <li>{ts domain="de.systopia.donrec"}Receipt ID{/ts}:
+              {if $recipt.receipt_id}
+                <span>{$recipt.receipt_id}</span>
+              {else}
+                <span style="color:#b3b3b3">[{$receipt_id}]</span>
+              {/if}
+            </li>
             <li>{ts domain="de.systopia.donrec"}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
             <li>{ts domain="de.systopia.donrec"}Date{/ts}:
                 {if $receipt.type eq 'SINGLE'}
@@ -54,7 +60,7 @@
           {/if}
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_view_copy}
-          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon ui-icon-mail-closed"></div>{ts domain="de.systopia.donrec"}Create copy{/ts}</span></a>
+          <a id="copy_receipt_{$receipt_id}" class="button"><span><div class="icon add-icon ui-icon-circle-plus"></div>{ts domain="de.systopia.donrec"}Create copy{/ts}</span></a>
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_create_withdraw}
           <a id="withdraw_receipt_{$receipt_id}" class="button"><span><div class="icon back-icon ui-icon-arrowreturnthick-1-w"></div>{ts domain="de.systopia.donrec"}Withdraw{/ts}</span></a>
