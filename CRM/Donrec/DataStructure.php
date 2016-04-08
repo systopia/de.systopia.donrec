@@ -648,7 +648,7 @@ class CRM_Donrec_DataStructure {
   /**
    * Upgrade POST-Script for upgrades to 1.3
    */
-  protected function upgrade_1_3() {
+  protected static function upgrade_1_3() {
     // fill the new receipt_id field in the receipt item
     $receipt_table       = self::getTableName('zwb_donation_receipt');
     $receipt_fields      = self::getCustomFields('zwb_donation_receipt');
