@@ -437,7 +437,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
     if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID', array('domain' => 'de.systopia.donrec')));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
 
 
 
@@ -511,7 +511,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
                 'bulk'    => ts('bulk receipt', array('domain' => 'de.systopia.donrec')),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Has Donation Receipt Issued by Contact ID', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
 
 
     // override the receipt_item standard fields
@@ -536,6 +536,6 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_in');
     if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID', array('domain' => 'de.systopia.donrec')));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact ID', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
   }
 }

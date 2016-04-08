@@ -91,8 +91,8 @@ class CRM_Donrec_DataStructure {
       'name' => 'issued_by',
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'issued_by',
-      'data_type' => 'Int',
-      'html_type' => 'Text',
+      'data_type' => 'ContactReference',
+      'html_type' => 'Autocomplete-Select',
     ),
     array(
       'name' => 'original_file',
@@ -305,8 +305,8 @@ class CRM_Donrec_DataStructure {
       'name' => 'issued_by',
       'custom_group_name' => 'zwb_donation_receipt_item',
       'label' => 'issued_by',
-      'data_type' => 'Int',
-      'html_type' => 'Text',
+      'data_type' => 'ContactReference',
+      'html_type' => 'Autocomplete-Select',
     ),
     array(
       'name' => 'total_amount',

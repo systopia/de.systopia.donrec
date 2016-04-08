@@ -491,7 +491,7 @@ msgid "Issued by contact ID"
 msgstr ""
 
 #: donrec.php
-msgid "Has Donation Receipt Issued by Contact ID"
+msgid "Issued by contact"
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp

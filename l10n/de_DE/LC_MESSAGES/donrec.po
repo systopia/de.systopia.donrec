@@ -478,8 +478,8 @@ msgid "Issued by contact ID"
 msgstr "Ausgestellt von Kontakt-ID"
 
 #: donrec.php
-msgid "Has Donation Receipt Issued by Contact ID"
-msgstr "Hat ZWB ausgestellt von Kontakt-ID"
+msgid "Issued by contact"
+msgstr "Ausgestellt von Kontakt"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs."
