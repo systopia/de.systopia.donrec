@@ -475,7 +475,7 @@ msgstr "Sammelbescheinigung"
 
 #: donrec.php
 msgid "Issued by contact ID"
-msgstr "Ausgestellt von Kontakt-ID"
+msgstr "Ausgestellt von Kontakt ID"
 
 #: donrec.php
 msgid "Issued by contact"
