@@ -23,6 +23,7 @@ class CRM_Donrec_Logic_ReceiptItem {
     'status',
     'type',
     'issued_in',
+    'receipt_id',
     'issued_by',
     'total_amount',
     'non_deductible_amount',
@@ -82,10 +83,11 @@ class CRM_Donrec_Logic_ReceiptItem {
   public static function createCopyAll($donation_receipt_id, $donation_receipt_copy_id) {
     // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
     self::getCustomFields();
-    $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
+    $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     $sha1_string = sprintf($sha1_string,
                           self::$_custom_fields['type'],
                           self::$_custom_fields['issued_in'],
+                          self::$_custom_fields['receipt_id'],
                           self::$_custom_fields['issued_by'],
                           self::$_custom_fields['total_amount'],
                           self::$_custom_fields['non_deductible_amount'],
@@ -108,12 +110,14 @@ class CRM_Donrec_Logic_ReceiptItem {
       `%s`,
       `%s`,
       `%s`,
+      `%s`,
       `%s`)
-    SELECT NULL as`id`,
+    SELECT NULL as `id`,
     `entity_id`,
     'COPY' as `%s`,
     `%s`,
     $donation_receipt_copy_id as `%s`,
+    `%s`,
     NOW() as `%s`,
     `%s`,
     `%s`,
@@ -125,10 +129,12 @@ class CRM_Donrec_Logic_ReceiptItem {
     FROM `civicrm_value_donation_receipt_item_%d`
     WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
     $query = sprintf($query,
+      // for spec part
       self::$_custom_group_id,
       self::$_custom_fields['status'],
       self::$_custom_fields['type'],
       self::$_custom_fields['issued_in'],
+      self::$_custom_fields['receipt_id'],
       self::$_custom_fields['issued_on'],
       self::$_custom_fields['issued_by'],
       self::$_custom_fields['total_amount'],
@@ -137,9 +143,11 @@ class CRM_Donrec_Logic_ReceiptItem {
       self::$_custom_fields['financial_type_id'],
       self::$_custom_fields['receive_date'],
       self::$_custom_fields['contribution_hash'],
+      // for VALUES part
       self::$_custom_fields['status'],
       self::$_custom_fields['type'],
       self::$_custom_fields['issued_in'],
+      self::$_custom_fields['receipt_id'],
       self::$_custom_fields['issued_on'],
       self::$_custom_fields['issued_by'],
       self::$_custom_fields['total_amount'],

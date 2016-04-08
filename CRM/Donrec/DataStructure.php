@@ -288,6 +288,13 @@ class CRM_Donrec_DataStructure {
       'html_type' => 'Text',
     ),
     array(
+      'name' => 'receipt_id',
+      'custom_group_name' => 'zwb_donation_receipt_item',
+      'label' => 'Receipt ID',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
       'name' => 'issued_on',
       'custom_group_name' => 'zwb_donation_receipt_item',
       'label' => 'issued_on',
@@ -425,6 +432,7 @@ class CRM_Donrec_DataStructure {
     self::updateCustomGroups();
     self::updateCustomFields();
     self::fixCustomGroupType();
+    self::upgrade_1_3();
   }
 
   /**
@@ -635,5 +643,21 @@ class CRM_Donrec_DataStructure {
   public static function getTableName($group_name) {
     self::_getCustomGroupData($group_name);
     return self::$_custom_groups[$group_name]['table_name'];
+  }
+
+  /**
+   * Upgrade POST-Script for upgrades to 1.3
+   */
+  protected function upgrade_1_3() {
+    // fill the new receipt_id field in the receipt item
+    $receipt_table       = self::getTableName('zwb_donation_receipt');
+    $receipt_fields      = self::getCustomFields('zwb_donation_receipt');
+    $receipt_item_table  = self::getTableName('zwb_donation_receipt_item');
+    $receipt_item_fields = self::getCustomFields('zwb_donation_receipt_item');
+
+    $sql = "UPDATE {$receipt_item_table}
+            SET `{$receipt_item_fields['receipt_id']}` = (SELECT COALESCE(`{$receipt_fields['receipt_id']}`, `id`) FROM {$receipt_table} WHERE `id` = `{$receipt_item_table}`.`id`)
+            WHERE `{$receipt_item_fields['receipt_id']}` IS NULL";
+    CRM_Core_DAO::executeQuery($sql);
   }
 }

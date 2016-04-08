@@ -47,6 +47,15 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   /**
+   * gets the line ID of the first line
+   *
+   * @return snapshot line ID
+   */
+  public function getReceiptID() {
+    return $this->receipt_id;
+  }
+
+  /**
    * gets the line IDs
    *
    * @return snapshot line IDs

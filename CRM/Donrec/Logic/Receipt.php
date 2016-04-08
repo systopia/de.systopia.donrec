@@ -111,6 +111,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     foreach ($tokens['lines'] as $lid => $line_tokens) {
       $params = array_merge($tokens, $line_tokens);
       $params['issued_in'] = $lastId;
+      $params['receipt_id'] = $snapshot_receipt->getReceiptID();
       CRM_Donrec_Logic_ReceiptItem::create($params);
     }
 
@@ -148,6 +149,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     foreach ($tokens['lines'] as $lid => $line_tokens) {
       $params = array_merge($tokens, $line_tokens);
       $params['issued_in'] = $lastId;
+      $params['receipt_id'] = $snapshot->getReceiptID();
       CRM_Donrec_Logic_ReceiptItem::create($params);
     }
 
