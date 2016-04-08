@@ -30,7 +30,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     // generate receiptID
     $pattern = $this->getProfile()->get('id_pattern');
     $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
-    $this->receipt_id = $id_generator->generateID();
+    $this->receipt_id = $id_generator->generateID($snapshot_lines);
   }
 
   public function isBulk() {
