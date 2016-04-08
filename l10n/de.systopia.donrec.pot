@@ -743,7 +743,7 @@ msgid "You can include <code>&#123;serial&#125;</code> only once!"
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This cannot contain more than 32 characters!"
+msgid "This cannot contain more than 64 characters!"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/Rebook.tpl

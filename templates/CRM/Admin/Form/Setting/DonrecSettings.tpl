@@ -338,9 +338,9 @@
     } else if (current_value.match("[{]serial[}].*[{]serial[}]")) {
       CRM.alert("{/literal}{ts domain="de.systopia.donrec"}You can include <code>&#123;serial&#125;</code> only once!{/ts}", "{ts}Error{/ts}{literal}", "error");
       cj("#id_pattern").val("{issue_year}-{serial}");
-    } else if (current_value.length > 32) {
-      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This cannot contain more than 32 characters!{/ts}", "{ts}Error{/ts}{literal}", "error");
-      cj("#id_pattern").val(current_value.substr(0,32));
+    } else if (current_value.length > 64) {
+      CRM.alert("{/literal}{ts domain="de.systopia.donrec"}This cannot contain more than 64 characters!{/ts}", "{ts}Error{/ts}{literal}", "error");
+      cj("#id_pattern").val(current_value.substr(0,64));
     }
   });
 

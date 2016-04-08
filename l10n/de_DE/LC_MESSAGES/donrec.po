@@ -687,8 +687,8 @@ msgid "You can include <code>&#123;serial&#125;</code> only once!"
 msgstr "Sie dürfen <code>&#123;serial&#125;</code> nur einmal verwenden!"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This cannot contain more than 32 characters!"
-msgstr "Dies kann nicht länger als 32 Zeichen sein!"
+msgid "This cannot contain more than 64 characters!"
+msgstr "Dies kann nicht länger als 64 Zeichen sein!"
 
 #: templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Are you sure you want to rebook the selected contributions?"
