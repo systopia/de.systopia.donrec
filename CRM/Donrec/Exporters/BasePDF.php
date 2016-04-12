@@ -43,9 +43,9 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    * @return TRUE on success; FALSE on failure
    */
   public function exportSingle($snapshot_receipt, $is_test) {
-
-    // get the default template
-    $template = CRM_Donrec_Logic_Template::getDefaultTemplate();
+    // get template of profile in use
+    $profile = $snapshot_receipt->getProfile();
+    $template = $profile->getTemplate();
 
     // get tokens and generate PDF
     $tpl_param = array();

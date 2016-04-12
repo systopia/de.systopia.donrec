@@ -91,6 +91,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
+  // TODO: createFromSnapshotReceipt and createFromSnapshot could be refactored to avoid redundant code
   public static function createFromSnapshotReceipt($snapshot_receipt, &$parameters) {
     $tokens = $snapshot_receipt->getAllTokens();
 
