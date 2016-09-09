@@ -109,9 +109,17 @@ class CRM_Donrec_Logic_Profile {
    * check if a profile of the given name exists
    */
   public static function exists($profile_name) {
-    return CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_setting WHERE group_name = %1 AND name = %2",
-      array( 1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'),
-             2 => array($profile_name, 'String')));
+    $params = array(
+      'name' => $profile_name,
+      'group' => self::$SETTINGS_PROFILE_GROUP,
+    );
+    try{
+      $result = civicrm_api3('Setting', 'getvalue', $params);
+    }    
+    catch (CiviCRM_API3_Exception $e) {
+      // Handle error here.
+    }
+    return $result;
   }
 
   /**
@@ -120,20 +128,10 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => name)
    */
   public static function getAllNames() {
-    $allProfiles = array();
-
-    // FIXME: is there a better way than a SQL query?
-    $sql = "SELECT name FROM civicrm_setting WHERE group_name = %1;";
-    $sql_params = array(1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'));
-    $query = CRM_Core_DAO::executeQuery($sql, $sql_params);
-    while ($query->fetch()) {
-      $allProfiles[$query->name] = $query->name;
-    }
-
+    $allProfiles = Civi::settings()->get(self::$SETTINGS_PROFILE_GROUP); // FritzMielert
     if (empty($allProfiles)) {
       $allProfiles['Default'] = 'Default';
     }
-
     return $allProfiles;
   }
 
