@@ -44,7 +44,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     /*
       check if xpdf pdfinfo is available
     */
-    $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+    $pdfinfo_path = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     if(!empty($pdfinfo_path)) {
         // "ping" pdfinfo
         $cmd = escapeshellcmd($pdfinfo_path . ' -v') . ' 2>&1';
@@ -172,7 +172,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    */
   private function getPDFPageCount($document)
   {
-    $pdfinfo_path = CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path');
+    $pdfinfo_path = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     $cmd = escapeshellarg($pdfinfo_path);
     $document = escapeshellarg($document);
     $cmd = escapeshellcmd("$cmd $document") . " 2>&1";

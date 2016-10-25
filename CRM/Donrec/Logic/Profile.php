@@ -15,7 +15,7 @@
  */
 class CRM_Donrec_Logic_Profile {
 
-  protected static $SETTINGS_PROFILE_GROUP = "Donation Receipt Profiles";
+  protected static $SETTINGS_PROFILE_SETTING = "donrec_profiles";
 
   /** ID if the setting entity, where the values are stored */
   protected $profile_name = NULL;
@@ -25,25 +25,12 @@ class CRM_Donrec_Logic_Profile {
    * load setting entity with given ID
    */
   public function __construct($profile_name) {
-    $data = CRM_Core_BAO_Setting::getItem(self::$SETTINGS_PROFILE_GROUP, $profile_name);
+    $all_data = self::getAllData();
+    $data     = CRM_Utils_Array::value($profile_name, $all_data, NULL);
+
     if ($data==NULL || !is_array($data)) {
       // this setting doesn't exist yet or is malformed
       $this->data = self::defaultProfileData();
-
-      // if this is 'Default', take over the old config values (if present)
-      if ($profile_name == 'Default') {
-        foreach (array_keys($this->data) as $field_name) {
-          $legacy_value = CRM_Core_BAO_Setting::getItem(CRM_Donrec_Logic_Settings::$SETTINGS_GROUP, $field_name);
-          if ($legacy_value !== NULL) {
-            $this->data[$field_name] = $legacy_value;
-          }
-        }
-        $legacy_contribution_types = CRM_Core_BAO_Setting::getItem(CRM_Donrec_Logic_Settings::$SETTINGS_GROUP, 'contribution_types');
-        if ($legacy_contribution_types !== NULL && $legacy_contribution_types != 'all') {
-          $this->data['financial_types'] = explode(',', $legacy_contribution_types);
-        }
-      }
-
     } else {
       $this->data = $data;
     }
@@ -88,7 +75,9 @@ class CRM_Donrec_Logic_Profile {
    * stores the setting as the unterlying settings entity
    */
   public function save() {
-    CRM_Core_BAO_Setting::setItem($this->data, self::$SETTINGS_PROFILE_GROUP, $this->profile_name);
+    $profile_data = self::getAllData();
+    $profile_data[$this->profile_name] = $this->data;
+    self::setAllData($profile_data);
   }
 
   /**
@@ -109,9 +98,8 @@ class CRM_Donrec_Logic_Profile {
    * check if a profile of the given name exists
    */
   public static function exists($profile_name) {
-    return CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_setting WHERE group_name = %1 AND name = %2",
-      array( 1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'),
-             2 => array($profile_name, 'String')));
+    $allNames = self::getAllNames();
+    return isset($allNames[$profile_name]);
   }
 
   /**
@@ -120,21 +108,12 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => name)
    */
   public static function getAllNames() {
-    $allProfiles = array();
-
-    // FIXME: is there a better way than a SQL query?
-    $sql = "SELECT name FROM civicrm_setting WHERE group_name = %1;";
-    $sql_params = array(1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'));
-    $query = CRM_Core_DAO::executeQuery($sql, $sql_params);
-    while ($query->fetch()) {
-      $allProfiles[$query->name] = $query->name;
+    $allProfiles = self::getAllData();
+    $allNames = array_keys($allProfiles);
+    if (!in_array('Default', $allNames)) {
+      $allNames[] = 'Default';
     }
-
-    if (empty($allProfiles)) {
-      $allProfiles['Default'] = 'Default';
-    }
-
-    return $allProfiles;
+    return $allNames;
   }
 
   /**
@@ -143,15 +122,15 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => profile)
    */
   public static function getAll() {
-    $allProfileNames = self::getAllNames();
-    $allProfiles = array();
+    $allProfiles   = array();
+    $profile_names = self::getAllNames();
 
-    foreach ($allProfileNames as $profile_name) {
+    foreach ($profile_names as $profile_name) {
       $allProfiles[$profile_name] = new CRM_Donrec_Logic_Profile($profile_name);
     }
 
     if (empty($allProfiles)) {
-      $profile_data['Default'] = new CRM_Donrec_Logic_Profile('Default');
+      $allProfiles['Default'] = new CRM_Donrec_Logic_Profile('Default');
     }
 
     return $allProfiles;
@@ -163,14 +142,24 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => array(profile_data))
    */
   public static function getAllData() {
-    $profiles = self::getAll();
-    $profile2data = array();
-    foreach ($profiles as $profile_name => $profile) {
-      $profile2data[$profile_name] = $profile->getData();
+    $profiles = civicrm_api3('Setting', 'getvalue', array('name' => self::$SETTINGS_PROFILE_SETTING));
+    if (is_array($profiles)) {
+      return $profiles;
+    } else {
+      return array();
     }
-
-    return $profile2data;
   }
+
+  /**
+   * set/overwrite profiles
+   * caution: no type check
+   *
+   * @param $profile_data array(name => profile)
+   */
+  public static function setAllData($profile_data) {
+    civicrm_api3('Setting', 'create', array(self::$SETTINGS_PROFILE_SETTING => $profile_data));
+  }
+
 
   /**
    * adjust the existing profiles given the data (as produced by self::getAllData())
@@ -178,6 +167,7 @@ class CRM_Donrec_Logic_Profile {
    * this method will also create and delete new and obsolete profiles respectively
    */
   public static function syncProfileData($data) {
+    // FIXME:
     $old_profiles = self::getAll();
 
     // first update/create all the new ones
@@ -281,11 +271,11 @@ class CRM_Donrec_Logic_Profile {
    * Deletes the given profile
    */
   public static function deleteProfile($profile_name) {
-    $bao = new CRM_Core_BAO_Setting();
-    $bao->group_name = self::$SETTINGS_PROFILE_GROUP;
-    $bao->name = $profile_name;
-    $bao->find(TRUE);
-    $bao->delete();
+    $profiles = self::getAllData();
+    if (isset($profiles[$profile_name])) {
+      unset($profiles[$profile_name]);
+      self::setAllData($profiles);
+    }
   }
 
   /**

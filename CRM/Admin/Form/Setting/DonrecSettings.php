@@ -52,12 +52,12 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('text',
                       'pdfinfo_path',
                       ts('External Tool: path to <code>pdfinfo</code>', array('domain' => 'de.systopia.donrec')),
-                      CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'));
+                      CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path'));
 
     $this->addElement('text',
                       'packet_size',
                       ts('Packet size', array('domain' => 'de.systopia.donrec')),
-                      CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size'));
+                      CRM_Donrec_Logic_Settings::get('donrec_packet_size'));
 
 
     $this->addButtons(array(
@@ -75,8 +75,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
   function preProcess() {
     $this->setDefaults(array(
-      'pdfinfo_path' => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'pdfinfo_path'),
-      'packet_size'  => CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size')
+      'pdfinfo_path' => CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path'),
+      'packet_size'  => CRM_Donrec_Logic_Settings::get('donrec_packet_size')
     ));
   }
 
@@ -85,9 +85,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $values = $this->exportValues();
 
     // save generic settings
-    CRM_Core_BAO_Setting::setItem($values['packet_size'],'Donation Receipt Settings', 'packet_size');
-    if ($values['pdfinfo_path']){
-      CRM_Core_BAO_Setting::setItem($values['pdfinfo_path'],'Donation Receipt Settings', 'pdfinfo_path');
+    CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
+    if ($values['pdfinfo_path']) {
+      CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
     }
 
     // first, update current values into slected profile

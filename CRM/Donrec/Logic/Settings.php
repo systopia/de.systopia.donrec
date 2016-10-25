@@ -13,7 +13,23 @@
  */
 class CRM_Donrec_Logic_Settings {
 
+  // FIXME:: remove
   public static $SETTINGS_GROUP = "Donation Receipt Settings";
+
+
+  /**
+   * generic set setting
+   */
+  public static function get($name) {
+    return civicrm_api3('Setting', 'getvalue', array('name' => $name));
+  }
+
+  /**
+   * generic set setting
+   */
+  public static function set($name, $value) {
+    civicrm_api3('Setting', 'create', array($name => $value));
+  }
 
   /**
    * get the default template ID
@@ -21,7 +37,7 @@ class CRM_Donrec_Logic_Settings {
    * @return int
    */
   public static function getDefaultTemplate() {
-    return CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'default_template');
+    return self::get('donrec_default_template');
   }
 
   /**
@@ -41,7 +57,7 @@ class CRM_Donrec_Logic_Settings {
 
     // add default, if not yet in there
     $default_template_id = self::getDefaultTemplate();
-    if (empty($relevant_templates[$default_template_id])) {
+    if (!empty($default_template_id) && empty($relevant_templates[$default_template_id])) {
       $default_template = civicrm_api3('MessageTemplate', 'getsingle', array('id' => $default_template_id));
       $relevant_templates[$default_template_id] = $default_template['msg_title'];
     }
@@ -53,7 +69,7 @@ class CRM_Donrec_Logic_Settings {
    * set the default template ID
    */
   public static function setDefaultTemplate($id) {
-    CRM_Core_BAO_Setting::setItem($id,'Donation Receipt Settings', 'default_template');
+    self::set('donrec_default_template', $id);
   }
 
   /**
@@ -62,7 +78,7 @@ class CRM_Donrec_Logic_Settings {
    * @return int
    */
   public static function getChunkSize() {
-    $packet_size = (int) CRM_Core_BAO_Setting::getItem('Donation Receipt Settings', 'packet_size');
+    $packet_size = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_packet_size'));
     if ($packet_size >= 1) {
       return $packet_size;
     } else {

@@ -48,22 +48,6 @@ function donrec_civicrm_uninstall() {
  * Implementation of hook_civicrm_enable
  */
 function donrec_civicrm_enable() {
-  // create snapshot database tables
-  $config = CRM_Core_Config::singleton();
-  $sql = file_get_contents(dirname( __FILE__ ) .'/sql/donrec.sql', true);
-  CRM_Utils_File::sourceSQLFile($config->dsn, $sql, NULL, true);
-
-  // create/update custom groups
-  CRM_Donrec_DataStructure::update();
-
-  // install default template
-  CRM_Donrec_Logic_Template::setDefaultTemplate();
-
-  // rename the custom fields according to l10.
-  // FIXME: this is a workaround: if you do this before, the table name change,
-  //         BUT we should not be working with static table names
-  CRM_Donrec_DataStructure::translateCustomGroups();
-
   return _donrec_civix_civicrm_enable();
 }
 
@@ -71,10 +55,6 @@ function donrec_civicrm_enable() {
  * Implementation of hook_civicrm_disable
  */
 function donrec_civicrm_disable() {
-  // delete the snapshot-table
-  CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `civicrm_donrec_snapshot`");
-  CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `donrec_snapshot`");
-
   return _donrec_civix_civicrm_disable();
 }
 
