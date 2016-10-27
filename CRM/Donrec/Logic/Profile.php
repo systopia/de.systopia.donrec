@@ -108,11 +108,16 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => name)
    */
   public static function getAllNames() {
+    $allNames = array();
     $allProfiles = self::getAllData();
-    $allNames = array_keys($allProfiles);
-    if (!in_array('Default', $allNames)) {
-      $allNames[] = 'Default';
+    foreach ($allProfiles as $profile_name => $profile) {
+      $allNames[$profile_name] = $profile_name;
     }
+
+    if (!in_array('Default', $allNames)) {
+      $allNames['Default'] = 'Default';
+    }
+
     return $allNames;
   }
 
@@ -143,11 +148,16 @@ class CRM_Donrec_Logic_Profile {
    */
   public static function getAllData() {
     $profiles = civicrm_api3('Setting', 'getvalue', array('name' => self::$SETTINGS_PROFILE_SETTING));
-    if (is_array($profiles)) {
-      return $profiles;
-    } else {
-      return array();
+    if (!is_array($profiles)) {
+      // initialise
+      $profiles = array();
     }
+
+    if (empty($profiles['Default'])) {
+      // inject default data if not set
+      $profiles['Default'] = self::defaultProfileData();
+    }
+    return $profiles;
   }
 
   /**
@@ -162,31 +172,6 @@ class CRM_Donrec_Logic_Profile {
 
 
   /**
-   * adjust the existing profiles given the data (as produced by self::getAllData())
-   *
-   * this method will also create and delete new and obsolete profiles respectively
-   */
-  public static function syncProfileData($data) {
-    // FIXME:
-    $old_profiles = self::getAll();
-
-    // first update/create all the new ones
-    foreach ($data as $profile_name => $profile_data) {
-      if (empty($profile_name)) continue; // just to be sure...
-      $profile = new CRM_Donrec_Logic_Profile($profile_name);
-      $profile->update($profile_data);
-      $profile->save();
-      unset($old_profiles[$profile_name]);
-    }
-
-    // the old profiles left over can be deleted
-    foreach ($old_profiles as $profile_name => $profile_data) {
-      self::deleteProfile($profile_name);
-    }
-  }
-
-
-  /**
    * Returns all financial type ids that should be used by the donation receipt generation engine.
    *
    * @return array
@@ -197,14 +182,23 @@ class CRM_Donrec_Logic_Profile {
 
     if (empty($financial_types)) {
       // empty means 'all deductible'
-      $financial_types = array();
+      return self::getAllDeductibleFinancialTypes();
+    }
 
-      $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
-      $results = CRM_Core_DAO::executeQuery($query);
-      while ($results->fetch()) {
-        if ($results->is_deductible) {
-          $financial_types[] = $results->id;
-        }
+    return $financial_types;
+  }
+
+  /**
+   * get a list of all deductible financial types
+   */
+  protected static function getAllDeductibleFinancialTypes() {
+    $financial_types = array();
+
+    $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
+    $results = CRM_Core_DAO::executeQuery($query);
+    while ($results->fetch()) {
+      if ($results->is_deductible) {
+        $financial_types[] = $results->id;
       }
     }
 
@@ -282,8 +276,9 @@ class CRM_Donrec_Logic_Profile {
    * create a default profile data
    */
   public static function defaultProfileData() {
+
     return array(
-      'financial_types'         => array(),
+      'financial_types'         => self::getAllDeductibleFinancialTypes(),
       'store_original_pdf'      => FALSE,
       'template'                => CRM_Donrec_Logic_Settings::getDefaultTemplate(),
       'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),

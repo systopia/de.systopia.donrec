@@ -16,7 +16,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
   function buildQuickForm( ) {
     CRM_Utils_System::setTitle(ts('Donation Receipts - Settings', array('domain' => 'de.systopia.donrec')));
-
+    
     // add profile selector + data
     $this->addElement('select',
                       'profile',
@@ -25,7 +25,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       array('class' => 'crm-select2'));
     $this->addElement('hidden',
                       'selected_profile',
-                      '');
+                      'Default');
     $this->addElement('hidden',
                       'profile_data',
                       json_encode(CRM_Donrec_Logic_Profile::getAllData()));
@@ -73,12 +73,17 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addRule('packet_size', ts('Packet size can only contain positive integers', array('domain' => 'de.systopia.donrec')), 'onlypositive');
   }
 
-  function preProcess() {
-    $this->setDefaults(array(
-      'pdfinfo_path' => CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path'),
-      'packet_size'  => CRM_Donrec_Logic_Settings::get('donrec_packet_size')
-    ));
+
+  public function setDefaultValues() {
+    $defaults = parent::setDefaultValues();
+
+    $defaults['selected_profile'] = 'Default';
+    $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
+    $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
+
+    return $defaults;
   }
+
 
   function postProcess() {
     // process all form values and save valid settings
@@ -116,7 +121,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       }
 
       // then store the profiles
-      CRM_Donrec_Logic_Profile::syncProfileData($profile_data);
+      CRM_Donrec_Logic_Profile::setAllData($profile_data);
     }
 
     $session = CRM_Core_Session::singleton();
