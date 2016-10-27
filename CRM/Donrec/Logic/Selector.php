@@ -57,7 +57,7 @@ class CRM_Donrec_Logic_Selector {
 
     if ($custom_group_table == NULL || $status_column == NULL) {
       // something went wrong here
-      error_log("de.systopia.donrec: error: custom_group_table or status_column is empty!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: error: custom_group_table or status_column is empty!");
       return array();
     }
 
@@ -72,7 +72,7 @@ class CRM_Donrec_Logic_Selector {
       $contribution_ids = implode(',', $values['contribution_ids']);
       $main_selector = "`civicrm_contribution`.`id` IN ($contribution_ids)";
     } else {
-      error_log("de.systopia.donrec: error: no selector data found in params!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: error: no selector data found in params!");
       $main_selector = "FALSE";
     }
 

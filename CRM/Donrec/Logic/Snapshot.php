@@ -285,7 +285,7 @@ class CRM_Donrec_Logic_Snapshot {
     }
 
     if (empty($ids)) {
-      error_log('de.systopia.donrec: invalid chunk detected!');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: invalid chunk detected!');
     } else {
       $ids_str = implode(',', $ids);
 
@@ -315,7 +315,7 @@ class CRM_Donrec_Logic_Snapshot {
     }
 
     if (empty($ids)) {
-      error_log('de.systopia.donrec: invalid chunk detected!');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: invalid chunk detected!');
     } else {
       $ids_str = implode(',', $ids);
 
@@ -328,7 +328,7 @@ class CRM_Donrec_Logic_Snapshot {
       // update status-field
       $query = "UPDATE `donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
-      // error_log("de.systopia.donrec: lines $ids are now processed ($query)");
+      // CRM_Core_Error::debug_log_message("de.systopia.donrec: lines $ids are now processed ($query)");
     }
   }
 
@@ -439,7 +439,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     $value = json_decode($raw_value, TRUE);
     if ($value==NULL) {
-      error_log("de.systopia.donrec: warning, cannot decode process_data of ID $item_id!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot decode process_data of ID $item_id!");
       return array();
     } else {
       return $value;
@@ -452,13 +452,13 @@ class CRM_Donrec_Logic_Snapshot {
   public function setProcessInformation($snapshot_item_id, $value) {
     $item_id = (int) $snapshot_item_id;
     if (!$item_id) {
-      error_log("de.systopia.donrec: invalid snapshot id detected! ($item_id)");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: invalid snapshot id detected! ($item_id)");
       return;
     }
 
     $raw_value = json_encode($value);
     if ($raw_value==FALSE) {
-      error_log("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
     } else {
       return (bool) CRM_Core_DAO::singleValueQuery(
         "UPDATE `donrec_snapshot`
@@ -519,7 +519,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // if it could not be decoded: abort
     if ($info==NULL) {
-      error_log("de.systopia.donrec: warning, cannot decode process_data!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot decode process_data!");
       return;
     }
 
@@ -602,7 +602,7 @@ class CRM_Donrec_Logic_Snapshot {
     $states = $snapshot->getStates();
     // if we have TEST- and DONE-states we have a problem
     if ($states['TEST'] && $states['DONE']) {
-      error_log("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
       // TODO : raise an error
     } elseif ($states['TEST']) {
       $status = 'TEST';

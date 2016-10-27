@@ -55,7 +55,7 @@ class CRM_Utils_DonrecSafeLock {
       if ($lock!=NULL && $lock->isAcquired()) {
         // we got it!
         self::$_acquired_lock = new CRM_Utils_DonrecSafeLock($lock, $name);
-        //error_log('acquired ' . getmypid());
+        //CRM_Core_Error::debug_log_message('acquired ' . getmypid());
         return self::$_acquired_lock;
       } else {
         // timed out
@@ -66,7 +66,7 @@ class CRM_Utils_DonrecSafeLock {
       // this means acquiring 'our' lock again:
       $lock = self::$_acquired_lock;
       $lock->counter += 1;
-      //error_log('acquired ' . getmypid() . "[{$lock->counter}]");
+      //CRM_Core_Error::debug_log_message('acquired ' . getmypid() . "[{$lock->counter}]");
       return $lock;
 
     } else {
@@ -85,7 +85,7 @@ class CRM_Utils_DonrecSafeLock {
   public static function releaseLock($name) {
     if (self::$_acquired_lock == NULL) {
       // weird, we don't own this lock...
-      error_log("de.systopia.donrec: This process cannot release lock '$name', it has not been acquired.");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot release lock '$name', it has not been acquired.");
       throw new Exception("This process cannot release lock '$name', it has not been acquired.");
 
     } elseif (self::$_acquired_lock->getName() == $name) {
@@ -95,7 +95,7 @@ class CRM_Utils_DonrecSafeLock {
     } else {
       // somebody is trying to release ANOTHER LOCK
       $lock_name = $self::$_acquired_lock->getName();
-      error_log("de.systopia.donrec: This process cannot realease lock '$name', it still owns lock '$lock_name'.");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot realease lock '$name', it still owns lock '$lock_name'.");
       throw new Exception("This process cannot realease lock '$name', it still owns lock '$lock_name'.");
     }
   }
@@ -120,18 +120,18 @@ class CRM_Utils_DonrecSafeLock {
       // this is a lock that we acquired multiple times:
       //  simply decrease counter
       $this->counter -= 1;
-      //error_log('released ' . getmypid() . "[{$this->counter}]");
+      //CRM_Core_Error::debug_log_message('released ' . getmypid() . "[{$this->counter}]");
 
     } elseif ($this->counter == 1) {
       // simply release the lock
       $this->counter = 0;
       $this->lock->release();
       self::$_acquired_lock = NULL;
-      //error_log('released ' . getmypid());
+      //CRM_Core_Error::debug_log_message('released ' . getmypid());
 
     } else {
       // lock has already been released!
-      error_log("de.systopia.donrec: This process cannot realease lock '$name', it has already been released before.");
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot realease lock '$name', it has already been released before.");
       throw new Exception("This process cannot realease lock '$name', it has already been released before.");   
     }
   }

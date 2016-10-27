@@ -89,7 +89,7 @@ class CRM_Donrec_Logic_Template
     );
     $result = civicrm_api('MessageTemplate', 'get', $params);
     if (($result['is_error'] != 0)) {
-      error_log(sprintf("de.systopia.donrec: setDefaultTemplate: error: %s", $result['error_message']));
+      CRM_Core_Error::debug_log_message(sprintf("de.systopia.donrec: setDefaultTemplate: error: %s", $result['error_message']));
       return FALSE;
     }
 
@@ -102,7 +102,7 @@ class CRM_Donrec_Logic_Template
 
     $default_template_html = file_get_contents(dirname(__DIR__) . '/../../templates/Export/default_template.tpl');
     if($default_template_html === FALSE) {
-      error_log('de.systopia.donrec: error: could not open default template file!');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: could not open default template file!');
       return FALSE;
     }
 
@@ -121,7 +121,7 @@ class CRM_Donrec_Logic_Template
     if ($result) {
       CRM_Donrec_Logic_Settings::setDefaultTemplate($result->id);
     }else{
-      error_log('de.systopia.donrec: error: could not set default template!');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: could not set default template!');
       return FALSE;
     }
   }
@@ -135,7 +135,7 @@ class CRM_Donrec_Logic_Template
     $params = array('id' => CRM_Donrec_Logic_Settings::getDefaultTemplate());
     $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
     if (!$template) {
-      error_log('de.systopia.donrec: error: default template not found');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: default template not found');
       return NULL;
     }
     return new self($template);
@@ -224,14 +224,14 @@ class CRM_Donrec_Logic_Template
       $head_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_css, $head_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
-      error_log('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
       $matches = array();
       preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
       if (count($matches) == 1) {
         $head_offset = $matches[0][1];
         $html = substr_replace($html, $watermark_css, $head_offset, 0);
       }else{
-        error_log('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
+        CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
         return FALSE;
       }
     }
@@ -243,7 +243,7 @@ class CRM_Donrec_Logic_Template
       $body_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_site, $body_offset + strlen($matches[0][0]), 0);
     }else if (count($matches) < 1) {
-      error_log('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
+      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
       return FALSE;
     }
 

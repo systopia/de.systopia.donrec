@@ -218,7 +218,7 @@ class CRM_Donrec_Logic_ReceiptItem {
       );
       $custom_group = civicrm_api('CustomGroup', 'getsingle', $params);
       if (isset($custom_group['is_error'])) {
-        error_log(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_group['error_message']));
+        CRM_Core_Error::debug_log_message(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_group['error_message']));
         return NULL;
       }
 
@@ -231,7 +231,7 @@ class CRM_Donrec_Logic_ReceiptItem {
       );
       $custom_fields = civicrm_api('CustomField', 'get', $params);
       if ($custom_fields['is_error'] != 0) {
-        error_log(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_fields['error_message']));
+        CRM_Core_Error::debug_log_message(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_fields['error_message']));
         return NULL;
       }
 

@@ -559,7 +559,7 @@ class CRM_Donrec_DataStructure {
       CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_item_id;");
 
     } catch (Exception $e) {
-      error_log('de.systopia.donrec - Error translating custom groups: '.$e->getMessage());
+      CRM_Core_Error::debug_log_message('de.systopia.donrec - Error translating custom groups: '.$e->getMessage());
     }
   }
 
@@ -577,7 +577,7 @@ class CRM_Donrec_DataStructure {
     if ($get['count'] == 0) {
       civicrm_api3($entity, 'create', $params);
     } elseif ($get['count'] > 1) {
-      error_log("de.systopia.donrec: warning: $entity exists multiple times: " . print_r($get_params, True));
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning: $entity exists multiple times: " . print_r($get_params, True));
     }
   }
 
@@ -594,7 +594,7 @@ class CRM_Donrec_DataStructure {
     $get_params = $get_params ? $get_params : $params;
     $get = civicrm_api3($entity, 'get', $get_params);
     if ($get['count'] > 1) {
-      error_log("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning: tried to update $entity, but got multiple entities: " . print_r($get_params, True));
     } elseif ($get['count'] == 0) {
       civicrm_api3($entity, 'create', $params);
     } elseif ($get['count'] == 1) {

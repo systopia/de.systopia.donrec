@@ -152,7 +152,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
         $creator = civicrm_api3('Contact', 'getsingle', array('id' => $values['issued_by']));
         $values['issued_by_display_name'] = $creator['display_name'];
       } catch (Exception $e) {
-        error_log('de.systopia.donrec - '.print_r($e,1));
+        CRM_Core_Error::debug_log_message('de.systopia.donrec - '.print_r($e,1));
       }
     }
 

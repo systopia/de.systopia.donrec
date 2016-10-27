@@ -112,7 +112,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
 
     // create the file
     $file = CRM_Donrec_Logic_File::createTemporaryFile($temp_file, $preferredFileName.$preferredFileSuffix);
-    error_log("de.systopia.donrec: resulting CSV file URL is '$file'.");
+    CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting CSV file URL is '$file'.");
     if (!empty($file)) {
       $reply['download_name'] = $preferredFileName;
       $reply['download_url'] = $file;

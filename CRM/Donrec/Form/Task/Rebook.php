@@ -205,7 +205,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         // move all notes from the old contribution
         $notes = civicrm_api('Note', 'get', array('entity_id' => $contributionId, 'entity_table' => 'civicrm_contribution', 'version' => 3));
         if (!empty($notes['is_error'])) {
-          error_log("org.muslimehelfen.rebook: Error while reading notes: ".$notes['error_message']);
+          CRM_Core_Error::debug_log_message("de.systopia.donrec: Error while reading notes: ".$notes['error_message']);
         } else {
           foreach ($notes['values'] as $note) {
             $dao = new CRM_Core_DAO_Note();
@@ -222,7 +222,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     if ($rebooked == $contribution_count) {
       CRM_Core_Session::setStatus(ts('%1 contribution(s) successfully rebooked!', array(1 => $contribution_count, 'domain' => 'de.systopia.donrec')), ts('Successfully rebooked!'), 'success');
     } else {
-      error_log("org.muslimehelfen.rebook: Only $rebooked of $contribution_count contributions rebooked.", array('domain' => 'de.systopia.donrec'));
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: Only $rebooked of $contribution_count contributions rebooked.", array('domain' => 'de.systopia.donrec'));
       CRM_Core_Session::setStatus(ts('Please check your data and try again', array(1 => $contribution_count)), ts('Nothing rebooked!'), 'warning');
       CRM_Utils_System::redirect($redirect_url);
     }

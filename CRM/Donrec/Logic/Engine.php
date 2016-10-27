@@ -113,7 +113,7 @@ class CRM_Donrec_Logic_Engine {
     $lock = CRM_Utils_DonrecHelper::getLock('CRM_Donrec_Logic_Engine', 'nextStep');
     if (!$lock->isAcquired()) {
       // lock timed out
-      error_log("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
+      CRM_Core_Error::debug_log_message("de.systopia.donrec - couldn't acquire lock. Timeout is ".$lock->_timeout);
 
       // compile and return "state of affairs" report
       $stats = $this->createStats();

@@ -41,7 +41,7 @@ class CRM_Donrec_Logic_IDGenerator {
 
     if ($count != 1 || $invalid) {
       $msg = "Invalid ID-pattern: '$pattern'";
-      error_log($msg);
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: $msg");
       throw new Exception($msg);
     }
     $this->pattern = $pattern;
@@ -118,7 +118,7 @@ class CRM_Donrec_Logic_IDGenerator {
     // check length of receipt-id
     if (strlen($receipt_id) > 64) {
       $msg = "Receipt-ID is too long (Maximum length is 64 chars): '$receipt_id'";
-      error_log($msg);
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: $msg");
       throw new Exception($msg);
     }
 

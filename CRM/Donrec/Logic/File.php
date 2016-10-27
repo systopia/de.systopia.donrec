@@ -66,7 +66,7 @@ class CRM_Donrec_Logic_File {
       ));
 
     if (!empty($file['is_error'])) {
-      error_log("de.systopia.donrec: couldn't create file object - " . $file['error_message']);
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: couldn't create file object - " . $file['error_message']);
       return null;
     }
 
@@ -135,7 +135,7 @@ class CRM_Donrec_Logic_File {
     // delete file on disc
     $success = unlink($path);
     if (!$success) {
-      error_log("Could not delete file: $path. The corresponding civicrm_file has been deleted!");
+      CRM_Core_Error::debug_log_message("Could not delete file: $path. The corresponding civicrm_file has been deleted!");
       return FALSE;
     }
     return TRUE;
@@ -154,7 +154,7 @@ class CRM_Donrec_Logic_File {
     ";
     $uri = CRM_Core_DAO::singleValueQuery($query);
     if (!$uri) {
-      error_log("There is no file with id '$id'.");
+      CRM_Core_Error::debug_log_message("There is no file with id '$id'.");
     }
     return $uri;
   }
