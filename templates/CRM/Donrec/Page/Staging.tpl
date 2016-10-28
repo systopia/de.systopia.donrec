@@ -89,7 +89,7 @@
 </div>
   {if $is_admin}
   <div class="form-item">
-    <input name="donrec_abort_by_admin" onClick="submit_form();" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="form-submit" type="submit">
+    <input name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="form-submit" type="submit">
     <input type="hidden" name="return_to" value="{$return_to}">
   </div>
   {/if}
@@ -137,10 +137,10 @@
 <!-- the buttons -->
 <div class="form-item">
   {if $statistic.status != 'DONE'}
-    <input name="donrec_testrun" onClick="submit_form();" value="{ts domain="de.systopia.donrec"}Test run{/ts}" class="form-submit" type="submit">
+    <input name="donrec_testrun" value="{ts domain="de.systopia.donrec"}Test run{/ts}" class="form-submit" type="submit">
   {/if}
-  <input name="donrec_run" onClick="submit_form();" value="{ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
-  <input name="donrec_abort" onClick="submit_form();" value="{ts domain="de.systopia.donrec"}Abort{/ts}" class="form-submit" type="submit">
+  <input name="donrec_run" value="{ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
+  <input name="donrec_abort" value="{ts domain="de.systopia.donrec"}Abort{/ts}" class="form-submit" type="submit">
 </div>
 {/if}
 </form>
@@ -161,11 +161,11 @@ function openURL(url) {
   location.href = view_url;
 }
 
-// and provide a function to go around it
-function submit_form() {
+// if you use the submit buttons, of course you may leave the page
+cj("input.form-submit").on('click', function(e){
   window.onbeforeunload = null;
-  cj('#stagingform').submit();
-}
+});
+
 
 {/literal}
 </script>
