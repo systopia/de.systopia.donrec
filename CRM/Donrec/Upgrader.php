@@ -40,13 +40,13 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     // create/update custom groups
     CRM_Donrec_DataStructure::update();
 
-    // install default template
-    CRM_Donrec_Logic_Template::setDefaultTemplate();
-
     // rename the custom fields according to l10.
     // FIXME: this is a workaround: if you do this before, the table name change,
     //         BUT we should not be working with static table names
     CRM_Donrec_DataStructure::translateCustomGroups();
+
+    // make sure the template is there
+    CRM_Donrec_Logic_Template::getDefaultTemplateID();
   }
 
   /**

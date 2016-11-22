@@ -47,17 +47,6 @@ return array(
     'is_contact' => 0,
     'description' => 'pdfinfo binary path',
   ),
-  'donrec_default_template' => array(
-    'group_name' => 'Donation Receipt Settings',
-    'group' => 'de.systopia',
-    'name' => 'donrec_default_template',
-    'type' => 'Integer',
-    'add' => '4.3',
-    'default' => 0,
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => 'default template to use for receipt-generation',
-  ),
   'donrec_profiles' => array(
     'group_name' => 'Donation Receipt Profiles',
     'group' => 'de.systopia',

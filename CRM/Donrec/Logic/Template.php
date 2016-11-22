@@ -76,53 +76,53 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-   * Installs the default template and saves the id as a setting
-   * @return bool
+   * Returns default template ID. 
+   * If default template doesn't exist, it will install it
+   *
+   * @return int template ID
+   * @throws Exception if there's something wrong with the default template
    */
-  public static function setDefaultTemplate() {
+  public static function getDefaultTemplateID() {
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts', array('domain' => 'de.systopia.donrec')), ts('Default template', array('domain' => 'de.systopia.donrec')));
-
-    $params = array(
-        'version'    => 3,
-        'sequential' => 1,
-        'msg_title'  => $default_template_title,
-    );
-    $result = civicrm_api('MessageTemplate', 'get', $params);
-    if (($result['is_error'] != 0)) {
-      CRM_Core_Error::debug_log_message(sprintf("de.systopia.donrec: setDefaultTemplate: error: %s", $result['error_message']));
-      return FALSE;
+    $result = civicrm_api3('MessageTemplate', 'get', array(
+      'msg_title'  => $default_template_title,
+      'return'     => 'id'));
+    if (!empty($result['id'])) {
+      // we found it!
+      return $result['id'];
     }
 
-    // the default template has been already set
-    if ($result['count'] != 0) {
-      // update the donrec-setting
-      CRM_Donrec_Logic_Settings::setDefaultTemplate($result['values'][0]['id']);
-      return TRUE;
+    if ($result['count'] > 1) {
+      // oops, there's more of them...
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: getDefaultTemplate '{$default_template_title}' is ambiguous.");
+      $first_result = reset($result['values']);
+      return $first_result['id'];
     }
 
-    $default_template_html = file_get_contents(dirname(__DIR__) . '/../../templates/Export/default_template.tpl');
+    // default template is not installed yet, so do it
+    $default_template_file = dirname(__DIR__) . '/../../templates/Export/default_template.tpl';
+    $default_template_html = file_get_contents($default_template_file);
     if($default_template_html === FALSE) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: could not open default template file!');
-      return FALSE;
+      throw new Exception("Cannot load default template from '{$default_template_file}'.");
     }
 
+    // TODO: what is this...?
     $workflowId = CRM_Donrec_DataStructure::getFirstUsedOptionValueId();
 
     $params = array(
-      'msg_title' => $default_template_title,
-      'msg_html' => $default_template_html,
-      'is_active' => 1,
+      'msg_title'   => $default_template_title,
+      'msg_html'    => $default_template_html,
+      'is_active'   => 1,
       'workflow_id' => $workflowId,
-      'is_default' => 0,
+      'is_default'  => 0,
       'is_reserved' => 0,
     );
 
     $result = CRM_Core_BAO_MessageTemplate::add($params);
     if ($result) {
-      CRM_Donrec_Logic_Settings::setDefaultTemplate($result->id);
-    }else{
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: could not set default template!');
-      return FALSE;
+      return $result->id;
+    } else {
+      throw new Exception("Cannot create default template.");
     }
   }
 
@@ -132,7 +132,7 @@ class CRM_Donrec_Logic_Template
    */
   public static function getDefaultTemplate() {
     // load message template with the default template id
-    $params = array('id' => CRM_Donrec_Logic_Settings::getDefaultTemplate());
+    $params = array('id' => self::getDefaultTemplateID());
     $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
     if (!$template) {
       CRM_Core_Error::debug_log_message('de.systopia.donrec: error: default template not found');

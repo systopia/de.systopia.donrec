@@ -280,7 +280,7 @@ class CRM_Donrec_Logic_Profile {
     return array(
       'financial_types'         => self::getAllDeductibleFinancialTypes(),
       'store_original_pdf'      => FALSE,
-      'template'                => CRM_Donrec_Logic_Settings::getDefaultTemplate(),
+      'template'                => CRM_Donrec_Logic_Template::getDefaultTemplateID(),
       'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
       'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
       'id_pattern'              => '{issue_year}-{serial}',
