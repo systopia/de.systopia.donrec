@@ -76,7 +76,6 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       'default_profile'  => 'donrec_default_profile',
       'packet_size'      => 'donrec_packet_size',
       'pdfinfo_path'     => 'donrec_pdfinfo_path',
-      'default_template' => 'donrec_default_template',
       );
 
     $migrated_values = array();
