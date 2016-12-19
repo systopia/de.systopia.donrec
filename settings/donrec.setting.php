@@ -36,6 +36,18 @@ return array(
     'is_contact' => 0,
     'description' => 'Packet size',
   ),
+  'donrec_email_template' => array(
+    'group_name' => 'Donation Receipt Settings',
+    'group' => 'de.systopia',
+    'name' => 'donrec_email_template',
+    'type' => 'Integer',
+    'html_type' => 'Select',
+    'default' => 0,
+    'add' => '4.3',
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'Email Template',
+  ),
   'donrec_pdfinfo_path' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',

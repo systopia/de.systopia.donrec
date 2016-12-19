@@ -81,4 +81,18 @@ class CRM_Donrec_Logic_Settings {
     }
     return $session->get('userID');
   }
+
+  /**
+   * Get the internal ID of the selected template for sending emails
+   *
+   * @return int
+   */
+  public static function getEmailTemplateID() {
+    $packet_size = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_email_template'));
+    if ($packet_size >= 1) {
+      return $packet_size;
+    } else {
+      return NULL;
+    }
+  }  
 }
