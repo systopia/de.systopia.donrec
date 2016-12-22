@@ -60,11 +60,38 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * allows the subclasses to process the newly created PDF file
    */
   protected function postprocessPDF($file, $snapshot_line_id) {
-    $error = NULL;
+    // try to send the email
+    $error = $this->sendEmail($snapshot_line_id, $file);
 
+    if ($error) {
+      // create error activity
+
+      error_log("ERROR $error");
+      $activity_id = $this->getEmailErrorActivity();
+      // TODO: create activity
+
+    }
+  }
+
+
+  /**
+   * Will try to send the PDF to the given email
+   *
+   * @return NULL if all good, an error message string if it FAILED
+   */
+  protected function sendEmail($snapshot_line_id, $pdf_file) {
     try {
       // load contact data
-      $receipt = CRM_Donrec_Logic_Snapshot::getLine($snapshot_line_id);
+      $snapshot = CRM_Donrec_Logic_Snapshot::getSnapshotForLineID($snapshot_line_id);
+      if (!$snapshot) {
+        return 'snapshot error';
+      }
+
+      $receipt = $snapshot->getLine($snapshot_line_id);
+      if (!$receipt) {
+        return 'snapshot error';
+      }
+
       $contact = civicrm_api3('Contact', 'getsingle', array('id' => $receipt['contact_id']));
 
       // load email address
@@ -75,7 +102,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         list($domainEmailName, $domainEmailAddress) = CRM_Core_BAO_Domain::getNameAndEmail();
 
         // compile the attachment
-        $attachment   = array('fullPath'  => $file,
+        $attachment   = array('fullPath'  => $pdf_file,
                               'mime_type' => 'application/pdf',
                               'cleanName' => ts("Donation Receipt.pdf", array('domain' => 'de.systopia.donrec')));
 
@@ -84,9 +111,8 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'receipt' => $receipt,
           'contact' => $contact);
 
-        // ...and finally send the template via email
         civicrm_api3('MessageTemplate', 'send', array(
-          'id'              => $template_id,
+          'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(),
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
           'to_email'        => $contact['email'],
@@ -96,22 +122,38 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           ));
       }
     } catch (Exception $e) {
-      $error = $e->getMessage();
+      return $e->getMessage();
     }
-
-    if ($error) {
-      // create error activity
-      $activity_id = $this->getEmailErrorActivity();
-      
-    }
+    return NULL;
   }
 
   /**
-   * postprocessing - not needed here
+   * generate the final result
+   *
+   * @return array:
+   *          'is_error': set if there is a fatal error
+   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   *          'download_url: URL to download the result
+   *          'download_name: suggested file name for the download
    */
   public function wrapUp($snapshot_id, $is_test, $is_bulk) {
-    // nothing to do here, I think.
-    // Sending report?
+    $reply = array();
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);    
+  }
+
+  /**
+   * Get the activity type id for email errors
+   *
+   * If no such activity exists, create a new one
+   */
+  public function getEmailErrorActivity() {
+    $activity_type_id = (int) CRM_Core_OptionGroup::getValue('activity_type', 'donrec_email_failed', 'id');
+    if (!$activity_type_id) {
+
+    }
+    // TODO: implement
+    return 1;
   }
 
 }

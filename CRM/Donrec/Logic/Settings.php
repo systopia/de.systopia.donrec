@@ -88,9 +88,9 @@ class CRM_Donrec_Logic_Settings {
    * @return int
    */
   public static function getEmailTemplateID() {
-    $packet_size = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_email_template'));
-    if ($packet_size >= 1) {
-      return $packet_size;
+    $template_id = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_email_template'));
+    if ($template_id >= 1) {
+      return $template_id;
     } else {
       return NULL;
     }

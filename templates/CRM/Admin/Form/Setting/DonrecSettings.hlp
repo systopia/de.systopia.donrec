@@ -51,6 +51,10 @@
     <p>{ts domain="de.systopia.donrec"}Select the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
 {/htxt}
 
+{htxt id='id-email-template'}
+    <p>{ts domain="de.systopia.donrec"}In case you select the 'send via email' exporter, this template will be used for the email body.{/ts}</p>
+{/htxt}
+
 {htxt id='id-pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}
