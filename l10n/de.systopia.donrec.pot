@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.donrec\n"
-"POT-Creation-Date: 2016-04-06 18:13+0200\n"
+"POT-Creation-Date: 2016-12-23 13:20+0100\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +32,7 @@ msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php donrec.php
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Receipt ID"
 msgstr ""
 
@@ -67,6 +68,10 @@ msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Packet size"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Email Template"
 msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
@@ -125,6 +130,38 @@ msgstr ""
 
 #: CRM/Donrec/Exporters/Dummy.php
 msgid "Don't generate files"
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Send PDFs via Email"
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Please select email template in the Donrec settings."
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation receipt not delivered"
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation Receipt.pdf"
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Email <i>would</i> be sent to '%1' (test mode)."
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "DonationReceipt Failure"
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "No valid email address found for this contact."
+msgstr ""
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Error was: "
 msgstr ""
 
 #: CRM/Donrec/Exporters/GroupedPDF.php
@@ -371,6 +408,10 @@ msgstr ""
 msgid "Missing exporter!"
 msgstr ""
 
+#: CRM/Donrec/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
 #: api/v3/DonationReceipt.php
 msgid "No 'rid' parameter given."
 msgstr ""
@@ -487,10 +528,6 @@ msgid "bulk receipt"
 msgstr ""
 
 #: donrec.php
-msgid "Issued by contact ID"
-msgstr ""
-
-#: donrec.php
 msgid "Issued by contact"
 msgstr ""
 
@@ -571,6 +608,12 @@ msgstr ""
 msgid ""
 "Select the template to be used for creating donation receipt PDFs with the "
 "current profile."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"In case you select the 'send via email' exporter, this template will be used "
+"for the email body."
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
@@ -680,6 +723,10 @@ msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "General Settings"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Email-Template"
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
