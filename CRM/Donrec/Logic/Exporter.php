@@ -115,9 +115,12 @@ abstract class CRM_Donrec_Logic_Exporter {
   /**
    * create a log entry and add to the give reply
    */
-  public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO) {
+  public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO, $timestamp = NULL) {
+    if ($timestamp == NULL) {
+      $timestamp = date('Y-m-d H:i:s');
+    }
     $reply['log'][] = array(
-        'timestamp'   => date('Y-m-d H:i:s'),
+        'timestamp'   => $timestamp,
         'type'        => $type,
         'message'     => $message
         );

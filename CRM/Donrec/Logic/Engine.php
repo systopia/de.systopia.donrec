@@ -196,11 +196,24 @@ class CRM_Donrec_Logic_Engine {
     // If it is the last do some wrap-up.
     // Otherwise mark the chunk as processed.
     //**********************************
+    $log_messages = array();
     if (!$chunk) {
       foreach ($exporters as $exporter) {
         $result = $exporter->wrapUp($this->snapshot->getId(), $is_test, $is_bulk);
+
         if (!empty($result['download_name']) && !empty($result['download_url'])) {
           $files[$exporter->getID()] = array($result['download_name'], $result['download_url']);
+        }
+
+        // collect appropriate error messages
+        if (!empty($result['log'])) {
+          foreach ($result['log'] as $log_entry) {
+            if (  $log_entry['type'] == 'ERROR' 
+               || $log_entry['type'] == 'FATAL' 
+               || ($is_test && $log_entry['type'] == 'INFO')) {
+              $log_messages[] = $log_entry;
+            }
+          }
         }
       }
     } else {
@@ -210,7 +223,14 @@ class CRM_Donrec_Logic_Engine {
     // compile stats
     //**********************************
     $stats = $this->createStats();
-    // create log-messages
+    $stats['log'] = $log_messages;
+
+    // add exporter log messages
+    // foreach ($log_messages as $log_message) {
+    //   CRM_Donrec_Logic_Exporter::addLogEntry($stats, $log_message['message'], $type, $log_message['timestamp']);
+    // }
+
+    // create final log-message
     foreach ($exporter_results as $exporter_id => $result) {
       $msg = sprintf('%s processed %d items - %d succeeded, %d failed', $exporter_id, count($chunk), $result['success'], $result['failure']);
       $type = ($result['failure'])? 'ERROR' : 'INFO';
