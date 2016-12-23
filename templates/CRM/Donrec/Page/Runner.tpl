@@ -55,7 +55,9 @@ var progress = 0;
 cj("#progressbar").progressbar({value:1});
 cj(".crm-donrec-process-log").crmAccordionToggle();
 cj(function() {
-   cj().crmAccordions();
+  if (typeof cj().crmAccordions == 'function') { 
+    cj().crmAccordions();
+  }
 });
 
 // add a "don't leave" message if the user wants to close the page
@@ -129,7 +131,7 @@ function openURL(url) {
     CRM.confirm(function() {
       window.onbeforeunload = null;
       var view_url = cj("<div/>").html(url).text();
-      location.href = view_url;            
+      location.href = view_url;
     },
     {
       message: {/literal}"{ts domain="de.systopia.donrec"}You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost.{/ts}"{literal}
@@ -138,7 +140,7 @@ function openURL(url) {
   } else {
     window.onbeforeunload = null;
     var view_url = cj("<div/>").html(url).text();
-    location.href = view_url;          
+    location.href = view_url;
   }
 }
 

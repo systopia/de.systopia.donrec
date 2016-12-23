@@ -35,6 +35,12 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
     } else {
       $url_back = $session->get('url_back');
     }
+
+    // fallback make sure there is a link.
+    if (empty($url_back)) {
+      $url_back = CRM_Utils_System::url('civicrm/dashboard');
+    }
+
     $this->assign('url_back', $url_back);
 
     // get the snapshot_id
