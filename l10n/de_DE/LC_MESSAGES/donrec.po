@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SYSTOPIA Donation Receipts\n"
-"POT-Creation-Date: 2016-12-23 13:20+0100\n"
+"POT-Creation-Date: 2017-01-18 16:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <endres@systopia.de>\n"
@@ -938,6 +938,14 @@ msgstr "zurückgesetzte Kopie"
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Creation date"
 msgstr "Erstelldatum"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued by"
+msgstr "Ausgestellt von"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Unknown"
+msgstr "Unbekannt"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Total amount"
