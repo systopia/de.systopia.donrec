@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SYSTOPIA Donation Receipts\n"
-"POT-Creation-Date: 2017-01-18 16:32+0100\n"
+"POT-Creation-Date: 2017-01-19 15:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <endres@systopia.de>\n"
@@ -69,6 +69,18 @@ msgstr "Externes Programm: Pfad zu <code>pdfinfo</code>"
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Packet size"
 msgstr "Paketgröße"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "BCC Email"
+msgstr "BCC E-Mail"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Has to be a valid email address"
+msgstr "Muss eine valide E-Mail Adresse sein"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Email Return Path"
+msgstr "E-Mail Return Path"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Email Template"
@@ -567,6 +579,34 @@ msgid "In case you select the 'send via email' exporter, this template will be u
 msgstr "Falls Sie die Ausgabe 'PDF per E-Mail versenden\" wählen, wird diese Vorlage für den E-Mail text verwendet."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "You can set an email address that will receive every email sent as a blind copy."
+msgstr "Sie können hier eine E-Mail Adresse angeben, die alle verschickten Zuwendungsbescheinigungen als BCC erhalten."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt."
+msgstr "<strong>Achtung</strong>: Die Aktivierung dieser Funktion könnte die Auflagen Ihres Finanzamts bezüglich der Zugänglichkeit der Originalbescheinigungen verletzen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing."
+msgstr "Unter Umständen ist es wichtig die Zustellungsfehler der über E-Mail versendeten Zuwendungsbescheinigungen zu erhalten. Normalerweise werden diese Zustellungsfehler einfach von CiviCRM im Hintergrund verarbeitet, und es ist nicht einfach an diese Informationen heranzukommen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "By providing an email address here, the following happens during live generation:"
+msgstr "Wenn Sie hier eine E-Mail Adresse eintragen wird folgendes während des Versands der Zuwendungsbescheinigungen passieren:"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The email is set as your default bounce address"
+msgstr "Die E-Mail Adress wird as Standardadresse für das \"Bounce Processing\" gesetzt."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The task to send out newsletters will be disabled."
+msgstr "Der Job zum Versand on Rundschreiben wird deaktiviert."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail."
+msgstr "<strong>Achtung</strong>:  Diese Änderungen werden nach Abschluss des Versands wieder zurückgenommen, allerdings kann dies in Ausnahmesituationen (z.B. Abstürzen) ausbleiben."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it."
 msgstr "Diese Einstellung erlaubt Ihnen eine Schema für die zu vergebende Seriennummer der Zuwendungsbescheinigungen zu definieren. Dazu können Sie beliebigen Text und die vordefinierten Tokens verwenden."
 
@@ -668,12 +708,24 @@ msgid "Postal Address Fallback"
 msgstr "Fallback Versandadresse"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "General Settings"
-msgstr "Allgemeine Einstellungen"
+msgid "Email Settings"
+msgstr "E-Mail Versand"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Email-Template"
 msgstr "E-Mail Vorlage"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "BCC Email Address"
+msgstr "BCC E-Mail Adresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Return Path Email Address"
+msgstr "Return Path E-Mail Adresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "General Settings"
+msgstr "Allgemeine Einstellungen"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Generator Packet Size"

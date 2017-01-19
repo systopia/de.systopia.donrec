@@ -59,6 +59,18 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       ts('Packet size', array('domain' => 'de.systopia.donrec')),
                       CRM_Donrec_Logic_Settings::get('donrec_packet_size'));
 
+    $this->addElement('text',
+                      'donrec_bcc_email',
+                      ts('BCC Email', array('domain' => 'de.systopia.donrec')),
+                      CRM_Donrec_Logic_Settings::get('donrec_bcc_email'));
+    $this->addRule('donrec_bcc_email', ts('Has to be a valid email address', array('domain' => 'de.systopia.donrec')), 'email');
+
+    $this->addElement('text',
+                      'donrec_return_path_email',
+                      ts('Email Return Path', array('domain' => 'de.systopia.donrec')),
+                      CRM_Donrec_Logic_Settings::get('donrec_return_path_email'));
+    $this->addRule('donrec_return_path_email', ts('Has to be a valid email address', array('domain' => 'de.systopia.donrec')), 'email');
+
     $this->addElement('select',
                       'donrec_email_template',
                       ts('Email Template', array('domain' => 'de.systopia.donrec')),
@@ -86,6 +98,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
     $defaults['donrec_email_template'] = CRM_Donrec_Logic_Settings::get('donrec_email_template');
+    $defaults['donrec_return_path_email'] = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
+    $defaults['donrec_bcc_email'] = CRM_Donrec_Logic_Settings::get('donrec_bcc_email');
 
     return $defaults;
   }
@@ -98,6 +112,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     // save generic settings
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
     CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
+    CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
+    CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
     }
