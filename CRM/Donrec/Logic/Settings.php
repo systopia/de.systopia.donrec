@@ -21,11 +21,7 @@ class CRM_Donrec_Logic_Settings {
    * generic set setting
    */
   public static function get($name) {
-    $value = civicrm_api3('Setting', 'getvalue', array('name' => $name));
-    if ($value === 0) {
-      $value = '';
-    }
-    return $value;
+    return civicrm_api3('Setting', 'getvalue', array('name' => $name));
   }
 
   /**
