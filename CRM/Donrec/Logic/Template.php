@@ -76,7 +76,7 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-   * Returns default template ID. 
+   * Returns default template ID.
    * If default template doesn't exist, it will install it
    *
    * @return int template ID
@@ -163,6 +163,11 @@ class CRM_Donrec_Logic_Template
 
     // get template
     $html = $this->_template->msg_html;
+
+    //Add contact tokens
+    $tokens = CRM_Utils_Token::getTokens($html);
+    $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contact_id']));
+    $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$values['contact_id']], TRUE, $tokens);
 
     // --- watermark injection ---
     // identify pdf engine
