@@ -235,7 +235,7 @@ Körperschaftsteuergesetzes bezeichneten Körperschaften, Personenvereinigungen 
     <th>{if $items}Zeitraum der Sammelbestätigung{else}Tag der Zuwendung{/if}:</th>
   </tr>
   <tr class='var'>
-    <td id='total'>**{$total|crmMoney:EUR}</td>
+    <td id='total'>**{$total|crmMoney:CHF}</td>
     <td>{$totaltext}</td>
     <td>
         {if $items}
@@ -297,9 +297,9 @@ zurückliegt (BMF vom 15.12.1994 - BStBl I S. 884).</p>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>
   {foreach from=$items item=item}
-    <tr><td>{$item.receive_date|date_format:"%d.%m.%Y"}</td><td>{$item.financial_type}</td><td>Nein</td><td class='amount'>{$item.total_amount|crmMoney:EUR}</td></tr>
+    <tr><td>{$item.receive_date|date_format:"%d.%m.%Y"}</td><td>{$item.financial_type}</td><td>Nein</td><td class='amount'>{$item.total_amount|crmMoney:CHF}</td></tr>
   {/foreach}
-  <tr id='totals'><th colspan='3'>Gesamtsumme</th><td class='amount'><span class='value'><b>**{$total|crmMoney:EUR}</b></span></span></td></tr>
+  <tr id='totals'><th colspan='3'>Gesamtsumme</th><td class='amount'><span class='value'><b>**{$total|crmMoney:CHF}</b></span></span></td></tr>
 </table>
 </div>
 {/if}

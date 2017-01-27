@@ -30,7 +30,7 @@ class CRM_Donrec_BaseTestCase extends CiviUnitTestCase {
     $create_contribution = array(
       'contact_id'              => $this->individualCreate(),
       'financial_type_id'       => 1,
-      'currency'                => 'EUR',
+      'currency'                => 'CHF',
       'contribution_status_id'  => $contribution_status_pending,
       'is_test'                 => 0,
     );

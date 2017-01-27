@@ -26,7 +26,7 @@ class CRM_Utils_DonrecHelper
     $conjunction = ' ';
     $separator   = ' ';
     $negative    = 'minus ';
-    $decimal     = ' Euro ';
+    $decimal     = ' Franken ';
     $dictionary  = array(
         0                   => 'null',
         1                   => 'ein',

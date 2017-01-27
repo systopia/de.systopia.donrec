@@ -39,7 +39,7 @@ class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
 
     $values = array('contributor' => 'TEST CONTRIBUTOR',
                     'total' => 100,
-                    'total_text' => 'ein hundert Euro');
+                    'total_text' => 'ein hundert Franken');
     $params = array();
 
     foreach ($templates as $key => $value) {
@@ -68,7 +68,7 @@ class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
 
     $values = array('contributor' => 'TEST CONTRIBUTOR',
                     'total' => 100,
-                    'total_text' => 'ein hundert Euro');
+                    'total_text' => 'ein hundert Franken');
     $params = array();
 
     foreach ($templates as $key => $value) {

@@ -94,7 +94,7 @@ class CRM_Donrec_Logic_Selector {
                   AND (`non_deductible_amount` = 0 OR `non_deductible_amount` IS NULL)
                   AND `contribution_status_id` = 1
                   AND `is_test` = 0
-                  AND `currency` = 'EUR'
+                  AND `currency` = 'CHF'
                   AND existing_receipt.`entity_id` IS NULL;";
 
     // execute the query
