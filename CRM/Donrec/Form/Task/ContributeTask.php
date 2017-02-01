@@ -17,6 +17,8 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
+  private $availableCurrencies;
+
   function buildQuickForm() {
     CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
 
@@ -35,6 +37,10 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
                       ts('Profile', array('domain' => 'de.systopia.donrec')), 
                       CRM_Donrec_Logic_Profile::getAllNames(), 
                       array('class' => 'crm-select2'));
+
+    // add currency selector
+    $this->availableCurrencies = array_keys(CRM_Core_OptionGroup::values('currencies_enabled'));
+    $this->addElement('select', 'donrec_contribution_currency', ts('Currency'), $this->availableCurrencies);
 
     // call the (overwritten) Form's method, so the continue button is on the right...
     CRM_Core_Form::addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
@@ -81,6 +87,10 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
     // created between two specific dates)
     $values = $this->exportValues();
     $values['contribution_ids'] = $this->_contributionIds;
+
+    // get the currency ISO code
+    $currencyId = $values['donrec_contribution_currency'];
+    $values['donrec_contribution_currency'] = $this->availableCurrencies[ $currencyId ];
 
     //set url_back as session-variable
     $session = CRM_Core_Session::singleton();
