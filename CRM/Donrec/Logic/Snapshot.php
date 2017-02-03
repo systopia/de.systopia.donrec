@@ -594,7 +594,8 @@ class CRM_Donrec_Logic_Snapshot {
       SUM(total_amount) AS total_amount,
       created_timestamp AS creation_date,
       date_from AS date_from,
-      date_to AS date_to
+      date_to AS date_to,
+      currency
       FROM donrec_snapshot
       WHERE snapshot_id = $id";
 
@@ -636,7 +637,8 @@ class CRM_Donrec_Logic_Snapshot {
       'date_to' => $result1->date_to,
       'status' => $status,
       'singleOrBulk' => self::singleOrBulk($id),
-      'exporters' => $snapshot->getExporters($id)
+      'exporters' => $snapshot->getExporters($id),
+      'currency' => $result1->currency
     );
     return $statistic;
   }

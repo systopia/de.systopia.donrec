@@ -51,7 +51,7 @@
         </div>
         <div class="crm-summary-row">
           <div class="crm-label">{ts domain="de.systopia.donrec"}total amount{/ts}</div>
-          <div class="crm-content">{$statistic.total_amount|crmMoney:EUR}</div>
+          <div class="crm-content">{$statistic.total_amount|crmMoney:$statistic.currency}</div>
         </div>
         <div class="crm-summary-row">
           <div class="crm-label">{ts domain="de.systopia.donrec"}Period from{/ts}</div>
