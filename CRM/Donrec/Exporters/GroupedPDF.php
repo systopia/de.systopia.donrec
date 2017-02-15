@@ -83,12 +83,14 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
   /**
    * allows the subclasses to process the newly created PDF file
    */
-  protected function postprocessPDF($file, $snapshot_line_id) {
+  protected function postprocessPDF($file, $snapshot_line_id, $is_test) {
     $pageCount = $this->getPDFPageCount($file);
 
     $this->updateProcessInformation($snapshot_line_id,
       array( 'pdf_file'      => $file,
              'pdf_pagecount' => $pageCount));
+
+    return TRUE;
   }
 
   /**

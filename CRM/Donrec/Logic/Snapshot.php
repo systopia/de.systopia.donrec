@@ -40,6 +40,20 @@ class CRM_Donrec_Logic_Snapshot {
     }
   }
 
+  /**
+   * get the snapshot of a given line_id
+   */
+  public static function getSnapshotForLineID($snapshot_line_id) {
+    $snapshot_id = CRM_Core_DAO::singleValueQuery("SELECT `snapshot_id` FROM `donrec_snapshot` WHERE `id` = %1;",
+      array(1 => array($snapshot_line_id, 'Integer')));
+    if ($snapshot_id) {
+      // no need to check if it exists, b/c if not the query would be empty
+      return new CRM_Donrec_Logic_Snapshot($snapshot_id);
+    } else {
+      return NULL;
+    }
+  }
+
 
   /**
   * creates and returns a new snapshot object from the

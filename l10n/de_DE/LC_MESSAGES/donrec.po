@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SYSTOPIA Donation Receipts\n"
-"POT-Creation-Date: 2016-04-06 18:13+0200\n"
+"POT-Creation-Date: 2017-01-19 15:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <endres@systopia.de>\n"
@@ -32,6 +32,7 @@ msgstr "Wasserzeichen Kopie"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php donrec.php
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Receipt ID"
 msgstr "Bescheinigungs-ID"
 
@@ -68,6 +69,22 @@ msgstr "Externes Programm: Pfad zu <code>pdfinfo</code>"
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Packet size"
 msgstr "Paketgröße"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "BCC Email"
+msgstr "BCC E-Mail"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Has to be a valid email address"
+msgstr "Muss eine valide E-Mail Adresse sein"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Email Return Path"
+msgstr "E-Mail Return Path"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Email Template"
+msgstr "E-Mail Vorlage"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Save"
@@ -121,11 +138,43 @@ msgstr "Zuwendungsbescheinigungen"
 
 #: CRM/Donrec/Exporters/CSV.php
 msgid ".csv"
-msgstr ""
+msgstr ".csv"
 
 #: CRM/Donrec/Exporters/Dummy.php
 msgid "Don't generate files"
 msgstr "Keine Dateien erzeugen"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Send PDFs via Email"
+msgstr "PDF per E-Mail versenden"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Please select email template in the Donrec settings."
+msgstr "Bitte das zu verwendende Template in den 'Donation Receipts Settings' einstellen."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation receipt not delivered"
+msgstr "Zuwendungesbescheinigung nicht zugestellt"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation Receipt.pdf"
+msgstr "Zuwendungsbescheinigung.pdf"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Email <i>would</i> be sent to '%1' (test mode)."
+msgstr "E-Mail <i>würde</i> geschickt werden an  '%1' (Testmodus)."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "DonationReceipt Failure"
+msgstr "Fehler Zuwendungesbescheinigung"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "No valid email address found for this contact."
+msgstr "Keine gültige E-Mail Adresse für den Kontakt gefunden."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Error was: "
+msgstr "Fehlermeldung war:"
 
 #: CRM/Donrec/Exporters/GroupedPDF.php
 msgid "Individual PDFs sorted by page count"
@@ -157,7 +206,7 @@ msgstr "pdfinfo Pfad nicht gesetzt"
 
 #: CRM/Donrec/Exporters/GroupedPDF.php
 msgid ".zip"
-msgstr ""
+msgstr ".zip"
 
 #: CRM/Donrec/Exporters/GroupedPDF.php
 msgid "%d-page"
@@ -229,7 +278,7 @@ msgstr "Sie müssen eine Zuwendung zur Umbuchung angeben."
 
 #: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
 msgid "CiviCRM ID"
-msgstr ""
+msgstr "CiviCRM ID"
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "At least one of the given contributions doesn't exist!"
@@ -365,6 +414,10 @@ msgstr "Der zuvor erstellte Snapshot wurde gelöscht."
 msgid "Missing exporter!"
 msgstr "Kein Exporter ausgewählt!"
 
+#: CRM/Donrec/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
 #: api/v3/DonationReceipt.php
 msgid "No 'rid' parameter given."
 msgstr "Fehlender Parameter: 'rid'."
@@ -474,10 +527,6 @@ msgid "bulk receipt"
 msgstr "Sammelbescheinigung"
 
 #: donrec.php
-msgid "Issued by contact ID"
-msgstr "Ausgestellt von Kontakt ID"
-
-#: donrec.php
 msgid "Issued by contact"
 msgstr "Ausgestellt von Kontakt"
 
@@ -524,6 +573,38 @@ msgstr "Profile ermöglichen es, unterschiedliche Konfigurationen für unterschi
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "Select the template to be used for creating donation receipt PDFs with the current profile."
 msgstr "Wählen Sie die Vorlage die für Erzeugung von PDF Dateien für Bescheinigungen mit dem aktuellen Profil."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "In case you select the 'send via email' exporter, this template will be used for the email body."
+msgstr "Falls Sie die Ausgabe 'PDF per E-Mail versenden\" wählen, wird diese Vorlage für den E-Mail text verwendet."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "You can set an email address that will receive every email sent as a blind copy."
+msgstr "Sie können hier eine E-Mail Adresse angeben, die alle verschickten Zuwendungsbescheinigungen als BCC erhalten."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt."
+msgstr "<strong>Achtung</strong>: Die Aktivierung dieser Funktion könnte die Auflagen Ihres Finanzamts bezüglich der Zugänglichkeit der Originalbescheinigungen verletzen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing."
+msgstr "Unter Umständen ist es wichtig die Zustellungsfehler der über E-Mail versendeten Zuwendungsbescheinigungen zu erhalten. Normalerweise werden diese Zustellungsfehler einfach von CiviCRM im Hintergrund verarbeitet, und es ist nicht einfach an diese Informationen heranzukommen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "By providing an email address here, the following happens during live generation:"
+msgstr "Wenn Sie hier eine E-Mail Adresse eintragen wird folgendes während des Versands der Zuwendungsbescheinigungen passieren:"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The email is set as your default bounce address"
+msgstr "Die E-Mail Adress wird as Standardadresse für das \"Bounce Processing\" gesetzt."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The task to send out newsletters will be disabled."
+msgstr "Der Job zum Versand on Rundschreiben wird deaktiviert."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail."
+msgstr "<strong>Achtung</strong>:  Diese Änderungen werden nach Abschluss des Versands wieder zurückgenommen, allerdings kann dies in Ausnahmesituationen (z.B. Abstürzen) ausbleiben."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it."
@@ -625,6 +706,22 @@ msgstr "Versandadresse"
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Postal Address Fallback"
 msgstr "Fallback Versandadresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Email Settings"
+msgstr "E-Mail Versand"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Email-Template"
+msgstr "E-Mail Vorlage"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "BCC Email Address"
+msgstr "BCC E-Mail Adresse"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Return Path Email Address"
+msgstr "Return Path E-Mail Adresse"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "General Settings"
@@ -895,6 +992,14 @@ msgid "Creation date"
 msgstr "Erstelldatum"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued by"
+msgstr "Ausgestellt von"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Total amount"
 msgstr "Gesamtbetrag"
 
@@ -1006,6 +1111,8 @@ msgstr "Sind Sie sicher dass Sie diese Zuwendungsbescheinigung löschen möchten
 msgid "Temporary file dowload failed."
 msgstr "Download der temporären Datei fehlgeschlagen."
 
+#~ msgid "Issued by contact ID"
+#~ msgstr "Ausgestellt von Kontakt ID"
 #~ msgctxt "menu"
 
 #~ msgid "Donation Receipts Settings"

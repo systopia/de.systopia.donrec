@@ -37,6 +37,15 @@
               {/if}
             </li>
             <li>{ts domain="de.systopia.donrec"}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
+            <li>
+              {ts domain="de.systopia.donrec"}Issued by{/ts}: 
+              {if $receipt.issued_by}
+                {assign var=contact_id value=$receipt.issued_by}
+                <a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=$contact_id"}">{$receipt.issued_by_display_name}</a>
+              {else}
+                {ts domain="de.systopia.donrec"}Unknown{/ts}
+              {/if}
+            </li>
             <li>{ts domain="de.systopia.donrec"}Date{/ts}:
                 {if $receipt.type eq 'SINGLE'}
                   {* for single receipts, print the date of the contribution *}

@@ -110,6 +110,28 @@
 <br/>
 <div class="crm-block crm-form-block">
   <div>
+    <h3>{ts domain="de.systopia.donrec"}Email Settings{/ts}</h3>
+    <div>
+      <table>
+        <tr>
+          <td class="label">{$form.donrec_email_template.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Email-Template{/ts}", {literal}{"id":"id-email-template","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_email_template.html}</td>
+        </tr>
+        <tr>
+          <td class="label">{$form.donrec_bcc_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}BCC Email Address{/ts}", {literal}{"id":"id-bcc-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_bcc_email.html}</td>
+        </tr>
+        <tr>
+          <td class="label">{$form.donrec_return_path_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Return Path Email Address{/ts}", {literal}{"id":"id-return-path-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_return_path_email.html}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="crm-block crm-form-block">
+  <div>
     <h3>{ts domain="de.systopia.donrec"}General Settings{/ts}</h3>
     <div>
       <table>
