@@ -252,6 +252,15 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * get the setting on whether to allow volatile tokens
+   *
+   * @return bool
+   */
+  public function getAllowVolatileTokens() {
+    return $this->get('allow_volatile_tokens');
+  }
+
+  /**
    * get the default template ID
    *
    * @return int
@@ -280,6 +289,7 @@ class CRM_Donrec_Logic_Profile {
     return array(
       'financial_types'         => self::getAllDeductibleFinancialTypes(),
       'store_original_pdf'      => FALSE,
+      'allow_volatile_tokens'   => FALSE,
       'template'                => CRM_Donrec_Logic_Template::getDefaultTemplateID(),
       'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
       'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),

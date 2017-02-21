@@ -164,6 +164,27 @@ class CRM_Donrec_Logic_Template
     // get template
     $html = $this->_template->msg_html;
 
+
+    //Add getAllowVolatileTokens
+    if ($parameters["allow_volatile_tokens"]) {
+      $tokens = CRM_Utils_Token::getTokens($html);
+      $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contact_id']));
+      $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$values['contact_id']], TRUE, $tokens);
+
+      if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
+        $contribution = reset($values["lines"]);
+        $contribution_id = $contribution["contribution_id"];
+        $result_contribution = civicrm_api3('Contribution', 'getsingle', array(
+          'sequential' => 1,
+          'id' => $contribution_id,
+        ));
+
+        $html = CRM_Utils_Token::replaceContributionTokens($html, $result_contribution, TRUE, $tokens);
+
+      }
+    }
+
+
     // --- watermark injection ---
     // identify pdf engine
     $pdf_engine = $config->wkhtmltopdfPath;
