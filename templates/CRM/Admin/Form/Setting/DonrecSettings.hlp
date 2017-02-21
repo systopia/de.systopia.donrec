@@ -51,6 +51,26 @@
     <p>{ts domain="de.systopia.donrec"}Select the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
 {/htxt}
 
+{htxt id='id-email-template'}
+    <p>{ts domain="de.systopia.donrec"}In case you select the 'send via email' exporter, this template will be used for the email body.{/ts}</p>
+{/htxt}
+
+{htxt id='id-bcc-email'}
+    <p>{ts domain="de.systopia.donrec"}You can set an email address that will receive every email sent as a blind copy.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt.{/ts}</p>
+{/htxt}
+
+{htxt id='id-return-path-email'}
+    <p>{ts domain="de.systopia.donrec"}It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}By providing an email address here, the following happens during live generation:{/ts}
+        <ul>
+            <li>{ts domain="de.systopia.donrec"}The email is set as your default bounce address{/ts}</li>
+            <li>{ts domain="de.systopia.donrec"}The task to send out newsletters will be disabled.{/ts}</li>
+        </ul>
+    </p>
+    <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail.{/ts}</p>
+{/htxt}
+
 {htxt id='id-pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}

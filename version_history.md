@@ -1,5 +1,10 @@
 # Version History
 
+### Version 1.5
+ * Sending receipts by email (#40)
+ * Expose receipt creator (#5)
+
+
 ### Version 1.4
  * Compatibility with CiviCRM 4.7 (#34)
 
