@@ -167,16 +167,30 @@ class CRM_Donrec_Logic_Template
 
     //Add getAllowVolatileTokens
     if ($parameters["allow_volatile_tokens"]) {
-      $tokens = CRM_Utils_Token::getTokens($html);
+      $messageToken = CRM_Utils_Token::getTokens($html);
+
+      $returnProperties = array();
+      if (isset($messageToken['contact'])) {
+        foreach ($messageToken['contact'] as $key => $value) {
+          $returnProperties[$value] = 1;
+        }
+      }      
       if(!isset($values['contact_id']) ) { //Sometimes is not set contact_id
-        if( isset($values["contributor"]["id"]) ) {
-          $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contributor']['id']));
+      
+        if( isset($values["contributor"]["id"]) ) {      
+          $contactsIdArray = array("contact_id" => $values['contributor']['id']);           
+          $contactIdToken = $values['contributor']['id'];          
         }        
       }
-      else{
-        $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contact_id']));
-      }      
-      $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$values['contact_id']], TRUE, $tokens);
+      else{        
+        $contactsIdArray = array("contact_id" => $values['contact_id']);         
+        $contactIdToken = $values['contact_id'];
+      }    
+      
+      if(isset($contactIdToken)) {
+        $contactDetails = CRM_Utils_Token::getTokenDetails($contactsIdArray, $returnProperties,NULL,NULL,NULL,$messageToken);      
+        $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$contactIdToken], TRUE, $messageToken);        
+      }        
 
       if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
         $contribution = reset($values["lines"]);
