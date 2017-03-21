@@ -168,7 +168,14 @@ class CRM_Donrec_Logic_Template
     //Add getAllowVolatileTokens
     if ($parameters["allow_volatile_tokens"]) {
       $tokens = CRM_Utils_Token::getTokens($html);
-      $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contact_id']));
+      if(!isset($values['contact_id']) ) { //Sometimes is not set contact_id
+        if( isset($values["contributor"]["id"]) ) {
+          $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contributor']['id']));
+        }        
+      }
+      else{
+        $contactDetails = CRM_Utils_Token::getTokenDetails(array($values['contact_id']));
+      }      
       $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$values['contact_id']], TRUE, $tokens);
 
       if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
