@@ -189,7 +189,11 @@ class CRM_Donrec_Logic_Template
       
       if(isset($contactIdToken)) {
         $contactDetails = CRM_Utils_Token::getTokenDetails($contactsIdArray, $returnProperties,NULL,NULL,NULL,$messageToken);      
-        $html = CRM_Utils_Token::replaceContactTokens($html, $contactDetails[0][$contactIdToken], TRUE, $messageToken);        
+        $contact_details_clean = $contactDetails[0][$contactIdToken];
+        $html = CRM_Utils_Token::replaceContactTokens($html, $contact_details_clean, TRUE, $messageToken);                  
+        
+        $categories = array_keys($messageToken);
+        $html = CRM_Utils_Token::replaceHookTokens($html, $contact_details_clean, $categories, TRUE);             
       }        
 
       if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
