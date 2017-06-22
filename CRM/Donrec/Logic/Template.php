@@ -185,7 +185,20 @@ class CRM_Donrec_Logic_Template
       else{        
         $contactsIdArray = array("contact_id" => $values['contact_id']);         
         $contactIdToken = $values['contact_id'];
-      }    
+      }          
+      
+      
+      if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
+        $contribution = reset($values["lines"]);
+        $contribution_id = $contribution["contribution_id"];
+        $result_contribution = civicrm_api3('Contribution', 'getsingle', array(
+          'sequential' => 1,
+          'id' => $contribution_id,
+        ));        
+        
+        CRM_Utils_Token::getContributionTokenDetails(array('contribution_id' => $contributionId));
+        $html = CRM_Utils_Token::replaceContributionTokens($html, $result_contribution, TRUE, $messageToken);        
+      }      
       
       if(isset($contactIdToken)) {
         $contactDetails = CRM_Utils_Token::getTokenDetails($contactsIdArray, $returnProperties,NULL,NULL,NULL,$messageToken);      
@@ -194,19 +207,7 @@ class CRM_Donrec_Logic_Template
         
         $categories = array_keys($messageToken);
         $html = CRM_Utils_Token::replaceHookTokens($html, $contact_details_clean, $categories, TRUE);             
-      }        
-
-      if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
-        $contribution = reset($values["lines"]);
-        $contribution_id = $contribution["contribution_id"];
-        $result_contribution = civicrm_api3('Contribution', 'getsingle', array(
-          'sequential' => 1,
-          'id' => $contribution_id,
-        ));
-
-        $html = CRM_Utils_Token::replaceContributionTokens($html, $result_contribution, TRUE, $tokens);
-
-      }
+      } 
     }
 
 
