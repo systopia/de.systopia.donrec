@@ -23,6 +23,10 @@
     <p>{ts domain="de.systopia.donrec"}When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team.{/ts}</p>
 {/htxt}
 
+{htxt id='id-allow-volatile-tokens'}
+    <p>{ts domain="de.systopia.donrec"}Allow use tokens from contact and from contributions.<br/> You could use volatile tokens(these tokens will be change if you change the values, and the receipt will show differents values) from contact and from contribution. The contribution tokens only works if your are processing the contributions individually.</br> Example: {literal}{contact.display_name}, {contribution.receive_date}, ...{/literal}. {/ts}</p>
+{/htxt}
+
 {htxt id='id-packet-size'}
     <p>{ts domain="de.systopia.donrec"}Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run.{/ts}</p>
 {/htxt}

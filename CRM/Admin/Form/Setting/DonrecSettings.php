@@ -84,6 +84,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // add a custom form validation rule that allows only positive integers (i > 0)
     $this->registerRule('onlypositive', 'callback', 'onlyPositiveIntegers', 'CRM_Admin_Form_Setting_DonrecSettings');
+
+    //Add Volatile Tokens
+    $this->addElement('checkbox','allow_volatile_tokens');
   }
 
   function addRules() {
@@ -126,7 +129,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
       foreach (array_keys($profile_defaults) as $field_name) {
         $value = CRM_Utils_Array::value($field_name, $values, NULL);
-        if ($value != NULL) {
+        if ($value != NULL || $field_name != "allow_volatile_tokens" || $field_name != "store_original_pdf" ) {
           $profile_data[$profile][$field_name] = $value;
         }
       }

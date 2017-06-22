@@ -134,7 +134,7 @@ function civicrm_api3_donation_receipt_view($params) {
     $values['status'] = 'DRAFT';
     $values['watermark'] = $profile->get('draft_text');
   }
-
+  $parameter["allow_volatile_tokens"] = $profile->getAllowVolatileTokens();
   $pdf = $profile->getTemplate()->generatePDF($values, $parameter);
   $url = CRM_Donrec_Logic_File::createTemporaryFile($pdf, $name);
 
