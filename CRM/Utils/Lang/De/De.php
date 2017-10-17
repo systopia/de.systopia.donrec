@@ -14,10 +14,9 @@
   * @author Karl Rixon (http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/)
   *         modified by Niko Bochan to support the German language
   */
-class CRM_Utils_Lang_DE
-{
-  static function toWords($number, $params = array())
-  {
+class CRM_Utils_Lang_De_De {
+
+  static public function toWords($number, $recursion=false){
     $hyphen      = 'und';
     $conjunction = ' ';
     $separator   = ' ';
@@ -69,7 +68,7 @@ class CRM_Utils_Lang_DE
     }
 
     if ($number < 0) {
-        return $negative . self::convert_number_to_words(abs($number), $lang, true);
+        return $negative . self::toWords(abs($number), true);
     }
 
     $string = null;
@@ -95,14 +94,14 @@ class CRM_Utils_Lang_DE
             $remainder = $number % 100;
             $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
             if ($remainder) {
-                $string .= $conjunction . self::convert_number_to_words($remainder, $lang, true);
+                $string .= $conjunction . self::toWords($remainder, true);
             }
             break;
         default:
             $baseUnit = pow(1000, floor(log($number, 1000)));
             $numBaseUnits = (int) ($number / $baseUnit);
             $remainder = $number % $baseUnit;
-            $string .= self::convert_number_to_words($numBaseUnits, $lang, true);
+            $string .= self::toWords($numBaseUnits, $lang, true);
             // FIXME: the following doesn't work for units > 10^6
             if ($baseUnit == 1000000 && $numBaseUnits == 1) {
               $string .= 'e ';                                  // ein_e_
@@ -114,7 +113,7 @@ class CRM_Utils_Lang_DE
 
             if ($remainder) {
                 $string .= ($remainder < 100) ? $conjunction : $separator;
-                $string .= self::convert_number_to_words($remainder, $lang, true);
+                $string .= self::toWords($remainder, true);
             }
             break;
     }
@@ -138,7 +137,7 @@ class CRM_Utils_Lang_DE
                 break;
           }
         }
-    } elseif (!$params['recursion']) {
+    } elseif (!$recursion) {
       $string .= $decimal;
     }
 

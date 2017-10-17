@@ -19,7 +19,7 @@ class CRM_Utils_DonrecHelper
   *                      - Be aware of proper classnames and folders, for example for es_ES language the proper class should be
   *                      - Es/Es.php (CRM_Utils_Lang_Es_Es)
   */
-  public static function convert_number_to_words($number, $lang='de', $params=array()) {
+  public static function convert_number_to_words($number, $lang='de_DE', $params=array()) {
     $helper = CRM_Utils_DonrecLang::factory($lang);
     $string = $helper::toWords($number);
     return $string;

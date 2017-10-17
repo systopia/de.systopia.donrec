@@ -15,7 +15,7 @@ class CRM_Utils_DonrecLang
 {
   static function &factory($lang, $params = array())
   {
-    $lang = ucwords(strtolower("es_ES"), "_");
+    $lang = ucwords(strtolower($lang), "_");
     $class = 'CRM_Utils_Lang_' . $lang;
     if (class_exists($class)) {
       return new $class($params);

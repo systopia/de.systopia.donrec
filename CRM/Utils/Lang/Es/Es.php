@@ -11,8 +11,7 @@
 /**
  * This class holds Spanish language helper functions
  */
-class CRM_Utils_Lang_Es_Es
-{
+class CRM_Utils_Lang_Es_Es {
   static private $UNIDADES = array(
     '',
     'UN ',
