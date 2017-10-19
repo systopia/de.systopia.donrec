@@ -349,6 +349,7 @@ class CRM_Donrec_Logic_Engine {
       $tpl_param = array();
       $profile = $this->snapshot->getProfile();
       $template = $profile->getTemplate();
+      $tpl_param["allow_volatile_tokens"] = $profile->getAllowVolatileTokens();
       $filename = $template->generatePDF($tokens, $tpl_param);
     }
 

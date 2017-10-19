@@ -164,6 +164,53 @@ class CRM_Donrec_Logic_Template
     // get template
     $html = $this->_template->msg_html;
 
+
+    //Add getAllowVolatileTokens
+    if ($parameters["allow_volatile_tokens"]) {
+      $messageToken = CRM_Utils_Token::getTokens($html);
+
+      $returnProperties = array();
+      if (isset($messageToken['contact'])) {
+        foreach ($messageToken['contact'] as $key => $value) {
+          $returnProperties[$value] = 1;
+        }
+      }      
+      if(!isset($values['contact_id']) ) { //Sometimes is not set contact_id
+      
+        if( isset($values["contributor"]["id"]) ) {      
+          $contactsIdArray = array("contact_id" => $values['contributor']['id']);           
+          $contactIdToken = $values['contributor']['id'];          
+        }        
+      }
+      else{        
+        $contactsIdArray = array("contact_id" => $values['contact_id']);         
+        $contactIdToken = $values['contact_id'];
+      }          
+      
+      
+      if (is_array($values["lines"]) && count($values["lines"])  == 1 ) {
+        $contribution = reset($values["lines"]);
+        $contribution_id = $contribution["contribution_id"];
+        $result_contribution = civicrm_api3('Contribution', 'getsingle', array(
+          'sequential' => 1,
+          'id' => $contribution_id,
+        ));        
+        
+        CRM_Utils_Token::getContributionTokenDetails(array('contribution_id' => $contributionId));
+        $html = CRM_Utils_Token::replaceContributionTokens($html, $result_contribution, TRUE, $messageToken);        
+      }      
+      
+      if(isset($contactIdToken)) {
+        $contactDetails = CRM_Utils_Token::getTokenDetails($contactsIdArray, $returnProperties,NULL,NULL,NULL,$messageToken);      
+        $contact_details_clean = $contactDetails[0][$contactIdToken];
+        $html = CRM_Utils_Token::replaceContactTokens($html, $contact_details_clean, TRUE, $messageToken);                  
+        
+        $categories = array_keys($messageToken);
+        $html = CRM_Utils_Token::replaceHookTokens($html, $contact_details_clean, $categories, TRUE);             
+      } 
+    }
+
+
     // --- watermark injection ---
     // identify pdf engine
     $pdf_engine = $config->wkhtmltopdfPath;
