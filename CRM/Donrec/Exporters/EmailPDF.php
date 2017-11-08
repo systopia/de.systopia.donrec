@@ -213,6 +213,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'name'            => 'donrec_email_failed',
           'label'           => ts("DonationReceipt Failure", array('domain' => 'de.systopia.donrec')),
           ));
+        $activity_type = civicrm_api3('OptionValue', 'getsingle', array('id' => $activity_type['id']));
         $this->activity_type_id = $activity_type['value'];
       }
     }
