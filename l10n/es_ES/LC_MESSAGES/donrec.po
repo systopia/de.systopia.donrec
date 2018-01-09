@@ -419,7 +419,7 @@ msgstr "Transferir contribución a un contacto"
 
 #: donrec.php
 msgid "Receipted"
-msgstr "Recibido"
+msgstr "Recibo emitido"
 
 #: donrec.php
 msgid "No"
