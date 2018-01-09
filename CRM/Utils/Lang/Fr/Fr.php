@@ -9,11 +9,11 @@
 +--------------------------------------------------------*/
 
 /**
- * This class holds Spanish language helper functions
+ * This class holds French language helper functions
  */
 class CRM_Utils_Lang_Fr_Fr {
-  
-  static public function toWords($number, $miMoneda = null) {
+
+  static public function toWords($number) {
     return "";
   }
 }
