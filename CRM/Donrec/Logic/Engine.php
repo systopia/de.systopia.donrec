@@ -141,6 +141,19 @@ class CRM_Donrec_Logic_Engine {
       // #FIXME: It is more convenient to have a simalar array-structure for bulk-
       // and single-processing. In future the getNextChunk-method might be
       // refactored and build up the arrays correspondingly.
+
+      
+      //Get the year of the first contribution to set the token year
+      if(isset($chunk_items["date_from"])) {
+        $date_from = DateTime::createFromFormat("Y-m-d H:i:s", $chunk_items["date_from"]);
+        $issue_year = $date_from->format("Y");
+      }
+      else {
+        $issue_year = date("Y");
+      }
+ 
+      
+      
       $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
       $contact_id = $chunk_items[0]['contact_id'];
       $line_ids = array();
@@ -148,8 +161,8 @@ class CRM_Donrec_Logic_Engine {
         $line_ids[] = $chunk_item['id'];
       }
 
-      // create a SnapshotReceipt
-      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test);
+      // create a SnapshotReceipt      
+      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test, $issue_year);
 
       // call exporters
       //**********************************
@@ -334,7 +347,15 @@ class CRM_Donrec_Logic_Engine {
   public function getPDF($snapshot_line_ids) {
     // get the proc-info for only one of the snapshot-lines
     // should be the same for all others
-    $proc_info = $this->snapshot->getProcessInformation($snapshot_line_ids[0]);
+    if(isset($this->snapshot["donrec_contribution_horizon_from"])) {
+      $date_from = DateTime::createFromFormat("m/d/Y", $this->snapshot["donrec_contribution_horizon_from"]);
+      $issue_year = $date_from->format("Y");
+    }
+    else {
+      $issue_year = date("Y");
+    }    
+    
+    $proc_info = $this->snapshot->getProcessInformation($issue_year);
 
     // was a pdf already created?
     if (isset($proc_info['PDF']['pdf_file'])) {
@@ -343,7 +364,7 @@ class CRM_Donrec_Logic_Engine {
     // otherwise create a new one
     } else {
       // get snapshot-receipt and tokens
-      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($snapshot_line_ids, FALSE);
+      $snapshot_receipt = $this->snapshot->getSnapshotReceipt($snapshot_line_ids, FALSE, $issue_year);
       $tokens = $snapshot_receipt->getAllTokens();
       // get template and create pdf
       $tpl_param = array();

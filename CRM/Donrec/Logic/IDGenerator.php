@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
-| SYSTOPIA Donation Receipts Extension                   |
 | Copyright (C) 2013-2016 SYSTOPIA                       |
+| SYSTOPIA Donation Receipts Extension                   |
 | Author: T. Leichtfuß (leichtfuss -at- systopia.de)     |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
@@ -56,14 +56,14 @@ class CRM_Donrec_Logic_IDGenerator {
    * @param $chunk the set of contributions used for this receipt as used in CRM_Donrec_Logic_Engine
    * @return unique ID string
    */
-  public function generateID($snapshot_lines) {
+  public function generateID($snapshot_lines, $snapshot, $issue_year) {
 
     // prepare tokens
-    // FIXME: check for occurance
+    // FIXME: check for occurance    
     $contact_id = $snapshot_lines[0]['contact_id'];
     $snapshot_line = (isset($snapshot_lines['id']))? $snapshot_lines : $snapshot_lines[0];
-    $this->tokens['contact_id'] = $snapshot_line['contact_id'];
-    $this->tokens['issue_year'] = date("Y");
+    $this->tokens['contact_id'] = $snapshot_line['contact_id'];    
+    $this->tokens['issue_year'] = $issue_year;
 
     // get database-infos
     $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');

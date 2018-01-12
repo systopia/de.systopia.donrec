@@ -729,11 +729,11 @@ class CRM_Donrec_Logic_Snapshot {
    * @param boolean is_test
    * @return CRM_Donrec_Logic_SnapshotReceipt
    */
-  public function getSnapshotReceipt($snapshot_line_ids, $is_test) {
+  public function getSnapshotReceipt($snapshot_line_ids, $is_test, $issue_year) {
     foreach($snapshot_line_ids as $id) {
       $lines[] = $this->getLine($id);
-    }
-    return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test);
+    }    
+    return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test, $issue_year);
   }
 
   /**

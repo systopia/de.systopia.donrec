@@ -22,15 +22,16 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   private $cached_contributors = array();
   private $cached_addressees = array();
 
-  public function __construct($snapshot, $snapshot_lines, $is_test) {
+  public function __construct($snapshot, $snapshot_lines, $is_test, $issue_year) {
     $this->snapshot = $snapshot;
     $this->snapshot_lines = $snapshot_lines;
     $this->is_test = $is_test;
 
-    // generate receiptID
+    // generate receiptID    
     $pattern = $this->getProfile()->get('id_pattern');
     $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
-    $this->receipt_id = $id_generator->generateID($snapshot_lines);
+    
+    $this->receipt_id = $id_generator->generateID($snapshot_lines, $snapshot, $issue_year);
   }
 
   public function isBulk() {
