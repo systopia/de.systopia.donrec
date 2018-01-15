@@ -1,5 +1,7 @@
 # SYSTOPIA Donation Receipts Extension
 
+**This fork is mainteined by [iXiam Global Solutions](https://github.com/ixiam)**
+
 This is a CiviCRM extension designed for "heavy duty" donation receipt generation. Find the user documentation at http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension
 
 Features:
