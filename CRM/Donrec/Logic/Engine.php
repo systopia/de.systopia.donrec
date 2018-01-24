@@ -143,8 +143,7 @@ class CRM_Donrec_Logic_Engine {
       // refactored and build up the arrays correspondingly.
 
       
-      //Get the year of the first contribution to set the token year
-      CRM_Core_Error::debug_log_message(print_r($chunk_items,true));
+      //Get the year of the first contribution to set the token year      
       if(isset($chunk_items[0]["date_from"])) {
         $date_from = DateTime::createFromFormat("Y-m-d H:i:s", $chunk_items[0]["date_from"]);
         $issue_year = $date_from->format("Y");
