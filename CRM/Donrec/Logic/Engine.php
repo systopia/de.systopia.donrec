@@ -144,8 +144,9 @@ class CRM_Donrec_Logic_Engine {
 
       
       //Get the year of the first contribution to set the token year
-      if(isset($chunk_items["date_from"])) {
-        $date_from = DateTime::createFromFormat("Y-m-d H:i:s", $chunk_items["date_from"]);
+      CRM_Core_Error::debug_log_message(print_r($chunk_items,true));
+      if(isset($chunk_items[0]["date_from"])) {
+        $date_from = DateTime::createFromFormat("Y-m-d H:i:s", $chunk_items[0]["date_from"]);
         $issue_year = $date_from->format("Y");
       }
       else {
@@ -355,7 +356,7 @@ class CRM_Donrec_Logic_Engine {
       $issue_year = date("Y");
     }    
     
-    $proc_info = $this->snapshot->getProcessInformation($issue_year);
+     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_ids[0]);
 
     // was a pdf already created?
     if (isset($proc_info['PDF']['pdf_file'])) {
