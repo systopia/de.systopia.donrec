@@ -199,8 +199,8 @@ class CRM_Donrec_Logic_Engine {
         $receipt_params = array();
         $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
 
-        if ($profile->saveOriginalPDF()) {
-          $pdf_file = $this->getPDF($line_ids);
+        if ($profile->saveOriginalPDF()) {          
+          $pdf_file = $this->getPDF($line_ids, $issue_year);
           $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
           if (!empty($file)) {
             $receipt_params['original_file'] = $file['id'];
@@ -349,14 +349,11 @@ class CRM_Donrec_Logic_Engine {
   /**
   * get or create a pdf file for the snapshot line
   */
-  public function getPDF($snapshot_line_ids) {
+  public function getPDF($snapshot_line_ids, $issue_year) {
     // get the proc-info for only one of the snapshot-lines
-    // should be the same for all others
-    if(isset($this->snapshot["donrec_contribution_horizon_from"])) {
-      $date_from = DateTime::createFromFormat("m/d/Y", $this->snapshot["donrec_contribution_horizon_from"]);
-      $issue_year = $date_from->format("Y");
-    }
-    else {
+    // should be the same for all others    
+    
+    if(!isset($issue_year) || $issue_year == "") {
       $issue_year = date("Y");
     }    
     
