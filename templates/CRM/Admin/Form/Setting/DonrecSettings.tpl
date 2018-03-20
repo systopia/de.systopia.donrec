@@ -118,6 +118,10 @@
           <td>{$form.donrec_email_template.html}</td>
         </tr>
         <tr>
+          <td class="label">{$form.donrec_from_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}From Email Address{/ts}", {literal}{"id":"id-from-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_from_email.html}</td>
+        </tr>
+        <tr>
           <td class="label">{$form.donrec_bcc_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}BCC Email Address{/ts}", {literal}{"id":"id-bcc-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.donrec_bcc_email.html}</td>
         </tr>
