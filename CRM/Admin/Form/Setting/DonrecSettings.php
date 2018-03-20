@@ -59,6 +59,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       ts('Packet size', array('domain' => 'de.systopia.donrec')),
                       CRM_Donrec_Logic_Settings::get('donrec_packet_size'));
 
+    $this->addElement(
+      'select',
+      'donrec_from_email',
+      ts('From Email', array('domain' => 'de.systopia.donrec')),
+      CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL)
+    );
+
     $this->addElement('text',
                       'donrec_bcc_email',
                       ts('BCC Email', array('domain' => 'de.systopia.donrec')),
@@ -99,6 +106,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
     $defaults['donrec_email_template'] = CRM_Donrec_Logic_Settings::get('donrec_email_template');
     $defaults['donrec_return_path_email'] = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
+    $defaults['donrec_from_email'] = CRM_Donrec_Logic_Settings::get('donrec_from_email');
     $defaults['donrec_bcc_email'] = CRM_Donrec_Logic_Settings::get('donrec_bcc_email');
 
     return $defaults;
@@ -113,6 +121,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
     CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
     CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
+    CRM_Donrec_Logic_Settings::set('donrec_from_email', $values['donrec_from_email']);
     CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
