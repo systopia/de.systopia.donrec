@@ -47,18 +47,6 @@ return array(
     'is_contact' => 0,
     'description' => 'Email Return Path',
   ),
-  'donrec_from_email' => array(
-    'group_name' => 'Donation Receipt Settings',
-    'group' => 'de.systopia',
-    'name' => 'donrec_from_email',
-    'type' => 'Integer',
-    'html_type' => 'Select',
-    'default' => 0,
-    'add' => '4.3',
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => 'From Email',
-  ),
   'donrec_bcc_email' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',

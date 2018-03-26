@@ -243,6 +243,22 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * Returns "From" e-mail addresses configured within CiviCRM.
+   *
+   * @param bool $default
+   *   Whether to return only default addresses.
+   */
+  public function getFromEmailAddresses($default = FALSE) {
+    if ($default) {
+      $condition = ' AND is_default = 1';
+    }
+    else {
+      $condition = NULL;
+    }
+    return key(CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, $condition));
+  }
+
+  /**
    * get the setting on whether to save the original PDF file
    *
    * @return bool
@@ -288,6 +304,7 @@ class CRM_Donrec_Logic_Profile {
       'postal_address'          => array('0'),
       'legal_address_fallback'  => array('0'),
       'postal_address_fallback' => array('0'),
+      'donrec_from_email'       => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
       );
   }
 }
