@@ -37,7 +37,11 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
                       CRM_Donrec_Logic_Profile::getAllNames(), 
                       array('class' => 'crm-select2'));
 
-    $this->addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
+    $this->addDefaultButtons(
+      ts('Continue', array('domain' => 'de.systopia.donrec')),
+      'next',
+      'cancel'
+    );
   }
 
   function setDefaultValues() {
