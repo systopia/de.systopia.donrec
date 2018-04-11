@@ -141,7 +141,11 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // save last element (action list)
     $actionList = array_pop($headers);
     // insert new column
-    $headers[] = array('name' => ts('Receipted', array('domain' => 'de.systopia.donrec')));
+    $headers[] = array(
+      'name' => ts('Receipted', array('domain' => 'de.systopia.donrec')),
+      // Provide a weight lower than the "actions" column.
+      'weight' => $actionList['weight'] - 1,
+    );
 
     $receipted_contribution_ids = array();
 
