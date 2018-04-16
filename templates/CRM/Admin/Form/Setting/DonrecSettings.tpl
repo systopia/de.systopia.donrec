@@ -118,6 +118,10 @@
           <td>{$form.donrec_email_template.html}</td>
         </tr>
         <tr>
+          <td class="label">{$form.donrec_from_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}From Email Address{/ts}", {literal}{"id":"id-from-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_from_email.html}</td>
+        </tr>
+        <tr>
           <td class="label">{$form.donrec_bcc_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}BCC Email Address{/ts}", {literal}{"id":"id-bcc-email","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.donrec_bcc_email.html}</td>
         </tr>
@@ -161,7 +165,19 @@
   cj('td.label').width(300);
 
   // defaults
-  var donrec_value_defaults = {'id_pattern': '{issue_year}-{serial}', 'template': 0, 'financial_types': [], 'store_original_pdf': false, 'draft_text':"DRAFT", 'copy_text':"COPY", 'legal_address':["0"], 'postal_address':["0"], 'legal_address_fallback':["0"], 'postal_address_fallback':["0"]};
+  var donrec_value_defaults = {
+    'id_pattern': '{issue_year}-{serial}',
+    'template': 0,
+    'financial_types': [],
+    'store_original_pdf': false,
+    'draft_text': "DRAFT",
+    'copy_text': "COPY",
+    'legal_address': ["0"],
+    'postal_address': ["0"],
+    'legal_address_fallback': ["0"],
+    'postal_address_fallback': ["0"],
+    'donrec_from_email': null
+  };
 
   /**
    * change event handler for the profile method
@@ -306,7 +322,7 @@
     for (field in donrec_value_defaults) {
       if (field == 'store_original_pdf') {
         cj('#' + field).prop('checked', profile[field]);
-      } else if (field == 'financial_types' || field == 'template') {
+      } else if (field == 'financial_types' || field == 'template' || field == 'donrec_from_email') {
         cj('#' + field).select2('val', profile[field]);
       } else {
         cj('#' + field).val(profile[field]);

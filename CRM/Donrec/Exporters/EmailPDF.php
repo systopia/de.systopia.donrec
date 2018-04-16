@@ -117,8 +117,21 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         return 'no email';
       }
 
-      // load the domain
-      list($domainEmailName, $domainEmailAddress) = CRM_Core_BAO_Domain::getNameAndEmail();
+      // Get from e-mail from profile or load domain default.
+      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile'])->get('donrec_from_email')) {
+        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
+        foreach ($fromEmailAddress as $key => $value) {
+          $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
+          $fromArray = explode('"', $value);
+          $from_email_name = CRM_Utils_Array::value(1, $fromArray);
+          break;
+        }
+      }
+      else {
+        // load the domain
+        list($from_email_name, $from_email_address) = CRM_Core_BAO_Domain::getNameAndEmail();
+      }
+
 
       // compile the attachment
       $attachment   = array('fullPath'  => $pdf_file,
@@ -142,7 +155,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
           'to_email'        => $contact['email'],
-          'from'            => "\"{$domainEmailName}\" <{$domainEmailAddress}>",
+          'from'            => "\"{$from_email_name}\" <{$from_email_address}>",
           'template_params' => $smarty_variables,
           'attachments'     => array($attachment),
           'bcc'             => CRM_Donrec_Logic_Settings::get('donrec_bcc_email'),
