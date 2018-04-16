@@ -43,7 +43,11 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $this->availableCurrencies = array_keys(CRM_Core_OptionGroup::values('currencies_enabled'));
     $this->addElement('select', 'donrec_contribution_currency', ts('Currency'), $this->availableCurrencies);
 
-    $this->addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
+    $this->addDefaultButtons(
+      ts('Continue', array('domain' => 'de.systopia.donrec')),
+      'next',
+      'cancel'
+    );
   }
 
   function setDefaultValues() {
