@@ -38,6 +38,14 @@
     </td>
   </tr>
   <tr>
+    <td class="label">
+      {ts domain="de.systopia.donrec"}Select the currency{/ts}:
+    </td>
+    <td>
+      {$form.donrec_contribution_currency.html}
+    </td>
+  </tr>
+  <tr>
     <td></td>
     <td>
       <div class="crm-submit-buttons">
