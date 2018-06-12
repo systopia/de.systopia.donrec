@@ -41,8 +41,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   public static function create($params) {
     self::getCustomFields();
     $fields = self::$_custom_fields;
-    $group_id = self::$_custom_group_id;
-    $table = "civicrm_value_donation_receipt_item_$group_id";
+    $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $params['contribution_hash'] = self::calculateChecksum($params);
 
     // build set-string
@@ -83,6 +82,7 @@ class CRM_Donrec_Logic_ReceiptItem {
   public static function createCopyAll($donation_receipt_id, $donation_receipt_copy_id) {
     // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
     self::getCustomFields();
+    $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     $sha1_string = sprintf($sha1_string,
                           self::$_custom_fields['type'],
@@ -97,7 +97,7 @@ class CRM_Donrec_Logic_ReceiptItem {
                           self::$_custom_fields['receive_date'],
                           self::$_custom_group_id);
 
-    $query = "INSERT INTO `civicrm_value_donation_receipt_item_%d`
+    $query = "INSERT INTO `$receipt_item_table`
     (`id`,
       `entity_id`,
       `%s`,
@@ -126,11 +126,10 @@ class CRM_Donrec_Logic_ReceiptItem {
     `%s`,
     `%s`,
    %s as `%s`
-    FROM `civicrm_value_donation_receipt_item_%d`
+    FROM `$receipt_item_table`
     WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
     $query = sprintf($query,
       // for spec part
-      self::$_custom_group_id,
       self::$_custom_fields['status'],
       self::$_custom_fields['type'],
       self::$_custom_fields['issued_in'],
@@ -157,7 +156,6 @@ class CRM_Donrec_Logic_ReceiptItem {
       self::$_custom_fields['receive_date'],
       $sha1_string,
       self::$_custom_fields['contribution_hash'],
-      self::$_custom_group_id,
       self::$_custom_fields['issued_in'],
       $donation_receipt_id,
       self::$_custom_fields['status']
@@ -172,15 +170,15 @@ class CRM_Donrec_Logic_ReceiptItem {
   */
   public static function deleteAll($donation_receipt_id, $status = NULL) {
     self::getCustomFields();
+    $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     if (!empty($status)) {
       $statusString = sprintf(" AND `%s` = '%s'", self::$_custom_fields['status'], $status);
     }else{
       $statusString = "";
     }
 
-    $query = "DELETE FROM `civicrm_value_donation_receipt_item_%d` WHERE `%s` = %d%s;";
+    $query = "DELETE FROM `$receipt_item_table` WHERE `%s` = %d%s;";
     $query = sprintf($query,
-                    self::$_custom_group_id,
                     self::$_custom_fields['issued_in'],
                     $donation_receipt_id,
                     $statusString);
@@ -194,9 +192,9 @@ class CRM_Donrec_Logic_ReceiptItem {
   */
   public static function setStatusAll($donation_receipt_id, $status = "WITHDRAWN") {
     self::getCustomFields();
-    $query = "UPDATE `civicrm_value_donation_receipt_item_%d` SET `%s` = %%1 WHERE `%s` = %d;";
+    $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
+    $query = "UPDATE `$receipt_item_table` SET `%s` = %%1 WHERE `%s` = %d;";
     $query = sprintf($query,
-                    self::$_custom_group_id,
                     self::$_custom_fields['status'],
                     self::$_custom_fields['issued_in'],
                     $donation_receipt_id
@@ -252,12 +250,12 @@ class CRM_Donrec_Logic_ReceiptItem {
     if (empty($contribution_id)) return FALSE;    // prevent SQL errors
     
     self::getCustomFields();
-    $custom_group_id = self::$_custom_group_id;
+    $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $status_field = self::$_custom_fields['status'];
 
     $query = "
       SELECT `id`
-      FROM `civicrm_value_donation_receipt_item_$custom_group_id`
+      FROM `$receipt_item_table`
       WHERE `entity_id` = $contribution_id
       AND `$status_field` = 'ORIGINAL'";
     $result = CRM_Core_DAO::singleValueQuery($query);

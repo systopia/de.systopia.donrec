@@ -55,8 +55,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     // initialize custom field map
     self::getCustomFields();
     $fields = self::$_custom_fields;
-    $custom_group_id = self::$_custom_group_id;
-    $table = "civicrm_value_donation_receipt_$custom_group_id";
+    $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
 
     // build SET-SQL
     $sql_set = "`entity_id`=$tokens[contact_id]";
@@ -166,8 +165,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function createCopy(&$parameters) {
     $receipt_id = $this->Id;
-    $receipt_group_id = self::$_custom_group_id;
     $receipt_fields = self::$_custom_fields;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
     $exclude = array('status', 'issued_on', 'issued_by', 'original_file');
@@ -178,7 +177,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
       }
     }
     $query = "
-      INSERT INTO `civicrm_value_donation_receipt_$receipt_group_id` (
+      INSERT INTO `$receipt_table` (
         `$receipt_fields[status]`,
         `$receipt_fields[issued_on]`,
         `$receipt_fields[issued_by]`,
@@ -189,7 +188,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         NOW() AS `$receipt_fields[issued_on]`,
         $uid AS `$receipt_fields[issued_by]`,
         $field_query
-      FROM `civicrm_value_donation_receipt_$receipt_group_id`
+      FROM `$receipt_table`
       WHERE `id` = $receipt_id
         AND `$receipt_fields[status]` = 'ORIGINAL'
     ";
@@ -209,13 +208,14 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function delete(&$parameters) {
     self::getCustomFields();
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
 
     // delete pdf file if exists
 
 
     $status = empty($parameters['status']) ? 'ORIGINAL' : $parameters['status'];
-    $query = "DELETE FROM `civicrm_value_donation_receipt_%d` WHERE `id` = %d";
-    $query = sprintf($query, self::$_custom_group_id, $this->Id);
+    $query = "DELETE FROM `$receipt_table` WHERE `id` = %d";
+    $query = sprintf($query, $this->Id);
     $result = CRM_Core_DAO::executeQuery($query, $status);
 
     CRM_Donrec_Logic_ReceiptItem::deleteAll($this->Id);
@@ -230,10 +230,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function setStatus($status, &$parameters) {
     $receipt_id = $this->Id;
-    $receipt_group_id = self::$_custom_group_id;
     $receipt_fields = self::$_custom_fields;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $query = "
-      UPDATE civicrm_value_donation_receipt_$receipt_group_id
+      UPDATE `$receipt_table`
       SET `$receipt_fields[status]` = '$status'
       WHERE `id` = $receipt_id
     ";
@@ -249,13 +249,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function getCopies() {
     $receipt_id = $this->Id;
-    $receipt_group_id = self::$_custom_group_id;
     $receipt_fields = self::$_custom_fields;
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-    $item_group_id = CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
     $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
-    $receipt_table_name = "civicrm_value_donation_receipt_$receipt_group_id";
-    $item_table_name = "civicrm_value_donation_receipt_item_$item_group_id";
+    $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $item_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $query = "
       SELECT c.id
       FROM `$receipt_table_name` o
@@ -311,8 +309,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public static function getReceiptsForContact($contact_id, &$parameters) {
     self::getCustomFields();
-    $query = "SELECT `id` FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d ORDER BY `%s` DESC;";
-    $query = sprintf($query, self::$_custom_group_id, $contact_id, self::$_custom_fields['issued_on']);
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $query = "SELECT `id` FROM `$receipt_table` WHERE `entity_id` = %d ORDER BY `%s` DESC;";
+    $query = sprintf($query, $contact_id, self::$_custom_fields['issued_on']);
     $results = CRM_Core_DAO::executeQuery($query);
     $receipts = array();
 
@@ -332,8 +331,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public static function getReceiptCountForContact($contact_id) {
     self::getCustomFields();
-    $query = "SELECT COUNT(`id`) FROM `civicrm_value_donation_receipt_%d` WHERE `entity_id` = %d";
-    $query = sprintf($query, self::$_custom_group_id, $contact_id);
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $query = "SELECT COUNT(`id`) FROM `$receipt_table` WHERE `entity_id` = %d";
+    $query = sprintf($query, $contact_id);
     return CRM_Core_DAO::singleValueQuery($query);
   }
 
@@ -364,9 +364,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * checks if the receipt exists, i.e. if there is at least one item
    */
   private function exists() {
-    $gid = self::$_custom_group_id;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT EXISTS(SELECT 1 FROM `civicrm_value_donation_receipt_$gid`
+      "SELECT EXISTS(SELECT 1 FROM `$receipt_table`
        WHERE `id` = %1);", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -375,10 +375,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   * @return bool TRUE if the receipt is an original otherwise FALSE
   */
   public function isOriginal() {
-    $gid = self::$_custom_group_id;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $status = self::$_custom_fields['status'];
     return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT EXISTS(SELECT 1 FROM `civicrm_value_donation_receipt_$gid`
+      "SELECT EXISTS(SELECT 1 FROM `$receipt_table`
        WHERE `id` = %1 AND `$status` = 'ORIGINAL');", array(1 => array($this->Id, 'Integer')));
   }
 
@@ -434,9 +434,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $receipt_id = $this->Id;
     $receipt_fields = self::$_custom_fields;
     $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
-    // TODO: FIX, look up table name!
-    $receipt_table_name = 'civicrm_value_donation_receipt_'.self::$_custom_group_id;
-    $item_table_name = 'civicrm_value_donation_receipt_item_'.CRM_Donrec_Logic_ReceiptItem::$_custom_group_id;
+    $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $item_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
 
     // get all the receipt data
     $query_receipt = "SELECT
@@ -565,10 +564,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
       return FALSE;
     }
     $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $receipt_id = $this->Id;
     $query = "
-      UPDATE `civicrm_value_donation_receipt_$receipt_group_id`
+      UPDATE `$receipt_table`
       SET `$receipt_fields[original_file]` = NULL
       WHERE id = $receipt_id
     ";
@@ -583,11 +582,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    */
   public function getOriginalFileId() {
     $receipt_fields = self::$_custom_fields;
-    $receipt_group_id = self::$_custom_group_id;
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $receipt_id = $this->Id;
     $query = "
       SELECT `$receipt_fields[original_file]`
-      FROM `civicrm_value_donation_receipt_$receipt_group_id`
+      FROM `$receipt_table`
       WHERE `id` = $receipt_id
     ";
     $file_id = CRM_Core_DAO::singleValueQuery($query);
