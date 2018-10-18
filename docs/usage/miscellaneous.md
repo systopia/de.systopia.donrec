@@ -58,19 +58,19 @@ to be entered as descripted below.*
 | <nobr>`{$type}`</nobr>                                | {BULK, SINGLE}                            | Buld or single donation receipt                                          |
 | <nobr>`{$issued_by}`</nobr>                           | Integer                                   | Contakt-ID of the admin user who issued the receipt                      |
 | <nobr>`{$issued_by_display_name}`</nobr>              | String                                    | Name of the issuer                                                       |
-| <nobr>`{$issued_on}`</nobr>                           | ISO-Datum                                 | Date of issueing the receipt                                             |
-| <nobr>`{$total_amount}`</nobr>                        | Dezimalzahl                               | Total amount                                                             |
-| <nobr>`{$total}`</nobr>                               | Dezimalzahl                               | equal to <nobr>`{$total_amount}`</nobr>                                  |
+| <nobr>`{$issued_on}`</nobr>                           | ISO date                                  | Date of issueing the receipt                                             |
+| <nobr>`{$total_amount}`</nobr>                        | Float                                     | Total amount                                                             |
+| <nobr>`{$total}`</nobr>                               | Float                                     | equal to <nobr>`{$total_amount}`</nobr>                                  |
 | <nobr>`{$totaltext}`</nobr>                           | String                                    | <nobr>`{$total}`</nobr> als german text string                           |
 | <nobr>`{$totalmoney}`</nobr>                          | String                                    | <nobr>`{$total}`</nobr> in CiviCRM's currency format                     |
-| <nobr>`{$today}`</nobr>                               | ISO-Datum                                 | egual to <nobr>`{$issued_on}`</nobr>                                     |
-| <nobr>`{$non_deductible_amount}`</nobr>               | Dezimalzahl                               | Total of non-deductible amount                                           |
-| <nobr>`{$currency}`</nobr>                            | drei Buchstaben                           | Currently, always 'EUR'                                                  |
-| <nobr>`{$date_from}`</nobr>                           | ISO-Datum                                 | Start of the period for the receipts                                     |
-| <nobr>`{$date_to}`</nobr>                             | ISO-Datum                                 | End of the period for the receipts                                       |
-| <nobr>`{$original_file}`</nobr>                       | ID der Originaldatei                      | Set only, if there is an original donation receipt, and option is active |
-| <nobr>`{$lines}`</nobr>                               | Array mit Zuwendungen                     | see below                                                                |
-| <nobr>`{$items}`</nobr>                               | Array mit Zuwendungen                     | as<nobr>`{$lines}`</nobr>, only available for bulk receipts              |
+| <nobr>`{$today}`</nobr>                               | ISO date                                  | egual to <nobr>`{$issued_on}`</nobr>                                     |
+| <nobr>`{$non_deductible_amount}`</nobr>               | Float                                     | Total of non-deductible amount                                           |
+| <nobr>`{$currency}`</nobr>                            | ISO 4217 currency code (3 characters)     | Currently, always 'EUR'                                                  |
+| <nobr>`{$date_from}`</nobr>                           | ISO date                                  | Start of the period for the receipts                                     |
+| <nobr>`{$date_to}`</nobr>                             | ISO date                                  | End of the period for the receipts                                       |
+| <nobr>`{$original_file}`</nobr>                       | ID of the original file                   | Set only, if there is an original donation receipt, and option is active |
+| <nobr>`{$lines}`</nobr>                               | Array of contributions                    | see below                                                                |
+| <nobr>`{$items}`</nobr>                               | Array of contributions                    | as<nobr>`{$lines}`</nobr>, only available for bulk receipts              |
 | <nobr>`{$contributor.id}`</nobr>                      | Integer                                   | Contakt ID of contributor                                                |
 | <nobr>`{$contributor.contact_type}`</nobr>            | String                                    | Contact type of contributor                                              |
 | <nobr>`{$contributor.display_name}`</nobr>            | String                                    | Display name of contributor                                              |
@@ -113,11 +113,11 @@ following code example:
 
 Within this loop, the follwing tokens are available:
 
-| Token                                        | Type        | Comment                                   |
-|----------------------------------------------|-------------|-------------------------------------------|
-| <nobr>`{$item.receive_date}`</nobr>          | ISO Datum   | Receive date of contribution              |
-| <nobr>`{$item.contribution_id}`</nobr>       | Integer     | ID of contribution                        |
-| <nobr>`{$item.total_amount}`</nobr>          | Dezimalzahl | Total amount of contribution              |
-| <nobr>`{$item.non_deductible_amount}`</nobr> | Dezimalzahl | Non deductible amount of the contribution |
-| <nobr>`{$item.financial_type_id}`</nobr>     | Integer     | Financial type ID                         |
-| <nobr>`{$item.financial_type}`</nobr>        | String      | Name of financial type                    |
+| Token                                        | Type     | Comment                                   |
+|----------------------------------------------|----------|-------------------------------------------|
+| <nobr>`{$item.receive_date}`</nobr>          | ISO date | Receive date of contribution              |
+| <nobr>`{$item.contribution_id}`</nobr>       | Integer  | ID of contribution                        |
+| <nobr>`{$item.total_amount}`</nobr>          | Float    | Total amount of contribution              |
+| <nobr>`{$item.non_deductible_amount}`</nobr> | Float    | Non deductible amount of the contribution |
+| <nobr>`{$item.financial_type_id}`</nobr>     | Integer  | Financial type ID                         |
+| <nobr>`{$item.financial_type}`</nobr>        | String   | Name of financial type                    |
