@@ -1,0 +1,26 @@
+site_name: Donation Receipts
+repo_url: https://github.com/systopia/de.systopia.donrec
+theme: material
+
+pages:
+- 'Preface': index.md
+- 'Quick facts': quick-facts.md
+- 'Acknowledgements': acknowledgements.md
+- 'Installation': installation.md
+- 'Usage':
+  - 'Creating donation receipts': usage/creating-donation-receipts.md
+  - '"Donation Receipts" tab on the contact page': usage/donation-receipts-tab-contact-page.md
+  - 'Miscellaneous': usage/miscellaneous.md
+
+markdown_extensions:
+- attr_list
+- admonition
+- def_list
+- codehilite
+- toc:
+    permalink: true
+- pymdownx.superfences
+- pymdownx.inlinehilite
+- pymdownx.tilde
+- pymdownx.betterem
+- pymdownx.mark
