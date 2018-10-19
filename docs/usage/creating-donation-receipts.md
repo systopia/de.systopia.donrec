@@ -28,14 +28,13 @@ these procedures, a deliberate set of user permissions is provided.
 
 For receipting a donation, the following parameters can be chosen and set:
 
-- *Type of donation receipt*: bulk receipt / single receipt
-  
+- *Type of donation receipt*: bulk receipt / single receipt<br />  
   The generation of receipts is done using a message template, stored in the
   corresponding templates location of CiviCRM, which is a HTML template
   optimised for pdf generation. Please note that the existing templates are
   user-specific and designed according to german tax requirements, they will
   have to be modified for use with other organisations and in other countries.
-
+  <br />
   When chosing the type of receipt, one has to bear in mind that when
   "single receipt" is chosen, only single receipts are rendered, no matter how
   many donations exist in the current snapshot. In contrast, when "bulk receipt"
@@ -45,36 +44,33 @@ For receipting a donation, the following parameters can be chosen and set:
   administration > communication > message templates > system workflow message.
   Some expertise in HTML is required.
 
-- *Time period of the receipt*: this year / last year / custom range of dates
+- *Time period of the receipt*: this year / last year / custom range of dates  
+    - "this year" renders receipts for the actual year, starting with 01.
+      January and including the actual day of receipting.
   
-  "this year" renders receipts for the actual year, starting with 01. January
-  and including the actual day of receipting.
+    - "last year" renders receipts for the whole of the calendary year that is
+      the last before the actual year.
 
-  "last year" renders receipts for the whole of the calendary year that is the
-  last before the actual year.
-
-  "custom range of dates" behaves according to other searches using the
-  parameter date/ range of dates. As it is a custom search, the user may choose
-  a range of dates appropriate for the task at hand. On the other hand, care has
-  to be taken in order to produce meaningful results. Bulk receipts may be
-  rendered over a period of several years. Whether this may be acceptable under
-  your tax laws ist to be assured by the user.
+    - "custom range of dates" behaves according to other searches using the
+      parameter date/ range of dates. As it is a custom search, the user may
+      choose a range of dates appropriate for the task at hand. On the other
+      hand, care has to be taken in order to produce meaningful results. Bulk
+      receipts may be rendered over a period of several years. Whether this may
+      be acceptable under your tax laws ist to be assured by the user.
 
   **Caution**: There is no link between the date of an official permit to
   receipt donations and the date of the donation. You may receipt donations that
   have been received before the date of the permit to do so. It is under the
   responsibility of the user to assure compliance to local law and rules!
 
-- *Minimum total (currency) necessary for rendering a receipt*:
-
+- *Minimum total (currency) necessary for rendering a receipt*:<br />
   There is no such threshold to be set within the extension. All selections of
   data may be performed by the search tools already provided by CiviCRM. For
   setting am minimum total, the search tool "contributors by aggregate totals"
   may be used.
 
 - *Format to be rendered*: individual pdf file(s) / csv file(s) /
-  pdf files grouped according to number of pages
-
+  pdf files grouped according to number of pages<br />
   The receipts may be rendered as pdf files. For handling a vast number of
   files, archives are generated. Under Linux, the suitable tools are provided
   with the most of distributions. Under MS Windows, the use of "7zip" is
