@@ -37,7 +37,7 @@ class CRM_Utils_Lang_Es_Es {
   );
 
   static private $DECENAS = array(
-    'VENTI',
+    'VEINTI',
     'TREINTA ',
     'CUARENTA ',
     'CINCUENTA ',
@@ -81,12 +81,13 @@ class CRM_Utils_Lang_Es_Es {
    * @param $miMoneda clave de la moneda
    * @return string completo
    */
-  static public function toWords($number, $miMoneda = null) {
+  static public function toWords($number, $miMoneda = NULL) {
     if (strpos($number, self::$decimal_mark) === FALSE) {
       $convertedNumber = array(
         self::convertNumber($number, $miMoneda, 'entero')
       );
-    } else {
+    }
+    else {
       $number = explode(self::$decimal_mark, str_replace(self::$separator, '', trim($number)));
 
       $convertedNumber = array(
@@ -104,9 +105,9 @@ class CRM_Utils_Lang_Es_Es {
    * @param $type tipo de dígito (entero/decimal)
    * @return $converted string convertido
    */
-  static private function convertNumber($number, $miMoneda = null, $type) {
+  static private function convertNumber($number, $miMoneda = NULL, $type) {
     $converted = '';
-    if ($miMoneda !== null) {
+    if ($miMoneda !== NULL) {
       try {
         $moneda = array_filter(self::$MONEDAS, function($m) use ($miMoneda) {
           return ($m['currency'] == $miMoneda);
@@ -119,16 +120,18 @@ class CRM_Utils_Lang_Es_Es {
           return;
         }
         ($number < 2 ? $moneda = $moneda[0]['singular'] : $moneda = $moneda[0]['plural']);
-      } catch (Exception $e) {
+      }
+      catch (Exception $e) {
         echo $e->getMessage();
         return;
       }
-    }else{
+    }
+    else {
       $moneda = '';
     }
 
     if (($number < 0) || ($number > 999999999)) {
-      return false;
+      return FALSE;
     }
 
     $numberStr = (string) $number;
@@ -140,24 +143,27 @@ class CRM_Utils_Lang_Es_Es {
     if (intval($millones) > 0) {
       if ($millones == '001') {
         $converted .= 'UN MILLON ';
-      } else if (intval($millones) > 0) {
+      }
+      elseif (intval($millones) > 0) {
         $converted .= sprintf('%sMILLONES ', self::convertGroup($millones));
       }
     }
 
     if (intval($miles) > 0) {
       if ($miles == '001') {
-          $converted .= 'MIL ';
-      } else if (intval($miles) > 0) {
-          $converted .= sprintf('%sMIL ', self::convertGroup($miles));
+        $converted .= 'MIL ';
+      }
+      elseif (intval($miles) > 0) {
+        $converted .= sprintf('%sMIL ', self::convertGroup($miles));
       }
     }
 
     if (intval($cientos) > 0) {
       if ($cientos == '001') {
-          $converted .= 'UN ';
-      } else if (intval($cientos) > 0) {
-          $converted .= sprintf('%s ', self::convertGroup($cientos));
+        $converted .= 'UN ';
+      }
+      elseif (intval($cientos) > 0) {
+        $converted .= sprintf('%s ', self::convertGroup($cientos));
       }
     }
 
@@ -177,23 +183,26 @@ class CRM_Utils_Lang_Es_Es {
 
     if ($n == '100') {
       $output = "CIEN ";
-    } else if ($n[0] !== '0') {
+    }
+    elseif ($n[0] !== '0') {
       $output = self::$CENTENAS[$n[0] - 1];
     }
 
-    $k = intval(substr($n,1));
+    $k = intval(substr($n, 1));
 
     if ($k <= 20) {
       $output .= self::$UNIDADES[$k];
     }
     else {
-      if(($k > 30) && ($n[2] !== '0')) {
+      if (($k > 30) && ($n[2] !== '0')) {
         $output .= sprintf('%sY %s', self::$DECENAS[intval($n[1]) - 2], self::$UNIDADES[intval($n[2])]);
-      } else {
+      }
+      else {
         $output .= sprintf('%s%s', self::$DECENAS[intval($n[1]) - 2], self::$UNIDADES[intval($n[2])]);
       }
     }
 
     return $output;
   }
+
 }
