@@ -53,7 +53,7 @@ class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
     // create a receipt
     $snapshot_line_ids = array(1,2,3);
     $params = array();
-    $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $snapshot_line_ids, &$parameters);
+    $result = CRM_Donrec_Logic_Receipt::createBulkFromSnapshot($snapshot, $snapshot_line_ids, $params);
     $this->assertEquals(TRUE, $result, "CRM_Donrec_Logic_Receipt::createSingleFromSnapshot returned FALSE");
   }
 
