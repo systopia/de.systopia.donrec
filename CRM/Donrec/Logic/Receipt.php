@@ -159,11 +159,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Creates a copy of this receipt. The receipt status will be 'COPY'
    *
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-   *
    * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
-  public function createCopy(&$parameters) {
+  public function createCopy() {
     $receipt_id = $this->Id;
     $receipt_fields = self::$_custom_fields;
     $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
