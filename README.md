@@ -13,6 +13,7 @@ Features:
 * Compliant with German tax requirements
 
 Restrictions (ask us for a fix):
+* **Drupal or Joomla CMS**. WordPress users currently report errors.
 * Currently hardcoded for EUR
 * Shipped template German and optimised for ``wkhtm2pdf``
 * "Amount in words" currently German only
