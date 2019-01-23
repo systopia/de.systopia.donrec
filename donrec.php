@@ -108,6 +108,10 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
           'title' => ts('Issue donation receipt(s)', array('domain' => 'de.systopia.donrec')),
           'class' => 'CRM_Donrec_Form_Task_DonrecTask',
           'result' => false);
+      $tasks[] = array(
+          'title' => ts('Withdraw donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'class' => 'CRM_Donrec_Form_Task_DonrecResetTask',
+          'result' => false);
     }
   }
 

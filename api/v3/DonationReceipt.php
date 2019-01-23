@@ -24,10 +24,10 @@ function civicrm_api3_donation_receipt_withdraw($params) {
       // TODO: error-handling...
       // TODO: define statuus centrally
       $copies = $receipt->getCopies();
-      $result = $receipt->setStatus('WITHDRAWN');
+      $result = $receipt->setStatus('WITHDRAWN', $params);
       $deleted = $receipt->deleteOriginalFile();
       foreach ($copies as $copy) {
-        $result = $copy->setStatus('WITHDRAWN_COPY');
+        $result = $copy->setStatus('WITHDRAWN_COPY', $params);
         $deleted = $copy->deleteOriginalFile();
       }
     }else{
