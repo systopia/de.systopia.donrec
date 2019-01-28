@@ -165,90 +165,14 @@ class CRM_Donrec_Logic_Template
     $html = $this->_template->msg_html;
 
     // --- watermark injection ---
+    $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_' . str_replace('_', '', ucwords(CRM_Donrec_Logic_Settings::get('donrec_watermark_preset'), '_'));
+    /* @var \CRM_Donrec_Logic_WatermarkPreset $watermark */
+    $watermark = new $watermark_class();
+    $watermark->injectMarkup($html);
+    $watermark->injectStyles($html);
+
     // identify pdf engine
-    $pdf_engine = $config->wkhtmltopdfPath;
-    if (!empty($pdf_engine)) {
-      $wk_is_enabled = TRUE;
-      $watermark_css = '<style>
-                        {literal}
-                        body {
-                          background: url("data:image/svg+xml;utf8,\
-                          <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'29.7cm\' width=\'21cm\'>\
-                            <text \
-                              x=\'-55%\'\
-                              y=\'65%\'\
-                              fill=\'#808080\'\
-                              fill-opacity=\'0.2\'\
-                              font-size=\'100pt\'\
-                              font-family=\'Arial\'\
-                              transform=\'rotate(-45)\'\
-                            >{/literal}{if $watermark}{$watermark}{/if}{literal}</text>\
-                          </svg>");
-                          background-repeat: repeat;
-                        }
-                        {/literal}
-                        </style>
-                        ';
-    }else{
-      $wk_is_enabled = FALSE;
-      // TODO: SVG background does not work with dompdf. Fixed positioned
-      // elements does not repeat either.
-      $watermark_css = '<style>
-                        {literal}
-                        .watermark {
-                          position: fixed;
-                          opacity: 0.10;
-                          -ms-transform: rotate(-45deg); /* IE 9 */
-                          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
-                          transform: rotate(-45deg);
-                          font-size: 100pt!important;
-                        }
-
-                        .watermark-center {
-                          left: 30px;
-                          top: 650px;
-                        }
-
-                        {/literal}
-                        </style>
-                        ';
-    }
-    $smarty->assign('wk_enabled', $wk_is_enabled);
-
-    // find </style> element
-    $matches = array();
-    preg_match('/<\/style>/', $html, $matches, PREG_OFFSET_CAPTURE);
-    if (count($matches) == 1) {
-      $head_offset = $matches[0][1];
-      $html = substr_replace($html, $watermark_css, $head_offset + strlen($matches[0][0]), 0);
-    }else if (count($matches) < 1) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
-      $matches = array();
-      preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
-      if (count($matches) == 1) {
-        $head_offset = $matches[0][1];
-        $html = substr_replace($html, $watermark_css, $head_offset, 0);
-      }else{
-        CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
-        return FALSE;
-      }
-    }
-
-    if (!$wk_is_enabled) {
-      // prepare watermark
-      $watermark_site = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
-
-      // find <body> element
-      $matches = array();
-      preg_match('/<body[^>]*>/', $html, $matches, PREG_OFFSET_CAPTURE);
-      if (count($matches) == 1) {
-        $body_offset = $matches[0][1];
-        $html = substr_replace($html, $watermark_site, $body_offset + strlen($matches[0][0]), 0);
-      }else if (count($matches) < 1) {
-        CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
-        return FALSE;
-      }
-    }
+    $smarty->assign('wk_enabled', !empty($config->wkhtmltopdfPath));
 
     // --- watermark injection end ---
     // compile template

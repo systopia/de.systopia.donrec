@@ -139,4 +139,6 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
     return TRUE;
   }
+
+  // TODO: Upgrade for watermark peresets.
 }

@@ -69,6 +69,10 @@
     <div>
       <table>
         <tr>
+          <td class="label">{$form.donrec_watermark_preset.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Watermark preset{/ts}", {literal}{"id":"id-donrec-watermark-preset","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_watermark_preset.html}</td>
+        </tr>
+        <tr>
           <td class="label">{$form.draft_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Draft Text{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.draft_text.html}</td>
         </tr>

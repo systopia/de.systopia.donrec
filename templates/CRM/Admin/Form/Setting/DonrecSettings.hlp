@@ -11,6 +11,10 @@
     <p>{ts domain="de.systopia.donrec"}You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs.{/ts}</p>
 {/htxt}
 
+{htxt id='id-donrec-watermark-preset'}
+    <p>{ts domain="de.systopia.donrec"}Select a pre-configured way of displaying watermarks on copies and drafts.{/ts}</p>
+{/htxt}
+
 {htxt id='id-draft-text'}
     <p>{ts domain="de.systopia.donrec"}This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons.{/ts}</p>
 {/htxt}
