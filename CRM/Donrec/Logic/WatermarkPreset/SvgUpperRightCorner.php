@@ -30,13 +30,13 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner extends CRM_Donrec_Lo
                           background: url("data:image/svg+xml;utf8,\
                           <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'29.7cm\' width=\'21cm\'>\
                             <text \
-                              x=\'-55%\'\
-                              y=\'65%\'\
+                              x=\'95%\'\
+                              y=\'5%\'\
+                              text-anchor=\'end\'\
                               fill=\'#808080\'\
                               fill-opacity=\'0.2\'\
-                              font-size=\'100pt\'\
+                              font-size=\'20pt\'\
                               font-family=\'Arial\'\
-                              transform=\'rotate(-45)\'\
                             >{/literal}{if $watermark}{$watermark}{/if}{literal}</text>\
                           </svg>");
                           background-repeat: repeat;

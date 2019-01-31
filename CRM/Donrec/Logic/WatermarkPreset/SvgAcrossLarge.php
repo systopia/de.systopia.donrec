@@ -29,8 +29,10 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge extends CRM_Donrec_Logic_W
                           background: url("data:image/svg+xml;utf8,\
                           <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'29.7cm\' width=\'21cm\'>\
                             <text \
-                              x=\'-55%\'\
-                              y=\'65%\'\
+                              x=\'33%\'\
+                              y=\'66%\'\
+                              dx=\'-50%\'\
+                              text-anchor=\'middle\'\
                               fill=\'#808080\'\
                               fill-opacity=\'0.2\'\
                               font-size=\'100pt\'\
