@@ -68,15 +68,16 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
     if (!$snapshot) {
       $error = 'snapshot error';
     } else {
-      $receipt = $snapshot->getLine($snapshot_line_id);
-      if (!$receipt) {
+      $snapshot_receipt = $snapshot->getSnapshotReceipt($snapshot->getIds(), $is_test);
+      $snapshot_receipt_tokens = $snapshot_receipt->getAllTokens();
+      if (!$snapshot_receipt_tokens) {
         $error = 'snapshot error';
       }
     }
 
     // try to send the email
     if (!$error) {
-      $error = $this->sendEmail($receipt, $file, $is_test, $snapshot_line_id);
+      $error = $this->sendEmail($snapshot_receipt_tokens, $file, $is_test, $snapshot_line_id);
     }
 
     if ($error) {
@@ -87,14 +88,16 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'subject'            => ts("Donation receipt not delivered", array('domain' => 'de.systopia.donrec')),
           'status_id'          => CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name'),
           'activity_date_time' => date('YmdHis'),
-          'source_contact_id'  => $receipt['created_by'],
-          'target_id'          => $receipt['contact_id'],
+          'source_contact_id'  => $snapshot_receipt_tokens['issued_by'],
+          'target_id'          => $snapshot_receipt_tokens['contact_id'],
           // 'assignee_contact_id'=> (int) $this->config->getAdminContactID(),
           'details'            => $this->getErrorMessage($error),
           ));
       }
 
       // store the error in the process information (to be processed in wrap-up)
+      // TODO: This should be done for all snapshot lines involved, since this
+      // may be a bulk receipt with multiple lines.
       $this->updateProcessInformation($snapshot_line_id, array('email_error' => $error));
 
     } // END if $error
@@ -145,6 +148,8 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
       if ($is_test) {
         // in test mode: create message
+        // TODO: This should be done for all snapshot lines involved, since this
+        // may be a bulk receipt with multiple lines.
         $this->updateProcessInformation($snapshot_line_id, array('sent' => $contact['email']));
       } else {
         // in case this is required: make sure the bouce processing is temporarily changed
