@@ -69,6 +69,9 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       $error = 'snapshot error';
     } else {
       $receipt = $snapshot->getLine($snapshot_line_id);
+      $snapshot_receipt = $snapshot->getSnapshotReceipt($snapshot->getIds(), $is_test);
+      $snapshot_receipt_tokens = $snapshot_receipt->getAllTokens();
+      $receipt = array_merge($receipt, $snapshot_receipt_tokens);
       if (!$receipt) {
         $error = 'snapshot error';
       }
