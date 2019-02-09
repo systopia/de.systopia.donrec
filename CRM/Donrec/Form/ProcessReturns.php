@@ -112,6 +112,17 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
   public function postProcess() {
     $params = $this->exportValues();
 
+    $email_processor = new CRM_Donrec_Logic_EmailReturnProcessor(
+      $params['returns_server'],
+      $params['returns_user'],
+      $params['returns_pass'],
+      $params['returns_pattern'],
+      $params['returns_limit']
+    );
+
+    // contact_ids for activities
+    $contact_ids = $email_processor->run();
+
     // store defaults
     $defaults = $params;
     unset($defaults['returns_pass']);
