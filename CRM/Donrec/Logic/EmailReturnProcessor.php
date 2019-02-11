@@ -14,6 +14,9 @@
  */
 class CRM_Donrec_Logic_EmailReturnProcessor {
 
+  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{receipt_id}#";
+  public static $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
+
   private $hostname;
   private $username;
   private $password;

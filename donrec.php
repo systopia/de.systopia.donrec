@@ -244,6 +244,13 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
  }
 
 /**
+ * Add headers to sent donation receipts
+ */
+function donrec_civicrm_alterMailParams(&$params, $context) {
+  CRM_Donrec_Exporters_EmailPDF::addDonrecMailCodeHeader($params, $context);
+}
+
+/**
  * Set settings
  */
 function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
