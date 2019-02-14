@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2019 SYSTOPIA                       |
+| Copyright (C) 2019 SYSTOPIA                            |
 | Author: B. Endres (endres -at- systopia.de)            |
 | Author: P.Batroff (batroff -at- systopia.de)           |
 | http://www.systopia.de/                                |
@@ -16,21 +16,16 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
 
   public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{receipt_id}#";
   public static $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
+  public static $PROCESSED_FOLDER   = 'INBOX.CiviMail.processed';
+  public static $IGNORED_FOLDER     = 'INBOX.CiviMail.ignored';
+  public static $FAILED_FOLDER      = 'INBOX.CiviMail.failed';
 
-  private $hostname;
-  private $username;
-  private $password;
-  private $zwb_pattern;
-  private $limit;
+  protected $params = NULL;
 
-  private $imap_hostname;
-//  static mail folder for parsed/processed mails, according to bounce processing
-  private $mail_folders = array('INBOX.CiviMail.ignored', 'INBOX.CiviMail.processed');
-
-  private $mailbox;
+  private $mailbox = NULL;
+  private $folder_list = NULL;
 
   private $result_contact_ids;
-
   private $matched_message_ids;
   private $unmatched_message_ids;
 
@@ -38,110 +33,144 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
   /**
    * CRM_Donrec_Logic_EmailReturnProcessor constructor.
    *
-   * @param $hostname
-   * @param $username
-   * @param $password
-   * @param $zwb_pattern
-   * @param $limit
+   * @param $params array see civicrm_api3_donation_receipt_engine_processreturns
    */
-  public function __construct($hostname, $username, $password, $zwb_pattern, $limit) {
-    $this->hostname   = $hostname;
-    $this->username   = $username;
-    $this->password   = $password;
-    $this->zwb_pattern = html_entity_decode($zwb_pattern);
-    $this->limit = $limit;
-    $this->result_contact_ids = array();
+  public function __construct($params) {
+    $this->params = $params;
 
-    $this->get_hostname();
+    // connect
+    $this->mailbox = $this->create_imap_connection();
+
+    // make sure all our folders are there...
+    $this->check_or_create_mailbox_folder(self::$IGNORED_FOLDER);
+    $this->check_or_create_mailbox_folder(self::$PROCESSED_FOLDER);
+    $this->check_or_create_mailbox_folder(self::$FAILED_FOLDER);
   }
 
 
   /**
    * Run Email Processor:
    *   search for Mails with given ZWB string
+   *
+   * @return array stats on the result
    * @throws \Exception
    */
   public function run() {
-    $this->mailbox = $this->create_imap_connection();
-    try {
-      $this->check_or_create_mailbox_folder();
-      $matched_messages = $this->get_all_mails_from_mailbox();
-      $this->extract_contact_ids_from_messages($matched_messages);
-      $this->move_emails();
+    $stats = [
+        'count'     => 0,
+        'processed' => 0,
+        'ignored'   => 0,
+        'failed'    => 0];
 
-    } catch(Exception $e) {
-      // Close Connection, then throw Exception out
-      imap_close($this->mailbox);
-      throw new Exception("Error {$e->getMessage()}");
+    // prepare the pattern
+    if (empty($this->params['pattern'])) {
+      $this->params['pattern'] = str_replace('{contact_id}', '(?P<contact_id>[0-9]+)', self::$ZWB_HEADER_PATTERN);
+      $this->params['pattern'] = str_replace('{receipt_id}', '(?P<receipt_id>[0-9]+)', $this->params['pattern']);
     }
-    imap_close($this->mailbox, CL_EXPUNGE);
-    return $this->result_contact_ids;
-  }
+    $this->params['pattern'] = "|{$this->params['pattern']}|";
 
+    // get all emails
+    $all_messages = $this->get_all_mails_from_mailbox();
 
-  /**
-   * @param $messages
-   */
-  private function extract_contact_ids_from_messages($messages) {
-//    $pattern = "/{$this->zwb_pattern}/";
-    $matches = array();
-    $matched_message_ids = array();
-    $unmatched_message_ids = array();
-    foreach ($messages as $key => $message_id){
-      if ($key >= $this->limit) {
+    foreach ($all_messages as $key => $message_id) {
+      if ($stats['count'] >= $this->params['limit']) {
         break;
+      } else {
+        $stats['count'] += 1;
       }
 
-      $message_body = imap_body($this->mailbox, $message_id, FT_UID);
-      preg_match($this->zwb_pattern, $message_body, $matches);
+      try {
+        list($contact_id, $receipt_id) = $this->parseMessage($message_id, $this->params['pattern']);
+        if ($contact_id && $receipt_id) {
+          $success = $this->processMatch($contact_id, $receipt_id);
+          if ($success) {
+            $stats['processed'] += 1;
+            $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
+          } else {
+            $stats['failed'] += 1;
+            $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
+          }
 
-      if (isset($matches['contact_id'])) {
-        $this->result_contact_ids[] = $matches['contact_id'];
-        $matched_message_ids[] = $message_id;
-      } else {
-        $unmatched_message_ids[] = $message_id;
+        } else {
+          $stats['ignored'] += 1;
+          $this->move_message_to_folder($message_id, self::$IGNORED_FOLDER);
+        }
+      } catch (Exception $ex) {
+        CRM_Core_Error::debug_log_message("MatchingEngine.processreturns failed on message '{$message_id}': " . $ex->getMessage());
+        $stats['failed'] += 1;
+        $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
+      } finally {
+        imap_expunge($this->mailbox);
       }
     }
 
-    $this->matched_message_ids = implode(',', $matched_message_ids);
-    $this->unmatched_message_ids = implode(',', $unmatched_message_ids);
+    // close mail
+    imap_close($this->mailbox, CL_EXPUNGE);
+
+    return $stats;
   }
 
-
   /**
-   * move maatched emails to respective folders
-   */
-  private function move_emails() {
-    $this->move_message_to_folder($this->matched_message_ids, 'INBOX.CiviMail.processed');
-    $this->move_message_to_folder($this->unmatched_message_ids, 'INBOX.CiviMail.ignored');
-    // delete mails marked for deletion. Needed for imap_move
-    imap_expunge($this->mailbox);
-  }
-
-
-  /**
-   * @param $message_id   (FT_UID)
-   * @param $folder         Valid IMAP mailbox, NOT the whole mailbox name
-   */
-  private function move_message_to_folder($message_id, $folder) {
-    $res = imap_mail_move($this->mailbox, $message_id, $folder, CP_UID);
-    // move back to inbox. Imap is weird.
-//    imap_reopen($this->mailbox, $this->get_hostname("INBOX"));
-    print "something;";
-  }
-
-
-
-  /**
-   * Search in Inbox Emails, BODY for provided string
-   *
-   * Edit: Get ALL Mails, then apply regex pattern to BODY later
-   *
-   * TODO: respect limit
-   *
+   * Extract contact_id and receipt_id from the given message
+   * @param $message_id string IMAP message ID
+   * @param $pattern    string scanner pattern
    * @return array
    */
-  private function get_all_mails_from_mailbox() {
+  protected function parseMessage($message_id, $pattern) {
+    // first try to find it in the HEADER
+    $message_header = imap_fetchheader($this->mailbox, $message_id, FT_UID);
+    preg_match($pattern, $message_header, $match);
+    if (!$match) {
+      // not found? try BODY instead
+      $message_body = imap_body($this->mailbox, $message_id, FT_UID);
+      preg_match($pattern, $message_body, $match);
+    }
+
+    if ($match) {
+      return [$match['contact_id'], $match['receipt_id']];
+    } else {
+      return [NULL, NULL];
+    }
+  }
+
+  /**
+   * Process a code match, i.e.:
+   *  - create an activity if requested
+   *  - withdraw receipt if requested
+   *
+   * @param $contact_id int contact ID
+   * @param $receipt_id int receipt (internal) ID
+   *
+   * @return bool did the processing work?
+   */
+  protected function processMatch($contact_id, $receipt_id) {
+    // TODO: implement
+
+    CRM_Core_Error::debug_log_message("TODO: process $contact_id, $receipt_id");
+
+    return TRUE;
+  }
+
+  /**
+   * @param $message_id int    message ID (FT_UID)
+   * @param $folder     string folder name (not full path)
+   */
+  protected function move_message_to_folder($message_id, $folder) {
+    $success = imap_mail_move($this->mailbox, $message_id, $folder, CP_UID);
+    if ($success) {
+      imap_expunge($this->mailbox);
+    } else {
+      CRM_Core_Error::debug_log_message("MOVE of [{$message_id}] to '{$folder}' FAILED");
+    }
+  }
+
+  /**
+   * Get all mails from the INBOX
+   *
+   * @todo: somehow respect limit ($this->params['limit'])
+   * @return array
+   */
+  protected function get_all_mails_from_mailbox() {
     imap_reopen($this->mailbox, $this->get_hostname("INBOX"));
     $imap_messages = imap_search ( $this->mailbox, 'ALL', SE_UID);
     return $imap_messages;
@@ -149,50 +178,63 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
 
 
   /**
+   * Verify that the mailbox folders are present
+   *
    * @throws \Exception
    */
-  private function check_or_create_mailbox_folder() {
-    $list = imap_list($this->mailbox, $this->get_hostname(), "*");
+  protected function check_or_create_mailbox_folder($folder) {
+    $list = $this->get_folder_list();
     if (is_array($list)) {
-      foreach ($this->mail_folders as $folder) {
-        $mailbox_name = $this->get_hostname(imap_utf7_encode($folder));
-        if (!in_array($mailbox_name, $list)) {
-          imap_createmailbox($this->mailbox, $this->get_hostname(imap_utf7_encode($folder)));
-        }
+      $mailbox_name = $this->get_hostname(imap_utf7_encode($folder));
+      if (!in_array($mailbox_name, $list)) {
+        // create folder
+        $this->folder_list = NULL; // reset folder list
+        imap_createmailbox($this->mailbox, $this->get_hostname(imap_utf7_encode($folder)));
       }
     } else {
-      throw new Exception("Failed to list IMAP Mailboxes.");
+      throw new Exception("Failed to list/create IMAP folders.");
     }
+  }
+
+  /**
+   * Get a cached list of all folders
+   *
+   * @return array
+   */
+  protected function get_folder_list() {
+    if ($this->folder_list === NULL) {
+      $this->folder_list = imap_list($this->mailbox, $this->get_hostname(), "*");
+    }
+    return $this->folder_list;
   }
 
 
   /**
+   * Open the IMAP connection
+   *
    * @return resource
    * @throws \Exception
    */
   private function create_imap_connection() {
-    $mbox = imap_open($this->get_hostname(), $this->username, $this->password, OP_HALFOPEN);
+    $mbox = imap_open($this->get_hostname(), $this->params['username'], $this->params['password'], OP_HALFOPEN);
     if (!$mbox) {
-      throw new Exception("Couldn't connect to {$this->imap_hostname}. Error: " . imap_last_error());
+      throw new Exception("Couldn't connect to {$this->params['hostname']}. Error: " . imap_last_error());
     }
     return $mbox;
   }
 
 
   /**
-   * TODO: amend for configuration. Needs TLS, SSL and nonencryption option
+   * Get the get an IMAP reference
+   *
    * @param string $mailfolder
+   * @todo amend for configuration. Needs TLS, SSL and nonencryption option
    *
    * @return string
    */
   private function get_hostname($mailfolder = "") {
     // TODO: Verify hostname? Needs to be host:port
-    // Currently static imaps
-//    $host = "{" . $this->hostname . "/imap/ssl}{$mailfolder}";
-//    debugging systopia server uses TLS
-    $host = "{" . $this->hostname . "/tls/novalidate-cert}{$mailfolder}";
+    $host = "{" . $this->params['hostname'] . "/tls/novalidate-cert}{$mailfolder}";
     return $host;
   }
-
-
 }

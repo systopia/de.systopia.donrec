@@ -22,7 +22,7 @@ function civicrm_api3_donation_receipt_withdraw($params) {
   if(!empty($receipt)) {
     if($receipt->isOriginal()) {
       // TODO: error-handling...
-      // TODO: define statuus centrally
+      // TODO: define status centrally
       $copies = $receipt->getCopies();
       $result = $receipt->setStatus('WITHDRAWN', $params);
       $deleted = $receipt->deleteOriginalFile();
