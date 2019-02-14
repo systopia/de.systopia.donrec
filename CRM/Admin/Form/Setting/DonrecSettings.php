@@ -41,7 +41,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       'select',
       'donrec_from_email',
       ts('From Email', array('domain' => 'de.systopia.donrec')),
-      CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL),
+      $this->getSenderEmails(),
       array('class' => 'crm-select2')
     );
 
@@ -162,5 +162,18 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   // custom validation rule that allows only positive integers
   static function onlyPositiveIntegers($value) {
     return !($value <= 0);
+  }
+
+
+  /**
+   * Get a drop-down list of registered sender email addresses
+   */
+  protected function getSenderEmails() {
+    $sender_email_addresses = [];
+    $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL);
+    foreach ($fromEmailAddress as $email_id => $email_string) {
+      $sender_email_addresses[$email_id] = htmlentities($email_string);
+    }
+    return $sender_email_addresses;
   }
 }
