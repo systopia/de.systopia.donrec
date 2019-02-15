@@ -101,12 +101,11 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
         CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor failed on message '{$message_id}': " . $ex->getMessage());
         $stats['failed'] += 1;
         $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
-      } finally {
-        imap_expunge($this->mailbox);
       }
     }
 
     // close mail
+    imap_expunge($this->mailbox);
     imap_close($this->mailbox, CL_EXPUNGE);
 
     return $stats;
