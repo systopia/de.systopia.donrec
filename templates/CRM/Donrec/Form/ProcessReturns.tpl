@@ -12,7 +12,6 @@
 <div class="messages help">
   {ts domain="de.systopia.donrec"}This tool allows you to process bounced or returned (emailed) donation receipts into activities.{/ts}
   {ts domain="de.systopia.donrec"}You should create a new, exclusive email account, and set the return path to that account while sending.{/ts}
-  {ts domain="de.systopia.donrec"}To uniquely identify the contact the receipt had been sent to, you can add a code containing the contact ID to the the email template, and provide a pattern below to recognise it.{/ts}
 </div>
 
 <div class="crm-section">

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.donrec\n"
-"POT-Creation-Date: 2017-01-19 15:32+0100\n"
+"POT-Creation-Date: 2019-02-15 08:41+0100\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +44,10 @@ msgstr ""
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Template"
+msgstr ""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "From Email"
 msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
@@ -102,7 +106,8 @@ msgstr ""
 msgid "One of the Receipt ID patterns are invalid! Changes NOT saved!"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php CRM/Donrec/Form/Task/Rebook.php
+#: CRM/Admin/Form/Setting/DonrecSettings.php CRM/Donrec/Form/ProcessReturns.php
+#: CRM/Donrec/Form/Task/DonrecResetTask.php CRM/Donrec/Form/Task/Rebook.php
 #: CRM/Utils/DonrecHelper.php
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 #: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
@@ -220,6 +225,74 @@ msgstr ""
 msgid "donation_receipts.zip"
 msgstr ""
 
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Type"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Subject"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Withdraw Receipts"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Server"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "User Name"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Password"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Run Now"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit needs to be greater than zero."
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid ""
+"Investigated %1 emails in the bounce folder. %2 of them have been processed, "
+"%3 seem to unrelated, and %4 have failed."
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php templates/CRM/Donrec/Page/Runner.tpl
+msgid "Done"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid ""
+"If you want to find out, why processing of %1 of the emails failed, please "
+"check the CiviCRM log."
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Errors"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "It looks like there are more emails to be processed."
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "There's more"
+msgstr ""
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "No Activity"
+msgstr ""
+
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
 #: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
 msgid "Issue Donation Receipts"
@@ -247,6 +320,11 @@ msgstr ""
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
 #: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Currency"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Continue"
 msgstr ""
 
@@ -264,6 +342,43 @@ msgstr ""
 #: CRM/Donrec/Form/Task/Create.php
 msgid ""
 "This contact has no selectable contributions in the selected time period."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw Donation Receipts"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "From Date"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "To Date"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid ""
+"Caution: %1 contact(s) will have more than one donation receipt withdrawn!"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Find"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw %1 Receipts"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have been withdrawn."
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Receipts Withdrawn"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have not been withdrawn and encountered an error."
 msgstr ""
 
 #: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
@@ -440,12 +555,20 @@ msgstr ""
 msgid "Only original donation receipts can be copied."
 msgstr ""
 
-#: api/v3/DonationReceiptEngine.php
+#: api/v3/DonationReceiptEngine/Next.php
 msgid "No 'sid' parameter given."
+msgstr ""
+
+#: api/v3/DonationReceiptEngine/Processreturns.php
+msgid "E-Mail delivery of donation receipt {receipt_id} failed."
 msgstr ""
 
 #: donrec.php templates/CRM/Donrec/Page/Staging.tpl
 msgid "Issue donation receipt(s)"
+msgstr ""
+
+#: donrec.php
+msgid "Withdraw donation receipt(s)"
 msgstr ""
 
 #: donrec.php
@@ -778,7 +901,23 @@ msgid "Email Settings"
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid ""
+"Sending donation receipts by email can be tricky, make sure you know how you "
+"want to detect and handle bounces or returns."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid ""
+"You should also have a look at the <a href=\"%1\">return processing feature</"
+"a>."
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Email-Template"
+msgstr ""
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "From Email Address"
 msgstr ""
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
@@ -857,6 +996,36 @@ msgstr ""
 msgid "This cannot contain more than 64 characters!"
 msgstr ""
 
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Process Email Returns"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"This tool allows you to process bounced or returned (emailed) donation "
+"receipts into activities."
+msgstr ""
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"You should create a new, exclusive email account, and set the return path to "
+"that account while sending."
+msgstr ""
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"To uniquely identify the contact the receipt had been sent to, you can add a "
+"code containing the contact ID to the the email template, and provide a "
+"pattern below to recognise it."
+msgstr ""
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Account Access"
+msgstr ""
+
 #: templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Are you sure you want to rebook the selected contributions?"
 msgstr ""
@@ -879,6 +1048,10 @@ msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
 msgid "Select time span"
+msgstr ""
+
+#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
+msgid "Select the currency"
 msgstr ""
 
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
@@ -945,10 +1118,6 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
 msgid "Back"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Runner.tpl
-msgid "Done"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Runner.tpl
