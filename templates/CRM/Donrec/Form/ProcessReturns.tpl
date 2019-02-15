@@ -22,10 +22,22 @@
 </div>
 
 <div class="crm-section">
+  <div class="label">{$form.returns_activity_subject.label}</div>
+  <div class="content">{$form.returns_activity_subject.html}</div>
+  <div class="clear"></div>
+</div>
+
+<div class="crm-section">
+  <div class="label">{$form.returns_withdraw.label}</div>
+  <div class="content">{$form.returns_withdraw.html}</div>
+  <div class="clear"></div>
+</div>
+
+<!--div class="crm-section">
   <div class="label">{$form.returns_pattern.label}</div>
   <div class="content">{$form.returns_pattern.html}</div>
   <div class="clear"></div>
-</div>
+</div-->
 
 <div class="crm-section">
   <div class="label">{$form.returns_limit.label}</div>

@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Process email returns:
  *  - create activity (if requested)
@@ -56,16 +58,16 @@ function _civicrm_api3_donation_receipt_engine_processreturns_spec(&$params) {
       'title'        => 'IMAP Password',
       'description'  => 'Password of the IMAP mailbox containing the returns',
   );
-  $params['activity_id'] = array(
-      'name'         => 'activity_id',
+  $params['activity_type_id'] = array(
+      'name'         => 'activity_type_id',
       'api.required' => 0,
       'type'         => CRM_Utils_Type::T_INT,
-      'title'        => 'Create Activity (ID)',
+      'title'        => 'Create Activity (Type ID)',
       'description'  => 'If set, creates an activity for each processed return',
   );
   $params['activity_subject'] = array(
       'name'         => 'activity_subject',
-      'api.required' => 0,
+      'api.default'  => E::ts("E-Mail delivery of donation receipt {receipt_id} failed."),
       'type'         => CRM_Utils_Type::T_STRING,
       'title'        => 'Create Activity (Subject)',
       'description'  => 'Subject of the activity to be created (only if activity_id set)',

@@ -23,21 +23,34 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
         'returns_activity_type_id',
         E::ts('Activity Type'),
         $this->getActivityTypes(),
-        TRUE
+        FALSE
     );
+//    $this->add(
+//        'text',
+//        'returns_pattern',
+//        E::ts('Scanner Pattern'),
+//        ['class' => 'huge'],
+//        FALSE
+//    );
     $this->add(
         'text',
-        'returns_pattern',
-        E::ts('Scanner Pattern'),
+        'returns_activity_subject',
+        E::ts('Activity Subject'),
         ['class' => 'huge'],
         FALSE
     );
+
     $this->add(
         'text',
         'returns_limit',
         E::ts('Limit'),
         [],
         TRUE
+    );
+    $this->add(
+        'checkbox',
+        'returns_withdraw',
+        E::ts('Withdraw Receipts')
     );
 
 
@@ -84,27 +97,26 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
 
   public function validate() {
     // validate scanner pattern
-    if (!empty($this->_submitValues['returns_pattern'])) {
-      $pattern = $this->_submitValues['returns_pattern'];
-      // needs to contain '(?P<contact_id>'
-      if (!strstr($pattern, '(?P<contact_id>')) {
-        $this->_errors['returns_pattern'] = E::ts("Pattern needs to contain a named group 'contact_id', e.g. (?P<contact_id>[0-9]+).");
-      }
-      if (substr($pattern, 0, 1) != substr($pattern, strlen($pattern) - 1, 1)) {
-        $this->_errors['returns_pattern'] = E::ts("RegEx patterns need a delimiter at the beginning and end!");
-      }
-
-      // first and last letter have to be the same
-      if (substr($pattern, 0, 1) != substr($pattern, strlen($pattern) - 1, 1)) {
-        $this->_errors['returns_pattern'] = E::ts("RegEx patterns need a delimiter at the beginning and end!");
-      }
-    }
+//    if (!empty($this->_submitValues['returns_pattern'])) {
+//      $pattern = $this->_submitValues['returns_pattern'];
+//      // needs to contain '(?P<contact_id>'
+//      if (!strstr($pattern, '(?P<contact_id>')) {
+//        $this->_errors['returns_pattern'] = E::ts("Pattern needs to contain a named group 'contact_id', e.g. (?P<contact_id>[0-9]+).");
+//      }
+//      if (substr($pattern, 0, 1) != substr($pattern, strlen($pattern) - 1, 1)) {
+//        $this->_errors['returns_pattern'] = E::ts("RegEx patterns need a delimiter at the beginning and end!");
+//      }
+//
+//      // first and last letter have to be the same
+//      if (substr($pattern, 0, 1) != substr($pattern, strlen($pattern) - 1, 1)) {
+//        $this->_errors['returns_pattern'] = E::ts("RegEx patterns need a delimiter at the beginning and end!");
+//      }
+//    }
 
     $limit = (int) $this->_submitValues['returns_limit'];
     if ($limit < 1) {
       $this->_errors['returns_limit'] = E::ts("Limit needs to be greater than zero.");
     }
-
 
     return parent::validate();
   }
@@ -112,25 +124,44 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
   public function postProcess() {
     $params = $this->exportValues();
 
-    $email_processor = new CRM_Donrec_Logic_EmailReturnProcessor(
-      $params['returns_server'],
-      $params['returns_user'],
-      $params['returns_pass'],
-      $params['returns_pattern'],
-      $params['returns_limit']
-    );
-
-    // contact_ids for activities
-    $contact_ids = $email_processor->run();
-
     // store defaults
     $defaults = $params;
+    unset($defaults['qfKey']);
+    unset($defaults['entryURL']);
     unset($defaults['returns_pass']);
     CRM_Core_BAO_Setting::setItem($defaults, 'de.systopia.donrec', 'donrec_returns');
 
-    // run the process
-    if (!empty($params['returns_activity_type_id'])) {
-      $this->processReturns($params);
+    // run
+    try {
+      $result = civicrm_api3('DonationReceiptEngine', 'processreturns', [
+          'hostname'         => $params['returns_server'],
+          'username'         => $params['returns_user'],
+          'password'         => $params['returns_pass'],
+          'activity_type_id' => $params['returns_activity_type_id'],
+          'activity_subject' => $params['returns_activity_subject'],
+          'limit'            => (int)$params['returns_limit'],
+          'withdraw'         => empty($params['returns_withdraw']) ? '0' : '1',
+      ])['values'];
+
+      // let the user know
+      $message = E::ts("Investigated %1 emails in the bounce folder. %2 of them have been processed, %3 seem to unrelated, and %4 have failed.", [
+          1 => $result['count'],
+          2 => $result['processed'],
+          3 => $result['ignored'],
+          4 => $result['failed']]);
+      CRM_Core_Session::setStatus($message, E::ts("Done"), 'info');
+
+      if ($result['failed']) {
+        $error_message = E::ts("If you want to find out, why processing of %1 of the emails failed, please check the CiviCRM log.",
+            [1 => $result['failed']]);
+        CRM_Core_Session::setStatus($error_message, E::ts("Errors"), 'error');
+      }
+
+      if ($result['limit'] == $result['count']) {
+        CRM_Core_Session::setStatus(E::ts("It looks like there are more emails to be processed."), E::ts("There's more"), 'warn');
+      }
+    } catch(Exception $ex) {
+      CRM_Core_Session::setStatus(E::ts("There's a problem with the returns processor: " . $ex->getMessage()), E::ts("Error"), 'error');
     }
 
     parent::postProcess();
@@ -140,7 +171,7 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
    * Get all activity types
    */
   protected function getActivityTypes() {
-    $activity_types = [];
+    $activity_types = ['' => E::ts("No Activity")];
     $activity_type_query = civicrm_api3('OptionValue','get', [
             'option.limit'    => 0,
             'option_group_id' => 'activity_type']);
@@ -205,35 +236,5 @@ class CRM_Donrec_Form_ProcessReturns extends CRM_Core_Form {
     }
     return $contact_id_list;
   }
-
-  /**
-   * Process the emails on the given account
-   *  and create activities
-   *
-   * @param $params
-   */
-  public function processReturns($params) {
-    // TODO:
-    //  connect
-    //  pull $params['returns_limit'] items from mailbox:
-    //   - identify contact(s) with $this->identifyContact
-    //   - create activity if contact identified, with
-    //     - type: $params['returns_activity_type_id'],
-    //     - target:  contact_ids
-    //     - source: current user
-    //     - datetime: receive date of the email
-    //   - move to 'processed' or 'ignored' folder (create if doesn't exist)
-
-
-    // TODO: collect some stats and display
-    CRM_Core_Session::setStatus(E::ts("%1 emails processed, %2 of successfully.", [
-        1 => $total_count, 2 => $success_count]), E::ts("Returns Processed"), 'info');
-
-    if ($total_count == $params['returns_limit']) {
-      CRM_Core_Session::setStatus(E::ts("The processing limit was hit, please run again.", [
-          1 => $total_count, 2 => $success_count]), E::ts("Remaining data"), 'info');
-    }
-  }
-
 
 }

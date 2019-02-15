@@ -57,6 +57,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    */
   public function run() {
     $stats = [
+        'limit'     => $this->params['limit'],
         'count'     => 0,
         'processed' => 0,
         'ignored'   => 0,
@@ -71,6 +72,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
 
     // get all emails
     $all_messages = $this->get_all_mails_from_mailbox();
+    if (empty($all_messages)) $all_messages = [];
 
     foreach ($all_messages as $key => $message_id) {
       if ($stats['count'] >= $this->params['limit']) {
@@ -88,7 +90,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
             $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
           } else {
             $stats['failed'] += 1;
-            $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
+            $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
           }
 
         } else {
@@ -96,7 +98,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
           $this->move_message_to_folder($message_id, self::$IGNORED_FOLDER);
         }
       } catch (Exception $ex) {
-        CRM_Core_Error::debug_log_message("MatchingEngine.processreturns failed on message '{$message_id}': " . $ex->getMessage());
+        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor failed on message '{$message_id}': " . $ex->getMessage());
         $stats['failed'] += 1;
         $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
       } finally {
@@ -144,9 +146,52 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * @return bool did the processing work?
    */
   protected function processMatch($contact_id, $receipt_id) {
-    // TODO: implement
+    try {
+      // load and verify receipt
+      $receipt = CRM_Donrec_Logic_Receipt::get($receipt_id);
+      if (!$receipt) {
+        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: Receipt doesn't exist");
+        return FALSE;
+      }
 
-    CRM_Core_Error::debug_log_message("TODO: process $contact_id, $receipt_id");
+      $tokens = $receipt->getAllTokens();
+      if ($tokens['contributor']['id'] != $contact_id) {
+        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: Receipt doesn't belong to the contact");
+        return FALSE;
+      }
+
+      // create activity
+      if (!empty($this->params['activity_type_id'])) {
+        civicrm_api3('Activity', 'create', [
+            'activity_type_id'   => $this->params['activity_type_id'],
+            'subject'            => str_replace('{receipt_id}', $tokens['receipt_id'], $this->params['activity_subject']),
+            'activity_date_time' => date('YmdHis'), // TODO: use email time?
+            'target_id'          => $contact_id,
+            'status_id'          => empty($this->params['withdraw']) ? 'Scheduled' : 'Completed',
+            'source_contact_id'  => CRM_Donrec_Logic_Settings::getLoggedInContactID(),
+            //'assignee_id'        => $assignee_id,
+        ]);
+      }
+
+      // withdraw the receipt
+      if (!empty($this->params['withdraw'])) {
+        switch ($tokens['status']) {
+          case 'ORIGINAL':
+            civicrm_api3('DonationReceipt', 'withdraw', ['rid' => $receipt_id]);
+            break;
+
+          case 'WITHDRAWN':
+            CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor Receipt [{$receipt_id}] already withdrawn");
+            break;
+
+          default:
+            CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor Receipt [{$receipt_id}] cannot be withdrawn, status is {$tokens['status']}");
+        }
+      }
+    } catch (Exception $ex) {
+      CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: " . $ex->getMessage());
+      return FALSE;
+    }
 
     return TRUE;
   }
@@ -160,7 +205,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     if ($success) {
       imap_expunge($this->mailbox);
     } else {
-      CRM_Core_Error::debug_log_message("MOVE of [{$message_id}] to '{$folder}' FAILED");
+      CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor MOVE of [{$message_id}] to '{$folder}' FAILED");
     }
   }
 
