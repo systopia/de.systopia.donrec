@@ -14,7 +14,7 @@
  */
 class CRM_Donrec_Logic_EmailReturnProcessor {
 
-  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{receipt_id}#";
+  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{contribution_id}#{timestamp}#";
   public static $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
   public static $PROCESSED_FOLDER   = 'INBOX.CiviMail.processed';
   public static $IGNORED_FOLDER     = 'INBOX.CiviMail.ignored';
@@ -66,7 +66,8 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     // prepare the pattern
     if (empty($this->params['pattern'])) {
       $this->params['pattern'] = str_replace('{contact_id}', '(?P<contact_id>[0-9]+)', self::$ZWB_HEADER_PATTERN);
-      $this->params['pattern'] = str_replace('{receipt_id}', '(?P<receipt_id>[0-9]+)', $this->params['pattern']);
+      $this->params['pattern'] = str_replace('{contribution_id}', '(?P<contribution_id>[0-9]+)', $this->params['pattern']);
+      $this->params['pattern'] = str_replace('{timestamp}', '(?P<timestamp>[0-9]{14})', $this->params['pattern']);
     }
     $this->params['pattern'] = "|{$this->params['pattern']}|";
 
@@ -128,7 +129,14 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     }
 
     if ($match) {
-      return [$match['contact_id'], $match['receipt_id']];
+      // resolve receipt_id
+      $receipt_ids = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID($match['contribution_id'], $match['timestamp'], 60);
+      if (count($receipt_ids) == 1) {
+        $receipt_id = reset($receipt_ids);
+        return [$match['contact_id'], $receipt_id];
+      } else {
+        return [$match['contact_id'], NULL];
+      }
     } else {
       return [NULL, NULL];
     }
@@ -233,7 +241,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
       if (!in_array($mailbox_name, $list)) {
         // create folder
         $this->folder_list = NULL; // reset folder list
-        imap_createmailbox($this->mailbox, $this->get_hostname(imap_utf7_encode($folder)));
+        @imap_createmailbox($this->mailbox, $this->get_hostname(imap_utf7_encode($folder)));
       }
     } else {
       throw new Exception("Failed to list/create IMAP folders.");

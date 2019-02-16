@@ -14,8 +14,8 @@
  */
 class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
-  protected static $_sending_to_contact_id = NULL;
-  protected static $_sending_receipt_id = NULL;
+  protected static $_sending_to_contact_id   = NULL;
+  protected static $_sending_contribution_id = NULL;
   protected $_activity_type_id = NULL;
 
   /**
@@ -152,7 +152,10 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         // in case this is required: make sure the bounce processing is temporarily changed
         self::modifyBounceProcessing();
 
+        // set the code for the header hook
         $this->setDonrecMailCode($receipt);
+
+        // send the email
         civicrm_api3('MessageTemplate', 'send', array(
           'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(),
           'contact_id'      => $contact['id'],
@@ -163,6 +166,8 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'attachments'     => array($attachment),
           'bcc'             => CRM_Donrec_Logic_Settings::get('donrec_bcc_email'),
           ));
+
+        // unset the code
         $this->unsetDonrecMailCode();
       }
     } catch (Exception $e) {
@@ -332,10 +337,11 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * Add headers to sent donation receipts
    */
   public static function addDonrecMailCodeHeader(&$params, $context) {
-    if (self::$_sending_to_contact_id && self::$_sending_receipt_id) {
+    if (self::$_sending_to_contact_id && self::$_sending_contribution_id) {
       $donrec_header = CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_PATTERN;
       $donrec_header = str_replace('{contact_id}', self::$_sending_to_contact_id, $donrec_header);
-      $donrec_header = str_replace('{receipt_id}', self::$_sending_receipt_id, $donrec_header);
+      $donrec_header = str_replace('{contribution_id}', self::$_sending_contribution_id, $donrec_header);
+      $donrec_header = str_replace('{timestamp}', date('YmdHis'), $donrec_header);
       $params['headers'][CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_FIELD] = $donrec_header;
     }
   }
@@ -344,15 +350,15 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * Set the mailing code to be included in the next outgoing email
    */
   protected function setDonrecMailCode($receipt) {
-    self::$_sending_receipt_id = $receipt['id'];
-    self::$_sending_to_contact_id = $receipt['contact_id'];
+    self::$_sending_contribution_id = $receipt['contribution_id'];
+    self::$_sending_to_contact_id   = $receipt['contact_id'];
   }
 
   /**
    * Remove the mailing code to be included in the next outgoing email
    */
   protected function unsetDonrecMailCode() {
-    self::$_sending_to_contact_id = NULL;
-    self::$_sending_receipt_id = NULL;
+    self::$_sending_to_contact_id   = NULL;
+    self::$_sending_contribution_id = NULL;
   }
 }
