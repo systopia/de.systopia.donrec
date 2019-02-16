@@ -42,7 +42,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       'donrec_from_email',
       ts('From Email', array('domain' => 'de.systopia.donrec')),
       $this->getSenderEmails(),
-      array('class' => 'crm-select2')
+      array('class' => 'crm-select2 huge')
     );
 
     // add profile location-type-selections
