@@ -38,7 +38,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   }
 
   public function getLine() {
-    $this->snapshot->getLine($this->getID());
+    return $this->snapshot->getLine($this->getID());
   }
 
   /**
