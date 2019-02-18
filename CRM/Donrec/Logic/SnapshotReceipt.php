@@ -37,6 +37,10 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     return count($this->snapshot_lines) > 1;
   }
 
+  public function getLine() {
+    $this->snapshot->getLine($this->getID());
+  }
+
   /**
    * gets the line ID of the first line
    *

@@ -66,7 +66,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
     $error = NULL;
 
     // first: get the (previously used) one-line tokens
-    $receipt = $snapshot_receipt->getLine($snapshot_receipt->getID());
+    $receipt = $snapshot_receipt->getLine();
 
     // now: get the full token range
     $snapshot_receipt_tokens = $snapshot_receipt->getAllTokens();
