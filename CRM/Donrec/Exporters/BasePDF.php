@@ -55,7 +55,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
       return FALSE;
     } else {
       // save file names for wrapup()
-      return $this->postprocessPDF($result, $snapshot_receipt->getID(), $is_test);
+      return $this->postprocessPDF($result, $snapshot_receipt, $is_test);
     }
   }
 
@@ -73,7 +73,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   /**
    * allows the subclasses to process the newly created PDF file
    */
-  protected function postprocessPDF($file, $snapshot_line_id, $is_test) {
+  protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     return TRUE;
   }
 

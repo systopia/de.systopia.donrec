@@ -30,7 +30,8 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
   /**
    * allows the subclasses to process the newly created PDF file
    */
-  protected function postprocessPDF($file, $snapshot_line_id, $is_test) {
+  protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
+    $snapshot_line_id = $snapshot_receipt->getID();
     $this->updateProcessInformation($snapshot_line_id, array('pdf_file' => $file));
     return TRUE;
   }
