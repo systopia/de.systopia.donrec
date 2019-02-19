@@ -61,25 +61,25 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   /**
    * allows the subclasses to process the newly created PDF file
    */
-  protected function postprocessPDF($file, $snapshot_line_id, $is_test) {
+  protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     // find the receipt
     $error = NULL;
-    $snapshot = CRM_Donrec_Logic_Snapshot::getSnapshotForLineID($snapshot_line_id);
-    if (!$snapshot) {
+
+    // first: get the (previously used) one-line tokens
+    $receipt = $snapshot_receipt->getLine();
+
+    // now: get the full token range
+    $snapshot_receipt_tokens = $snapshot_receipt->getAllTokens();
+
+    // then merge
+    $receipt = array_merge($receipt, $snapshot_receipt_tokens);
+    if (!$receipt) {
       $error = 'snapshot error';
-    } else {
-      $receipt = $snapshot->getLine($snapshot_line_id);
-      $snapshot_receipt = $snapshot->getSnapshotReceipt($snapshot->getIds(), $is_test);
-      $snapshot_receipt_tokens = $snapshot_receipt->getAllTokens();
-      $receipt = array_merge($receipt, $snapshot_receipt_tokens);
-      if (!$receipt) {
-        $error = 'snapshot error';
-      }
     }
 
     // try to send the email
     if (!$error) {
-      $error = $this->sendEmail($receipt, $file, $is_test, $snapshot_line_id);
+      $error = $this->sendEmail($receipt, $file, $is_test, $snapshot_receipt->getID());
     }
 
     if ($error) {
