@@ -223,10 +223,14 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Mark this receipt and its items as withdrawn
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   *
+   * @param string $status
+   *
+   * @return bool
+   *   TRUE if successfull, FALSE otherwise. In that case, the
+   *   $parameters['error'] contains an error message.
    */
-  public function setStatus($status, &$parameters) {
+  public function setStatus($status) {
     $receipt_id = $this->Id;
     $receipt_fields = self::$_custom_fields;
     $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
