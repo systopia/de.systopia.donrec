@@ -79,7 +79,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
     // try to send the email
     if (!$error) {
-      $error = $this->sendEmail($receipt, $file, $is_test, $snapshot_line_id);
+      $error = $this->sendEmail($receipt, $file, $is_test, $snapshot_receipt->getID());
     }
 
     if ($error) {
