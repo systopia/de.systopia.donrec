@@ -18,32 +18,36 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge extends CRM_Donrec_Logic_W
     return ts('SVG across large', array('domain' => 'de.systopia.donrec'));
   }
 
-  public function injectMarkup(&$html) {
+  public function injectMarkup(&$html, $paper_size) {
     return TRUE;
   }
 
-  public function injectStyles(&$html) {
+  public function injectStyles(&$html, $paper_size) {
     $watermark_css = '<style>
-                        {literal}
-                        body {
-                          background: url("data:image/svg+xml;utf8,\
-                          <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'29.7cm\' width=\'21cm\'>\
-                            <text \
-                              x=\'33%\'\
-                              y=\'66%\'\
-                              dx=\'-50%\'\
-                              text-anchor=\'middle\'\
-                              fill=\'#808080\'\
-                              fill-opacity=\'0.2\'\
-                              font-size=\'100pt\'\
-                              font-family=\'Arial\'\
-                              transform=\'rotate(-45)\'\
-                            >{/literal}{if $watermark}{$watermark}{/if}{literal}</text>\
-                          </svg>");
-                          background-repeat: repeat;
-                        }
-                        {/literal}
-                        </style>
+                        {if $watermark}
+                          {literal}
+                          body {
+                            background: url("data:image/svg+xml;utf8,\
+                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'' . $paper_size['height'] . $paper_size['metric'] . '\' width=\'' . $paper_size['width'] . $paper_size['metric'] . '\'>\
+                              <text \
+                                x=\'33%\'\
+                                y=\'66%\'\
+                                dx=\'-50%\'\
+                                text-anchor=\'middle\'\
+                                fill=\'#808080\'\
+                                fill-opacity=\'0.2\'\
+                                font-size=\'100pt\'\
+                                font-family=\'Arial\'\
+                                transform=\'rotate(-45)\'\
+                              >{/literal}{$watermark}{literal}</text>\
+                            </svg>");
+                            background-repeat: repeat;
+                            width: ' . $paper_size['width'] . $paper_size['metric'] . ';
+                            height: ' . $paper_size['height'] . $paper_size['metric'] . ';
+                          }
+                          {/literal}
+                        {/if}
+                      </style>
                         ';
 
     $matches = array();

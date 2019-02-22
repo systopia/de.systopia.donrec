@@ -18,7 +18,7 @@ class CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional extends CRM_Donrec_Logi
     return ts('Markup traditional (dompdf)', array('domain' => 'de.systopia.donrec'));
   }
 
-  public function injectMarkup(&$html) {
+  public function injectMarkup(&$html, $paper_size) {
     $watermark_site = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
 
     $matches = array();
@@ -34,7 +34,7 @@ class CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional extends CRM_Donrec_Logi
     return TRUE;
   }
 
-  public function injectStyles(&$html) {
+  public function injectStyles(&$html, $paper_size) {
     $watermark_css = '<style>
                         {literal}
                         .watermark {

@@ -18,30 +18,34 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner extends CRM_Donrec_Lo
     return ts('SVG upper right corner', array('domain' => 'de.systopia.donrec'));
   }
 
-  public function injectMarkup(&$html) {
+  public function injectMarkup(&$html, $paper_size) {
     return TRUE;
   }
 
-  public function injectStyles(&$html) {
+  public function injectStyles(&$html, $paper_size) {
     // TODO: Adjust SVG
     $watermark_css = '<style>
-                        {literal}
-                        body {
-                          background: url("data:image/svg+xml;utf8,\
-                          <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'29.7cm\' width=\'21cm\'>\
-                            <text \
-                              x=\'95%\'\
-                              y=\'5%\'\
-                              text-anchor=\'end\'\
-                              fill=\'#808080\'\
-                              fill-opacity=\'0.2\'\
-                              font-size=\'20pt\'\
-                              font-family=\'Arial\'\
-                            >{/literal}{if $watermark}{$watermark}{/if}{literal}</text>\
-                          </svg>");
-                          background-repeat: repeat;
-                        }
-                        {/literal}
+                        {if $watermark}
+                          {literal}
+                          body {
+                            background: url("data:image/svg+xml;utf8,\
+                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'' . $paper_size['height'] . $paper_size['metric'] . '\' width=\'' . $paper_size['width'] . $paper_size['metric'] . '\'>\
+                              <text \
+                                x=\'95%\'\
+                                y=\'5%\'\
+                                text-anchor=\'end\'\
+                                fill=\'#808080\'\
+                                fill-opacity=\'0.2\'\
+                                font-size=\'20pt\'\
+                                font-family=\'Arial\'\
+                              >{/literal}{$watermark}{literal}</text>\
+                            </svg>");
+                            background-repeat: repeat;
+                            width: ' . $paper_size['width'] . $paper_size['metric'] . ';
+                            height: ' . $paper_size['height'] . $paper_size['metric'] . ';
+                          }
+                          {/literal}
+                        {/if}
                         </style>
                         ';
 
