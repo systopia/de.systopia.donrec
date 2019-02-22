@@ -63,6 +63,7 @@ class CRM_Donrec_Logic_Settings {
       CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getLabel(),
       CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getLabel(),
       CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getLabel(),
     );
   }
 
