@@ -18,18 +18,25 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall extends CRM_Donrec_Logic_W
     return ts('SVG across small', array('domain' => 'de.systopia.donrec'));
   }
 
-  public function injectMarkup(&$html, $paper_size) {
+  public function injectMarkup(&$html, $pdf_format) {
     return TRUE;
   }
 
-  public function injectStyles(&$html, $paper_size) {
+  public function injectStyles(&$html, $pdf_format) {
+    $paper_size = CRM_Core_BAO_PaperSize::getByName($pdf_format['paper_size']);
+    $paper_width = CRM_Utils_PDF_Utils::convertMetric($paper_size['width'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_width -= $pdf_format['margin_left'];
+    $paper_width -= $pdf_format['margin_right'];
+    $paper_height = CRM_Utils_PDF_Utils::convertMetric($paper_size['height'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_height -= $pdf_format['margin_top'];
+    $paper_height -= $pdf_format['margin_bottom'];
     // TODO: Make the SVG smaller.
     $watermark_css = '<style>
                         {if $watermark}
                           {literal}
                           body {
                             background: url("data:image/svg+xml;utf8,\
-                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'' . $paper_size['height'] . $paper_size['metric'] . '\' width=\'' . $paper_size['width'] . $paper_size['metric'] . '\'>\
+                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'' . $paper_height . $pdf_format['metric'] . '\' width=\'' . $paper_width . $pdf_format['metric'] . '\'>\
                               <text \
                                 x=\'33%\'\
                                 y=\'66%\'\
@@ -43,8 +50,8 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall extends CRM_Donrec_Logic_W
                               >{/literal}{$watermark}{literal}</text>\
                             </svg>");
                             background-repeat: repeat;
-                            width: ' . $paper_size['width'] . $paper_size['metric'] . ';
-                            height: ' . $paper_size['height'] . $paper_size['metric'] . ';
+                            width: ' . $paper_width . $pdf_format['metric'] . ';
+                            height: ' . $paper_height . $pdf_format['metric'] . ';
                           }
                           {/literal}
                         {/if}

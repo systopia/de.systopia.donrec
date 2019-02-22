@@ -25,13 +25,13 @@ abstract class CRM_Donrec_Logic_WatermarkPreset {
    *
    * @return bool
    */
-  abstract public function injectStyles(&$html, $paper_size);
+  abstract public function injectStyles(&$html, $pdf_format);
 
   /**
    * @param string $html
    *
    * @return bool
    */
-  abstract public function injectMarkup(&$html, $paper_size);
+  abstract public function injectMarkup(&$html, $pdf_format);
 
 }

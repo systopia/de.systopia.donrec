@@ -18,18 +18,25 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral extends CRM_Donrec_Logic_Wa
     return ts('SVG holohedral', array('domain' => 'de.systopia.donrec'));
   }
 
-  public function injectMarkup(&$html, $paper_size) {
+  public function injectMarkup(&$html, $pdf_format) {
     return TRUE;
   }
 
-  public function injectStyles(&$html, $paper_size) {
+  public function injectStyles(&$html, $pdf_format) {
+    $paper_size = CRM_Core_BAO_PaperSize::getByName($pdf_format['paper_size']);
+    $paper_width = CRM_Utils_PDF_Utils::convertMetric($paper_size['width'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_width -= $pdf_format['margin_left'];
+    $paper_width -= $pdf_format['margin_right'];
+    $paper_height = CRM_Utils_PDF_Utils::convertMetric($paper_size['height'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_height -= $pdf_format['margin_top'];
+    $paper_height -= $pdf_format['margin_bottom'];
     // TODO: Adjust SVG
     $watermark_css = '<style>
                         {if $watermark}
                           {literal}
                           body {
                             background: url("data:image/svg+xml;utf8,\
-                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'50pt\' width=\'' . $paper_size['width'] . $paper_size['metric'] . '\'>\
+                            <svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'50pt\' width=\'' . $paper_width . $pdf_format['metric'] . '\'>\
                               <text \
                                 x=\'20\'\
                                 y=\'40\'\
@@ -41,8 +48,8 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral extends CRM_Donrec_Logic_Wa
                               >{/literal}{section name=foo start=0 loop=10 step=1}{$watermark} {/section}{literal}</text>\
                             </svg>");
                             background-repeat: repeat;
-                            width: ' . $paper_size['width'] . $paper_size['metric'] . ';
-                            height: ' . $paper_size['height'] . $paper_size['metric'] . ';
+                            width: ' . $paper_width . $pdf_format['metric'] . ';
+                            height: ' . $paper_height . $pdf_format['metric'] . ';
                           }
                           {/literal}
                         {/if}

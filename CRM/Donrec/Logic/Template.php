@@ -165,14 +165,13 @@ class CRM_Donrec_Logic_Template
     $html = $this->_template->msg_html;
 
     $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->_template->pdf_format_id);
-    $paper_size = CRM_Core_BAO_PaperSize::getByName($pdf_format['paper_size']);
 
     // --- watermark injection ---
     $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_' . str_replace('_', '', ucwords(CRM_Donrec_Logic_Settings::get('donrec_watermark_preset'), '_'));
     /* @var \CRM_Donrec_Logic_WatermarkPreset $watermark */
     $watermark = new $watermark_class();
-    $watermark->injectMarkup($html, $paper_size);
-    $watermark->injectStyles($html, $paper_size);
+    $watermark->injectMarkup($html, $pdf_format);
+    $watermark->injectStyles($html, $pdf_format);
 
     // identify pdf engine
     $smarty->assign('wk_enabled', !empty($config->wkhtmltopdfPath));
