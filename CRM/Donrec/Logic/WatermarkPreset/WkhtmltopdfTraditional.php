@@ -11,11 +11,11 @@
 class CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'HtmltopdfTraditional';
+    return 'WkhtmltopdfTraditional';
   }
 
   public static function getLabel() {
-    return ts('Markup traditional (htmltopdf)', array('domain' => 'de.systopia.donrec'));
+    return ts('Markup traditional (wkhtmltopdf)', array('domain' => 'de.systopia.donrec'));
   }
 
   public function injectMarkup(&$html, $paper_size) {
