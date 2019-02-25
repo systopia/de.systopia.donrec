@@ -168,6 +168,15 @@ class CRM_Donrec_Logic_Template
 
     // --- watermark injection ---
     $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_' . str_replace('_', '', ucwords(CRM_Donrec_Logic_Settings::get('donrec_watermark_preset'), '_'));
+    if (!class_exists($watermark_class)) {
+      CRM_Core_Error::debug_log_message("Donrec: Invalid Watermark preset '{$watermark_class}'");
+      if (empty(CRM_Core_Config::singleton()->wkhtmltopdfPath)) {
+        $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional';
+      } else {
+        $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional';
+      }
+      CRM_Core_Error::debug_log_message("Donrec: Defaulting to watermark '{$watermark_class}'");
+    }
     /* @var \CRM_Donrec_Logic_WatermarkPreset $watermark */
     $watermark = new $watermark_class();
     $watermark->injectMarkup($html, $pdf_format);
