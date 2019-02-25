@@ -11,7 +11,7 @@
 class CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'svg_upper_right_corner';
+    return 'SvgUpperRightCorner';
   }
 
   public static function getLabel() {

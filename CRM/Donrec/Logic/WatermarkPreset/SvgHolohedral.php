@@ -11,7 +11,7 @@
 class CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'svg_holohedral';
+    return 'SvgHolohedral';
   }
 
   public static function getLabel() {

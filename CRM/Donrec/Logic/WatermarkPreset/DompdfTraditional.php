@@ -11,7 +11,7 @@
 class CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'dompdf_traditional';
+    return 'DompdfTraditional';
   }
 
   public static function getLabel() {

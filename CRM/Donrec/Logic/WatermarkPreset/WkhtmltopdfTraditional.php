@@ -11,7 +11,7 @@
 class CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'htmltopdf_traditional';
+    return 'HtmltopdfTraditional';
   }
 
   public static function getLabel() {

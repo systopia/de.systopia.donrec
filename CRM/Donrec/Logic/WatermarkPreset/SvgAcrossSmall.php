@@ -11,7 +11,7 @@
 class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
-    return 'svg_across_small';
+    return 'SvgAcrossSmall';
   }
 
   public static function getLabel() {

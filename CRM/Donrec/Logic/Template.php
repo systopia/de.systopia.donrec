@@ -167,7 +167,7 @@ class CRM_Donrec_Logic_Template
     $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->_template->pdf_format_id);
 
     // --- watermark injection ---
-    $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_' . str_replace('_', '', ucwords(CRM_Donrec_Logic_Settings::get('donrec_watermark_preset'), '_'));
+    $watermark_class = "CRM_Donrec_Logic_WatermarkPreset_" . CRM_Donrec_Logic_Settings::get('donrec_watermark_preset');
     if (!class_exists($watermark_class)) {
       CRM_Core_Error::debug_log_message("Donrec: Invalid Watermark preset '{$watermark_class}'");
       if (empty(CRM_Core_Config::singleton()->wkhtmltopdfPath)) {
