@@ -35,7 +35,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    */
   public function enable() {
     // create snapshot database tables
-    $this->executeSqlFile('sql/donrec.sql', true); 
+    $this->executeSqlFile('sql/donrec.sql', true);
 
     // create/update custom groups
     CRM_Donrec_DataStructure::update();
@@ -54,7 +54,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    */
   public function disable() {
     // delete the snapshot-table
-    $this->executeSqlFile('sql/donrec_uninstall.sql', true); 
+    $this->executeSqlFile('sql/donrec_uninstall.sql', true);
   }
 
   /**
@@ -73,10 +73,10 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
     // STEP 1: Migrate old general settings to prefixed ones
     $settings_migration = array(
-      'default_profile'  => 'donrec_default_profile',
-      'packet_size'      => 'donrec_packet_size',
-      'pdfinfo_path'     => 'donrec_pdfinfo_path',
-      );
+        'default_profile' => 'donrec_default_profile',
+        'packet_size'     => 'donrec_packet_size',
+        'pdfinfo_path'    => 'donrec_pdfinfo_path',
+    );
 
     foreach ($settings_migration as $old_key => $new_key) {
       $new_value = CRM_Core_BAO_Setting::getItem($OLD_SETTINGS_GROUP, $new_key);
@@ -131,6 +131,18 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       $this->ctx->log->info('Migrated {$profiles_migrated} profiles.');
     }
 
+    return TRUE;
+  }
+
+  /**
+   * Upgrade to 1.5:
+   *  - forms have changed, so rebuild menu
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0150() {
+    CRM_Core_Invoke::rebuildMenuAndCaches();
     return TRUE;
   }
 }
