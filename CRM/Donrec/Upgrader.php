@@ -78,22 +78,16 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       'pdfinfo_path'     => 'donrec_pdfinfo_path',
       );
 
-    $migrated_values = array();
     foreach ($settings_migration as $old_key => $new_key) {
       $new_value = CRM_Core_BAO_Setting::getItem($OLD_SETTINGS_GROUP, $new_key);
       if ($new_value === NULL) {
         $old_value = CRM_Core_BAO_Setting::getItem($OLD_SETTINGS_GROUP, $old_key);
         if ($old_value !== NULL) {
-          $migrated_values[$new_key] = $old_value;
+          CRM_Core_BAO_Setting::setItem($old_value, $OLD_SETTINGS_GROUP, $new_key);
         }
       }
     }
 
-    if (!empty($migrated_values)) {
-      civicrm_api3('Setting', 'create', $migrated_values);
-    }
-
-    
     // Migrate profiles 
     //  (only works on 4.6. With 4.7 the group_name was dropped, and we cannot find the profiles any more)
     $existing_profiles = civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_profiles'));
