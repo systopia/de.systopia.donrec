@@ -29,7 +29,6 @@ class CRM_Donrec_Logic_File {
     return CRM_Donrec_Page_Tempfile::createFromFile($path, $name, $deleteSource, $mimetype);
   }
 
-
   /**
    * This function will take any file and make it permanently
    * available as a CiviCRM File entity.
