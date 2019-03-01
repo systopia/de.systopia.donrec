@@ -455,6 +455,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
         receipt.`$receipt_fields[display_name]`            AS `contributor__display_name`,
         receipt.`$receipt_fields[street_address]`          AS `contributor__street_address`,
+        receipt.`$receipt_fields[postal_greeting_display]` AS `contributor__postal_greeting_display`,
+        receipt.`$receipt_fields[email_greeting_display]`  AS `contributor__email_greeting_display`,
         receipt.`$receipt_fields[supplemental_address_1]`  AS `contributor__supplemental_address_1`,
         receipt.`$receipt_fields[supplemental_address_2]`  AS `contributor__supplemental_address_2`,
         receipt.`$receipt_fields[postal_code]`             AS `contributor__postal_code`,
