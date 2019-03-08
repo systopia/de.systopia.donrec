@@ -196,7 +196,6 @@ class CRM_Donrec_Logic_Template
           'id' => $contribution_id,
         ));        
         
-        CRM_Utils_Token::getContributionTokenDetails(array('contribution_id' => $contributionId));
         $html = CRM_Utils_Token::replaceContributionTokens($html, $result_contribution, TRUE, $messageToken);        
       }      
       
