@@ -194,6 +194,6 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       $string .= $decimal;
     }
 
-    return $string;
+    return trim($string);
   }
 }

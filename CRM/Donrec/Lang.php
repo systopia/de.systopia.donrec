@@ -23,7 +23,7 @@ abstract class CRM_Donrec_Lang {
    * Get an instance of the language, or a fallback if it doesn't exist
    *
    * @param $locale string locale
-   * @return  CRM_Utils_DonrecLang|null
+   * @return  CRM_Donrec_Lang|null
    */
   public static function getLanguage($locale = NULL) {
     // TODO: add a setting?
@@ -41,8 +41,8 @@ abstract class CRM_Donrec_Lang {
       if (!$language) {
         // locale not found. Try to find a similar one
         $locale_lang = substr($locale, 0, 2);
-        $all_locales = ResourceBundle::getLocales('');
-        foreach ($all_locales as $possible_locale) {
+        $all_locales = CRM_Core_I18n::languages(FALSE);
+        foreach ($all_locales as $possible_locale => $possible_locale_name) {
           if ($locale_lang == substr($possible_locale, 0, 2)) {
             // this is the same language
             $language = self::_getLanguage(substr($possible_locale, 0, 5));
@@ -54,7 +54,7 @@ abstract class CRM_Donrec_Lang {
 
         if (!$language) {
           // fallback is EN_US
-          $language = self::_getLanguage('EN_US');
+          $language = self::_getLanguage('en_US');
         }
       }
 
@@ -72,9 +72,9 @@ abstract class CRM_Donrec_Lang {
   protected static function _getLanguage($locale) {
     $locale = substr($locale, 0, 5);
 
-    // remark: dont' want to use uswords with delimiter, since some people still use PHP 5.4 (I know...)
-    $locale_parts = explode('_', $locale);
-    $class = 'CRM_Utils_Lang_' . ucwords($locale_parts[0]) . '_' . ucwords($locale_parts[0]);
+    // remark: dont' want to use ucwords with delimiter, since some people still use PHP 5.4 (I know...)
+    $locale_parts = explode('_', strtolower($locale));
+    $class = 'CRM_Donrec_Lang_' . ucwords($locale_parts[0]) . '_' . ucwords($locale_parts[1]);
     if (class_exists($class)) {
       return new $class();
     } else {

@@ -26,7 +26,13 @@ class CRM_Donrec_Lang_Pl_Pl extends CRM_Donrec_Lang {
    */
   public function amount2words($amount, $currency, $params = []) {
     try {
-      return Kwota::getInstance()->slownie($amount);
+      if (function_exists('bcadd')) {
+        $kwota = Kwota::getInstance();
+        return $kwota->slownie($amount);
+      } else {
+        CRM_Core_Error::debug_log_message("Donrec: you need to install Bcmath module to use the polish language");
+        return 'ERROR';
+      }
     } catch(Exception $ex) {
       CRM_Core_Error::debug_log_message("Donrec: couldn't render text representation ({$amount}|pl_PL): " . $ex->getMessage());
       return 'ERROR';
