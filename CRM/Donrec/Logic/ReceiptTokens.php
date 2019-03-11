@@ -146,6 +146,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    * adds the dynamic tokens
    */
   public static function addDynamicTokens(&$values) {
+    $language = CRM_Donrec_Lang::getLanguage();
+
     if (!empty($values['issued_by'])) {
       // add created_by_display_name
       try {
@@ -165,9 +167,9 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     if (isset($values['total_amount'])) {
       // format total_amount
       $values['total_amount'] = number_format((float)$values['total_amount'], 2, '.', '');
-      $values['total'] = $values['total_amount'];
-      $values['totaltext'] = CRM_Utils_DonrecHelper::convert_number_to_words($values['total_amount']);
-      $values['totalmoney'] =  CRM_Utils_Money::format($values['total_amount'], '');
+      $values['total']        = $values['total_amount'];
+      $values['totaltext']    = $language->amount2words($values['total_amount'], $values['currency']);
+      $values['totalmoney']   = CRM_Utils_Money::format($values['total_amount'], '');
     }
 
     // add financial type name
