@@ -26,12 +26,18 @@ abstract class CRM_Donrec_Lang {
    * @return  CRM_Donrec_Lang|null
    */
   public static function getLanguage($locale = NULL) {
-    // TODO: add a setting?
     if (!$locale) {
-      // get the current locale
+      // read the setting
+      $locale = CRM_Donrec_Logic_Settings::get('donrec_language');
+    }
+
+    if (!$locale) {
+      // fallback: get the current user's locale
       $locale = CRM_Core_I18n::getLocale();
     }
+
     if (empty($locale)) {
+      // final fallback: English
       $locale = 'en_US';
     }
 

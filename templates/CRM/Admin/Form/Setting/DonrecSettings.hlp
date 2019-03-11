@@ -27,6 +27,11 @@
     <p>{ts domain="de.systopia.donrec"}Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run.{/ts}</p>
 {/htxt}
 
+{htxt id='id-language'}
+    <p>{ts domain="de.systopia.donrec"}The language setting is especially important to the textual representation of the amount.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}Not all languages that can be selected here have been implemented. If not implemented, the text defaults to English.{/ts}</p>
+{/htxt}
+
 {htxt id='id-pdfinfo-text'}
     <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
