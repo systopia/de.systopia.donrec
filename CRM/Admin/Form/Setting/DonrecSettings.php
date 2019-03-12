@@ -115,7 +115,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     $defaults['donrec_language'] = CRM_Donrec_Logic_Settings::get('donrec_language');
     if (empty($defaults['donrec_language'])) {
-      $defaults['donrec_language'] = CRM_Core_I18n::getLocale();
+      if (method_exists('CRM_Core_I18n', 'getLocale')) {
+        $defaults['donrec_language'] = CRM_Core_I18n::getLocale();
+      } else {
+        $defaults['donrec_language'] = 'en_US';
+      }
     }
 
     return $defaults;

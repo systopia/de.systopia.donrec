@@ -33,7 +33,9 @@ abstract class CRM_Donrec_Lang {
 
     if (!$locale) {
       // fallback: get the current user's locale
-      $locale = CRM_Core_I18n::getLocale();
+      if (method_exists('CRM_Core_I18n', 'getLocale')) {
+        $locale = CRM_Core_I18n::getLocale();
+      }
     }
 
     if (empty($locale)) {
