@@ -49,9 +49,9 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       case 'USD':
         return 'Dollar';
       case 'GBP':
-        return 'Pfund';
+        return 'Britische Pfund';
       case 'CHF':
-        return 'Franken';
+        return 'Schweizer Franken';
       default:
         return parent::currency2word($currency, $quantity);
     }
