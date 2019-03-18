@@ -111,6 +111,11 @@
 <div class="crm-block crm-form-block">
   <div>
     <h3>{ts domain="de.systopia.donrec"}Email Settings{/ts}</h3>
+    <div class="messages help">
+      {capture assign=processor_link}{crmURL p="civicrm/donrec/returns" q="reset=1"}{/capture}
+      {ts domain="de.systopia.donrec"}Sending donation receipts by email can be tricky, make sure you know how you want to detect and handle bounces or returns.{/ts}
+      {ts 1=$processor_link domain="de.systopia.donrec"}You should also have a look at the <a href="%1">return processing feature</a>.{/ts}
+    </div>
     <div>
       <table>
         <tr>

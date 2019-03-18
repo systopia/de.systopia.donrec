@@ -324,6 +324,57 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     return $receipts;
   }
 
+  /**
+   * Get the IDs of the receipt that matches all the criteria below
+   *
+   * @param $contribution_id              integer  a contribution part of the receipt
+   * @param $issue_timestamp              string   timestamp (to be parsed with strtotime)
+   * @param $issue_timestamp_precision    integer  +/- deviation from timestamp in seconds
+   * @param $status                       string   receipt status
+   * @return array receipt IDs
+   */
+  public static function getReceiptIDsByContributionID($contribution_id, $issue_timestamp = NULL, $issue_timestamp_precision = 60, $status = NULL) {
+    $receipt_ids = array();
+    $receipt_table   = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $item_table      = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
+    $receipt_fields  = self::getCustomFields();
+    $item_fields     = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+
+    // generate timestamp clause
+    if ($issue_timestamp) {
+      $timestamp = strtotime($issue_timestamp);
+      $min_time = date("YmdHis", strtotime("-{$issue_timestamp_precision} seconds", $timestamp));
+      $max_time = date("YmdHis", strtotime("+{$issue_timestamp_precision} seconds", $timestamp));
+      $timestamp_clause = "(receipt.{$receipt_fields['issued_on']} >= {$min_time} AND receipt.{$receipt_fields['issued_on']} <= {$max_time})";
+    } else {
+      $timestamp_clause = "TRUE";
+    }
+
+    // generate status clause
+    if ($status) {
+      $status_clause = "receipt.{$receipt_fields['status']} = '{$status}'";
+    } else {
+      $status_clause = 'TRUE';
+    }
+
+    // compile the query
+    $receipt_query = "
+    SELECT receipt.id AS receipt_id
+    FROM {$receipt_table}   receipt
+    LEFT JOIN {$item_table} item    ON item.{$item_fields['issued_in']} = receipt.id
+    WHERE item.entity_id = {$contribution_id}
+      AND {$timestamp_clause}
+      AND {$status_clause}
+    GROUP BY receipt.id;";
+
+    // run the query
+    $query = CRM_Core_DAO::executeQuery($receipt_query);
+    while ($query->fetch()) {
+      $receipt_ids[] = $query->receipt_id;
+    }
+    return $receipt_ids;
+  }
+
    /**
    * Get number of all receipts for the given contact ID
    *

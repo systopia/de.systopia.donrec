@@ -108,6 +108,10 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
           'title' => ts('Issue donation receipt(s)', array('domain' => 'de.systopia.donrec')),
           'class' => 'CRM_Donrec_Form_Task_DonrecTask',
           'result' => false);
+      $tasks[] = array(
+          'title' => ts('Withdraw donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'class' => 'CRM_Donrec_Form_Task_DonrecResetTask',
+          'result' => false);
     }
   }
 
@@ -238,6 +242,13 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
   $permissions['create and withdraw receipts'] = $prefix . ts('create and withdraw receipts', array('domain' => 'de.systopia.donrec'));
   $permissions['delete receipts'] = $prefix . ts('delete receipts', array('domain' => 'de.systopia.donrec'));
  }
+
+/**
+ * Add headers to sent donation receipts
+ */
+function donrec_civicrm_alterMailParams(&$params, $context) {
+  CRM_Donrec_Exporters_EmailPDF::addDonrecMailCodeHeader($params, $context);
+}
 
 /**
  * Set settings

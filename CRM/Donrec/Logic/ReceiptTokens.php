@@ -307,15 +307,15 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     // execute the query
     try {
       $address_found = civicrm_api3('Address', 'getsingle', $query_params);
-      $address['street_address'] = $address_found['street_address'];
-      $address['postal_code'] = $address_found['postal_code'];
-      $address['city'] = $address_found['city'];
+      $address['street_address'] = CRM_Utils_Array::value('street_address', $address_found, '');
+      $address['postal_code']    = CRM_Utils_Array::value('postal_code', $address_found, '');
+      $address['city']           = CRM_Utils_Array::value('city', $address_found, '');
       if (!empty($address_found['country_id'])) {
         $country = CRM_Core_PseudoConstant::country($address_found['country_id']);
         $address['country'] = $country;
       }
-      $address['supplemental_address_1'] = $address_found['supplemental_address_1'];
-      $address['supplemental_address_2'] = $address_found['supplemental_address_2'];
+      $address['supplemental_address_1'] = CRM_Utils_Array::value('supplemental_address_1', $address_found, '');
+      $address['supplemental_address_2'] = CRM_Utils_Array::value('supplemental_address_2', $address_found, '');
       return $address;
     } catch (Exception $e) {
       // address does not exist

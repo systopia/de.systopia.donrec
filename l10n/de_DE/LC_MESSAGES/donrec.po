@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SYSTOPIA Donation Receipts\n"
-"POT-Creation-Date: 2017-01-19 15:32+0100\n"
+"POT-Creation-Date: 2019-02-15 08:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <endres@systopia.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Donation Receipts - Settings"
@@ -45,6 +45,10 @@ msgstr "Zuwendungsarten"
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Template"
 msgstr "Vorlage"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "From Email"
+msgstr ""
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "primary address"
@@ -100,9 +104,12 @@ msgstr "Paketgröße muss ein positiver Ganzzahlwert sein"
 
 #: CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "One of the Receipt ID patterns are invalid! Changes NOT saved!"
-msgstr "Mindestens eines der eingetragenen Bescheinigungs-ID Schema ist ungültig. Die Änderungen wurden NICHT gespeichert!"
+msgstr ""
+"Mindestens eines der eingetragenen Bescheinigungs-ID Schema ist ungültig. "
+"Die Änderungen wurden NICHT gespeichert!"
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php CRM/Donrec/Form/Task/Rebook.php
+#: CRM/Admin/Form/Setting/DonrecSettings.php CRM/Donrec/Form/ProcessReturns.php
+#: CRM/Donrec/Form/Task/DonrecResetTask.php CRM/Donrec/Form/Task/Rebook.php
 #: CRM/Utils/DonrecHelper.php
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 #: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
@@ -150,7 +157,9 @@ msgstr "PDF per E-Mail versenden"
 
 #: CRM/Donrec/Exporters/EmailPDF.php
 msgid "Please select email template in the Donrec settings."
-msgstr "Bitte das zu verwendende Template in den 'Donation Receipts Settings' einstellen."
+msgstr ""
+"Bitte das zu verwendende Template in den 'Donation Receipts Settings' "
+"einstellen."
 
 #: CRM/Donrec/Exporters/EmailPDF.php
 msgid "Donation receipt not delivered"
@@ -220,6 +229,79 @@ msgstr "Einzelne PDFs"
 msgid "donation_receipts.zip"
 msgstr "Zuwendungsbescheinigungen.zip"
 
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Type"
+msgstr "Aktivitätstyp"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Subject"
+msgstr "Betreff der Aktivität"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit"
+msgstr "Limit"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Withdraw Receipts"
+msgstr "ZWBs Zurückziehen"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Server"
+msgstr "Mailserver"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "User Name"
+msgstr "Benutzername"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Password"
+msgstr "Passwort"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Run Now"
+msgstr "Ausführen"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit needs to be greater than zero."
+msgstr "Das Verarbeitungslimit muss größer 0 sein."
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid ""
+"Investigated %1 emails in the bounce folder. %2 of them have been processed, "
+"%3 seem to unrelated, and %4 have failed."
+msgstr ""
+"%1 E-Mails im angegebenen Postfach wurden untersucht. %2 davon wurden "
+"erfolgreich verarbeitet, %3 schienen keine Rückläufer zu sein, und bei %4 "
+"ist die Verarbeitung fehlgeschlagen."
+
+#: CRM/Donrec/Form/ProcessReturns.php templates/CRM/Donrec/Page/Runner.tpl
+msgid "Done"
+msgstr "Fertig"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid ""
+"If you want to find out, why processing of %1 of the emails failed, please "
+"check the CiviCRM log."
+msgstr ""
+"Um herauszufinden, warum %1 der E-Mails nicht korrekt verarbeitet werden "
+"konnten, bitte einen Blick in das CiviCRM Log werfen."
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Errors"
+msgstr "Fehler"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "It looks like there are more emails to be processed."
+msgstr "Im Postfach scheinen noch weitere E-Mails vorzuliegen"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "There's more"
+msgstr "Verbleibende E-Mails"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "No Activity"
+msgstr "Keine Aktivität"
+
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
 #: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
 msgid "Issue Donation Receipts"
@@ -247,12 +329,21 @@ msgstr "Von:"
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
 #: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Currency"
+msgstr ""
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Continue"
 msgstr "Weiter"
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
-msgid "There are no selectable contributions for these contacts in the selected time period."
-msgstr "Diese Kontakte haben keine zu bestätigenden Zuwendungen in der angegebene Zeitspanne."
+msgid ""
+"There are no selectable contributions for these contacts in the selected "
+"time period."
+msgstr ""
+"Diese Kontakte haben keine zu bestätigenden Zuwendungen in der angegebene "
+"Zeitspanne."
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
 #: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
@@ -260,8 +351,49 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: CRM/Donrec/Form/Task/Create.php
-msgid "This contact has no selectable contributions in the selected time period."
-msgstr "Dieser Kontakt hat keine quittierbaren Zuwendungen in der gewählten Zeitspanne."
+msgid ""
+"This contact has no selectable contributions in the selected time period."
+msgstr ""
+"Dieser Kontakt hat keine quittierbaren Zuwendungen in der gewählten "
+"Zeitspanne."
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw Donation Receipts"
+msgstr "ZWBs Zurückziehen"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "From Date"
+msgstr "Datum von"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "To Date"
+msgstr "Datum bis"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid ""
+"Caution: %1 contact(s) will have more than one donation receipt withdrawn!"
+msgstr ""
+"Achtung: %1 Kontakt(e) werden mehr als eine ZWB zurückgesetzt bekommen."
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Find"
+msgstr "Suchen"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw %1 Receipts"
+msgstr "%1 ZWBs Zurücksetzen"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have been withdrawn."
+msgstr "%1 ZWBs würden zurückgesetzt."
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Receipts Withdrawn"
+msgstr "ZWBs Zurückgesetzt"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have not been withdrawn and encountered an error."
+msgstr "%1 ZWBs konnten wegen Fehlern nicht zurückgesetzt werden."
 
 #: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
 #: donrec.php
@@ -282,11 +414,14 @@ msgstr "CiviCRM ID"
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "At least one of the given contributions doesn't exist!"
-msgstr "Mindestens eine der angegebenen Zuwendungen existiert nicht oder nicht mehr."
+msgstr ""
+"Mindestens eine der angegebenen Zuwendungen existiert nicht oder nicht mehr."
 
 #: CRM/Donrec/Form/Task/Rebook.php
-msgid "Rebooking of multiple contributions from different contacts is not allowed!"
-msgstr "Umbuchen von Zuwendungen von unterschiedlichen Kontakten ist nicht möglich!"
+msgid ""
+"Rebooking of multiple contributions from different contacts is not allowed!"
+msgstr ""
+"Umbuchen von Zuwendungen von unterschiedlichen Kontakten ist nicht möglich!"
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "Rebooking not allowed!"
@@ -337,12 +472,18 @@ msgid "The contribution with ID %1 is not completed!"
 msgstr "Die Zuwendung [%1] ist nicht abgeschlossen."
 
 #: CRM/Donrec/Form/Task/Rebook.php
-msgid "The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt."
-msgstr "Zuwendung [%1] kann nicht umgebucht werden, da für sie eine Zuwendungsbescheinigung vorliegt."
+msgid ""
+"The contribution with ID %1 cannot be rebooked, because it has a valid "
+"contribution receipt."
+msgstr ""
+"Zuwendung [%1] kann nicht umgebucht werden, da für sie eine "
+"Zuwendungsbescheinigung vorliegt."
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference, exceeds 35 characters."
-msgstr "Es kann keine neue Mandatsreferenz erstellt werden, die alte ist schon zu lang."
+msgstr ""
+"Es kann keine neue Mandatsreferenz erstellt werden, die alte ist schon zu "
+"lang."
 
 #: CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference"
@@ -392,7 +533,9 @@ msgstr "Zuwendungsbescheinigungen Generieren"
 
 #: CRM/Donrec/Page/Runner.php
 msgid "No snapshot ID given. Please call this page from a proper selection."
-msgstr "Keine Snapshot-ID angegeben. Bitte rufen Sie diese Seite nur aus der entsprechenden Selektion heraus auf."
+msgstr ""
+"Keine Snapshot-ID angegeben. Bitte rufen Sie diese Seite nur aus der "
+"entsprechenden Selektion heraus auf."
 
 #: CRM/Donrec/Page/Staging.php
 msgid "No snapshot id has been provided!"
@@ -404,7 +547,8 @@ msgstr "Ungültige Snapshot-ID!"
 
 #: CRM/Donrec/Page/Staging.php
 msgid "The older snapshot has been deleted. You can now proceed."
-msgstr "Der zuvor angelegte Snapshot wurde gelöscht, Sie können nun weiter machen."
+msgstr ""
+"Der zuvor angelegte Snapshot wurde gelöscht, Sie können nun weiter machen."
 
 #: CRM/Donrec/Page/Staging.php
 msgid "The previously created snapshot has been deleted."
@@ -432,15 +576,24 @@ msgstr "Zuwendungsbescheinigung [%d] nicht gefunden."
 
 #: api/v3/DonationReceipt.php
 msgid "Only original donation receipts can be copied."
-msgstr "Nur Zuwendungsbescheinigungen im Status \"Original\" können kopiert werde."
+msgstr ""
+"Nur Zuwendungsbescheinigungen im Status \"Original\" können kopiert werde."
 
-#: api/v3/DonationReceiptEngine.php
+#: api/v3/DonationReceiptEngine/Next.php
 msgid "No 'sid' parameter given."
 msgstr "Fehlender Parameter: 'sid'."
+
+#: api/v3/DonationReceiptEngine/Processreturns.php
+msgid "E-Mail delivery of donation receipt {receipt_id} failed."
+msgstr "E-Mail Versand von {receipt_id} ist fehlgeschlagen."
 
 #: donrec.php templates/CRM/Donrec/Page/Staging.tpl
 msgid "Issue donation receipt(s)"
 msgstr "Zuwendungsbescheinigungen erstellen"
+
+#: donrec.php
+msgid "Withdraw donation receipt(s)"
+msgstr "ZWBs zurücksetzen"
 
 #: donrec.php
 msgid "Rebook to contact"
@@ -479,16 +632,30 @@ msgid "Donation receipts"
 msgstr "Zuwendungsbescheinigungen"
 
 #: donrec.php
-msgid "A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."
-msgstr "Für diese Zuwendung wurde bereits eine Zuwendungsbescheinigung ausgestellt, bzw. ist in Arbeit. Sie dürfen daher den Wert für '%s' nicht verändern."
+msgid ""
+"A donation receipt has been issued for this contribution, or is being "
+"processed for a receipt right now. You are not allowed to change the value "
+"for '%s'."
+msgstr ""
+"Für diese Zuwendung wurde bereits eine Zuwendungsbescheinigung ausgestellt, "
+"bzw. ist in Arbeit. Sie dürfen daher den Wert für '%s' nicht verändern."
 
 #: donrec.php
-msgid "The column '%s' of this contribution [%d] must not be changed because it has a receipt or is going to be receipted!"
-msgstr "Der Wert '%s' der Zuwendung [%d] darf nicht verändert werden, da für diese entweder bereits eine Zuwendungsbestätigung besteht, oder gerade erstellt wird."
+msgid ""
+"The column '%s' of this contribution [%d] must not be changed because it has "
+"a receipt or is going to be receipted!"
+msgstr ""
+"Der Wert '%s' der Zuwendung [%d] darf nicht verändert werden, da für diese "
+"entweder bereits eine Zuwendungsbestätigung besteht, oder gerade erstellt "
+"wird."
 
 #: donrec.php
-msgid "This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"
-msgstr "Zuwendung [%d] kann nicht gelöscht werden, da für sie eine Zuwendungsbescheinigung vorliegt, oder gerade erstellt wird."
+msgid ""
+"This contribution [%d] must not be deleted because it has a receipt or is "
+"going to be receipted!"
+msgstr ""
+"Zuwendung [%d] kann nicht gelöscht werden, da für sie eine "
+"Zuwendungsbescheinigung vorliegt, oder gerade erstellt wird."
 
 #: donrec.php templates/CRM/Donrec/Page/Tab.tpl
 msgid "Status"
@@ -531,84 +698,198 @@ msgid "Issued by contact"
 msgstr "Ausgestellt von Kontakt"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs."
-msgstr "Hier können Sie die Zuwendungsarten auswählen, für die Bescheinigungen erstellt werden sollen.<br/>Die Standardeinstellung ist, dass alle Zuwendungsarten die als absetzbar markiert sind ausgewählt sind, aber Sie können auch eine individuelle Auswahl treffen."
+msgid ""
+"You can select the financial types that are eligable for donation receipts."
+"<br/>The default is, that all financial types marked as tax deductible are "
+"included,but you can adjust this selection to your organisation's needs."
+msgstr ""
+"Hier können Sie die Zuwendungsarten auswählen, für die Bescheinigungen "
+"erstellt werden sollen.<br/>Die Standardeinstellung ist, dass alle "
+"Zuwendungsarten die als absetzbar markiert sind ausgewählt sind, aber Sie "
+"können auch eine individuelle Auswahl treffen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons."
-msgstr "Der hier eingestellte Text wird bei Entwürfen und ungültigen Bescheinigungen als Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus rechtlichen Gründen kein leerer String sein."
+msgid ""
+"This watermark text is included in all invalid or test donation receipts.<br/"
+">It cannot be left empty for legal reasons."
+msgstr ""
+"Der hier eingestellte Text wird bei Entwürfen und ungültigen Bescheinigungen "
+"als Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus "
+"rechtlichen Gründen kein leerer String sein."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons."
-msgstr "Der hier eingestellte Text wird bei Kopien von Zuwendungsbescheinigungen als Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus rechtlichen Gründen kein leerer String sein."
+msgid ""
+"This watermark text is included in all donation receipt copies.<br/>It "
+"cannot be left empty for legal reasons."
+msgstr ""
+"Der hier eingestellte Text wird bei Kopien von Zuwendungsbescheinigungen als "
+"Wasserzeichen in das erstellte PDF integriert.<br/>Dies darf aus rechtlichen "
+"Gründen kein leerer String sein."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team."
-msgstr "Wenn Sie diese Option aktivieren, werden die erzeugten Original-PDFs mit dem Datensatz gespeichert. Somit haben Sie immer Zugang zu der Original-Datei, allerdings kann dieser Zugang natürlich auch genutzt werden, um beliebig viele Kopien dieser Datei anzufertigen. Dies ist eine legale Grauzone, beraten Sie sich am besten vor der Aktivierung dieser Option mit Ihrer Rechtsabteilung.<br/>Wenn Sie die Option nicht aktivieren, wird das System zur Ansicht stets ein neues PDF generieren. Solange Sie das Template (Nachrichtenvorlage) nicht ändern, sollte das Resultat identisch sein, abgesehen davon dass es als ungültig markiert ist."
+msgid ""
+"When this option is activated, the originally generated PDF file will be "
+"stored with the donation receipt data set.This approach has the advantage, "
+"that you can always see and download the exact PDF you sent to your donors."
+"On the other hand, activating this option gives you free access to the "
+"original PDF file,which you can then print out without any further "
+"restrictions. This might cause legal issues.<br/>If you don't activate this "
+"option, a new PDF will be generated for you.As long as you don't change the "
+"template, this should be the same as the original, except that it's marked "
+"invalid.<br/>Discuss the best setting here with your legal team."
+msgstr ""
+"Wenn Sie diese Option aktivieren, werden die erzeugten Original-PDFs mit dem "
+"Datensatz gespeichert. Somit haben Sie immer Zugang zu der Original-Datei, "
+"allerdings kann dieser Zugang natürlich auch genutzt werden, um beliebig "
+"viele Kopien dieser Datei anzufertigen. Dies ist eine legale Grauzone, "
+"beraten Sie sich am besten vor der Aktivierung dieser Option mit Ihrer "
+"Rechtsabteilung.<br/>Wenn Sie die Option nicht aktivieren, wird das System "
+"zur Ansicht stets ein neues PDF generieren. Solange Sie das Template "
+"(Nachrichtenvorlage) nicht ändern, sollte das Resultat identisch sein, "
+"abgesehen davon dass es als ungültig markiert ist."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run."
-msgstr "Bestimmt die Paketgröße während eines Erstellungslaufs.<br/>Wenn eine große Anzahl von Zuwendungsbescheinigungen erstellt werden soll, wird diese Aufgabe aus Sicherheitsgründen für die Abarbeitung in kleinere Pakete unterteilt.<br/>Falls Sie Probleme mit Timeout-Fehlern haben, versuchen Sie diesen Wert zu verringern. Wenn Sie etwas mehr Performance sehen wollen, können Sie vorsichtig versuchen, diesen Wert zu erhöhen - aber lassen Sie noch etwas Sicherheitsspielraum.<br/>In jedem Fall sollten Sie jede Veränderung dieses Wertes mit einem ausgiebigen Testlauf testen."
+msgid ""
+"Defines the runner packed size.<br/>When creating large amounts of donation "
+"receipts, the runner will not process all of them at once.It will break the "
+"lot down into little packets and process them individually.<br/>If you're "
+"having trouble with timeouts, try decreasing this value.If you want more "
+"performance, try increasing it carefully - but don't tweak it to the limit."
+"<br/>You should always test your settings in a test run."
+msgstr ""
+"Bestimmt die Paketgröße während eines Erstellungslaufs.<br/>Wenn eine große "
+"Anzahl von Zuwendungsbescheinigungen erstellt werden soll, wird diese "
+"Aufgabe aus Sicherheitsgründen für die Abarbeitung in kleinere Pakete "
+"unterteilt.<br/>Falls Sie Probleme mit Timeout-Fehlern haben, versuchen Sie "
+"diesen Wert zu verringern. Wenn Sie etwas mehr Performance sehen wollen, "
+"können Sie vorsichtig versuchen, diesen Wert zu erhöhen - aber lassen Sie "
+"noch etwas Sicherheitsspielraum.<br/>In jedem Fall sollten Sie jede "
+"Veränderung dieses Wertes mit einem ausgiebigen Testlauf testen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet."
-msgstr "Das <code>pdfinfo</code> Programm wird für den seitensortierenden PDF-Exporter benötigt.<br/>Bitten Sie Ihren Administrator das Programm auf dem Server zu installieren und Ihnen den korrekten Wert für diese Einstellung zu sagen."
+msgid ""
+"The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask "
+"your system administrator to set the correct setting, and install the tool "
+"if it's not there yet."
+msgstr ""
+"Das <code>pdfinfo</code> Programm wird für den seitensortierenden PDF-"
+"Exporter benötigt.<br/>Bitten Sie Ihren Administrator das Programm auf dem "
+"Server zu installieren und Ihnen den korrekten Wert für diese Einstellung zu "
+"sagen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "Select the address type where the legal address (wrt IRS) of the donor can be found."
-msgstr "Wählen sie die Adressart, wo die offizielle Adresse (bzgl. des Finanzamts) des Spenders hinterlegt ist."
+msgid ""
+"Select the address type where the legal address (wrt IRS) of the donor can "
+"be found."
+msgstr ""
+"Wählen sie die Adressart, wo die offizielle Adresse (bzgl. des Finanzamts) "
+"des Spenders hinterlegt ist."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "Select the postal address type where the donation receipt should be mailed to."
-msgstr "Wählen sie die Adressart, die für den Versand der Spendenbescheinigung verwendet werden soll."
+msgid ""
+"Select the postal address type where the donation receipt should be mailed "
+"to."
+msgstr ""
+"Wählen sie die Adressart, die für den Versand der Spendenbescheinigung "
+"verwendet werden soll."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "In case the first address is empty, this is the fallback address to be used insted."
-msgstr "Falls die zuerst gewählt Adresse nicht hinterlegt ist, wird die hier gewählte Adresse ersatzweise verwendet."
+msgid ""
+"In case the first address is empty, this is the fallback address to be used "
+"insted."
+msgstr ""
+"Falls die zuerst gewählt Adresse nicht hinterlegt ist, wird die hier "
+"gewählte Adresse ersatzweise verwendet."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile."
-msgstr "Profile ermöglichen es, unterschiedliche Konfigurationen für unterschiedliche Bescheinigungstypen zu haben. Falls Sie nur einen Typ haben, arbeiten Sie einfach mit dem 'Default' Profil."
+msgid ""
+"Profiles allow you to have different settings for different scenarios. But "
+"if you only have one, just work with the default profile."
+msgstr ""
+"Profile ermöglichen es, unterschiedliche Konfigurationen für "
+"unterschiedliche Bescheinigungstypen zu haben. Falls Sie nur einen Typ "
+"haben, arbeiten Sie einfach mit dem 'Default' Profil."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "Select the template to be used for creating donation receipt PDFs with the current profile."
-msgstr "Wählen Sie die Vorlage die für Erzeugung von PDF Dateien für Bescheinigungen mit dem aktuellen Profil."
+msgid ""
+"Select the template to be used for creating donation receipt PDFs with the "
+"current profile."
+msgstr ""
+"Wählen Sie die Vorlage die für Erzeugung von PDF Dateien für Bescheinigungen "
+"mit dem aktuellen Profil."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "In case you select the 'send via email' exporter, this template will be used for the email body."
-msgstr "Falls Sie die Ausgabe 'PDF per E-Mail versenden\" wählen, wird diese Vorlage für den E-Mail text verwendet."
+msgid ""
+"In case you select the 'send via email' exporter, this template will be used "
+"for the email body."
+msgstr ""
+"Falls Sie die Ausgabe 'PDF per E-Mail versenden\" wählen, wird diese Vorlage "
+"für den E-Mail text verwendet."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "You can set an email address that will receive every email sent as a blind copy."
-msgstr "Sie können hier eine E-Mail Adresse angeben, die alle verschickten Zuwendungsbescheinigungen als BCC erhalten."
+msgid ""
+"You can set an email address that will receive every email sent as a blind "
+"copy."
+msgstr ""
+"Sie können hier eine E-Mail Adresse angeben, die alle verschickten "
+"Zuwendungsbescheinigungen als BCC erhalten."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt."
-msgstr "<strong>Achtung</strong>: Die Aktivierung dieser Funktion könnte die Auflagen Ihres Finanzamts bezüglich der Zugänglichkeit der Originalbescheinigungen verletzen."
+msgid ""
+"<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS "
+"requirements about the handling of the original receipt."
+msgstr ""
+"<strong>Achtung</strong>: Die Aktivierung dieser Funktion könnte die "
+"Auflagen Ihres Finanzamts bezüglich der Zugänglichkeit der "
+"Originalbescheinigungen verletzen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing."
-msgstr "Unter Umständen ist es wichtig die Zustellungsfehler der über E-Mail versendeten Zuwendungsbescheinigungen zu erhalten. Normalerweise werden diese Zustellungsfehler einfach von CiviCRM im Hintergrund verarbeitet, und es ist nicht einfach an diese Informationen heranzukommen."
+msgid ""
+"It might be important to you to receive bounces from donation receipts sent "
+"out via email. However if the default bounce system is used this information "
+"will be processed without you noticing."
+msgstr ""
+"Unter Umständen ist es wichtig die Zustellungsfehler der über E-Mail "
+"versendeten Zuwendungsbescheinigungen zu erhalten. Normalerweise werden "
+"diese Zustellungsfehler einfach von CiviCRM im Hintergrund verarbeitet, und "
+"es ist nicht einfach an diese Informationen heranzukommen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "By providing an email address here, the following happens during live generation:"
-msgstr "Wenn Sie hier eine E-Mail Adresse eintragen wird folgendes während des Versands der Zuwendungsbescheinigungen passieren:"
+msgid ""
+"By providing an email address here, the following happens during live "
+"generation:"
+msgstr ""
+"Wenn Sie hier eine E-Mail Adresse eintragen wird folgendes während des "
+"Versands der Zuwendungsbescheinigungen passieren:"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "The email is set as your default bounce address"
-msgstr "Die E-Mail Adress wird as Standardadresse für das \"Bounce Processing\" gesetzt."
+msgstr ""
+"Die E-Mail Adress wird as Standardadresse für das \"Bounce Processing\" "
+"gesetzt."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "The task to send out newsletters will be disabled."
 msgstr "Der Job zum Versand on Rundschreiben wird deaktiviert."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail."
-msgstr "<strong>Achtung</strong>:  Diese Änderungen werden nach Abschluss des Versands wieder zurückgenommen, allerdings kann dies in Ausnahmesituationen (z.B. Abstürzen) ausbleiben."
+msgid ""
+"<strong>Caution</strong>: All of these changes will be rolled back when the "
+"generation process has completed, however in rare cases (like crashes), this "
+"rollback might fail."
+msgstr ""
+"<strong>Achtung</strong>:  Diese Änderungen werden nach Abschluss des "
+"Versands wieder zurückgenommen, allerdings kann dies in Ausnahmesituationen "
+"(z.B. Abstürzen) ausbleiben."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it."
-msgstr "Diese Einstellung erlaubt Ihnen eine Schema für die zu vergebende Seriennummer der Zuwendungsbescheinigungen zu definieren. Dazu können Sie beliebigen Text und die vordefinierten Tokens verwenden."
+msgid ""
+"This setting allows you to define the format for the donation receipt's "
+"serial number. You can use text and tokens to customize it."
+msgstr ""
+"Diese Einstellung erlaubt Ihnen eine Schema für die zu vergebende "
+"Seriennummer der Zuwendungsbescheinigungen zu definieren. Dazu können Sie "
+"beliebigen Text und die vordefinierten Tokens verwenden."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "The following tokens are available:"
@@ -616,7 +897,9 @@ msgstr "Die folgenden Tokens stehen zur Verfügung:"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "Serial number. The system will make sure this is unique and continuous"
-msgstr "Seriennummer. Das System wird dieses Token mit einer eindeutigen und fortlaufenden Nummer ersetzen."
+msgstr ""
+"Seriennummer. Das System wird dieses Token mit einer eindeutigen und "
+"fortlaufenden Nummer ersetzen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "Year in which the donation receipt was generated"
@@ -632,11 +915,17 @@ msgstr "Die folgenden Einschränkungen gelten für das definierte Schema:"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid "There has to be exactly one <code>&#123;serial&#125;</code> token."
-msgstr "Das Token <code>&#123;serial&#125;</code> muss genau einmal verwendet werden."
+msgstr ""
+"Das Token <code>&#123;serial&#125;</code> muss genau einmal verwendet werden."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
-msgid "All tokens cannot be used adjacent to digits or other tokens. Use other characters like dashes or spaces to separate them."
-msgstr "Keine der Token dürfen direkt nebeneinander stehen, oder direkt an Ziffern angrenzen. Verwenden Sie beispielsweise Leerzeichen oder Bindestriche um die Elemente zu trennen."
+msgid ""
+"All tokens cannot be used adjacent to digits or other tokens. Use other "
+"characters like dashes or spaces to separate them."
+msgstr ""
+"Keine der Token dürfen direkt nebeneinander stehen, oder direkt an Ziffern "
+"angrenzen. Verwenden Sie beispielsweise Leerzeichen oder Bindestriche um die "
+"Elemente zu trennen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Help"
@@ -712,8 +1001,28 @@ msgid "Email Settings"
 msgstr "E-Mail Versand"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid ""
+"Sending donation receipts by email can be tricky, make sure you know how you "
+"want to detect and handle bounces or returns."
+msgstr ""
+"Zuwendungsbescheinigungen per E-Mail zu veschicken ist nicht "
+"unproblematisch. Es muss sichergestellt werden, dass nicht zugestellte und "
+"nicht zustellbare ZWBs erkannt und bearbeitet werden."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid ""
+"You should also have a look at the <a href=\"%1\">return processing feature</"
+"a>."
+msgstr ""
+"Dabei kann eventuall auch unser <a href=\"%1\">Rücklauf-Prozessor</a> helfen."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Email-Template"
 msgstr "E-Mail Vorlage"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "From Email Address"
+msgstr "Absender Adresse"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "BCC Email Address"
@@ -748,8 +1057,10 @@ msgid "Profile profile_name created."
 msgstr "Profil profile_name erstellt."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Remeber to save to settings page for all profile changes to take effect."
-msgstr "Die Einstellungen werden erst durch das Speichern dieser Seite übernommen."
+msgid ""
+"Remeber to save to settings page for all profile changes to take effect."
+msgstr ""
+"Die Einstellungen werden erst durch das Speichern dieser Seite übernommen."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "This is the only profile, you cannot delete this."
@@ -764,8 +1075,14 @@ msgid "Are you sure?"
 msgstr "Sind Sie sicher?"
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Do you really want to delete this profile?<br/>If you have already created donation receipts with this profile, the profile-specific information will be lost (e.g. the template used)."
-msgstr "Wollen Sie dieses Profil wirklich löschen?<br/>Falls Sie bereits Zuwendungsbescheinigungen mit diesem Profil erstellt haben, gehen die spezifischen Informationen (z.B. die verwendete Vorlage) verloren."
+msgid ""
+"Do you really want to delete this profile?<br/>If you have already created "
+"donation receipts with this profile, the profile-specific information will "
+"be lost (e.g. the template used)."
+msgstr ""
+"Wollen Sie dieses Profil wirklich löschen?<br/>Falls Sie bereits "
+"Zuwendungsbescheinigungen mit diesem Profil erstellt haben, gehen die "
+"spezifischen Informationen (z.B. die verwendete Vorlage) verloren."
 
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "This value cannot be empty!"
@@ -786,6 +1103,40 @@ msgstr "Sie dürfen <code>&#123;serial&#125;</code> nur einmal verwenden!"
 #: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "This cannot contain more than 64 characters!"
 msgstr "Dies kann nicht länger als 64 Zeichen sein!"
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Process Email Returns"
+msgstr "Rückläufer Verabeiten"
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"This tool allows you to process bounced or returned (emailed) donation "
+"receipts into activities."
+msgstr ""
+"Dieses Tool erlaubt Ihnen, nicht zustellbare (per E-Mail versandte) ZWBs "
+"zurückzusetzen und mit Aktivitäten zu versehen."
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"You should create a new, exclusive email account, and set the return path to "
+"that account while sending."
+msgstr ""
+"Sie sollten ein neues, exklusiv für diesen Zweck genutztes Postfach "
+"einrichten, und dieses beim Versand als \"return path\" einstellen."
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid ""
+"To uniquely identify the contact the receipt had been sent to, you can add a "
+"code containing the contact ID to the the email template, and provide a "
+"pattern below to recognise it."
+msgstr ""
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Account Access"
+msgstr "Zugangsdaten Postfach"
 
 #: templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Are you sure you want to rebook the selected contributions?"
@@ -811,6 +1162,10 @@ msgstr "Zuwendungen nach Eingangsdatum auswählen"
 msgid "Select time span"
 msgstr "Zeitraum wählen"
 
+#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
+msgid "Select the currency"
+msgstr ""
+
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Unfinished run detected"
 msgstr "Nicht abgeschlossener Lauf gefunden"
@@ -832,8 +1187,12 @@ msgid "Otherwise the selection <b>will be deleted</b>!"
 msgstr "Andernfalls wird der Lauf <b>gelöscht</b>!"
 
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-msgid "<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually."
-msgstr "<b>Achtung!</b> Es wurden bereits einige Zuwendungsbescheinigungen erstellt. Falls Sie den Lauf nicht fortsetzen, sollten sie diese manuell löschen."
+msgid ""
+"<b>Caution!</b> Some receipts have already been created. If you do not "
+"continue with this run, you should probably delete them manually."
+msgstr ""
+"<b>Achtung!</b> Es wurden bereits einige Zuwendungsbescheinigungen erstellt. "
+"Falls Sie den Lauf nicht fortsetzen, sollten sie diese manuell löschen."
 
 #: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 #: templates/CRM/Donrec/Page/Staging.tpl
@@ -876,10 +1235,6 @@ msgid "Back"
 msgstr "Zurück"
 
 #: templates/CRM/Donrec/Page/Runner.tpl
-msgid "Done"
-msgstr "Fertig"
-
-#: templates/CRM/Donrec/Page/Runner.tpl
 msgid "Progress Log"
 msgstr "Ausführungs-Log"
 
@@ -896,36 +1251,71 @@ msgid "Download"
 msgstr "Download"
 
 #: templates/CRM/Donrec/Page/Runner.tpl
-msgid "The donation receipts have been generated. You can now download the results."
-msgstr "Alle Zuwendungsbescheinigungen wurden erstellt. Sie können das Ergebnis nun herunterladen."
+msgid ""
+"The donation receipts have been generated. You can now download the results."
+msgstr ""
+"Alle Zuwendungsbescheinigungen wurden erstellt. Sie können das Ergebnis nun "
+"herunterladen."
 
 #: templates/CRM/Donrec/Page/Runner.tpl
 msgid "There was a problem. Please check the log below for more information."
 msgstr "Es gab ein Problem. Der Abschnitt unten enthält weitere Informationen."
 
 #: templates/CRM/Donrec/Page/Runner.tpl
-msgid "You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost."
-msgstr "Sie haben die Ergebnisdatei noch nicht heruntergeladen. Sind Sie sicher, dass sie die Seite dennoch verlassen möchten? Die Datei wäre unwiederbringlich verloren."
+msgid ""
+"You haven't downloaded the resulting file yet. Are you sure you want to "
+"leave this page? The file would be lost."
+msgstr ""
+"Sie haben die Ergebnisdatei noch nicht heruntergeladen. Sind Sie sicher, "
+"dass sie die Seite dennoch verlassen möchten? Die Datei wäre "
+"unwiederbringlich verloren."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "A number of contributions without (valid) receipt have been found for the selected time span. These will be marked as receipted once you hit the \"Issue donation receipt(s)\" button below."
-msgstr "Für den gewählten Zeitraum wurden nicht bescheinigte Zuwendungen gefunden. Diese werden als bescheinigt markiert, wenn Sie auf \"Zuwendungsbescheinigungen erstellen\" klicken."
+msgid ""
+"A number of contributions without (valid) receipt have been found for the "
+"selected time span. These will be marked as receipted once you hit the "
+"\"Issue donation receipt(s)\" button below."
+msgstr ""
+"Für den gewählten Zeitraum wurden nicht bescheinigte Zuwendungen gefunden. "
+"Diese werden als bescheinigt markiert, wenn Sie auf "
+"\"Zuwendungsbescheinigungen erstellen\" klicken."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "You can choose from a variety of result formats, depending on your needs. You can also choose \"Don't generate files\" if you only want to mark them as receipted."
-msgstr "Sie können zwischen verschiedenen Ausgabeformaten für die Bescheinigungen wählen. Wählen Sie \"Keine Dateien erzeugen\", wenn Sie die Zuwendungen nur als bescheinigt markieren möchten."
+msgid ""
+"You can choose from a variety of result formats, depending on your needs. "
+"You can also choose \"Don't generate files\" if you only want to mark them "
+"as receipted."
+msgstr ""
+"Sie können zwischen verschiedenen Ausgabeformaten für die Bescheinigungen "
+"wählen. Wählen Sie \"Keine Dateien erzeugen\", wenn Sie die Zuwendungen nur "
+"als bescheinigt markieren möchten."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "The \"Test run\" button will do all the same things except no contributions will be marked as receipted. We strongly recommend testing the creation of any larger batch of donation receipts."
-msgstr "Der \"Testlauf\" Button wird das gleiche tun, außer dass keine der Zuwendungen als bescheinigt markiert werden. Wir empfehlen einen Testlauf für jeden größeren Erstellungslauf."
+msgid ""
+"The \"Test run\" button will do all the same things except no contributions "
+"will be marked as receipted. We strongly recommend testing the creation of "
+"any larger batch of donation receipts."
+msgstr ""
+"Der \"Testlauf\" Button wird das gleiche tun, außer dass keine der "
+"Zuwendungen als bescheinigt markiert werden. Wir empfehlen einen Testlauf "
+"für jeden größeren Erstellungslauf."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "Please navigate this page using the buttons below and do not leave the page via the browser's back button."
-msgstr "Bitte verwenden Sie auf dieser Seite nicht die Vor- und Zurück-Buttons des Browsers."
+msgid ""
+"Please navigate this page using the buttons below and do not leave the page "
+"via the browser's back button."
+msgstr ""
+"Bitte verwenden Sie auf dieser Seite nicht die Vor- und Zurück-Buttons des "
+"Browsers."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "<b>Caution:</b> this is a resumed non-test run. If you press the abort button, the run will be deleted for good."
-msgstr "<b>Achtung!</b> Dies scheint ein wiederaufgenommener (nicht-Test-) Lauf zu sein. Wenn Sie nun den 'Abbrechen' Button verwenden, wird dieser Lauf endgültig gelöscht und kann nicht erneut wieder aufgenommen werden."
+msgid ""
+"<b>Caution:</b> this is a resumed non-test run. If you press the abort "
+"button, the run will be deleted for good."
+msgstr ""
+"<b>Achtung!</b> Dies scheint ein wiederaufgenommener (nicht-Test-) Lauf zu "
+"sein. Wenn Sie nun den 'Abbrechen' Button verwenden, wird dieser Lauf "
+"endgültig gelöscht und kann nicht erneut wieder aufgenommen werden."
 
 #: templates/CRM/Donrec/Page/Staging.tpl
 msgid "selected contacts"
@@ -940,12 +1330,17 @@ msgid "Period to"
 msgstr "Zeitraum bis"
 
 #: templates/CRM/Donrec/Page/Staging.tpl
-msgid "Sorry, but at least one of the selected contributions is already being processed for a donation receipt:"
-msgstr "Mindestens eine der selektierten Zuwendungen wird gerade von einem anderen Benutzer bestätigt:"
+msgid ""
+"Sorry, but at least one of the selected contributions is already being "
+"processed for a donation receipt:"
+msgstr ""
+"Mindestens eine der selektierten Zuwendungen wird gerade von einem anderen "
+"Benutzer bestätigt:"
 
 #: templates/CRM/Donrec/Page/Staging.tpl
 msgid "The conflicting other donation receipt process was created by"
-msgstr "Der konkurrierende Zuwendungsbescheinigungslauf wurde erzeugt von Benutzer"
+msgstr ""
+"Der konkurrierende Zuwendungsbescheinigungslauf wurde erzeugt von Benutzer"
 
 #: templates/CRM/Donrec/Page/Staging.tpl
 msgid "It will automatically expire on"
@@ -1085,7 +1480,8 @@ msgstr "Erfolg"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Are you sure you want to withdraw this donation receipt?"
-msgstr "Sind Sie sicher dass Sie diese Zuwendungsbescheinigung zurücksetzen möchten?"
+msgstr ""
+"Sind Sie sicher dass Sie diese Zuwendungsbescheinigung zurücksetzen möchten?"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "The donation receipt has been successfully copied"
@@ -1093,7 +1489,9 @@ msgstr "Die Zuwendungsbescheinigung wurde kopiert"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Any existing copies of this receipt will have to be deleted manually."
-msgstr "Die erstellten Kopien dieser Bestätigung werden nicht mit gelöscht, und sollten manuell gelöscht werden."
+msgstr ""
+"Die erstellten Kopien dieser Bestätigung werden nicht mit gelöscht, und "
+"sollten manuell gelöscht werden."
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "You could also just withdraw it."
@@ -1105,7 +1503,8 @@ msgstr "Die Zuwendungsbescheinigung wurde gelöscht"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Are you sure you want to delete this donation receipt?"
-msgstr "Sind Sie sicher dass Sie diese Zuwendungsbescheinigung löschen möchten?"
+msgstr ""
+"Sind Sie sicher dass Sie diese Zuwendungsbescheinigung löschen möchten?"
 
 #: templates/CRM/Donrec/Page/Tempfile.tpl
 msgid "Temporary file dowload failed."
@@ -1113,8 +1512,8 @@ msgstr "Download der temporären Datei fehlgeschlagen."
 
 #~ msgid "Issued by contact ID"
 #~ msgstr "Ausgestellt von Kontakt ID"
-#~ msgctxt "menu"
 
+#~ msgctxt "menu"
 #~ msgid "Donation Receipts Settings"
 #~ msgstr "Zuwendungsbestätigung - Einstellungen"
 
@@ -1183,8 +1582,8 @@ msgstr "Download der temporären Datei fehlgeschlagen."
 
 #~ msgid "Text"
 #~ msgstr "Wasserzeichen"
-#~ msgctxt "menu"
 
+#~ msgctxt "menu"
 #~ msgid ""
 #~ "The donation receipts extension allows you to create and manage tax "
 #~ "receipts for your donors."
