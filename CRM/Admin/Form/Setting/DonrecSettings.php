@@ -90,6 +90,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       ts('Email Template', array('domain' => 'de.systopia.donrec')),
                       CRM_Donrec_Logic_Settings::getAllTemplates());
 
+    $this->addElement('select',
+                      'donrec_language',
+                      ts('Language', array('domain' => 'de.systopia.donrec')),
+                      CRM_Core_I18n::languages(FALSE));
+
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save', array('domain' => 'de.systopia.donrec')), 'isDefault' => TRUE),
@@ -121,6 +126,15 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       $defaults['donrec_watermark_preset'] = (!empty(CRM_Core_Config::singleton()->wkhtmltopdfPath) ? 'wkhtmltopdf_traditional' : 'dompdf_traditional');
     }
 
+    $defaults['donrec_language'] = CRM_Donrec_Logic_Settings::get('donrec_language');
+    if (empty($defaults['donrec_language'])) {
+      if (method_exists('CRM_Core_I18n', 'getLocale')) {
+        $defaults['donrec_language'] = CRM_Core_I18n::getLocale();
+      } else {
+        $defaults['donrec_language'] = 'en_US';
+      }
+    }
+
     return $defaults;
   }
 
@@ -133,6 +147,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
     CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
     CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
+    CRM_Donrec_Logic_Settings::set('donrec_language', $values['donrec_language']);
     CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
     CRM_Donrec_Logic_Settings::set('donrec_watermark_preset', $values['donrec_watermark_preset']);
     if ($values['pdfinfo_path']) {

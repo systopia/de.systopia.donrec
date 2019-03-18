@@ -147,6 +147,8 @@
         <tr>
           <td class="label">{$form.donrec_watermark_preset.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Watermark preset{/ts}", {literal}{"id":"id-donrec-watermark-preset","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.donrec_watermark_preset.html}</td>
+          <td class="label">{$form.donrec_language.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Languages{/ts}", {literal}{"id":"id-language","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>{$form.donrec_language.html}</td>
         </tr>
         <tr>
           <td class="label">{$form.packet_size.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
