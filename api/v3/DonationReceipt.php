@@ -135,7 +135,7 @@ function civicrm_api3_donation_receipt_view($params) {
     $values['watermark'] = $profile->get('draft_text');
   }
 
-  $pdf = $profile->getTemplate()->generatePDF($values, $parameter);
+  $pdf = $profile->getTemplate()->generatePDF($values, $params);
   $url = CRM_Donrec_Logic_File::createTemporaryFile($pdf, $name);
 
   // and return the result

@@ -56,6 +56,17 @@ class CRM_Donrec_Logic_Settings {
     return $relevant_templates;
   }
 
+  public static function getWatermarkPresets() {
+    return array(
+      CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getName() => CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getName() => CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getLabel(),
+    );
+  }
+
   /**
    * get the chunk size
    *

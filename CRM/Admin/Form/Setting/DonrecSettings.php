@@ -44,6 +44,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       $this->getSenderEmails(),
       array('class' => 'crm-select2 huge')
     );
+    $this->addElement(
+      'select',
+      'donrec_watermark_preset',
+      ts('Watermark preset', array('domain' => 'de.systopia.donrec')),
+      CRM_Donrec_Logic_Settings::getWatermarkPresets(),
+      array('class' => 'crm-select2')
+    );
 
     // add profile location-type-selections
     $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
@@ -107,6 +114,12 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['donrec_email_template'] = CRM_Donrec_Logic_Settings::get('donrec_email_template');
     $defaults['donrec_return_path_email'] = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
     $defaults['donrec_bcc_email'] = CRM_Donrec_Logic_Settings::get('donrec_bcc_email');
+    $defaults['donrec_watermark_preset'] = CRM_Donrec_Logic_Settings::get('donrec_watermark_preset');
+
+    // Use a sane default depending on the PDF engine.
+    if (!isset($defaults['donrec_watermark_preset'])) {
+      $defaults['donrec_watermark_preset'] = (!empty(CRM_Core_Config::singleton()->wkhtmltopdfPath) ? 'wkhtmltopdf_traditional' : 'dompdf_traditional');
+    }
 
     return $defaults;
   }
@@ -121,6 +134,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
     CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
     CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
+    CRM_Donrec_Logic_Settings::set('donrec_watermark_preset', $values['donrec_watermark_preset']);
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
     }

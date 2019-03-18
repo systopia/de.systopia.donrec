@@ -103,4 +103,15 @@ return array(
     'is_contact' => 0,
     'description' => 'Stores the DonationReceipt Profiles',
   ),
+  'donrec_watermark_preset' => array(
+      'group_name' => 'Donation Receipt Watermark',
+      'group' => 'de.systopia',
+      'name' => 'donrec_watermark_preset',
+      'type' => 'String',
+      'add' => '4.3',
+      'default' => 0,
+      'is_domain' => 1,
+      'is_contact' => 0,
+      'description' => 'Stores the DonationReceipt Watermark Setting',
+  ),
  );
