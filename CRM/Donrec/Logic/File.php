@@ -29,7 +29,6 @@ class CRM_Donrec_Logic_File {
     return CRM_Donrec_Page_Tempfile::createFromFile($path, $name, $deleteSource, $mimetype);
   }
 
-
   /**
    * This function will take any file and make it permanently
    * available as a CiviCRM File entity.
@@ -81,7 +80,7 @@ class CRM_Donrec_Logic_File {
 
     // build reply
     $reply = $file['values'];
-    $reply['url'] = CRM_Utils_System::url("civicrm/file", "reset=1&id=" . $file['id'] . "&eid=$contact_id");
+    $reply['url'] = self::getPermanentURL($file['id'], $contact_id);
     $reply['path'] = $newPath;
 
     return $reply;
@@ -160,12 +159,21 @@ class CRM_Donrec_Logic_File {
   }
 
   /**
-   * Get the url of a file
-   * @param file-id, entity-id
-   * @return civicrm-file-url
+   * Generate a valid download link
+   *
+   * @param $file_id integer   the file entity ID
+   * @param $entity_id integer the connected entity's ID (probably contact id)
+   *
+   * @return string valid link
    */
   public static function getPermanentURL($file_id, $contact_id) {
-    return CRM_Utils_System::url("civicrm/file", "reset=1&id=$file_id&eid=$contact_id");
+    try {
+      $file = civicrm_api3('File', 'getsingle', ['id' => $file_id]);
+      return CRM_Utils_System::url("civicrm/file", "reset=1&id={$file_id}&eid={$entity_id}&filename={$file['uri']}");
+    } catch(Exception $ex) {
+      CRM_Core_Session::setStatus(ts("Download failed: ", ['domain' => 'de.systopia.donrec']) . $ex->getMessage());
+      return CRM_Utils_System::url("civicrm/dashboard");
+    }
   }
 
   /**
