@@ -93,7 +93,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $this->addElement('select',
                       'donrec_language',
                       ts('Language', array('domain' => 'de.systopia.donrec')),
-                      CRM_Core_I18n::languages(FALSE));
+                      CRM_Donrec_Lang::getLanguageList());
 
 
     $this->addButtons(array(

@@ -17,7 +17,7 @@ use CRM_Donrec_ExtensionUtil as E;
   * @author Karl Rixon (http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/)
   *         modified by Niko Bochan to support the German language
   */
-class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
+class CRM_Donrec_Lang_De_Xx extends CRM_Donrec_Lang {
 
   /**
    * Get the (localised) name of the language
@@ -25,7 +25,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
    * @return string name of the language
    */
   public function getName() {
-    return E::ts("German");
+    return E::ts("German (with spaces)");
   }
 
   /**
@@ -81,7 +81,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
    */
   protected function convert_number_to_words($number, $currency='EUR', $recursion=false) {
     $hyphen      = 'und';
-    $conjunction = '';
+    $conjunction = ' ';
     $separator   = ' ';
     $negative    = 'minus ';
     $decimal     = ' ' . $this->currency2word($currency, $number) . ' ';
@@ -155,7 +155,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       case $number < 1000:
         $hundreds  = $number / 100;
         $remainder = $number % 100;
-        $string = $dictionary[$hundreds] . $dictionary[100];
+        $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
         if ($remainder) {
           $string .= $conjunction . $this->convert_number_to_words($remainder, $currency, true);
         }

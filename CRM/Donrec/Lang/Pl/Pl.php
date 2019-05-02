@@ -9,12 +9,23 @@
 +--------------------------------------------------------*/
 
 
+use CRM_Donrec_ExtensionUtil as E;
+
 require_once 'Kwota.php';
 
 /**
  * This class holds Polish language helper functions
  */
 class CRM_Donrec_Lang_Pl_Pl extends CRM_Donrec_Lang {
+
+  /**
+   * Get the (localised) name of the language
+   *
+   * @return string name of the language
+   */
+  public function getName() {
+    return E::ts("Polish");
+  }
 
   /**
    * Render a full text expressing the amount in the given currency

@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class holds Spanish language helper functions
  */
@@ -74,6 +76,15 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
   static private $decimal_mark = '.';
   static private $glue = ' CON ';
 
+
+  /**
+   * Get the (localised) name of the language
+   *
+   * @return string name of the language
+   */
+  public function getName() {
+    return E::ts("Spanish (Spain)");
+  }
 
 
   /**
