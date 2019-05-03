@@ -82,7 +82,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
   protected function convert_number_to_words($number, $currency='EUR', $recursion=false) {
     $hyphen      = 'und';
     $conjunction = '';
-    $separator   = ' ';
+    $separator   = '';
     $negative    = 'minus ';
     $decimal     = ' ' . $this->currency2word($currency, $number) . ' ';
     $dictionary  = array(
@@ -116,9 +116,9 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         90                  => 'neunzig',
         100                 => 'hundert',
         1000                => 'tausend',
-        1000000             => 'millionen',
-        1000000000          => 'milliarden',
-        1000000000000       => 'billionen'
+        1000000             => 'Millionen',
+        1000000000          => 'Milliarden',
+        1000000000000       => 'Billionen'
     );
 
     if (!is_numeric($number)) {
@@ -165,13 +165,17 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         $numBaseUnits = (int) ($number / $baseUnit);
         $remainder = $number % $baseUnit;
         $string .= $this->convert_number_to_words($numBaseUnits, $currency, true);
-        // FIXME: the following doesn't work for units > 10^6
+        // caution: base units beginning with "Millionen" (1000000) are separated by spaces
         if ($baseUnit == 1000000 && $numBaseUnits == 1) {
-          $string .= 'e ';                                  // ein_e_
-          $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
+          $string .= 'e ';                                  // 'ein' = 'eine'_
+          $string .= $this->getSingular($dictionary[$baseUnit]) . ' '; // million (ohne 'en')
         } else {
-          $string .= ' ';
-          $string .= $dictionary[$baseUnit];
+          if ($baseUnit >= 1000000) {
+            $string .= ' ';
+            $string .= $dictionary[$baseUnit] . ' ';
+          } else {
+            $string .= $dictionary[$baseUnit];
+          }
         }
 
         if ($remainder) {
@@ -204,6 +208,28 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       $string .= $decimal;
     }
 
+    $string = str_replace('  ', ' ', $string);
     return trim($string);
+  }
+
+  /**
+   * Get singular form for some base units
+   * @param $unit
+   * @return string unit in singular
+   */
+  protected function getSingular($unit) {
+    switch ($unit) {
+      case 'Millionen':
+        return 'Million';
+
+      case 'Milliarden':
+        return 'Milliarde';
+
+      case 'Billionen':
+        return 'Billion';
+
+      default:
+        return $unit;
+    }
   }
 }
