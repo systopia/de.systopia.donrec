@@ -17,7 +17,7 @@ use CRM_Donrec_ExtensionUtil as E;
   * @author Karl Rixon (http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/)
   *         modified by Niko Bochan to support the German language
   */
-class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
+class CRM_Donrec_Lang_De_Xx extends CRM_Donrec_Lang {
 
   /**
    * Get the (localised) name of the language
@@ -25,7 +25,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
    * @return string name of the language
    */
   public function getName() {
-    return E::ts("German");
+    return E::ts("German (with spaces)");
   }
 
   /**
@@ -81,8 +81,8 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
    */
   protected function convert_number_to_words($number, $currency='EUR', $recursion=false) {
     $hyphen      = 'und';
-    $conjunction = '';
-    $separator   = '';
+    $conjunction = ' ';
+    $separator   = ' ';
     $negative    = 'minus ';
     $decimal     = ' ' . $this->currency2word($currency, $number) . ' ';
     $dictionary  = array(
@@ -116,9 +116,9 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         90                  => 'neunzig',
         100                 => 'hundert',
         1000                => 'tausend',
-        1000000             => 'Millionen',
-        1000000000          => 'Milliarden',
-        1000000000000       => 'Billionen'
+        1000000             => 'millionen',
+        1000000000          => 'milliarden',
+        1000000000000       => 'billionen'
     );
 
     if (!is_numeric($number)) {
@@ -155,7 +155,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       case $number < 1000:
         $hundreds  = $number / 100;
         $remainder = $number % 100;
-        $string = $dictionary[$hundreds] . $dictionary[100];
+        $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
         if ($remainder) {
           $string .= $conjunction . $this->convert_number_to_words($remainder, $currency, true);
         }
@@ -165,17 +165,13 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         $numBaseUnits = (int) ($number / $baseUnit);
         $remainder = $number % $baseUnit;
         $string .= $this->convert_number_to_words($numBaseUnits, $currency, true);
-        // caution: base units beginning with "Millionen" (1000000) are separated by spaces
+        // FIXME: the following doesn't work for units > 10^6
         if ($baseUnit == 1000000 && $numBaseUnits == 1) {
-          $string .= 'e ';                                  // 'ein' = 'eine'_
-          $string .= $this->getSingular($dictionary[$baseUnit]) . ' '; // million (ohne 'en')
+          $string .= 'e ';                                  // ein_e_
+          $string .= substr($dictionary[$baseUnit], 0, -2); // million (ohne 'en')
         } else {
-          if ($baseUnit >= 1000000) {
-            $string .= ' ';
-            $string .= $dictionary[$baseUnit] . ' ';
-          } else {
-            $string .= $dictionary[$baseUnit];
-          }
+          $string .= ' ';
+          $string .= $dictionary[$baseUnit];
         }
 
         if ($remainder) {
@@ -208,28 +204,6 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
       $string .= $decimal;
     }
 
-    $string = str_replace('  ', ' ', $string);
     return trim($string);
-  }
-
-  /**
-   * Get singular form for some base units
-   * @param $unit
-   * @return string unit in singular
-   */
-  protected function getSingular($unit) {
-    switch ($unit) {
-      case 'Millionen':
-        return 'Million';
-
-      case 'Milliarden':
-        return 'Milliarde';
-
-      case 'Billionen':
-        return 'Billion';
-
-      default:
-        return $unit;
-    }
   }
 }

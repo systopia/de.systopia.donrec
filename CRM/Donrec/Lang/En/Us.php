@@ -8,10 +8,21 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class holds English language helper functions
  */
 class CRM_Donrec_Lang_En_Us extends CRM_Donrec_Lang {
+
+  /**
+   * Get the (localised) name of the language
+   *
+   * @return string name of the language
+   */
+  public function getName() {
+    return E::ts("English (U.S.)");
+  }
 
   /**
    * Render a full text expressing the amount in the given currency

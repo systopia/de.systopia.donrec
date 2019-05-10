@@ -20,6 +20,25 @@ abstract class CRM_Donrec_Lang {
   protected static $locale2language = [];
 
   /**
+   * Get a list of available languages
+   *
+   * @return array locale => language name
+   */
+  public static function getLanguageList() {
+    // TODO: scan the include path for 'CRM/Donrec/XX/XX' files
+    $locale_list = ['en_US', 'de_DE', 'de_XX', 'es_ES', 'pl_PL'];
+
+    $language_list = [];
+    foreach ($locale_list as $locale) {
+      $lang = self::getLanguage($locale);
+      if ($lang) {
+        $language_list[$locale] = $lang->getName();
+      }
+    }
+    return $language_list;
+  }
+
+  /**
    * Get an instance of the language, or a fallback if it doesn't exist
    *
    * @param $locale string locale
@@ -91,6 +110,7 @@ abstract class CRM_Donrec_Lang {
     }
   }
 
+
   /**
    * Get a spoken word representation for the given currency
    *
@@ -113,5 +133,12 @@ abstract class CRM_Donrec_Lang {
    * @return string rendered string in the given language
    */
   public abstract function amount2words($amount, $currency, $params = []);
+
+  /**
+   * Get the (localised) name of the language
+   *
+   * @return string name of the language
+   */
+  public abstract function getName();
 
 }
