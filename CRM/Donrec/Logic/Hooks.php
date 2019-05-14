@@ -27,9 +27,9 @@ class CRM_Donrec_Logic_Hooks {
   static function donationReceiptTokenValues(&$values) {
     if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
     {
-      return CRM_Utils_Hook::singleton()->invoke(3, self::$null, self::$null, $contribution_id, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
+      return CRM_Utils_Hook::singleton()->invoke(3, $values, self::$null, self::$null, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
     }else{
-      return CRM_Utils_Hook::singleton()->invoke(3, self::$null, self::$null, $contribution_id, self::$null, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
+      return CRM_Utils_Hook::singleton()->invoke(3, $values, self::$null, self::$null, self::$null, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
     }
   }
 
