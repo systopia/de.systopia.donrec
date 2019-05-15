@@ -13,6 +13,8 @@
  */
 class CRM_Donrec_Logic_Hooks {
 
+  private static $null = NULL;
+
   /**
    * This hook allows adding additional tokens to the donation receipt.
    *
@@ -28,7 +30,7 @@ class CRM_Donrec_Logic_Hooks {
     if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
     {
       return CRM_Utils_Hook::singleton()->invoke(1, $values, self::$null, self::$null, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
-    }else{
+    } else {
       return CRM_Utils_Hook::singleton()->invoke(1, $values, self::$null, self::$null, self::$null, self::$null, self::$null, 'civicrm_donationReceiptTokenValues');
     }
   }
