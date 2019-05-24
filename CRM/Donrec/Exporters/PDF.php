@@ -52,7 +52,8 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $preferredFileName = ts("donation_receipts.zip", array('domain' => 'de.systopia.donrec'));
+    $pdf_count = 0;
+    $last_pdf_file = NULL;
     $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts", array('domain' => 'de.systopia.donrec')), ".zip");
     $zip = new ZipArchive();
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
@@ -65,6 +66,8 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
         if(!empty($proc_info)) {
           $filename = isset($proc_info['PDF']['pdf_file']) ? $proc_info['PDF']['pdf_file'] : FALSE;
           if ($filename) {
+            $last_pdf_file = $filename;
+            $pdf_count += 1;
             $toRemove[$id] = $filename;
             $opResult = $zip->addFile($filename, basename($filename)) ;
             CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='$filename'>created PDF file</span> to <span title='$archiveFileName'>ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
@@ -79,11 +82,21 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
       return $reply;
     }
 
-    $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
-    CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting ZIP file URL is '$file'.");
-    if (!empty($file)) {
-      $reply['download_name'] = $preferredFileName;
-      $reply['download_url'] = $file;
+    if ($pdf_count == 1) {
+      $file = CRM_Donrec_Logic_File::createTemporaryFile($last_pdf_file, basename($last_pdf_file));
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting PDF file URL is '$file'.");
+      if (!empty($file)) {
+        $reply['download_name'] = basename($last_pdf_file);
+        $reply['download_url']  = $file;
+      }
+    } else {
+      $preferredFileName = ts("donation_receipts.zip", array('domain' => 'de.systopia.donrec'));
+      $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting ZIP file URL is '$file'.");
+      if (!empty($file)) {
+        $reply['download_name'] = $preferredFileName;
+        $reply['download_url']  = $file;
+      }
     }
 
     // remove loose pdf files or store them
