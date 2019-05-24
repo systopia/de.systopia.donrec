@@ -206,7 +206,6 @@
    * CLONE button click handler
    */
   cj("#clone_button").click(function() {
-
     var current_name = cj("#profile").val();
     var new_name = cj("#clone_name").val();
     if (new_name == null || new_name.length == 0) {
@@ -334,7 +333,11 @@
     // first: set all values
     for (field in donrec_value_defaults) {
       if (field == 'store_original_pdf') {
-        cj('#' + field).prop('checked', profile[field]);
+        if (profile[field] == '1') {
+          cj('#' + field).prop('checked', profile[field]);
+        } else {
+          cj('#' + field).removeProp('checked');
+        }
       } else if (field == 'financial_types' || field == 'template' || field == 'donrec_from_email') {
         cj('#' + field).select2('val', profile[field]);
       } else {
