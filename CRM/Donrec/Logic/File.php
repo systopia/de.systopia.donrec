@@ -169,7 +169,7 @@ class CRM_Donrec_Logic_File {
   public static function getPermanentURL($file_id, $contact_id) {
     try {
       $file = civicrm_api3('File', 'getsingle', ['id' => $file_id]);
-      return CRM_Utils_System::url("civicrm/file", "reset=1&id={$file_id}&eid={$entity_id}&filename={$file['uri']}");
+      return CRM_Utils_System::url("civicrm/file", "reset=1&id={$file_id}&eid={$entity_id}&filename={$file['uri']}&mime-type={$file['mime_type']}");
     } catch(Exception $ex) {
       CRM_Core_Session::setStatus(ts("Download failed: ", ['domain' => 'de.systopia.donrec']) . $ex->getMessage());
       return CRM_Utils_System::url("civicrm/dashboard");
