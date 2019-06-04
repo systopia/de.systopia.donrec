@@ -154,6 +154,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
     }
 
+    // make sure, that the checkboxes are in there
+    if (!isset($values['store_original_pdf'])) {
+      $values['store_original_pdf'] = 0;
+    }
+
     // first, update current values into slected profile
     if (!empty($values['selected_profile'])) {
       $profile = $values['selected_profile'];
@@ -162,7 +167,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
       foreach (array_keys($profile_defaults) as $field_name) {
         $value = CRM_Utils_Array::value($field_name, $values, NULL);
-        if ($value != NULL) {
+        if ($value !== NULL) {
           $profile_data[$profile][$field_name] = $value;
         }
       }
