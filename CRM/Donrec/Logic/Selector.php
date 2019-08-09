@@ -85,7 +85,7 @@ class CRM_Donrec_Logic_Selector {
 
     // run the main query
     $query = "SELECT `civicrm_contribution`.`id`
-              FROM (`civicrm_contribution`)
+              FROM `civicrm_contribution`
               LEFT JOIN `$custom_group_table` AS existing_receipt
                   ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
                   AND existing_receipt.`$status_column` = 'ORIGINAL'
