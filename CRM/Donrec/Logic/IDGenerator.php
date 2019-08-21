@@ -64,6 +64,7 @@ class CRM_Donrec_Logic_IDGenerator {
     $snapshot_line = (isset($snapshot_lines['id']))? $snapshot_lines : $snapshot_lines[0];
     $this->tokens['contact_id'] = $snapshot_line['contact_id'];
     $this->tokens['issue_year'] = date("Y");
+    $this->tokens['contribution_year'] = $this->getContributionYear($snapshot_lines);
 
     // get database-infos
     $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
@@ -125,4 +126,19 @@ class CRM_Donrec_Logic_IDGenerator {
     return $receipt_id;
   }
 
+
+  /**
+   * Get the (maximum) year of the receive_date of the contributions referenced by the snapshot lines
+   * @param $snapshot_lines array the lines
+   */
+  private function getContributionYear($snapshot_lines) {
+    $max_year = 0;
+    foreach ($snapshot_lines as $snapshot_line) {
+      $year = date('Y', strtotime($snapshot_line['receive_date']));
+      if ($year > $max_year) {
+        $max_year = $year;
+      }
+    }
+    return $max_year;
+  }
 }
