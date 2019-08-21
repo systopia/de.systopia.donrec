@@ -228,7 +228,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       $values['view_url'] = CRM_Donrec_Logic_File::getPermanentURL($values['original_file'], $values['contributor']['id']);
     }
 
-    // TODO: call Token hooks? Currently done by PDF generator
+    // see if there is any additional tokens
+    CRM_Donrec_Logic_Hooks::donationReceiptTokenValues($values);
   }
 
   /**
