@@ -11,6 +11,8 @@
 require_once 'CRM/Admin/Form/Setting.php';
 require_once 'CRM/Core/BAO/CustomField.php';
 
+use CRM_Donrec_ExtensionUtil as E;
+
 // Settings form
 class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 {
@@ -95,6 +97,26 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
                       ts('Language', array('domain' => 'de.systopia.donrec')),
                       CRM_Donrec_Lang::getLanguageList());
 
+    $this->addElement(
+      'select',
+      'donrec_contribution_lock',
+      E::ts('Lock receipted contributions'),
+      array(
+        'lock_all' => E::ts('All fields'),
+        'lock_none' => E::ts('No fields'),
+        'lock_selected' => E::ts('Selected fields'),
+      )
+    );
+
+    $donrec_contribution_lock_fields = CRM_Donrec_Logic_Settings::getContributionLockFields();
+    foreach ($donrec_contribution_lock_fields as $field_name => $field_label) {
+      $this->addElement(
+        'checkbox',
+        'donrec_contribution_lock_field_' . $field_name,
+        $field_label
+      );
+    }
+    $this->assign('donrec_contribution_lock_fields', $donrec_contribution_lock_fields);
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save', array('domain' => 'de.systopia.donrec')), 'isDefault' => TRUE),
@@ -120,6 +142,10 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['donrec_return_path_email'] = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
     $defaults['donrec_bcc_email'] = CRM_Donrec_Logic_Settings::get('donrec_bcc_email');
     $defaults['donrec_watermark_preset'] = CRM_Donrec_Logic_Settings::get('donrec_watermark_preset');
+    $defaults['donrec_contribution_lock'] = CRM_Donrec_Logic_Settings::get('donrec_contribution_lock');
+    foreach (CRM_Donrec_Logic_Settings::get('donrec_contribution_lock_fields') as $lock_field_name => $lock_field_value) {
+      $defaults['donrec_contribution_lock_field_' . $lock_field_name] = $lock_field_value;
+    }
 
     // Use a sane default depending on the PDF engine.
     if (!isset($defaults['donrec_watermark_preset'])) {
@@ -153,6 +179,19 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
     }
+    CRM_Donrec_Logic_Settings::set('donrec_contribution_lock', $values['donrec_contribution_lock']);
+    $lock_fields = array();
+    $lockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionLockFields());
+    foreach ($lockable_fields as $field_key) {
+      if (array_key_exists('donrec_contribution_lock_field_' . $field_key, $values)) {
+        $lock_fields[$field_key] = $values['donrec_contribution_lock_field_' . $field_key];
+      }
+    }
+    $lock_fields += array_fill_keys($lockable_fields, 0);
+    CRM_Donrec_Logic_Settings::set(
+      'donrec_contribution_lock_fields',
+      $lock_fields
+    );
 
     // make sure, that the checkboxes are in there
     if (!isset($values['store_original_pdf'])) {
