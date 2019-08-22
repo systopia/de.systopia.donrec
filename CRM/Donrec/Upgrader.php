@@ -145,4 +145,26 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     CRM_Core_Invoke::rebuildMenuAndCaches();
     return TRUE;
   }
+
+  /**
+   * Upgrade to 1.8:
+   * - Set default values for contribution fields to lock for editing.
+   *
+   * @return bool
+   *  TRUE on success
+   */
+  public function upgrade_0180() {
+    // Set legacy behavior as default.
+    CRM_Donrec_Logic_Settings::set('donrec_contribution_lock', 'lock_selected');
+    CRM_Donrec_Logic_Settings::set('donrec_contribution_lock_fields', array(
+      'financial_type_id' => 1,
+      'total_amount' => 1,
+      'receive_date' => 1,
+      'currency' => 1,
+      'contribution_status_id' => 1,
+      'payment_instrument_id' => 1,
+    ));
+
+    return TRUE;
+  }
 }
