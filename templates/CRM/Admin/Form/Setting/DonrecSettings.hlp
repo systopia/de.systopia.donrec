@@ -40,6 +40,16 @@
     <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
 
+{htxt id='id-donrece_contribution_lock'}
+    <p>{ts domain="de.systopia.donrec"}Select which fields of receipted contributions should be locked for editing.{/ts}</p>
+    <ul>
+      <li><em>{ts domain="de.systopia.donrec"}All fields{/ts}</em>: {ts domain="de.systopia.donrec"}Lock all relevant fields for editing.{/ts}</li>
+      <li><em>{ts domain="de.systopia.donrec"}No fields{/ts}</em>: {ts domain="de.systopia.donrec"}Do not lock any field for editing.{/ts}</li>
+      <li><em>{ts domain="de.systopia.donrec"}Selected fields{/ts}</em>: {ts domain="de.systopia.donrec"}Lock only the selected fields for editing{/ts}</li>
+    </ul>
+    <p>{ts domain="de.systopia.donrec"}Note that editing fields that appear on issued receipts may be considered fraudulent behavior by tax authorities! Only unlock contribution fields for editing when you know what you are doing!{/ts}</p>
+{/htxt}
+
 {htxt id='id-address-legal'}
     <p>{ts domain="de.systopia.donrec"}Select the address type where the legal address (wrt IRS) of the donor can be found.{/ts}</p>
 {/htxt}

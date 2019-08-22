@@ -160,6 +160,21 @@
           <td class="label">{$form.pdfinfo_path.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> Tool{/ts}", {literal}{"id":"id-pdfinfo-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>{$form.pdfinfo_path.html}</td>
         </tr>
+        <tr>
+          <td class="label">{$form.donrec_contribution_lock.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Lock receipted contributions{/ts}", {literal}{"id":"id-donrece_contribution_lock","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td>
+              {$form.donrec_contribution_lock.html}
+            <fieldset id="donrec_contribution_lock_fields">
+                {foreach from=$donrec_contribution_lock_fields item='contribution_lock_field' key='contribution_lock_key'}
+                    {capture assign='contribution_lock_field_form'}donrec_contribution_lock_field_{$contribution_lock_key}{/capture}
+                  <div class="{$contribution_lock_key}">
+                      {$form.$contribution_lock_field_form.html}
+                      {$form.$contribution_lock_field_form.label}
+                  </div>
+                {/foreach}
+            </fieldset>
+          </td>
+        </tr>
       </table>
     </div>
   </div>
@@ -398,11 +413,24 @@
     }
   });
 
+  cj('#donrec_contribution_lock').on('change', function() {
+    donrec_setContributionLockFields()
+  });
+
+  function donrec_setContributionLockFields() {
+    if (cj('#donrec_contribution_lock').val() === 'lock_selected') {
+      cj('#donrec_contribution_lock_fields').show();
+    }
+    else {
+      cj('#donrec_contribution_lock_fields').hide();
+    }
+  }
 
   // initialisation
   cj(function() {
     // finally, set all values of the chosen profile
     donrec_setProfileValues();
+    donrec_setContributionLockFields()
   });
 </script>
 {/literal}

@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class holds all settings related functions
  */
@@ -106,5 +108,25 @@ class CRM_Donrec_Logic_Settings {
     } else {
       return NULL;
     }
-  }  
+  }
+
+  /**
+   * Get all locking options for contribution field locks.
+   *
+   * @return array
+   */
+  public static function getContributionLockFields() {
+    return array(
+      'financial_type_id' => E::ts('Financial type'),
+      'campaign_id' => E::ts('Campaign'),
+      'payment_instrument_id' => E::ts('Payment method'),
+      'contribution_status_id' => E::ts('Contribution status'),
+      'source' => E::ts('Source'),
+      'receive_date' => E::ts('Receive date'),
+      'total_amount' => E::ts('Total amount'),
+      'currency' => E::ts('Currency'),
+      'note' => E::ts('Note'),
+      'custom_fields' => E::ts('Custom fields'),
+    );
+  }
 }

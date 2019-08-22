@@ -41,6 +41,7 @@ class CRM_Utils_DonrecHelper {
   /**
    * Calls die() with a pretty template (WIP)
    *
+   * @deprecated 1.8 No longer used by internal code and not recommended.
    */
   public static function exitWithMessage($error_message) {
     $smarty = CRM_Core_Smarty::singleton();
