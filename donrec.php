@@ -332,9 +332,12 @@ function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$er
 
           // and another one for amounts
           if (strpos($col, 'amount')) {
-            $replace_symbols = array('.');
-            $new_amount = str_replace($replace_symbols, ',', $form->_values[$col]);
-            $old_amount = $fields[$col];
+            // The old amount is stored as a float-like string.
+            $old_amount = floatval($form->_values[$col]);
+
+            $new_amount = CRM_Utils_Rule::cleanMoney($fields[$col]);
+            $new_amount = floatval($new_amount);
+
             if ($new_amount == $old_amount) {
               continue;
             }
