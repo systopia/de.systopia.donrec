@@ -283,69 +283,12 @@ function donrec_civicrm_tabs(&$tabs, $contactID) {
  //TODO: the pre-hook need the same informations than this one and is called
  // afterwards. Is it possible to make these informations available for it?
 function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
-
   // Validate contribution_form for already existing contributions.
   // Therefore we need a contribution-id.
   if ($formName == 'CRM_Contribute_Form_Contribution' && !empty($form->_id)) {
-    $id = $form->_id;
-    $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($id);
-    $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($id);
-
-    if ($has_item || $in_snapshot) {
-      switch (CRM_Donrec_Logic_Settings::get('donrec_contribution_lock')) {
-        case 'lock_all':
-          $forbidden = array_keys(CRM_Donrec_Logic_Settings::getContributionLockFields());
-          break;
-        case 'lock_none':
-          return;
-        case 'lock_selected':
-          $forbidden = array_keys(array_filter(
-            CRM_Donrec_Logic_Settings::get('donrec_contribution_lock_fields'),
-            function($value) {
-              return $value == 1;
-            }
-          ));
-          if (in_array('custom_fields', $forbidden)) {
-            $custom_fields = array_filter(array_keys($fields), function($field) {
-              return strpos($field, 'custom_') === 0;
-            });
-            $forbidden = array_merge($forbidden, $custom_fields);
-            unset($forbidden['custom_fields']);
-          }
-          break;
-      }
-
-      // check if forbidden columns are going to be changed
-      foreach ($forbidden as $col) {
-        if (array_key_exists($col, $fields) && $form->_values[$col] != $fields[$col]) {
-
-          // we need a special check for dates
-          if (strpos($col, 'date')) {
-            // this approach does not considers seconds!
-            // (some input-formats does not allow the input of seconds at all)
-            $new_date = date('d/m/Y H:i', strtotime($fields['receive_date'] . ' ' . $fields['receive_date_time']));
-            $old_date = date('d/m/Y H:i', strtotime($form->_values['receive_date']));
-            if ($new_date == $old_date) {
-              continue;
-            }
-          }
-
-          // and another one for amounts
-          if (strpos($col, 'amount')) {
-            $replace_symbols = array('.');
-            $new_amount = str_replace($replace_symbols, ',', $form->_values[$col]);
-            $old_amount = $fields[$col];
-            if ($new_amount == $old_amount) {
-              continue;
-            }
-          }
-
-          $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'.", array('domain' => 'de.systopia.donrec')), ts($col, array('domain' => 'de.systopia.donrec')));
-        }
-      }
-    }
+    // Validate the contribution values to be set.
+    $errors += CRM_Donrec_Logic_Settings::validateContribution($form->_id, $form->_values, $fields);
   }
-  return;
 }
 
 /*
@@ -360,31 +303,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 
     if ($has_item || $in_snapshot) {
       if ($op == 'edit') {
-        // columns that must not be changed
-        switch (CRM_Donrec_Logic_Settings::get('donrec_contribution_lock')) {
-          case 'lock_all':
-            $forbidden = array_keys(CRM_Donrec_Logic_Settings::getContributionLockFields());
-            break;
-          case 'lock_none':
-            return;
-          case 'lock_selected':
-            $forbidden = array_keys(array_filter(
-              CRM_Donrec_Logic_Settings::get('donrec_contribution_lock_fields'),
-              function($value) {
-                return $value == 1;
-              }
-            ));
-            if (in_array('custom_fields', $forbidden)) {
-              $custom_fields = array_filter(array_keys($params), function($field) {
-                return strpos($field, 'custom_') === 0;
-              });
-              $forbidden = array_merge($forbidden, $custom_fields);
-              unset($forbidden['custom_fields']);
-            }
-            break;
-        }
-
-        // get the contribution
+        // Get the contribution.
         $query = "
           SELECT *
           FROM civicrm_contribution
@@ -392,19 +311,8 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
         $result = CRM_Core_DAO::executeQuery($query);
         $result->fetch();
 
-        // check if forbidden values are going to be changed.
-        foreach ($forbidden as $col) {
-          if (isset($params[$col]) && $result->$col != $params[$col]) {
-            // we need a extra-check for dates (which are not in the same format)
-            if (strpos($col, 'date')) {
-              if($col == 'receive_date' && substr(preg_replace('/[-: ]/', '', $result->$col), 0, -2) . "00" == $params[$col]) {
-                continue;
-              }
-            }
-            $message = sprintf(ts("The column '%s' of this contribution [%d] must not be changed because it has a receipt or is going to be receipted!", array('domain' => 'de.systopia.donrec')), $col, $id);
-            throw new Exception($message);
-          }
-        }
+        // Validate the contribution values to be set.
+        CRM_Donrec_Logic_Settings::validateContribution($id, (array)$result, $params, TRUE);
       } elseif ($op == 'delete') {
         $message = sprintf(ts("This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!", array('domain' => 'de.systopia.donrec')), $id);
         throw new Exception($message);

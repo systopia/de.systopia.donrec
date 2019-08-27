@@ -148,7 +148,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
   /**
    * Upgrade to 1.8:
-   * - Set default values for contribution fields to lock for editing.
+   * - Set default values for contribution fields to unlock for editing.
    *
    * @return bool
    *  TRUE on success
@@ -164,6 +164,41 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       'contribution_status_id' => 1,
       'payment_instrument_id' => 1,
     ));
+
+    return TRUE;
+  }
+
+  /**
+   * Upgrade to 1.8:
+   * - Apply reverse logic for locking contribution fields on current
+   * configuration.
+   *
+   * @return bool
+   *   TRUE on success
+   */
+  public function upgrade_0181() {
+    // Get the old settings.
+    $lock_mode = CRM_Donrec_Logic_Settings::get('donrec_contribution_lock');
+    $lock_fields = CRM_Donrec_Logic_Settings::get('donrec_contribution_lock_fields');
+
+    // Translate into new settings.
+    $unlock_mode = 'un' . $lock_mode;
+    $unlock_fields = array_map(function ($value) {
+      return (int)!$value;
+    }, $lock_fields);
+
+    // Set the new settings.
+    CRM_Donrec_Logic_Settings::set('donrec_contribution_unlock', $unlock_mode);
+    CRM_Donrec_Logic_Settings::set('donrec_contribution_unlock_fields', $unlock_fields);
+
+    // Remove the old settings.
+    $lock_mode_setting = new CRM_Core_DAO_Setting();
+    $lock_mode_setting->name = 'donrec_contribution_lock';
+    $lock_mode_setting->delete();
+
+    $lock_mode_setting = new CRM_Core_DAO_Setting();
+    $lock_mode_setting->name = 'donrec_contribution_lock_fields';
+    $lock_mode_setting->delete();
 
     return TRUE;
   }

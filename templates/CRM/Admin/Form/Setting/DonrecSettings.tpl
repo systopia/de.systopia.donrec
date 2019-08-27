@@ -161,15 +161,15 @@
           <td>{$form.pdfinfo_path.html}</td>
         </tr>
         <tr>
-          <td class="label">{$form.donrec_contribution_lock.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Lock receipted contributions{/ts}", {literal}{"id":"id-donrece_contribution_lock","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <td class="label">{$form.donrec_contribution_unlock.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Unlock receipted contributions{/ts}", {literal}{"id":"id-donrece_contribution_unlock","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
           <td>
-              {$form.donrec_contribution_lock.html}
-            <fieldset id="donrec_contribution_lock_fields">
-                {foreach from=$donrec_contribution_lock_fields item='contribution_lock_field' key='contribution_lock_key'}
-                    {capture assign='contribution_lock_field_form'}donrec_contribution_lock_field_{$contribution_lock_key}{/capture}
-                  <div class="{$contribution_lock_key}">
-                      {$form.$contribution_lock_field_form.html}
-                      {$form.$contribution_lock_field_form.label}
+              {$form.donrec_contribution_unlock.html}
+            <fieldset id="donrec_contribution_unlock_fields">
+                {foreach from=$donrec_contribution_unlock_fields item='contribution_unlock_field' key='contribution_unlock_key'}
+                    {capture assign='contribution_unlock_field_form'}donrec_contribution_unlock_field_{$contribution_unlock_key}{/capture}
+                  <div class="{$contribution_unlock_key}">
+                      {$form.$contribution_unlock_field_form.html}
+                      {$form.$contribution_unlock_field_form.label}
                   </div>
                 {/foreach}
             </fieldset>
@@ -413,16 +413,16 @@
     }
   });
 
-  cj('#donrec_contribution_lock').on('change', function() {
-    donrec_setContributionLockFields()
+  cj('#donrec_contribution_unlock').on('change', function() {
+    donrec_setContributionUnlockFields()
   });
 
-  function donrec_setContributionLockFields() {
-    if (cj('#donrec_contribution_lock').val() === 'lock_selected') {
-      cj('#donrec_contribution_lock_fields').show();
+  function donrec_setContributionUnlockFields() {
+    if (cj('#donrec_contribution_unlock').val() === 'unlock_selected') {
+      cj('#donrec_contribution_unlock_fields').show();
     }
     else {
-      cj('#donrec_contribution_lock_fields').hide();
+      cj('#donrec_contribution_unlock_fields').hide();
     }
   }
 
@@ -430,7 +430,7 @@
   cj(function() {
     // finally, set all values of the chosen profile
     donrec_setProfileValues();
-    donrec_setContributionLockFields()
+    donrec_setContributionUnlockFields()
   });
 </script>
 {/literal}
