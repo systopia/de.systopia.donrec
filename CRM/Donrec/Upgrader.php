@@ -35,7 +35,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    */
   public function enable() {
     // create snapshot database tables
-    $this->executeSqlFile('sql/donrec.sql', true); 
+    $this->executeSqlFile('sql/donrec.sql', true);
 
     // create/update custom groups
     CRM_Donrec_DataStructure::update();
@@ -54,7 +54,26 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    */
   public function disable() {
     // delete the snapshot-table
-    $this->executeSqlFile('sql/donrec_uninstall.sql', true); 
+    $this->executeSqlFile('sql/donrec_uninstall.sql', true);
+  }
+
+  /**
+   * Upgrade to 1.6.6:
+   *  - Add custom field for register export type
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0166() {
+    // Add custom field
+    $result = civicrm_api3('CustomField', 'create', [
+      'custom_group_id' => "zwb_donation_receipt_item",
+      'label' => "exporters",
+      'data_type' => "String",
+      'html_type' => "Text",
+    ]);
+
+    return TRUE;
   }
 
   /**
@@ -93,8 +112,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       civicrm_api3('Setting', 'create', $migrated_values);
     }
 
-    
-    // Migrate profiles 
+
+    // Migrate profiles
     //  (only works on 4.6. With 4.7 the group_name was dropped, and we cannot find the profiles any more)
     $existing_profiles = civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_profiles'));
     if (empty($existing_profiles) && version_compare(CRM_Utils_System::version(), '4.6', '<=')) {
