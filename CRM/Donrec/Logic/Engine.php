@@ -142,8 +142,8 @@ class CRM_Donrec_Logic_Engine {
       // and single-processing. In future the getNextChunk-method might be
       // refactored and build up the arrays correspondingly.
 
-      
-      //Get the year of the first contribution to set the token year      
+
+      //Get the year of the first contribution to set the token year
       if(isset($chunk_items[0]["date_from"])) {
         $date_from = DateTime::createFromFormat("Y-m-d H:i:s", $chunk_items[0]["date_from"]);
         $issue_year = $date_from->format("Y");
@@ -155,10 +155,10 @@ class CRM_Donrec_Logic_Engine {
         }
         else {
           $issue_year = date("Y");
-        }        
+        }
       }
-      
-      
+
+
       $chunk_items = ($is_bulk)? $chunk_items : array($chunk_items);
       $contact_id = $chunk_items[0]['contact_id'];
       $line_ids = array();
@@ -166,14 +166,16 @@ class CRM_Donrec_Logic_Engine {
         $line_ids[] = $chunk_item['id'];
       }
 
-      // create a SnapshotReceipt      
+      // create a SnapshotReceipt
       $snapshot_receipt = $this->snapshot->getSnapshotReceipt($line_ids, $is_test, $issue_year);
 
       // call exporters
       //**********************************
+      $exporters_id = array();
       foreach ($exporters as $exporter) {
 
         $exporter_id = $exporter->getID();
+        $exporters_id[] = $exporter_id;
 
         if ($is_bulk) {
           $result = $exporter->exportBulk($snapshot_receipt, $is_test);
@@ -198,8 +200,9 @@ class CRM_Donrec_Logic_Engine {
       if (!$is_test) {
         $receipt_params = array();
         $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
+        $receipt_params['exporters'] = implode(",", $exporters_id);
 
-        if ($profile->saveOriginalPDF()) {          
+        if ($profile->saveOriginalPDF()) {
           $pdf_file = $this->getPDF($line_ids, $issue_year);
           $file = CRM_Donrec_Logic_File::createPermanentFile($pdf_file, basename($pdf_file), $contact_id);
           if (!empty($file)) {
@@ -226,8 +229,8 @@ class CRM_Donrec_Logic_Engine {
         // collect appropriate error messages
         if (!empty($result['log'])) {
           foreach ($result['log'] as $log_entry) {
-            if (  $log_entry['type'] == 'ERROR' 
-               || $log_entry['type'] == 'FATAL' 
+            if (  $log_entry['type'] == 'ERROR'
+               || $log_entry['type'] == 'FATAL'
                || ($is_test && $log_entry['type'] == 'INFO')) {
               $log_messages[] = $log_entry;
             }
@@ -351,12 +354,12 @@ class CRM_Donrec_Logic_Engine {
   */
   public function getPDF($snapshot_line_ids, $issue_year) {
     // get the proc-info for only one of the snapshot-lines
-    // should be the same for all others    
-    
+    // should be the same for all others
+
     if(!isset($issue_year) || $issue_year == "") {
       $issue_year = date("Y");
-    }    
-    
+    }
+
     $proc_info = $this->snapshot->getProcessInformation($issue_year);
 
     // was a pdf already created?

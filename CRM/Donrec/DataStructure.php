@@ -350,6 +350,13 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
+    array(
+      'name' => 'exporters',
+      'custom_group_name' => 'zwb_donation_receipt_item',
+      'label' => 'exporters',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
   );
   public static $optionGroupDefaults = array(
     'is_reserved' => 1,
