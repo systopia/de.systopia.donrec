@@ -149,6 +149,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
       'name' => ts('Receipted', array('domain' => 'de.systopia.donrec')),
       // Provide a weight lower than the "actions" column.
       'weight' => $actionList['weight'] - 1,
+      'field_name' => 'is_receipted',
     );
 
     $receipted_contribution_ids = array();
@@ -198,27 +199,6 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     }
   }
 }
-
-
-/**
- * The extra search column (see above) does not alter the template,
- * so we inject javascript into the template-content.
- */
-function donrec_civicrm_alterContent(&$content, $context, $tplName, &$object) {
-  // get page- resp. form-class of the object
-  $class_name = get_class($object);
-  if ($class_name == 'CRM_Contribute_Page_Tab' ||
-      $class_name == 'CRM_Contribute_Form_Search' ||
-      $class_name == 'CRM_Contribute_Page_DashBoard') {
-    // parse the template with smarty
-    $smarty = CRM_Core_Smarty::singleton();
-    $path = __DIR__ . '/templates/CRM/Contribute/ReceiptedColumn.tpl';
-    $html = $smarty->fetch($path);
-    // append the html to the content
-    $content .= $html;
-  }
-}
-
 
 /**
  * Set permissions for runner/engine API call
