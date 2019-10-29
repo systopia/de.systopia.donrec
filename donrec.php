@@ -149,6 +149,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
       'name' => ts('Receipted', array('domain' => 'de.systopia.donrec')),
       // Provide a weight lower than the "actions" column.
       'weight' => $actionList['weight'] - 1,
+      'field_name' => 'is_receipted',
     );
 
     $receipted_contribution_ids = array();
@@ -205,17 +206,24 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
  * so we inject javascript into the template-content.
  */
 function donrec_civicrm_alterContent(&$content, $context, $tplName, &$object) {
-  // get page- resp. form-class of the object
-  $class_name = get_class($object);
-  if ($class_name == 'CRM_Contribute_Page_Tab' ||
+  // The contribution search results template has changed in 4.7.20, allowing
+  // to add columns and values in hook_civicrm_searchColumns() implementations.
+  // Prior to 4.7.20, this has to be done using the following approach.
+  // @link https://lab.civicrm.org/dev/core/commit/4fb5fcf3b17af6c9f5bf49ecc69902c5b0b78c24
+  // Commit that introduced the new behavior.
+  if (version_compare(CRM_Utils_System::version(), '4.7.20', '<')) {
+    // get page- resp. form-class of the object
+    $class_name = get_class($object);
+    if ($class_name == 'CRM_Contribute_Page_Tab' ||
       $class_name == 'CRM_Contribute_Form_Search' ||
       $class_name == 'CRM_Contribute_Page_DashBoard') {
-    // parse the template with smarty
-    $smarty = CRM_Core_Smarty::singleton();
-    $path = __DIR__ . '/templates/CRM/Contribute/ReceiptedColumn.tpl';
-    $html = $smarty->fetch($path);
-    // append the html to the content
-    $content .= $html;
+      // parse the template with smarty
+      $smarty = CRM_Core_Smarty::singleton();
+      $path = __DIR__ . '/templates/CRM/Contribute/ReceiptedColumn.tpl';
+      $html = $smarty->fetch($path);
+      // append the html to the content
+      $content .= $html;
+    }
   }
 }
 
