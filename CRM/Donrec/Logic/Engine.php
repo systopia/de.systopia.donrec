@@ -153,9 +153,11 @@ class CRM_Donrec_Logic_Engine {
 
       // call exporters
       //**********************************
+      $exporters_id = array();
       foreach ($exporters as $exporter) {
 
         $exporter_id = $exporter->getID();
+        $exporters_id[] = $exporter_id;
 
         if ($is_bulk) {
           $result = $exporter->exportBulk($snapshot_receipt, $is_test);
@@ -179,6 +181,7 @@ class CRM_Donrec_Logic_Engine {
       //**********************************
       if (!$is_test) {
         $receipt_params = array();
+        $receipt_params['exporters'] = implode(",", $exporters_id);
         $receipt_params['type'] = ($is_bulk)? 'BULK' : 'SINGLE';
 
         if ($profile->saveOriginalPDF()) {

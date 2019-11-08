@@ -23,6 +23,9 @@
               {if $receipt.type eq 'BULK'}<u><b>{ts domain="de.systopia.donrec"}bulk receipt{/ts}</b></u>{/if}
               {if $receipt.type eq 'SINGLE'}<u><b>{ts domain="de.systopia.donrec"}single receipt{/ts}</b></u>{/if}
             </li>
+            <li>{ts domain="de.systopia.donrec"}Exporters{/ts}: <b>
+              {$receipt.exporters}
+            </li>
             <li>{ts domain="de.systopia.donrec"}Status{/ts}: <b>
               {if $receipt.status eq 'WITHDRAWN'}{ts domain="de.systopia.donrec"}withdrawn{/ts}{/if}
               {if $receipt.status eq 'ORIGINAL'}{ts domain="de.systopia.donrec"}original{/ts}{/if}

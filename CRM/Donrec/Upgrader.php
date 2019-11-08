@@ -58,6 +58,35 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
   }
 
   /**
+   * Upgrade to 1.6.6:
+   *  - Add custom field for register export type
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0166() {
+    // Add custom field
+    $result = civicrm_api3('CustomField', 'create', [
+      'custom_group_id' => "zwb_donation_receipt",
+      'label' => "exporters",
+      'data_type' => "String",
+      'html_type' => "Text",
+      "is_searchable": 1,
+    ]);
+
+    // Add custom field
+    $result = civicrm_api3('CustomField', 'create', [
+      'custom_group_id' => "zwb_donation_receipt_item",
+      'label' => "exporters",
+      'data_type' => "String",
+      'html_type' => "Text",
+      "is_searchable": 1,
+    ]);
+
+    return TRUE;
+  }
+
+  /**
    * Upgrade to 1.4:
    *  - update to new, prefixed, settings names
    *  - (on 4.6) if no profile exists, create default (from legacy indivudual values)

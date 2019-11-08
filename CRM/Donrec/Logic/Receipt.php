@@ -497,6 +497,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`$receipt_fields[receipt_id]`              AS `receipt_id`,
         receipt.`$receipt_fields[profile]`                 AS `profile`,
         receipt.`$receipt_fields[type]`                    AS `type`,
+        receipt.`$receipt_fields[exporters]`               AS `exporters`,
         receipt.`$receipt_fields[status]`                  AS `status`,
         receipt.`$receipt_fields[issued_on]`               AS `issued_on`,
         receipt.`$receipt_fields[issued_by]`               AS `issued_by`,

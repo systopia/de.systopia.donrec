@@ -26,6 +26,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       'profile'                   => 'Profile',
       'status'                    => 'Status',
       'type'                      => 'Single or bulk',
+      'exporters'                 => 'Exporter type',
       'issued_by'                 => 'Creator Contact ID',
       'issued_on'                 => 'Issued Date',
       'total_amount'              => 'Total Amount',
