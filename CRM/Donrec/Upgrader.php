@@ -44,9 +44,6 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     // FIXME: this is a workaround: if you do this before, the table name change,
     //         BUT we should not be working with static table names
     CRM_Donrec_DataStructure::translateCustomGroups();
-
-    // make sure the template is there
-    CRM_Donrec_Logic_Template::getDefaultTemplateID();
   }
 
   /**
@@ -203,6 +200,99 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     $lock_mode_setting = new CRM_Core_DAO_Setting();
     $lock_mode_setting->name = 'donrec_contribution_lock_fields';
     $lock_mode_setting->delete();
+
+    return TRUE;
+  }
+
+  /**
+   * Upgrade to 2.0:
+   * - Refactor profile storage
+   */
+  public function upgrade_0200() {
+    /**
+     * Migrate profiles to new storage.
+     */
+
+    // Create `donrec_profile` database table.
+    $query = "
+      CREATE TABLE IF NOT EXISTS `donrec_profile` (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `name` char(64) NOT NULL,
+        `data` text,
+        `variables` text,
+        `template` longtext,
+        `template_pdf_format_id` int(10) unsigned,        
+        `is_default` tinyint(4) DEFAULT 0,
+        `is_active` tinyint(4) DEFAULT 1,
+        `is_locked` tinyint(4) DEFAULT 0,
+        PRIMARY KEY (`id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+    ";
+    CRM_Core_DAO::executeQuery($query);
+
+    // Retrieve profiles from settings, injecting default data if not set.
+    $profiles = civicrm_api3('Setting', 'getvalue', array(
+      'name' => 'donrec_profiles',
+    ));
+    if (!is_array($profiles)) {
+      $profiles = array();
+    }
+    if (empty($profiles['Default'])) {
+      $profiles['Default'] = CRM_Donrec_Logic_Profile::defaultProfileData()['data'];
+    }
+
+    foreach ($profiles as $profile_name => $profile_data) {
+      // Copy template contents and remove template reference from profile data.
+      $template = civicrm_api3(
+        'MessageTemplate',
+        'getsingle',
+        array(
+          'id' => $profile_data['template'],
+          'return' => array(
+            'msg_html',
+            'pdf_format_id',
+          ),
+        )
+      );
+      unset($profile_data['template']);
+
+      // Copy formerly global settings to profiles.
+      $profile_data['email_template'] = Civi::settings()->get('donrec_email_template');
+      $profile_data['bcc_email'] = Civi::settings()->get('donrec_bcc_email');
+      $profile_data['return_path_email'] = Civi::settings()->get('donrec_return_path_email');
+      $profile_data['watermark_preset'] = Civi::settings()->get('donrec_watermark_preset');
+      $profile_data['language'] = Civi::settings()->get('donrec_language');
+      $profile_data['contribution_unlock_mode'] = Civi::settings()->get('donrec_contribution_unlock');
+      $profile_data['contribution_unlock_fields'] = Civi::settings()->get('donrec_contribution_unlock_fields');
+
+      // TODO: Set lock status for profiles that have already been used for issueing receipts.
+      $is_locked = 0;
+
+      $query = "
+        INSERT INTO
+          `donrec_profile`
+        SET
+           `name` = '$profile_name',
+           `data` = '" . serialize($profile_data) . "',
+           `is_default` = " . (int)($profile_name == 'Default') . ",
+           `is_locked` = $is_locked,
+           `template` = '{$template['msg_html']}',
+           `template_pdf_format_id` = {$template['pdf_format_id']};";
+
+      CRM_Core_DAO::executeQuery($query);
+    }
+
+    // TODO: Replace profile names in receipted custom fields with IDs.
+
+    // Remove (revert) old settings entries.
+    Civi::settings()->revert('donrec_profiles');
+    Civi::settings()->revert('donrec_email_template');
+    Civi::settings()->revert('donrec_bcc_email');
+    Civi::settings()->revert('donrec_return_path_email');
+    Civi::settings()->revert('donrec_watermark_preset');
+    Civi::settings()->revert('donrec_language');
+    Civi::settings()->revert('donrec_contribution_unlock');
+    Civi::settings()->revert('donrec_contribution_unlock_fields');
 
     return TRUE;
   }
