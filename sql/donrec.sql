@@ -1,11 +1,6 @@
 --
 -- `donrec_snapshot`
 --
-
-DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
-DROP TABLE IF EXISTS `donrec_snapshot`;
-
-
 CREATE TABLE IF NOT EXISTS `donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `snapshot_id` int(10) unsigned NOT NULL,
@@ -39,3 +34,20 @@ CREATE TABLE IF NOT EXISTS `donrec_snapshot` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- removed: CONSTRAINT `FK_donrec_zwb_snapshot_contribution_id` FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution` (`id`)
+
+--
+-- Table for storing donrec profiles.
+--
+CREATE TABLE IF NOT EXISTS `donrec_profile` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `name` char(64) NOT NULL,
+    `data` text,
+    `variables` text,
+    `template` longtext,
+    `template_pdf_format_id` int(10) unsigned,
+    `is_default` tinyint(4) DEFAULT 0,
+    `is_active` tinyint(4) DEFAULT 1,
+    `is_locked` tinyint(4) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
