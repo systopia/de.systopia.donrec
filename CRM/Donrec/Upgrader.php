@@ -20,23 +20,23 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    * Install hook
    */
   public function install() {
-    // nothing to do
+    // Create database tables.
+    $this->executeSqlFile('sql/donrec_uninstall.sql', true);
+    $this->executeSqlFile('sql/donrec.sql', true);
   }
 
   /**
    * Uninstall hook
    */
   public function uninstall() {
-    // nothing to do
+    // Drop database tables.
+    $this->executeSqlFile('sql/donrec_uninstall.sql', true);
   }
 
   /**
    * Make sure all the data structures are there when the module is enabled
    */
   public function enable() {
-    // create snapshot database tables
-    $this->executeSqlFile('sql/donrec.sql', true);
-
     // create/update custom groups
     CRM_Donrec_DataStructure::update();
 
@@ -54,7 +54,11 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    */
   public function disable() {
     // delete the snapshot-table
-    $this->executeSqlFile('sql/donrec_uninstall.sql', true);
+    $query = "
+      DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
+      DROP TABLE IF EXISTS `donrec_snapshot`;
+    ";
+    CRM_Core_DAO::executeQuery($query);
   }
 
   /**
