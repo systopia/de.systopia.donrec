@@ -204,7 +204,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       $profile_data = json_decode($values['profile_data'], 1);
       $profile_defaults = CRM_Donrec_Logic_Profile::defaultProfileData();
 
-      foreach (array_keys($profile_defaults) as $field_name) {
+      foreach (array_keys($profile_defaults['data']) as $field_name) {
         $value = CRM_Utils_Array::value($field_name, $values, NULL);
         if ($value !== NULL) {
           $profile_data[$profile][$field_name] = $value;

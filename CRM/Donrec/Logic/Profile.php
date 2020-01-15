@@ -17,25 +17,85 @@ class CRM_Donrec_Logic_Profile {
 
   protected static $SETTINGS_PROFILE_SETTING = "donrec_profiles";
 
-  /** ID if the setting entity, where the values are stored */
-  protected $profile_name = NULL;
-  protected $data = NULL;
+  /**
+   * @var int
+   *   The profile ID.
+   */
+  protected $id = NULL;
+
+  /**
+   * @var string
+   *   The profile name.
+   */
+  protected $name = NULL;
+
+  /**
+   * @var array
+   *   The settings.
+   */
+  protected $data = array();
+
+  /**
+   * @var array
+   *   The additional Smarty variables passed to the receipt template.
+   */
+  protected $variables = array();
+
+  /**
+   * @var string
+   *   The Smarty template used for rendering donation receipts.
+   */
+  protected $template = NULL;
+
+  /**
+   * @var null
+   *  The ID of the PDF format to use for rendering the Smarty template.
+   */
+  protected $template_pdf_format_id = NULL;
+
+  /**
+   * @var bool
+   *   Whether the profile is the default profile.
+   */
+  protected $is_default = 0;
+
+  /**
+   * @var bool
+   *   Whether the profile is active for creating receipts.
+   */
+  protected $is_active = 1;
+
+  /**
+   * @var bool
+   *   Whether the profile is locked (has already been used for issueing
+   *   receipts).
+   */
+  protected $is_locked = 0;
 
   /**
    * load setting entity with given ID
    */
   public function __construct($profile_name) {
-    $all_data = self::getAllData();
-    $data     = CRM_Utils_Array::value($profile_name, $all_data, NULL);
-
-    if ($data==NULL || !is_array($data)) {
-      // this setting doesn't exist yet or is malformed
-      $this->data = self::defaultProfileData();
-    } else {
-      $this->data = $data;
+    foreach (self::getAllData() as $profile_id => $profile) {
+      if ($profile['name'] == $profile_name) {
+        break;
+      }
     }
 
-    $this->profile_name = $profile_name;
+    if ($profile == NULL || !is_array($profile)) {
+      // this setting doesn't exist yet or is malformed
+      $profile = CRM_Donrec_Logic_Profile::defaultProfileData();
+    }
+
+    $this->name = $profile_name;
+
+    $this->id = $profile['id'];
+    $this->data = $profile['data'];
+    $this->variables = $profile['variables'];
+    $this->template = $profile['template'];
+    $this->is_default = $profile['is_default'];
+    $this->is_active = $profile['is_active'];
+    $this->is_locked = $profile['is_locked'];
   }
 
   /**
@@ -76,7 +136,7 @@ class CRM_Donrec_Logic_Profile {
    */
   public function save() {
     $profile_data = self::getAllData();
-    $profile_data[$this->profile_name] = $this->data;
+    $profile_data[$this->name] = $this->data;
     self::setAllData($profile_data);
   }
 
@@ -110,12 +170,8 @@ class CRM_Donrec_Logic_Profile {
   public static function getAllNames() {
     $allNames = array();
     $allProfiles = self::getAllData();
-    foreach ($allProfiles as $profile_name => $profile) {
-      $allNames[$profile_name] = $profile_name;
-    }
-
-    if (!in_array('Default', $allNames)) {
-      $allNames['Default'] = 'Default';
+    foreach ($allProfiles as $profile_id => $profile) {
+      $allNames[$profile_id] = $profile['name'];
     }
 
     return $allNames;
@@ -147,16 +203,13 @@ class CRM_Donrec_Logic_Profile {
    * @return array(name => array(profile_data))
    */
   public static function getAllData() {
-    $profiles = civicrm_api3('Setting', 'getvalue', array('name' => self::$SETTINGS_PROFILE_SETTING));
-    if (!is_array($profiles)) {
-      // initialise
-      $profiles = array();
+    $profiles = array();
+    $query = "SELECT * FROM `donrec_profile`";
+    $dao = CRM_Core_DAO::executeQuery($query);
+    while ($dao->fetch()) {
+      $profiles[$dao->id] = $dao->toArray();
     }
 
-    if (empty($profiles['Default'])) {
-      // inject default data if not set
-      $profiles['Default'] = self::defaultProfileData();
-    }
     return $profiles;
   }
 
@@ -166,8 +219,37 @@ class CRM_Donrec_Logic_Profile {
    *
    * @param $profile_data array(name => profile)
    */
-  public static function setAllData($profile_data) {
-    civicrm_api3('Setting', 'create', array(self::$SETTINGS_PROFILE_SETTING => $profile_data));
+  public static function setAllData($profiles) {
+    foreach ($profile_data as $profile_id => $profile_data) {
+      $values_query = "
+        SET
+          `name` = {$profile_data['name']},
+          `data` = {$profile_data['data']},
+          `variables` = {$profile_data['variables']},
+          `template` = {$profile_data['template']},
+          `is_default` = {$profile_data['is_default']},
+          `is_active` = {$profile_data['is_active']},
+          `is_locked` = {$profile_data['is_locked']}
+      ";
+
+      if (is_numeric($profile_id)) {
+        $query = "
+          UPDATE
+            `donrec_profile`
+          $values_query
+          WHERE
+            `id` = $profile_id
+        ;";
+      }
+      else {
+        $query = "
+          INSERT INTO
+            `donrec_profile`
+          $values_query
+        ;";
+      }
+      CRM_Core_DAO::executeQuery($query);
+    }
   }
 
 
@@ -273,38 +355,53 @@ class CRM_Donrec_Logic_Profile {
    * @return int
    */
   public function getTemplate() {
-    return CRM_Donrec_Logic_Template::getTemplate($this->get('template'));
+    return CRM_Donrec_Logic_Template::getTemplate($this->template, $this->template_pdf_format_id);
   }
 
 
   /**
    * Deletes the given profile
    */
-  public static function deleteProfile($profile_name) {
-    $profiles = self::getAllData();
-    if (isset($profiles[$profile_name])) {
-      unset($profiles[$profile_name]);
-      self::setAllData($profiles);
-    }
+  public static function deleteProfile($profile_id) {
+    $query = "
+      DELETE FROM
+        `donrec_profile`
+      WHERE
+        `id `= $profile_id;
+    ";
+    CRM_Core_DAO::executeQuery($query);
   }
 
   /**
-   * create a default profile data
+   * Returns a profile array with default values.
+   *
+   * @return array
+   *   An array with profile defaults.
    */
   public static function defaultProfileData() {
-
     return array(
-      'financial_types'         => self::getAllDeductibleFinancialTypes(),
-      'store_original_pdf'      => FALSE,
-      'template'                => CRM_Donrec_Logic_Template::getDefaultTemplateID(),
-      'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
-      'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
-      'id_pattern'              => '{issue_year}-{serial}',
-      'legal_address'           => array('0'),  // '0' is the primary address
-      'postal_address'          => array('0'),
-      'legal_address_fallback'  => array('0'),
-      'postal_address_fallback' => array('0'),
-      'donrec_from_email'       => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
-      );
+      'id' => 0, // 0 = new profile.
+      'data' => array(
+        'financial_types'         => self::getAllDeductibleFinancialTypes(),
+        'store_original_pdf'      => FALSE,
+        'draft_text'              => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
+        'copy_text'               => ts('COPY',  array('domain' => 'de.systopia.donrec')),
+        'id_pattern'              => '{issue_year}-{serial}',
+        'legal_address'           => array('0'),  // '0' is the primary address
+        'postal_address'          => array('0'),
+        'legal_address_fallback'  => array('0'),
+        'postal_address_fallback' => array('0'),
+        'donrec_from_email'       => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
+        // TODO: Set defaults for formerly global settings here.
+        'email_template',
+        'bcc_email',
+        'return_path_email',
+        'watermark_preset'           => (!empty(CRM_Core_Config::singleton()->wkhtmltopdfPath) ? 'wkhtmltopdf_traditional' : 'dompdf_traditional'),
+        'language'                   => (method_exists('CRM_Core_I18n', 'getLocale') ? CRM_Core_I18n::getLocale() : 'en_US'),
+        'contribution_unlock_mode',
+        'contribution_unlock_fields',
+      ),
+      'template' => CRM_Donrec_Logic_Template::getDefaultTemplateHTML(),
+    );
   }
 }

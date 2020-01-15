@@ -8,16 +8,21 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class holds all template related functions,
  *  including PDF generation
  */
 class CRM_Donrec_Logic_Template
 {
-  private $_template;
+  private $template_html;
 
-  private function __construct($template) {
-    $this->_template = $template;
+  private $_pdf_format_id;
+
+  private function __construct($template_html, $pdf_format_id) {
+    $this->template_html = $template_html;
+    $this->_pdf_format_id = $pdf_format_id;
   }
 
   /**
@@ -52,7 +57,7 @@ class CRM_Donrec_Logic_Template
     if (is_null($result)) {
       return NULL;
     }
-    return new self($result);
+    return new self($result->msg_html, $result->pdf_format_id);
   }
 
    /**
@@ -64,15 +69,8 @@ class CRM_Donrec_Logic_Template
    *        specified id
    * @return template object or NULL
    */
-  public static function getTemplate($id, $fallback = TRUE) {
-    $id = empty($id) ? -1 : $id;
-    $params = array('id' => $id);
-    $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
-    if (!$template && $fallback) {
-      // fallback to default
-      return CRM_Donrec_Logic_Template::getDefaultTemplate();
-    }
-    return new self($template);
+  public static function getTemplate($template_html, $pdf_format_id) {
+    return new self($template_html, $pdf_format_id);
   }
 
   /**
@@ -81,6 +79,8 @@ class CRM_Donrec_Logic_Template
    *
    * @return int template ID
    * @throws Exception if there's something wrong with the default template
+   *
+   * @deprecated Since 2.0.
    */
   public static function getDefaultTemplateID() {
     $default_template_title = sprintf("%s - %s", ts('Donation Receipts', array('domain' => 'de.systopia.donrec')), ts('Default template', array('domain' => 'de.systopia.donrec')));
@@ -127,18 +127,19 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-   * get default template (/templates/Export/default_template.tpl)
-   * @return template object or NULL
+   * TODO: Document.
+   *
+   * @return string
+   * @throws \Exception
    */
-  public static function getDefaultTemplate() {
-    // load message template with the default template id
-    $params = array('id' => self::getDefaultTemplateID());
-    $template = CRM_Core_BAO_MessageTemplate::retrieve($params, $_);
-    if (!$template) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: error: default template not found');
-      return NULL;
+  public static function getDefaultTemplateHTML() {
+    $default_template_file = E::path('templates/Export/default_template.tpl');
+    $default_template_html = file_get_contents($default_template_file);
+    if($default_template_html === FALSE) {
+      throw new Exception("Cannot load default template from '{$default_template_file}'.");
     }
-    return new self($template);
+
+    return $default_template_html;
   }
 
   /**
@@ -162,9 +163,9 @@ class CRM_Donrec_Logic_Template
     CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $values);
 
     // get template
-    $html = $this->_template->msg_html;
+    $html = $this->template_html;
 
-    $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->_template->pdf_format_id);
+    $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->pdf_format_id);
 
     // --- watermark injection ---
     $watermark_class = "CRM_Donrec_Logic_WatermarkPreset_" . CRM_Donrec_Logic_Settings::get('donrec_watermark_preset');
@@ -196,7 +197,7 @@ class CRM_Donrec_Logic_Template
     $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-", array('domain' => 'de.systopia.donrec'))."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
 
     // render PDF receipt
-    $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->_template->pdf_format_id));
+    $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->pdf_format_id));
     if($result) {
       return $filename_export;
     }else{
