@@ -221,7 +221,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         `data` text,
         `variables` text,
         `template` longtext,
-        `template_pdf_format_id` int(10) unsigned,        
+        `template_pdf_format_id` int(10) unsigned,
         `is_default` tinyint(4) DEFAULT 0,
         `is_active` tinyint(4) DEFAULT 1,
         `is_locked` tinyint(4) DEFAULT 0,
@@ -272,14 +272,23 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         INSERT INTO
           `donrec_profile`
         SET
-           `name` = '$profile_name',
-           `data` = '" . serialize($profile_data) . "',
-           `is_default` = " . (int)($profile_name == 'Default') . ",
-           `is_locked` = $is_locked,
-           `template` = '{$template['msg_html']}',
-           `template_pdf_format_id` = {$template['pdf_format_id']};";
+           `name` = %1,
+           `data` = %2,
+           `is_default` = %3,
+           `is_locked` = %4,
+           `template` = %5,
+           `template_pdf_format_id` = %6;
+      ";
+      $query_params = array(
+        1 => array($profile_name, 'String'),
+        2 => array(serialize($profile_data), 'String'),
+        3 => array((int)($profile_name == 'Default'), 'Int'),
+        4 => array($is_locked, 'Int'),
+        5 => array($template['msg_html'], 'String'),
+        6 => array($template['pdf_format_id'], 'String'),
+      );
 
-      CRM_Core_DAO::executeQuery($query);
+      CRM_Core_DAO::executeQuery($query, $query_params);
     }
 
     // TODO: Replace profile names in receipted custom fields with IDs.
