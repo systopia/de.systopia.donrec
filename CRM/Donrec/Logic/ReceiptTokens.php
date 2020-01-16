@@ -207,7 +207,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile']);
+    $profile = CRM_Donrec_Logic_Profile::getProfileByName($values['profile']);
     if ($values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
     } elseif ($values['status'] == 'COPY') {

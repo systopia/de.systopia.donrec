@@ -108,7 +108,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
       // if there is no default profile, create one and copy legacy (pre 1.3) values
       if (empty($profiles['Default'])) {
-        $default_profile = new CRM_Donrec_Logic_Profile('Default');
+        $default_profile = CRM_Donrec_Logic_Profile::getProfileByName('Default');
         $profile_data    = $default_profile->getData();
 
         foreach (array_keys($profile_data) as $field_name) {

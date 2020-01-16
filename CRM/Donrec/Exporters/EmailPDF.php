@@ -123,7 +123,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       }
 
       // Get from e-mail from profile or load domain default.
-      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile'])->get('donrec_from_email')) {
+      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->get('donrec_from_email')) {
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
         foreach ($fromEmailAddress as $key => $value) {
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);

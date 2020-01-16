@@ -75,48 +75,52 @@ class CRM_Donrec_Logic_Profile {
   /**
    * load setting entity with given ID
    */
-  public function __construct($profile_name) {
-    foreach (self::getAllData() as $profile_id => $profile) {
-      if ($profile['name'] == $profile_name) {
-        break;
-      }
+  public function __construct($profile_id = NULL) {
+    $all_profiles = self::getAllData();
+    if (isset($all_profiles[$profile_id])) {
+      $profile_data = $all_profiles[$profile_id];
+    }
+    else {
+      $profile_data = CRM_Donrec_Logic_Profile::defaultProfileData();
     }
 
-    if ($profile == NULL || !is_array($profile)) {
-      // this setting doesn't exist yet or is malformed
-      $profile = CRM_Donrec_Logic_Profile::defaultProfileData();
-    }
+    $this->name = $profile_data['name'];
+    $this->id = $profile_data['id'];
+    $this->data = $profile_data['data'];
+    $this->variables = $profile_data['variables'];
+    $this->template = $profile_data['template'];
+    $this->is_default = $profile_data['is_default'];
+    $this->is_active = $profile_data['is_active'];
+    $this->is_locked = $profile_data['is_locked'];
+  }
 
-    $this->name = $profile_name;
-
-    $this->id = $profile['id'];
-    $this->data = $profile['data'];
-    $this->variables = $profile['variables'];
-    $this->template = $profile['template'];
-    $this->is_default = $profile['is_default'];
-    $this->is_active = $profile['is_active'];
-    $this->is_locked = $profile['is_locked'];
+  public static function getProfile($profile_id) {
+    return new self($profile_id);
   }
 
   /**
-   * Get the profile for the given name,
-   * Falling back to 'Default' if that profile doesn't exist
+   * Get the profile for the given name.
    */
-  public static function getProfile($profile_name, $warn = FALSE) {
-
-    if (empty($profile_name)) {
-      if ($warn) {
-        // TODO: MESSAGE?
-      }
-      $profile_name = 'Default';
-    } elseif (!self::exists($profile_name)) {
-      if ($warn) {
-        // TODO: MESSAGE?
-      }
-      $profile_name = 'Default';
+  public static function getProfileByName($profile_name, $warn = FALSE) {
+    $profile_names = self::getAllNames();
+    if (in_array($profile_name)) {
+      return new self(array_search($profile_name, $profile_names));
+    }
+    else {
+      throw new Exception(E::ts('Profile with name %1 does not exist.', array(
+        1 => $profile_name,
+      )));
     }
 
-    return new CRM_Donrec_Logic_Profile($profile_name);
+    return new self($profile_name);
+  }
+
+  public static function copyProfile($profile_id) {
+    $profile = self::getProfile($profile_id);
+    $profile->name .= '_copy';
+    unset($profile->id);
+
+    return $profile;
   }
 
   /**
@@ -138,6 +142,10 @@ class CRM_Donrec_Logic_Profile {
     $profile_data = self::getAllData();
     $profile_data[$this->name] = $this->data;
     self::setAllData($profile_data);
+  }
+
+  public function getName() {
+    return $this->name;
   }
 
   /**
@@ -187,11 +195,11 @@ class CRM_Donrec_Logic_Profile {
     $profile_names = self::getAllNames();
 
     foreach ($profile_names as $profile_name) {
-      $allProfiles[$profile_name] = new CRM_Donrec_Logic_Profile($profile_name);
+      $allProfiles[$profile_name] = CRM_Donrec_Logic_Profile::getProfileByName($profile_name);
     }
 
     if (empty($allProfiles)) {
-      $allProfiles['Default'] = new CRM_Donrec_Logic_Profile('Default');
+      $allProfiles['Default'] = CRM_Donrec_Logic_Profile::getProfileByName('Default');
     }
 
     return $allProfiles;
@@ -211,6 +219,10 @@ class CRM_Donrec_Logic_Profile {
     }
 
     return $profiles;
+  }
+
+  public function setName($profile_name) {
+    $this->name = $profile_name;
   }
 
   /**
@@ -381,6 +393,7 @@ class CRM_Donrec_Logic_Profile {
   public static function defaultProfileData() {
     return array(
       'id' => 0, // 0 = new profile.
+      'name' => NULL,
       'data' => array(
         'financial_types'         => self::getAllDeductibleFinancialTypes(),
         'store_original_pdf'      => FALSE,

@@ -79,7 +79,7 @@ class CRM_Donrec_Logic_Selector {
     }
 
     // get financial type selector clause
-    $profile = new CRM_Donrec_Logic_Profile($values['profile']);
+    $profile = CRM_Donrec_Logic_Profile::getProfileByName($values['profile']);
     $financialTypeClause = $profile->getContributionTypesClause();
 
 

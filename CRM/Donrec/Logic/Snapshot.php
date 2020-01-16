@@ -744,7 +744,7 @@ class CRM_Donrec_Logic_Snapshot {
       $profile_name = CRM_Core_DAO::singleValueQuery(
         "SELECT profile FROM donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
         array(1 => array($this->Id, 'Integer')));
-      $this->_profile = CRM_Donrec_Logic_Profile::getProfile($profile_name, TRUE);
+      $this->_profile = CRM_Donrec_Logic_Profile::getProfileByName($profile_name, TRUE);
     }
     return $this->_profile;
   }
