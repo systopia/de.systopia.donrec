@@ -15,8 +15,6 @@
  */
 class CRM_Donrec_Logic_Profile {
 
-  protected static $SETTINGS_PROFILE_SETTING = "donrec_profiles";
-
   /**
    * @var int
    *   The profile ID.
@@ -216,6 +214,8 @@ class CRM_Donrec_Logic_Profile {
     $dao = CRM_Core_DAO::executeQuery($query);
     while ($dao->fetch()) {
       $profiles[$dao->id] = $dao->toArray();
+      $profiles[$dao->id]['data'] = unserialize($profiles[$dao->id]['data']);
+      $profiles[$dao->id]['variables'] = unserialize($profiles[$dao->id]['variables']);
     }
 
     return $profiles;
