@@ -36,6 +36,17 @@
     <weight>100</weight>
   </item>
   <item>
+    <path>civicrm/admin/setting/donrec/profiles</path>
+    <page_callback>CRM_Admin_Page_DonrecProfiles</page_callback>
+    <title>Donation Receipts Profiles</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/setting/donrec/profile</path>
+    <page_callback>CRM_Admin_Form_DonrecProfile</page_callback>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/donrec/showfile</path>
     <page_callback>CRM_Donrec_Page_Tempfile</page_callback>
     <title>Tempfile</title>
