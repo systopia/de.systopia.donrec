@@ -34,4 +34,22 @@ abstract class CRM_Donrec_Logic_WatermarkPreset {
    */
   abstract public function injectMarkup(&$html, $pdf_format);
 
+  /**
+   * Retrieves the default watermark preset name, depending on whether
+   * wkhtmltopdf is enabled.
+   *
+   * @return string
+   *   The default watermark's name.
+   */
+  public static function getDefaultWatermarkPresetName() {
+    if (!empty(CRM_Core_Config::singleton()->wkhtmltopdfPath)) {
+      $preset_name = CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getName();
+    }
+    else {
+      $preset_name = CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getName();
+    }
+
+    return $preset_name;
+  }
+
 }
