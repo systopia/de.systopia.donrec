@@ -738,6 +738,8 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * Get the profile connected to this snapshot
+   *
+   * @return \CRM_Donrec_Logic_Profile
    */
   public function getProfile() {
     if ($this->_profile == NULL) {

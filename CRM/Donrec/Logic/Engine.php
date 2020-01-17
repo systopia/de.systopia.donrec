@@ -14,6 +14,8 @@
 class CRM_Donrec_Logic_Engine {
 
   /**
+   * @var \CRM_Donrec_Logic_Snapshot
+   *
    * stores the related snapshot object
    */
   protected $snapshot = NULL;
