@@ -142,19 +142,75 @@ class CRM_Donrec_Logic_Profile {
     self::setAllData($profile_data);
   }
 
+  /**
+   * Returns whether the profile is active.
+   *
+   * @return bool
+   *   Whether the profile is active.
+   */
+  public function isActive() {
+    return $this->is_active;
+  }
+
+  /**
+   * Returns whether the profile is locked, i.e. has already been used for
+   * issueing receipts.
+   *
+   * @return bool
+   *   Whether the profile is locked.
+   */
+  public function isLocked() {
+    return $this->is_locked;
+  }
+
+  /**
+   * Returns whether the profile is the default profile.
+   *
+   * @return bool
+   *   Whether the profile is the default profile.
+   */
+  public function isDefault() {
+    return $this->is_default;
+  }
+
+  /**
+   * Retrieves the profile name.
+   *
+   * @return string
+   *   The profile name.
+   */
   public function getName() {
     return $this->name;
   }
 
+//  /**
+//   * Retrieves the profile's template.
+//   *
+//   * @return string
+//   *   The template stored within the profile.
+//   */
+//  public function getTemplate() {
+//    return $this->template;
+//  }
+
   /**
-   * get the key's value
+   * Retrieves the given profile data property.
+   *
+   * @param string $key
+   *   The name of the profile data property.
+   *
+   * @return mixed
+   *   The value of the profile data property.
    */
   public function get($key) {
     return CRM_Utils_Array::value($key, $this->data, NULL);
   }
 
   /**
-   * get the data object
+   * Retrieves all profile data properties.
+   *
+   * @return array
+   *   The profile data array.
    */
   public function getData() {
     return $this->data;
@@ -364,7 +420,7 @@ class CRM_Donrec_Logic_Profile {
   /**
    * get the default template ID
    *
-   * @return int
+   * @return \CRM_Donrec_Logic_Template
    */
   public function getTemplate() {
     return CRM_Donrec_Logic_Template::getTemplate($this->template, $this->template_pdf_format_id);

@@ -74,6 +74,16 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
+   * Retrieves the template's HTML content.
+   *
+   * @return string
+   *   The template's HTML content.
+   */
+  public function getTemplateHTML() {
+    return $this->template_html;
+  }
+
+  /**
    * Returns default template ID. 
    * If default template doesn't exist, it will install it
    *
