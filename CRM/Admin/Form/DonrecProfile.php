@@ -15,7 +15,7 @@ use CRM_Donrec_ExtensionUtil as E;
  *
  * @see https://wiki.civicrm.org/confluence/display/CRMDOC/QuickForm+Reference
  */
-class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
+class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
   /**
    * @var \CRM_Donrec_Logic_Profile $profile
@@ -41,10 +41,14 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
   public function buildQuickForm() {
     parent::buildQuickForm();
 
+    // Set redirect destination.
+    $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', 'reset=1');
+
     // "Create" is the default operation.
     if (!$this->_op = CRM_Utils_Request::retrieve('op', 'String', $this)) {
       $this->_op = 'create';
     }
+    $this->assign('op', $this->_op);
 
     $profile_id = CRM_Utils_Request::retrieve(
       'id',
@@ -66,6 +70,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
             'type' => 'submit',
             'name' => E::ts('Delete'),
             'isDefault' => TRUE,
+          ),
+          array(
+            'type' => 'cancel',
+            'name' => E::ts('Cancel')
           ),
         ));
         return;
@@ -90,154 +98,106 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
         $this->profile = new CRM_Donrec_Logic_Profile();
         CRM_Utils_System::setTitle(E::ts('New Donation Receipts profile'));
         break;
+      case 'default':
+        $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
+        CRM_Utils_System::setTitle(
+          E::ts('Set Donation Receipts profile <em>%1</em> as default', array(
+            1 => $this->profile->getName(),
+          ))
+        );
+        $this->addButtons(array(
+          array(
+            'type' => 'submit',
+            'name' => E::ts('Set default'),
+            'isDefault' => TRUE,
+          ),
+          array(
+            'type' => 'cancel',
+            'name' => E::ts('Cancel')
+          ),
+        ));
+        // Pass profile name to template.
+        $this->assign('profile_name', $this->profile->getName());
+        return;
+      case 'activate':
+        $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
+        CRM_Utils_System::setTitle(
+          E::ts('Activate Donation Receipts profile <em>%1</em>', array(
+            1 => $this->profile->getName(),
+          ))
+        );
+        $this->addButtons(array(
+          array(
+            'type' => 'submit',
+            'name' => E::ts('Activate'),
+            'isDefault' => TRUE,
+          ),
+          array(
+            'type' => 'cancel',
+            'name' => E::ts('Cancel')
+          ),
+        ));
+        // Pass profile name to template.
+        $this->assign('profile_name', $this->profile->getName());
+        return;
+        break;
+      case 'deactivate':
+        $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
+        CRM_Utils_System::setTitle(
+          E::ts('Deactivate Donation Receipts profile <em>%1</em>', array(
+            1 => $this->profile->getName(),
+          ))
+        );
+        $this->addButtons(array(
+          array(
+            'type' => 'submit',
+            'name' => E::ts('Deactivate'),
+            'isDefault' => TRUE,
+          ),
+          array(
+            'type' => 'cancel',
+            'name' => E::ts('Cancel')
+          ),
+        ));
+        // Pass profile name to template.
+        $this->assign('profile_name', $this->profile->getName());
+        return;
+        break;
     }
 
-    // Set redirect destination.
-    $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', 'reset=1');
+    $this->assign('is_locked', $this->profile->isLocked());
 
-    // Add all profile elements.
-    $this->addElement(
+    // Add general profile elements.
+    $this->add(
       'text',
       'name',
-      E::ts('Profile name')
-    );
-    $this->addElement(
-      'text',
-      'draft_text',
-      E::ts('Draft text')
-    );
-    $this->addElement(
-      'text',
-      'copy_text',
-      E::ts('Copy text')
-    );
-    $this->addElement(
-      'text',
-      'id_pattern',
-      E::ts('Receipt ID')
-    );
-    // actually inserted via template
-    $this->addElement(
-      'checkbox',
-    'store_original_pdf'
-    );
-    $this->addElement(
-      'select',
-      'financial_types',
-      E::ts('Contribution Types'),
-      CRM_Contribute_PseudoConstant::financialType(),
-      array('multiple' => "multiple", 'class' => 'crm-select2')
-    );
-    $this->addElement(
-      'select',
-      'template',
-      E::ts('Template'),
-      CRM_Donrec_Logic_Settings::getAllTemplates(),
-      array('class' => 'crm-select2')
-    );
-    $this->addElement(
-      'select',
-      'from_email',
-      ts('From Email', array('domain' => 'de.systopia.donrec')),
-      $this->getSenderEmails(),
-      array('class' => 'crm-select2 huge')
-    );
-    $this->addElement(
-      'select',
-      'watermark_preset',
-      ts('Watermark preset', array('domain' => 'de.systopia.donrec')),
-      CRM_Donrec_Logic_Settings::getWatermarkPresets(),
-      array('class' => 'crm-select2')
+      E::ts('Profile name'),
+      array(),
+      TRUE
     );
 
-    // add profile location-type-selections
-    $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
-    $result = CRM_Core_DAO::executeQuery($query);
-    $options = array(0 => E::ts('primary address'));
-    while ($result->fetch()) {
-      $options[$result->id] = E::ts($result->name);
-    }
-    $this->addElement(
-      'select',
-      'legal_address',
-      E::ts('Legal Address-Type:'),
-      $options
-    );
-    $this->addElement(
-      'select',
-      'postal_address',
-      E::ts('Postal Address-Type:'),
-      $options
-    );
-    $this->addElement(
-      'select',
-      'legal_address_fallback',
-      E::ts('Fallback:'),
-      $options
-    );
-    $this->addElement(
-      'select',
-      'postal_address_fallback',
-      E::ts('Fallback:'),
-      $options
-    );
-
-    // add generic elements
-    $this->addElement(
-      'text',
-      'pdfinfo_path',
-      E::ts('External Tool: path to <code>pdfinfo</code>'),
-      CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path')
-    );
-
-    $this->addElement(
-      'text',
-      'packet_size',
-      E::ts('Packet size'),
-      CRM_Donrec_Logic_Settings::get('donrec_packet_size')
-    );
-
-    $this->addElement(
-      'text',
-      'bcc_email',
-      E::ts('BCC Email'),
-      CRM_Donrec_Logic_Settings::get('donrec_bcc_email')
-    );
-    $this->addRule(
-      'bcc_email',
-      E::ts('Has to be a valid email address'),
-      'email'
-    );
-
-    $this->addElement(
-      'text',
-      'return_path_email',
-      E::ts('Email Return Path'),
-      CRM_Donrec_Logic_Settings::get('donrec_return_path_email')
-    );
-    $this->addRule(
-      'return_path_email',
-      E::ts('Has to be a valid email address'),
-      'email'
-    );
-
-    $this->addElement(
-      'select',
-      'email_template',
-      E::ts('Email Template'),
-      CRM_Donrec_Logic_Settings::getAllTemplates()
-    );
-
-    $this->addElement(
+    $this->add(
       'select',
       'language',
       E::ts('Language'),
       CRM_Donrec_Lang::getLanguageList()
     );
 
-    $this->addElement(
+    /**
+     * Contribution settings.
+     */
+    $this->add(
       'select',
-      'contribution_unlock',
+      'financial_types',
+      E::ts('Contribution Types'),
+      CRM_Contribute_PseudoConstant::financialType(),
+      FALSE,
+      array('multiple' => "multiple", 'class' => 'crm-select2')
+    );
+
+    $this->add(
+      'select',
+      'contribution_unlock_mode',
       E::ts('Unlock receipted contributions'),
       array(
         'unlock_all' => E::ts('All fields'),
@@ -248,7 +208,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
 
     $donrec_contribution_unlock_fields = CRM_Donrec_Logic_Settings::getContributionUnlockableFields();
     foreach ($donrec_contribution_unlock_fields as $field_name => $field_label) {
-      $this->addElement(
+      $this->add(
         'checkbox',
         'contribution_unlock_field_' . $field_name,
         $field_label
@@ -256,9 +216,144 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
     }
     $this->assign('contribution_unlock_fields', $donrec_contribution_unlock_fields);
 
+    /**
+     * Receipt settings.
+     */
+    $this->add(
+      'text',
+      'id_pattern',
+      E::ts('Receipt ID')
+    );
+    $this->add(
+      'wysiwyg',
+      'template',
+      E::ts('Template'),
+      array(
+        'rows' => 6,
+        'cols' => 80,
+      )
+    );
+    $this->add(
+      'checkbox',
+      'store_original_pdf',
+      E::ts('Store original *.pdf files')
+    );
+
+    /**
+     * Watermark settings.
+     */
+    $this->add(
+      'text',
+      'draft_text',
+      E::ts('Draft text')
+    );
+    $this->add(
+      'text',
+      'copy_text',
+      E::ts('Copy text')
+    );
+    $this->add(
+      'select',
+      'watermark_preset',
+      E::ts('Watermark preset'),
+      CRM_Donrec_Logic_Settings::getWatermarkPresets(),
+      FALSE,
+      array('class' => 'crm-select2')
+    );
+
+    /**
+     * Address type settings.
+     */
+    // add profile location-type-selections
+    $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
+    $result = CRM_Core_DAO::executeQuery($query);
+    $options = array(0 => E::ts('primary address'));
+    while ($result->fetch()) {
+      $options[$result->id] = E::ts($result->name);
+    }
+    $this->add(
+      'select',
+      'legal_address',
+      E::ts('Legal Address-Type:'),
+      $options
+    );
+    $this->add(
+      'select',
+      'postal_address',
+      E::ts('Postal Address-Type:'),
+      $options
+    );
+    $this->add(
+      'select',
+      'legal_address_fallback',
+      E::ts('Fallback:'),
+      $options
+    );
+    $this->add(
+      'select',
+      'postal_address_fallback',
+      E::ts('Fallback:'),
+      $options
+    );
+
+    /**
+     * E-mail settings.
+     */
+    $this->add(
+      'select',
+      'email_template',
+      E::ts('E-mail template'),
+      CRM_Donrec_Logic_Settings::getAllTemplates()
+    );
+    $this->add(
+      'select',
+      'from_email',
+      ts('From Email', array('domain' => 'de.systopia.donrec')),
+      $this->getSenderEmails(),
+      FALSE,
+      array('class' => 'crm-select2 huge')
+    );
+    $this->add(
+      'text',
+      'bcc_email',
+      E::ts('BCc E-mail address'),
+      CRM_Donrec_Logic_Settings::get('bcc_email')
+    );
+    $this->addRule(
+      'bcc_email',
+      E::ts('Has to be a valid email address'),
+      'email'
+    );
+    $this->add(
+      'text',
+      'return_path_email',
+      E::ts('Return path e-mail address'),
+      CRM_Donrec_Logic_Settings::get('return_path_email')
+    );
+    $this->addRule(
+      'return_path_email',
+      E::ts('Has to be a valid email address'),
+      'email'
+    );
+
+    // add generic elements
+    // TODO: Move to extension settings form (out of profile).
+    $this->add(
+      'text',
+      'pdfinfo_path',
+      E::ts('External Tool: path to <code>pdfinfo</code>'),
+      CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path')
+    );
+    $this->add(
+      'text',
+      'packet_size',
+      E::ts('Packet size'),
+      CRM_Donrec_Logic_Settings::get('donrec_packet_size')
+    );
+
     $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save', array('domain' => 'de.systopia.donrec')), 'isDefault' => TRUE),
-      array('type' => 'cancel', 'name' => ts('Cancel', array('domain' => 'de.systopia.donrec'))),
+      array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),
+      array('type' => 'cancel', 'name' => E::ts('Cancel')),
     ));
 
     // add a custom form validation rule that allows only positive integers (i > 0)
@@ -269,7 +364,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
    * Add local and global form rules.
    */
   public function addRules() {
-    $this->addRule('packet_size', ts('Packet size can only contain positive integers', array('domain' => 'de.systopia.donrec')), 'onlypositive');
+    // TODO: Move to extension settings (out of profile).
+//    $this->addRule('packet_size', ts('Packet size can only contain positive integers', array('domain' => 'de.systopia.donrec')), 'onlypositive');
   }
 
   /**
@@ -278,25 +374,28 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
   public function setDefaultValues() {
     $defaults = parent::setDefaultValues();
 
+    // Set individual properties.
     $defaults['name'] = $this->profile->getName();
-    // TODO: is_active, variables, template, template_pdf_format_id
-    $defaults['pdfinfo_path'] = $this->profile->get('pdfinfo_path');
-    $defaults['packet_size'] = $this->profile->get('packet_size');
-    $defaults['email_template'] = $this->profile->get('email_template');
-    $defaults['return_path_email'] = $this->profile->get('return_path_email');
-    $defaults['bcc_email'] = $this->profile->get('bcc_email');
-    $defaults['watermark_preset'] = $this->profile->get('watermark_preset');
-    $defaults['contribution_unlock'] = $this->profile->get('contribution_unlock');
-    foreach ($this->profile->get('contribution_unlock_fields') as $unlock_field_name => $unlock_field_value) {
-      $defaults['contribution_unlock_field_' . $unlock_field_name] = $unlock_field_value;
+    $defaults['template'] = $this->profile->getTemplate()->getTemplateHTML();
+
+    // Set data properties.
+    foreach ($this->profile->getData() as $key => $value) {
+      if ($key == 'contribution_unlock_fields') {
+        foreach ($value as $unlock_field_name => $unlock_field_value) {
+          $defaults['contribution_unlock_field_' . $unlock_field_name] = $unlock_field_value;
+        }
+      }
+      else {
+        $defaults[$key] = $value;
+      }
     }
 
     // Use a sane default depending on the PDF engine.
     if (!isset($defaults['watermark_preset'])) {
-      $defaults['watermark_preset'] = (!empty(CRM_Core_Config::singleton()->wkhtmltopdfPath) ? 'wkhtmltopdf_traditional' : 'dompdf_traditional');
+      $defaults['watermark_preset'] = CRM_Donrec_Logic_WatermarkPreset::getDefaultWatermarkPresetName();
     }
 
-    $defaults['language'] = $this->profile->get('donrec_language');
+    // Use a sane default for language.
     if (empty($defaults['language'])) {
       if (method_exists('CRM_Core_I18n', 'getLocale')) {
         $defaults['language'] = CRM_Core_I18n::getLocale();
@@ -308,23 +407,82 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
     return $defaults;
   }
 
+  public function cancelAction() {
+    $session = CRM_Core_Session::singleton();
+    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
+  }
+
   /**
    * Process the form submission.
    */
   public function postProcess() {
-    // process all form values and save valid settings
     $values = $this->exportValues();
+    $session = CRM_Core_Session::singleton();
+
+    if (in_array($this->_op, array('create', 'edit'))) {
+      // Set all profile properties.
+      foreach (array(
+        'name',
+        'template',
+        'template_pdf_format_id',
+        'variables'
+               ) as $property) {
+        if (isset($values[$property])) {
+          $this->profile->set($property, $values[$property]);
+        }
+      }
+
+      // Set data attributes.
+      foreach ($this->profile->getData() as $element_name => $value) {
+        if (isset($values[$element_name])) {
+          $this->profile->setDataAttribute($element_name, $values[$element_name]);
+        }
+      }
+
+      $this->profile->save();
+
+      $session->setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
+    }
+    elseif ($this->_op == 'delete') {
+      $this->profile->deleteProfile();
+    }
+    elseif ($this->_op == 'default') {
+      // Set default and remove is_default from current default profile.
+      $default_profile = CRM_Donrec_Logic_Profile::getDefaultProfile();
+      $default_profile->setDefault(FALSE);
+      $this->profile->setDefault();
+    }
+    elseif ($this->_op == 'activate') {
+      $this->profile->activate();
+    }
+    elseif ($this->_op == 'deactivate') {
+      $this->profile->activate(FALSE);
+    }
+
+    parent::postProcess();
+
+    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
+
+    return;
+
+
+
+
+
+
 
     // save generic settings
+    // TODO: Move to extension settings form (out of profile form)
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
+    if ($values['pdfinfo_path']) {
+      CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
+    }
+
     CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
     CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
     CRM_Donrec_Logic_Settings::set('donrec_language', $values['donrec_language']);
     CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
     CRM_Donrec_Logic_Settings::set('donrec_watermark_preset', $values['donrec_watermark_preset']);
-    if ($values['pdfinfo_path']) {
-      CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
-    }
     CRM_Donrec_Logic_Settings::set('donrec_contribution_unlock', $values['donrec_contribution_unlock']);
     $unlock_fields = array();
     $unlockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
@@ -372,10 +530,6 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Admin_Form {
       // then store the profiles
       CRM_Donrec_Logic_Profile::setAllData($profile_data);
     }
-
-    $session = CRM_Core_Session::singleton();
-    $session->setStatus(ts("Settings successfully saved", array('domain' => 'de.systopia.donrec')), ts('Settings', array('domain' => 'de.systopia.donrec')), 'success');
-    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec'));
   }
 
   /**
