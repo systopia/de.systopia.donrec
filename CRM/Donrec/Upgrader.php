@@ -303,6 +303,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     Civi::settings()->revert('donrec_contribution_unlock');
     Civi::settings()->revert('donrec_contribution_unlock_fields');
 
+    CRM_Core_Invoke::rebuildMenuAndCaches();
+
     return TRUE;
   }
 }
