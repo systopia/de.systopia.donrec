@@ -141,10 +141,10 @@ class CRM_Donrec_Logic_Settings {
   public static function validateContribution($contribution_id, $old_values, $new_values, $throw_exception = FALSE) {
     $errors = array();
 
-    $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id);
-    $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id);
+    $receipt_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id, TRUE);
+    $snapshot_id = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id, TRUE);
 
-    if ($has_item || $in_snapshot) {
+    if (!is_null($receipt_id) || !is_null($snapshot_id)) {
       // Get all locked fields.
       $unlockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
       // Add custom fields to array of locked fields.
@@ -154,8 +154,16 @@ class CRM_Donrec_Logic_Settings {
       $unlockable_fields = array_merge($unlockable_fields, $custom_fields);
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
-      // TODO: Use unlock settings from profile.
-      switch (CRM_Donrec_Logic_Settings::get('donrec_contribution_unlock')) {
+      // Retrieve unlock settings from profile.
+      if (!is_null($snapshot_id)) {
+        $unlock_mode = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      }
+      elseif (!is_null($receipt_id)) {
+        $unlock_mode = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      }
+      switch ($unlock_mode) {
         case 'unlock_all':
           $allowed = $unlockable_fields;
           break;
@@ -164,7 +172,7 @@ class CRM_Donrec_Logic_Settings {
           break;
         case 'unlock_selected':
           $allowed = array_keys(array_filter(
-            CRM_Donrec_Logic_Settings::get('donrec_contribution_unlock_fields'),
+            $unlock_fields,
             function($value) {
               return $value == 1;
             }

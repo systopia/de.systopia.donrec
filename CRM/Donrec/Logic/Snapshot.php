@@ -687,18 +687,24 @@ class CRM_Donrec_Logic_Snapshot {
   * a given contribution.
   * @return boolean
   */
-  public static function isInOpenSnapshot($contribution_id) {
+  public static function isInOpenSnapshot($contribution_id, $return_id = FALSE) {
     // do a cleanup here (ticket #1616)
     self::cleanup();
 
     // TODO: what if status is DONE, but the snapshot is not finished yet?
     $query = "
-      SELECT COUNT(*)
+      SELECT `id`
       FROM `donrec_snapshot`
       WHERE contribution_id = $contribution_id
       AND (status IS NULL OR status != 'DONE')
     ";
-    return (bool) CRM_Core_DAO::singleValueQuery($query);
+    $result = CRM_Core_DAO::singleValueQuery($query);
+    if ($return_id && !is_null($result)) {
+      return $result;
+    }
+    else {
+      return !is_null($result);
+    }
   }
 
   /**

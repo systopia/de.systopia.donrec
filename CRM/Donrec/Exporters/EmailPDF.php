@@ -153,7 +153,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         $this->updateProcessInformation($snapshot_line_id, array('sent' => $contact['email']));
       } else {
         // in case this is required: make sure the bounce processing is temporarily changed
-        self::modifyBounceProcessing();
+        self::modifyBounceProcessing($receipt);
 
         // set the code for the header hook
         $this->setDonrecMailCode($receipt);
@@ -273,14 +273,16 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    *  - that email is set as the default bounce address, storing the old one
    *  - the task to send out newsletters will be disabled
    *  - the old values of the two settings above will be stored
+   *
+   * @param \CRM_Donrec_Logic_Receipt $receipt
    */
-  public static function modifyBounceProcessing() {
+  public static function modifyBounceProcessing($receipt) {
     $stashed_settings = CRM_Donrec_Logic_Settings::get('donrec_email_stashed_settings');
     if (!empty($stashed_settings)) return; // the settings are already manipulated
 
     // check if somebody entered something
     // TODO: Retrieve from profile.
-    $custom_return_path = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
+    $custom_return_path = $receipt->getProfile()->getDataAttribute('return_path_email');
     if (empty($custom_return_path)) return; // nothing to be done here
 
     // disable running mail delivery jobs
