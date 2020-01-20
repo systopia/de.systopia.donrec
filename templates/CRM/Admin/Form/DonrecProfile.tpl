@@ -92,8 +92,8 @@
             <td>{$form.financial_types.html}</td>
           </tr>
 
-          <tr class="crm-donrec-profile-form-block-contribution_unlock">
-            <td class="label">{$form.contribution_unlock_mode.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Unlock receipted contributions{/ts}", {literal}{"id":"id-contribution_unlock","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+          <tr class="crm-donrec-profile-form-block-contribution_unlock_mode">
+            <td class="label">{$form.contribution_unlock_mode.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Unlock receipted contributions{/ts}", {literal}{"id":"id-contribution_unlock_mode","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
             <td>
                 {$form.contribution_unlock_mode.html}
               <fieldset id="contribution_unlock_fields">

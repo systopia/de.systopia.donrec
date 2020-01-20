@@ -40,7 +40,7 @@
     <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
 
-{htxt id='id-contribution_unlock'}
+{htxt id='id-contribution_unlock_mode'}
     <p>{ts domain="de.systopia.donrec"}Some fields of receipted contributions are locked for editing to prevent accidentally causing inconsistencies between contribution records and already issued donation receipts.{/ts}</p>
     <p>{ts domain="de.systopia.donrec"}Select which fields of receipted contributions should be unlocked for editing.{/ts}</p>
     <ul>
