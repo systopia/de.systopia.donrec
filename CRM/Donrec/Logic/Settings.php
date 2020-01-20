@@ -154,6 +154,7 @@ class CRM_Donrec_Logic_Settings {
       $unlockable_fields = array_merge($unlockable_fields, $custom_fields);
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
+      // TODO: Use unlock settings from profile.
       switch (CRM_Donrec_Logic_Settings::get('donrec_contribution_unlock')) {
         case 'unlock_all':
           $allowed = $unlockable_fields;

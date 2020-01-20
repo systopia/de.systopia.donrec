@@ -593,7 +593,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add dynamically created tokens
-    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
+    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values, self::getProfile());
 
     return $values;
   }

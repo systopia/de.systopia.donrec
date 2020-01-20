@@ -132,10 +132,10 @@ function civicrm_api3_donation_receipt_view($params) {
   // mark this as DRAFT id ORIGINAL
   if (empty($values['watermark'])) {
     $values['status'] = 'DRAFT';
-    $values['watermark'] = $profile->get('draft_text');
+    $values['watermark'] = $profile->getDataAttribute('draft_text');
   }
 
-  $pdf = $profile->getTemplate()->generatePDF($values, $params);
+  $pdf = $profile->getTemplate()->generatePDF($values, $params, $profile);
   $url = CRM_Donrec_Logic_File::createTemporaryFile($pdf, $name);
 
   // and return the result

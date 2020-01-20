@@ -158,9 +158,10 @@ class CRM_Donrec_Logic_Template
   * @param array associative array of values that will be
   *        assigned to the template
   * @param array of configuration parameters
+   * @param \CRM_Donrec_Logic_Profile $profile
   * @return filename or False
   */
-  public function generatePDF($values, &$parameters) {
+  public function generatePDF($values, &$parameters, $profile) {
     $smarty = CRM_Core_Smarty::singleton();
     $config = CRM_Core_Config::singleton();
 
@@ -178,7 +179,7 @@ class CRM_Donrec_Logic_Template
     $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->pdf_format_id);
 
     // --- watermark injection ---
-    $watermark_class = "CRM_Donrec_Logic_WatermarkPreset_" . CRM_Donrec_Logic_Settings::get('donrec_watermark_preset');
+    $watermark_class = "CRM_Donrec_Logic_WatermarkPreset_" . $profile->getDataAttribute('watermark_preset');
     if (!class_exists($watermark_class)) {
       CRM_Core_Error::debug_log_message("Donrec: Invalid Watermark preset '{$watermark_class}'");
       if (empty(CRM_Core_Config::singleton()->wkhtmltopdfPath)) {

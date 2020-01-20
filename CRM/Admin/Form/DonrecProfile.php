@@ -317,7 +317,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'text',
       'bcc_email',
       E::ts('BCc E-mail address'),
-      CRM_Donrec_Logic_Settings::get('bcc_email')
+      $this->profile->getDataAttribute('bcc_email')
     );
     $this->addRule(
       'bcc_email',
@@ -328,7 +328,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'text',
       'return_path_email',
       E::ts('Return path e-mail address'),
-      CRM_Donrec_Logic_Settings::get('return_path_email')
+      $this->profile->getDataAttribute('return_path_email')
     );
     $this->addRule(
       'return_path_email',

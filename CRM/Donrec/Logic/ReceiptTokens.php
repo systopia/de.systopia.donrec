@@ -145,8 +145,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    * Takes a full list of token -> values and
    * adds the dynamic tokens
    */
-  public static function addDynamicTokens(&$values) {
-    $language = CRM_Donrec_Lang::getLanguage();
+  public static function addDynamicTokens(&$values, $profile) {
+    $language = CRM_Donrec_Lang::getLanguage(NULL, $profile);
 
     if (!empty($values['issued_by'])) {
       // add created_by_display_name
@@ -211,10 +211,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     if ($values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
     } elseif ($values['status'] == 'COPY') {
-      $values['watermark'] = $profile->get('copy_text');
+      $values['watermark'] = $profile->getDataAttribute('copy_text');
     } else {
       // in all other cases, it's INVALID/DRAFT:
-      $values['watermark'] = $profile->get('draft_text');
+      $values['watermark'] = $profile->getDataAttribute('draft_text');
     }
 
     // copy contributor values to addressee, if not set separately

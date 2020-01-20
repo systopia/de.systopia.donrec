@@ -123,7 +123,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       }
 
       // Get from e-mail from profile or load domain default.
-      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->get('donrec_from_email')) {
+      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->getDataAttribute('from_email')) {
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
         foreach ($fromEmailAddress as $key => $value) {
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
@@ -160,6 +160,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
         // send the email
         civicrm_api3('MessageTemplate', 'send', array(
+          // TODO: Use template from profile, no MessageTemplate ID.
           'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(),
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
@@ -167,7 +168,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
           'from'            => "\"{$from_email_name}\" <{$from_email_address}>",
           'template_params' => $smarty_variables,
           'attachments'     => array($attachment),
-          'bcc'             => CRM_Donrec_Logic_Settings::get('donrec_bcc_email'),
+          'bcc'             => CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->getDataAttribute('bcc_email'),
           ));
 
         // unset the code
@@ -278,6 +279,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
     if (!empty($stashed_settings)) return; // the settings are already manipulated
 
     // check if somebody entered something
+    // TODO: Retrieve from profile.
     $custom_return_path = CRM_Donrec_Logic_Settings::get('donrec_return_path_email');
     if (empty($custom_return_path)) return; // nothing to be done here
 

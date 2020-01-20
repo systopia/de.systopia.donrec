@@ -14,6 +14,9 @@
  */
 class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
+  /**
+   * @var \CRM_Donrec_Logic_Snapshot $snapshot
+   */
   protected $snapshot;
   protected $snapshot_lines;
   protected $is_test;
@@ -138,7 +141,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values['addressee']   = $this->getAddressee($values['contact_id']);
 
     // add dynamically created tokens
-    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
+    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values, self::getProfile());
 
     return $values;
   }

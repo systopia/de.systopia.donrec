@@ -351,7 +351,7 @@ class CRM_Donrec_Logic_Engine {
       $tpl_param = array();
       $profile = $this->snapshot->getProfile();
       $template = $profile->getTemplate();
-      $filename = $template->generatePDF($tokens, $tpl_param);
+      $filename = $template->generatePDF($tokens, $tpl_param, $profile);
     }
 
     return $filename;

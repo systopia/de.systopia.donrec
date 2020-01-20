@@ -93,6 +93,11 @@ class CRM_Donrec_Logic_Profile {
     $this->is_locked = $profile_data['is_locked'];
   }
 
+  /**
+   * @param $profile_id
+   *
+   * @return \CRM_Donrec_Logic_Profile
+   */
   public static function getProfile($profile_id) {
     return new self($profile_id);
   }
@@ -204,6 +209,16 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * Returns the profile ID.
+   *
+   * @return int
+   *   The profile ID.
+   */
+  public function getId() {
+    return $this->id;
+  }
+
+  /**
    * Returns whether the profile is active.
    *
    * @return bool
@@ -263,7 +278,7 @@ class CRM_Donrec_Logic_Profile {
    * @return mixed
    *   The value of the profile data property.
    */
-  public function get($key) {
+  public function getDataAttribute($key) {
     return CRM_Utils_Array::value($key, $this->data, NULL);
   }
 
@@ -428,7 +443,7 @@ class CRM_Donrec_Logic_Profile {
    */
   public function getContributionTypes() {
     // get settings
-    $financial_types = $this->get('financial_types');
+    $financial_types = $this->getDataAttribute('financial_types');
 
     if (empty($financial_types)) {
       // empty means 'all deductible'
@@ -485,10 +500,10 @@ class CRM_Donrec_Logic_Profile {
   * @return array
   */
   public function getLocationTypes() {
-    $location_types['legal']['address'] = $this->get('legal_address');
-    $location_types['legal']['fallback'] = $this->get('legal_address_fallback');
-    $location_types['postal']['address'] = $this->get('postal_address');
-    $location_types['postal']['fallback'] = $this->get('postal_address_fallback');
+    $location_types['legal']['address'] = $this->getDataAttribute('legal_address');
+    $location_types['legal']['fallback'] = $this->getDataAttribute('legal_address_fallback');
+    $location_types['postal']['address'] = $this->getDataAttribute('postal_address');
+    $location_types['postal']['fallback'] = $this->getDataAttribute('postal_address_fallback');
     return $location_types;
   }
 
@@ -514,7 +529,7 @@ class CRM_Donrec_Logic_Profile {
    * @return bool
    */
   public function saveOriginalPDF() {
-    return $this->get('store_original_pdf');
+    return $this->getDataAttribute('store_original_pdf');
   }
 
   /**
