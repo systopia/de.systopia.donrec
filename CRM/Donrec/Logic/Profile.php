@@ -365,6 +365,16 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * @param $new_default_profile_id
+   *
+   * @throws \Exception
+   */
+  public static function changeDefaultProfile($new_default_profile_id) {
+    self::getDefaultProfile()->setDefault(FALSE);
+    self::getProfile($new_default_profile_id)->setDefault();
+  }
+
+  /**
    * Sets the data property or one of its attributes.
    *
    * @param $attribute

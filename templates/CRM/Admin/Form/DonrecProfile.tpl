@@ -15,7 +15,22 @@
         <div class="icon inform-icon"></div>
           {ts domain="de.systopia.donrec"}WARNING: Deleting this option will result in the loss of Donation Receipts profile data.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
+
+        {if $is_default}
+          <fieldset class="crm-form-block">
+
+            <p class="crm-error">You are about to delete the default profile. Please select which of the other profiles should be set as default instead.</p>
+
+            <table class="form-layout">
+
+              <tr class="crm-donrec-profile-form-block-new_default_profile">
+                <td class="label">{$form.new_default_profile.label}</td>
+                <td>{$form.new_default_profile.html}</td>
+              </tr>
+
+            </table>
+          </fieldset>
+        {/if}
 
     {elseif $op == 'default'}
 
@@ -23,7 +38,6 @@
         <div class="icon inform-icon"></div>
           {ts domain="de.systopia.donrec" 1="$profile_name"}This will set the profile <em>%1</em> as default.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 
     {elseif $op == 'activate'}
 
@@ -31,7 +45,6 @@
         <div class="icon inform-icon"></div>
           {ts domain="de.systopia.donrec" 1="$profile_name"}This will activate the profile <em>%1</em>.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 
     {elseif $op == 'deactivate'}
 
@@ -39,7 +52,6 @@
         <div class="icon inform-icon"></div>
           {ts domain="de.systopia.donrec" 1="$profile_name"}This will deactivate the profile <em>%1</em>.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 
     {else}
 
@@ -216,9 +228,10 @@
 
       </fieldset>
 
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
-
     {/if}
+
+  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
+
 </div>
 {literal}
 <script type="text/javascript">

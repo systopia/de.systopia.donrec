@@ -60,6 +60,19 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     switch ($this->_op) {
       case 'delete':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
+        // Deny deleting the default profile.
+        if ($this->profile->isDefault()) {
+          $this->assign('is_default', $this->profile->isDefault());
+          $this->add(
+            'select',
+            'new_default_profile',
+            E::ts('Set new default profile'),
+            array_filter(CRM_Donrec_Logic_Profile::getAllNames(), function($id) use ($profile_id) {
+              return $id != $profile_id;
+            }, ARRAY_FILTER_USE_KEY),
+            TRUE
+          );
+        }
         CRM_Utils_System::setTitle(
           E::ts('Delete Donation Receipts profile <em>%1</em>', array(
             1 => $this->profile->getName(),
@@ -303,7 +316,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'select',
       'email_template',
       E::ts('E-mail template'),
-      CRM_Donrec_Logic_Settings::getAllTemplates()
+      CRM_Donrec_Logic_Settings::getAllTemplates() // TODO: is that correct?
     );
     $this->add(
       'select',
@@ -336,36 +349,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'email'
     );
 
-    // add generic elements
-    // TODO: Move to extension settings form (out of profile).
-    $this->add(
-      'text',
-      'pdfinfo_path',
-      E::ts('External Tool: path to <code>pdfinfo</code>'),
-      CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path')
-    );
-    $this->add(
-      'text',
-      'packet_size',
-      E::ts('Packet size'),
-      CRM_Donrec_Logic_Settings::get('donrec_packet_size')
-    );
-
     $this->addButtons(array(
       array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),
       array('type' => 'cancel', 'name' => E::ts('Cancel')),
     ));
-
-    // add a custom form validation rule that allows only positive integers (i > 0)
-    $this->registerRule('onlypositive', 'callback', 'onlyPositiveIntegers', 'CRM_Admin_Form_DonrecProfile');
-  }
-
-  /**
-   * Add local and global form rules.
-   */
-  public function addRules() {
-    // TODO: Move to extension settings (out of profile).
-//    $this->addRule('packet_size', ts('Packet size can only contain positive integers', array('domain' => 'de.systopia.donrec')), 'onlypositive');
   }
 
   /**
@@ -412,6 +399,30 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
   }
 
+  public function validate() {
+    $valid = FALSE;
+    $values = $this->exportValues();
+
+    if (in_array($this->_op, array('create', 'edit'))) {
+      try {
+        $generator = new CRM_Donrec_Logic_IDGenerator($values['id_pattern'], FALSE);
+        $valid = TRUE;
+      } catch (Exception $exception) {
+        $session = CRM_Core_Session::singleton();
+        $session->setStatus(
+          E::ts("One of the Receipt ID patterns are invalid! Changes NOT saved!"),
+          E::ts('Error'),
+          'error'
+        );
+      }
+    }
+    else {
+      $valid = TRUE;
+    }
+
+    return $valid;
+  }
+
   /**
    * Process the form submission.
    */
@@ -444,13 +455,13 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $session->setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
     }
     elseif ($this->_op == 'delete') {
+      if (isset($values['new_default_profile'])) {
+        CRM_Donrec_Logic_Profile::changeDefaultProfile($values['new_default_profile']);
+      }
       $this->profile->deleteProfile();
     }
     elseif ($this->_op == 'default') {
-      // Set default and remove is_default from current default profile.
-      $default_profile = CRM_Donrec_Logic_Profile::getDefaultProfile();
-      $default_profile->setDefault(FALSE);
-      $this->profile->setDefault();
+      CRM_Donrec_Logic_Profile::changeDefaultProfile($this->profile->getId());
     }
     elseif ($this->_op == 'activate') {
       $this->profile->activate();
@@ -462,74 +473,6 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     parent::postProcess();
 
     $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
-
-    return;
-
-
-
-
-
-
-
-    // save generic settings
-    // TODO: Move to extension settings form (out of profile form)
-    CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
-    if ($values['pdfinfo_path']) {
-      CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
-    }
-
-    CRM_Donrec_Logic_Settings::set('donrec_email_template', $values['donrec_email_template']);
-    CRM_Donrec_Logic_Settings::set('donrec_return_path_email', $values['donrec_return_path_email']);
-    CRM_Donrec_Logic_Settings::set('donrec_language', $values['donrec_language']);
-    CRM_Donrec_Logic_Settings::set('donrec_bcc_email', $values['donrec_bcc_email']);
-    CRM_Donrec_Logic_Settings::set('donrec_watermark_preset', $values['donrec_watermark_preset']);
-    CRM_Donrec_Logic_Settings::set('donrec_contribution_unlock', $values['donrec_contribution_unlock']);
-    $unlock_fields = array();
-    $unlockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
-    foreach ($unlockable_fields as $field_key) {
-      if (array_key_exists('donrec_contribution_unlock_field_' . $field_key, $values)) {
-        $unlock_fields[$field_key] = $values['donrec_contribution_unlock_field_' . $field_key];
-      }
-    }
-    $unlock_fields += array_fill_keys($unlockable_fields, 0);
-    CRM_Donrec_Logic_Settings::set(
-      'donrec_contribution_unlock_fields',
-      $unlock_fields
-    );
-
-    // make sure, that the checkboxes are in there
-    if (!isset($values['store_original_pdf'])) {
-      $values['store_original_pdf'] = 0;
-    }
-
-    // first, update current values into slected profile
-    if (!empty($values['selected_profile'])) {
-      $profile = $values['selected_profile'];
-      $profile_data = json_decode($values['profile_data'], 1);
-      $profile_defaults = CRM_Donrec_Logic_Profile::defaultProfileData();
-
-      foreach (array_keys($profile_defaults['data']) as $field_name) {
-        $value = CRM_Utils_Array::value($field_name, $values, NULL);
-        if ($value !== NULL) {
-          $profile_data[$profile][$field_name] = $value;
-        }
-      }
-
-      // verify some stuff
-      foreach ($profile_data as $profile_name => $profile) {
-        // test the ID pattern
-        try {
-          $generator = new CRM_Donrec_Logic_IDGenerator($profile['id_pattern'], false);
-        } catch (Exception $e) {
-          $session = CRM_Core_Session::singleton();
-          $session->setStatus(ts("One of the Receipt ID patterns are invalid! Changes NOT saved!", array('domain' => 'de.systopia.donrec')), ts('Error', array('domain' => 'de.systopia.donrec')), 'error');
-          return;
-        }
-      }
-
-      // then store the profiles
-      CRM_Donrec_Logic_Profile::setAllData($profile_data);
-    }
   }
 
   /**
