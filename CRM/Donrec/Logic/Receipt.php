@@ -61,7 +61,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $sql_set = "`entity_id`=$tokens[contact_id]";
     foreach ($fields as $key => $field) {
       $value = null;
-      if (0 === strpos($key, 'shipping')) {
+      if ($key == 'profile_id') {
+        $value = CRM_Donrec_Logic_Profile::getProfileByName($tokens['profile'])->getId();
+      }
+      elseif (0 === strpos($key, 'shipping')) {
         $token_key = substr($key, strlen('shipping_'));
         $value = $tokens['addressee'][$token_key];
       } elseif ($tokens[$key]) {
