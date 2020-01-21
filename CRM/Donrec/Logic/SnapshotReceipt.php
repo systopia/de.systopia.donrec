@@ -218,6 +218,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * get the profile object that was used to create this receipt
+   *
+   * @return \CRM_Donrec_Logic_Profile
    */
   public function getProfile() {
     return $this->snapshot->getProfile();

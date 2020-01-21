@@ -72,7 +72,7 @@ class CRM_Donrec_Logic_Snapshot {
   *      'intersection_error' => intersection-error-object or NULL
   *      )
   */
-  public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_name, $expired = 0) {
+  public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_id, $expired = 0) {
 
     $return = array(
       'snapshot' => NULL,
@@ -150,9 +150,13 @@ class CRM_Donrec_Logic_Snapshot {
 
     // prepare parameters
     $params = array(
-                1 => array($new_snapshot_id, 'Integer'),
-                2 => array($profile_name, 'String'),
-                3 => array($creator_id, 'Integer'));
+      1 => array($new_snapshot_id, 'Integer'),
+      2 => array(
+        CRM_Donrec_Logic_Profile::getProfile($profile_id)->getName(),
+        'String',
+      ),
+      3 => array($creator_id, 'Integer'),
+    );
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);

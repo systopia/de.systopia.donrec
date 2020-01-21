@@ -40,6 +40,10 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   /**
    * export an individual receipt
    *
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   *
+   * @param bool $is_test
+   *
    * @return TRUE on success; FALSE on failure
    */
   public function exportSingle($snapshot_receipt, $is_test) {

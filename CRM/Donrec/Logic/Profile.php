@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Profiles wrap a set of configuration values
  * for the donation receipt generation, e.g.
@@ -391,6 +393,18 @@ class CRM_Donrec_Logic_Profile {
     }
 
     return $allNames;
+  }
+
+  /**
+   * Retrieves the names of all active profiles, keyed by their IDs.
+   *
+   * @return array
+   *   The names of all active profiles, keyed by their IDs.
+   */
+  public static function getAllActiveNames() {
+    return array_filter(self::getAllNames(), function($profile_name, $profile_id) {
+      return (bool) self::getProfile($profile_id)->isActive();
+    }, ARRAY_FILTER_USE_BOTH);
   }
 
   /**
