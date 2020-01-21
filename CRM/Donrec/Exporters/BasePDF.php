@@ -54,7 +54,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     // get tokens and generate PDF
     $tpl_param = array();
     $values = $snapshot_receipt->getAllTokens();
-    $result = $template->generatePDF($values, $tpl_param);
+    $result = $template->generatePDF($values, $tpl_param, $profile);
     if ($result === FALSE) {
       return FALSE;
     } else {
