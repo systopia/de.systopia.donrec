@@ -57,6 +57,13 @@ class CRM_Donrec_DataStructure {
       'html_type' => 'Text',
     ),
     array(
+      'name' => 'profile_id',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Profile ID',
+      'data_type' => 'Int',
+      'html_type' => 'Text',
+    ),
+    array(
       'name' => 'status',
       'custom_group_name' => 'zwb_donation_receipt',
       'option_group_name' => 'donrec_status',

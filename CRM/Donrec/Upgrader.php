@@ -230,6 +230,11 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     ";
     CRM_Core_DAO::executeQuery($query);
 
+    // Add "profile_id" column to custom data table.
+    CRM_Donrec_DataStructure::update();
+    $receipt_table       = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields      = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+
     // Retrieve profiles from settings, injecting default data if not set.
     $profiles = civicrm_api3('Setting', 'getvalue', array(
       'name' => 'donrec_profiles',
@@ -289,9 +294,36 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       );
 
       CRM_Core_DAO::executeQuery($query, $query_params);
+
+      // Set "profile_id" custom fields.
+      $profile_query = "
+        SELECT
+          *
+        FROM
+          `donrec_profile`
+        WHERE
+          `name` = %1
+      ;";
+      $profile_query_params = array(
+        1 => array($profile_name, 'String'),
+      );
+      $donrec_profile_dao = CRM_Core_DAO::executeQuery($profile_query, $profile_query_params);
+      $donrec_profile_dao->fetch();
+
+      $custom_values_sql = "
+        UPDATE {$receipt_table}
+        SET
+          `{$receipt_fields['profile_id']}` = %1
+        WHERE
+          `{$receipt_fields['profile']}` = %2
+      ;";
+      $custom_values_params = array(
+        1 => array($donrec_profile_dao->id, 'Int'),
+        2 => array($donrec_profile_dao->name, 'String'),
+      );
+      CRM_Core_DAO::executeQuery($custom_values_sql, $custom_values_params);
     }
 
-    // TODO: Replace profile names in receipted custom fields with IDs.
 
     // Remove (revert) old settings entries.
     Civi::settings()->revert('donrec_profiles');
