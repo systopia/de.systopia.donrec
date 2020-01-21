@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class holds helper functions
  */
@@ -50,8 +52,8 @@ class CRM_Utils_DonrecHelper {
     $template = file_get_contents(dirname(__DIR__) . '../../templates/fatal_error.tpl');
 
     // assign values
-    $smarty->assign('title', ts('Error', array('domain' => 'de.systopia.donrec')));
-    $smarty->assign('headline', ts('Error', array('domain' => 'de.systopia.donrec')));
+    $smarty->assign('title', E::ts('Error'));
+    $smarty->assign('headline', E::ts('Error'));
     $smarty->assign('description', $error_message);
 
     $html = $smarty->fetch("string:$template");

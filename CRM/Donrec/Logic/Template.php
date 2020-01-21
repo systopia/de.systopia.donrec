@@ -18,11 +18,11 @@ class CRM_Donrec_Logic_Template
 {
   private $template_html;
 
-  private $_pdf_format_id;
+  private $pdf_format_id;
 
   private function __construct($template_html, $pdf_format_id) {
     $this->template_html = $template_html;
-    $this->_pdf_format_id = $pdf_format_id;
+    $this->pdf_format_id = $pdf_format_id;
   }
 
   /**
@@ -93,7 +93,7 @@ class CRM_Donrec_Logic_Template
    * @deprecated Since 2.0.
    */
   public static function getDefaultTemplateID() {
-    $default_template_title = sprintf("%s - %s", ts('Donation Receipts', array('domain' => 'de.systopia.donrec')), ts('Default template', array('domain' => 'de.systopia.donrec')));
+    $default_template_title = sprintf("%s - %s", E::ts('Donation Receipts'), E::ts('Default template'));
     $result = civicrm_api3('MessageTemplate', 'get', array(
       'msg_title'  => $default_template_title,
       'return'     => 'id'));
@@ -205,7 +205,7 @@ class CRM_Donrec_Logic_Template
     $smarty->clearTemplateVars();
 
     // set up file names
-    $filename_export = CRM_Donrec_Logic_File::makeFileName(ts("donationreceipt-", array('domain' => 'de.systopia.donrec'))."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
+    $filename_export = CRM_Donrec_Logic_File::makeFileName(E::ts("donationreceipt-")."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
 
     // render PDF receipt
     $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->pdf_format_id));

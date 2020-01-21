@@ -8,6 +8,7 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
 
 /**
 * This class handles form input for the contribution creation task
@@ -15,7 +16,7 @@
 class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
   function run() {
-    CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Issue Donation Receipts'));
 
     // Since 4.6 the css-class crm-summary-row lives in contactSummary.css
     // instead of civicrm.css
@@ -50,22 +51,22 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
       // we need a (valid) snapshot id here
       if (empty($id)) {
-        $this->assign('error', ts('No snapshot id has been provided!', array('domain' => 'de.systopia.donrec')));
+        $this->assign('error', E::ts('No snapshot id has been provided!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
       }else{
         $snapshot = CRM_Donrec_Logic_Snapshot::get($id);
         if (empty($snapshot)) {
-          $this->assign('error', ts('Invalid snapshot id!', array('domain' => 'de.systopia.donrec')));
+          $this->assign('error', E::ts('Invalid snapshot id!'));
           $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
         }else{
           // delete the snapshot and redirect to search form
           $snapshot->delete();
           if ($by_admin) {
             $return_id = $_REQUEST['return_to'];
-            CRM_Core_Session::setStatus(ts('The older snapshot has been deleted. You can now proceed.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
+            CRM_Core_Session::setStatus(E::ts('The older snapshot has been deleted. You can now proceed.'), E::ts('Warning'), 'warning');
             CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount"));
           }else{
-            CRM_Core_Session::setStatus(ts('The previously created snapshot has been deleted.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
+            CRM_Core_Session::setStatus(E::ts('The previously created snapshot has been deleted.'), E::ts('Warning'), 'warning');
             if (!empty($_REQUEST['origin'])) {
               CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$origin&selectedChild=donation_receipts"));
              }else{
@@ -80,7 +81,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
       $exporters = $_REQUEST['result_type'];
       // at least one exporter has to be selected
       if (empty($exporters)) {
-        $this->assign('error', ts('Missing exporter!', array('domain' => 'de.systopia.donrec')));
+        $this->assign('error', E::ts('Missing exporter!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
       }else{
         //on testrun we want to return to the stats-page instead of the contact-search-page
@@ -96,7 +97,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
       $exporters = $_REQUEST['result_type'];
       // at least one exporter has to be selected
       if (empty($exporters)) {
-        $this->assign('error', ts('Missing exporter!', array('domain' => 'de.systopia.donrec')));
+        $this->assign('error', E::ts('Missing exporter!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task'));
       }else{
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&final=1&exporters=$exporters"));
@@ -120,7 +121,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
       }
     }else{
       if (empty($id)) {
-        $this->assign('error', ts('No snapshot id has been provided!', array('domain' => 'de.systopia.donrec')));
+        $this->assign('error', E::ts('No snapshot id has been provided!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search', ''));
       }else{
         // get supported exporters

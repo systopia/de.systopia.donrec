@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 class CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
@@ -15,7 +17,7 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner extends CRM_Donrec_Lo
   }
 
   public static function getLabel() {
-    return ts('SVG upper right corner', array('domain' => 'de.systopia.donrec'));
+    return E::ts('SVG upper right corner');
   }
 
   public function injectMarkup(&$html, $pdf_format) {

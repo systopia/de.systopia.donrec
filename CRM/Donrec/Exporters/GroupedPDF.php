@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 //FIXME: implement own getID-method
 /**
  * Exporter for GROUPED, ZIPPED PDF files
@@ -19,7 +21,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    *   the display name
    */
   static function name() {
-    return ts('Individual PDFs sorted by page count', array('domain' => 'de.systopia.donrec'));
+    return E::ts('Individual PDFs sorted by page count');
   }
 
   /**
@@ -57,26 +59,26 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
           $pdfinfo_version = $matches[1];
           if(!empty($matches) && count($matches) == 2) {
             if (version_compare($pdfinfo_version, '0.18.4') >= 0) {
-              $result['message'] = sprintf(ts("using pdfinfo %s", array('domain' => 'de.systopia.donrec')), $pdfinfo_version);
+              $result['message'] = sprintf(E::ts("using pdfinfo %s"), $pdfinfo_version);
             }else{
               $result['is_error'] = TRUE;
-              $result['message'] = sprintf(ts("pdfinfo %s is not supported", array('domain' => 'de.systopia.donrec')), $pdfinfo_version);
+              $result['message'] = sprintf(E::ts("pdfinfo %s is not supported"), $pdfinfo_version);
             }
           }else{
             $result['is_error'] = TRUE;
-            $result['message'] = ts("unknown pdfinfo version", array('domain' => 'de.systopia.donrec'));
+            $result['message'] = E::ts("unknown pdfinfo version");
           }
         }else{
           $result['is_error'] = TRUE;
           if($ret_status == 126) { //  126 - Permission problem or command is not an executable
-            $result['message'] = ts("pdfinfo is not executable. check permissions", array('domain' => 'de.systopia.donrec'));
+            $result['message'] = E::ts("pdfinfo is not executable. check permissions");
           }else{
-            $result['message'] = ts("pdfinfo not found", array('domain' => 'de.systopia.donrec'));
+            $result['message'] = E::ts("pdfinfo not found");
           }
         }
     }else{
         $result['is_error'] = TRUE;
-        $result['message'] = ts("pdfinfo path is not set", array('domain' => 'de.systopia.donrec'));
+        $result['message'] = E::ts("pdfinfo path is not set");
     }
     return $result;
   }
@@ -121,8 +123,8 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
-    $preferredFileName = ts("donation_receipts", array('domain' => 'de.systopia.donrec'));
-    $preferredSuffix = ts('.zip', array('domain' => 'de.systopia.donrec'));
+    $preferredFileName = E::ts("donation_receipts");
+    $preferredSuffix = E::ts('.zip');
     $archiveFileName = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredSuffix);
     $fileURL = $archiveFileName;
     $outerArchive = new ZipArchive;
@@ -149,7 +151,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
       foreach($pageCountArr as $entry) {
         foreach ($entry as $item) {
           if($item[0] && $item[2]) { // if page count and file name exists
-            $folder = sprintf(ts('%d-page', array('domain' => 'de.systopia.donrec')), $item[0]).DIRECTORY_SEPARATOR;
+            $folder = sprintf(E::ts('%d-page'), $item[0]).DIRECTORY_SEPARATOR;
             $opResult = $outerArchive->addFile($item[2], $folder.basename($item[2])) ;
             CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='{$item[2]}'>created {$item[0]}-page PDF file</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
           }
@@ -159,7 +161,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
       }
     } else{
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::FATAL);
+      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::LOG_TYPE_FATAL);
       return $reply;
     }
 

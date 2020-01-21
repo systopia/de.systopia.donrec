@@ -323,7 +323,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     $this->add(
       'select',
       'from_email',
-      ts('From Email', array('domain' => 'de.systopia.donrec')),
+      E::ts('From Email'),
       $this->getSenderEmails(),
       FALSE,
       array('class' => 'crm-select2 huge')

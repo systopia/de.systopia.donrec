@@ -8,11 +8,12 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-
 require_once 'donrec.civix.php';
 require_once 'CRM/Donrec/DataStructure.php';
 require_once 'CRM/Donrec/Logic/Template.php';
 require_once 'CRM/Donrec/Logic/Settings.php';
+
+use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * Implementation of hook_civicrm_config
@@ -105,11 +106,11 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contact') {
     if (CRM_Core_Permission::check('create and withdraw receipts')) {
       $tasks[] = array(
-          'title' => ts('Issue donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'title' => E::ts('Issue donation receipt(s)'),
           'class' => 'CRM_Donrec_Form_Task_DonrecTask',
           'result' => false);
       $tasks[] = array(
-          'title' => ts('Withdraw donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'title' => E::ts('Withdraw donation receipt(s)'),
           'class' => 'CRM_Donrec_Form_Task_DonrecResetTask',
           'result' => false);
     }
@@ -119,13 +120,13 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contribution') {
     if (CRM_Core_Permission::check('create and withdraw receipts')) {
       $tasks[] = array(
-          'title' => ts('Issue donation receipt(s)', array('domain' => 'de.systopia.donrec')),
+          'title' => E::ts('Issue donation receipt(s)'),
           'class' => 'CRM_Donrec_Form_Task_ContributeTask',
           'result' => false);
     }
     if (CRM_Core_Permission::check('edit contributions')) {
       $tasks[] = array(
-          'title'  => ts('Rebook to contact', array('domain' => 'de.systopia.donrec')),
+          'title'  => E::ts('Rebook to contact'),
           'class'  => 'CRM_Donrec_Form_Task_RebookTask',
           'result' => false);
     }
@@ -146,7 +147,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     $actionList = array_pop($headers);
     // insert new column
     $headers[] = array(
-      'name' => ts('Receipted', array('domain' => 'de.systopia.donrec')),
+      'name' => E::ts('Receipted'),
       // Provide a weight lower than the "actions" column.
       'weight' => $actionList['weight'] - 1,
       'field_name' => 'is_receipted',
@@ -158,14 +159,14 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     foreach ($values as $id => $value ) {
       $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
       if($item_id === FALSE) {
-        $values[$id]['is_receipted'] = ts('No', array('domain' => 'de.systopia.donrec'));
+        $values[$id]['is_receipted'] = E::ts('No');
       }else{
         $receipted_contribution_ids[] = $value['contribution_id'];    // save as receipted for rebook (see below)
         $values[$id]['is_receipted'] = sprintf('<a href="%s">%s</a>', CRM_Utils_System::url(
         'civicrm/contact/view',
         "reset=1&cid={$value['contact_id']}&rid=$item_id&selectedChild=donation_receipts",
         TRUE, NULL, TRUE),
-        ts('Yes', array('domain' => 'de.systopia.donrec')));
+        E::ts('Yes'));
       }
     }
     // restore last element
@@ -178,7 +179,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // only offer rebook only if the user has the correct permissions
     if (CRM_Core_Permission::check('edit contributions')) {
       $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
-      $title = ts('Rebook', array('domain' => 'de.systopia.donrec'));
+      $title = E::ts('Rebook');
       $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
       $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
 
@@ -244,11 +245,11 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
  * Custom permissions
  */
  function donrec_civicrm_permission(&$permissions) {
-  $prefix = ts('DonationReceipts', array('domain' => 'de.systopia.donrec')) . ': ';
+  $prefix = E::ts('DonationReceipts') . ': ';
 
-  $permissions['view and copy receipts'] = $prefix . ts('view and create copies of receipts', array('domain' => 'de.systopia.donrec'));
-  $permissions['create and withdraw receipts'] = $prefix . ts('create and withdraw receipts', array('domain' => 'de.systopia.donrec'));
-  $permissions['delete receipts'] = $prefix . ts('delete receipts', array('domain' => 'de.systopia.donrec'));
+  $permissions['view and copy receipts'] = $prefix . E::ts('view and create copies of receipts');
+  $permissions['create and withdraw receipts'] = $prefix . E::ts('create and withdraw receipts');
+  $permissions['delete receipts'] = $prefix . E::ts('delete receipts');
  }
 
 /**
@@ -279,7 +280,7 @@ function donrec_civicrm_tabs(&$tabs, $contactID) {
                                   "reset=1&snippet=1&force=1&cid=$contactID" );
     $tabs[] = array( 'id'    => 'donation_receipts',
                      'url'   => $url,
-                     'title' => ts('Donation receipts', array('domain' => 'de.systopia.donrec')),
+                     'title' => E::ts('Donation receipts'),
                      'count' => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($contactID),
                      'weight' => 300);
   }
@@ -322,7 +323,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
         // Validate the contribution values to be set.
         CRM_Donrec_Logic_Settings::validateContribution($id, (array)$result, $params, TRUE);
       } elseif ($op == 'delete') {
-        $message = sprintf(ts("This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!", array('domain' => 'de.systopia.donrec')), $id);
+        $message = sprintf(E::ts("This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"), $id);
         throw new Exception($message);
       }
     }
@@ -353,32 +354,32 @@ function donrec_civicrm_buildForm($formName, &$form) {
     ));
 
     // DISABLED: date field search doesn't work
-    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From", array('domain' => 'de.systopia.donrec')), ts("Issed On - To", array('domain' => 'de.systopia.donrec')));
-    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', ts("Received - From", array('domain' => 'de.systopia.donrec')), ts("Received - To", array('domain' => 'de.systopia.donrec')));
+    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', E::E::ts("Issed On - From"), ts("Issed On - To"));
+    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', E::E::ts("Received - From"), ts("Received - To"));
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Status', array('domain' => 'de.systopia.donrec')),
+        E::ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'original'        => ts('original', array('domain' => 'de.systopia.donrec')),
-                'copy'            => ts('copy', array('domain' => 'de.systopia.donrec')),
-                'withdrawn'       => ts('withdrawn', array('domain' => 'de.systopia.donrec')),
-                'withdrawn_copy'  => ts('withdrawn_copy', array('domain' => 'de.systopia.donrec')),
+        array(  ''                => E::ts('- any -'),
+                'original'        => E::ts('original'),
+                'copy'            => E::ts('copy'),
+                'withdrawn'       => E::ts('withdrawn'),
+                'withdrawn_copy'  => E::ts('withdrawn_copy'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Type', array('domain' => 'de.systopia.donrec')),
+        E::ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'single'  => ts('single receipt', array('domain' => 'de.systopia.donrec')),
-                'bulk'    => ts('bulk receipt', array('domain' => 'de.systopia.donrec')),
+        array(  ''        => E::ts('- any -'),
+                'single'  => E::ts('single receipt'),
+                'bulk'    => E::ts('bulk receipt'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
 
 
 
@@ -430,53 +431,53 @@ function donrec_civicrm_buildForm($formName, &$form) {
     ));
 
     // DISABLED: date field search doesn't work
-    //CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', ts("Issed On - From", array('domain' => 'de.systopia.donrec')), ts("Issed On - To", array('domain' => 'de.systopia.donrec')));
+    //CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', E::E::ts("Issed On - From"), ts("Issed On - To"));
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Status', array('domain' => 'de.systopia.donrec')),
+        E::ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'original'        => ts('original', array('domain' => 'de.systopia.donrec')),
-                'copy'            => ts('copy', array('domain' => 'de.systopia.donrec')),
-                'withdrawn'       => ts('withdrawn', array('domain' => 'de.systopia.donrec')),
-                'withdrawn_copy'  => ts('withdrawn_copy', array('domain' => 'de.systopia.donrec')),
+        array(  ''                => E::ts('- any -'),
+                'original'        => E::ts('original'),
+                'copy'            => E::ts('copy'),
+                'withdrawn'       => E::ts('withdrawn'),
+                'withdrawn_copy'  => E::ts('withdrawn_copy'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Type', array('domain' => 'de.systopia.donrec')),
+        E::ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'single'  => ts('single receipt', array('domain' => 'de.systopia.donrec')),
-                'bulk'    => ts('bulk receipt', array('domain' => 'de.systopia.donrec')),
+        array(  ''        => E::ts('- any -'),
+                'single'  => E::ts('single receipt'),
+                'bulk'    => E::ts('bulk receipt'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
 
 
     // override the receipt_item standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'status');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Status', array('domain' => 'de.systopia.donrec')),
+        E::ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'original'        => ts('original', array('domain' => 'de.systopia.donrec')),
-                'copy'            => ts('copy', array('domain' => 'de.systopia.donrec')),
-                'withdrawn'       => ts('withdrawn', array('domain' => 'de.systopia.donrec')),
-                'withdrawn_copy'  => ts('withdrawn_copy', array('domain' => 'de.systopia.donrec')),
+        array(  ''                => E::ts('- any -'),
+                'original'        => E::ts('original'),
+                'copy'            => E::ts('copy'),
+                'withdrawn'       => E::ts('withdrawn'),
+                'withdrawn_copy'  => E::ts('withdrawn_copy'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'type');
     if ($status_id) $form->add('select', "custom_{$status_id}",
-        ts('Type', array('domain' => 'de.systopia.donrec')),
+        E::ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => ts('- any -', array('domain' => 'de.systopia.donrec')),
-                'single'  => ts('single receipt', array('domain' => 'de.systopia.donrec')),
-                'bulk'    => ts('bulk receipt', array('domain' => 'de.systopia.donrec')),
+        array(  ''        => E::ts('- any -'),
+                'single'  => E::ts('single receipt'),
+                'bulk'    => E::ts('bulk receipt'),
                 ));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_in');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Receipt ID', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", ts('Issued by contact', array('domain' => 'de.systopia.donrec')));
+    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
   }
 }

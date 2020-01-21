@@ -8,7 +8,6 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-
 use CRM_Donrec_ExtensionUtil as E;
 
 require_once 'Kwota.php';

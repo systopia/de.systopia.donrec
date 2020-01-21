@@ -20,7 +20,7 @@ use CRM_Donrec_ExtensionUtil as E;
 class CRM_Donrec_Form_Task_DonrecResetTask extends CRM_Contact_Form_Task {
 
   function buildQuickForm() {
-    CRM_Utils_System::setTitle(ts('Withdraw Donation Receipts', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Withdraw Donation Receipts'));
 
     $this->add(
         'datepicker',

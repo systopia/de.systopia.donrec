@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Execute the next chunk/step of the donation receipt run
  *
@@ -19,7 +21,7 @@
 function civicrm_api3_donation_receipt_engine_next($params) {
   // first, check if the snapshot ID is there
   if (empty($params['sid'])) {
-    return civicrm_api3_create_error(ts("No 'sid' parameter given.", array('domain' => 'de.systopia.donrec')));
+    return civicrm_api3_create_error(E::ts("No 'sid' parameter given."));
   }
 
   // Init the engine

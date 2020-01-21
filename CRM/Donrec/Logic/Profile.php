@@ -162,8 +162,8 @@ class CRM_Donrec_Logic_Profile {
    */
   public function update($data) {
     // verify that copy_text and draft_text are set
-    if (empty($data['copy_text'])) $data['copy_text']   = ts('COPY',  array('domain' => 'de.systopia.donrec'));
-    if (empty($data['draft_text'])) $data['draft_text'] = ts('DRAFT', array('domain' => 'de.systopia.donrec'));
+    if (empty($data['copy_text'])) $data['copy_text']   = E::ts('COPY');
+    if (empty($data['draft_text'])) $data['draft_text'] = E::ts('DRAFT');
 
     $this->data = $data;
   }
@@ -661,8 +661,8 @@ class CRM_Donrec_Logic_Profile {
       'data' => array(
         'financial_types'            => self::getAllDeductibleFinancialTypes(),
         'store_original_pdf'         => FALSE,
-        'draft_text'                 => ts('DRAFT', array('domain' => 'de.systopia.donrec')),
-        'copy_text'                  => ts('COPY',  array('domain' => 'de.systopia.donrec')),
+        'draft_text'                 => E::ts('DRAFT'),
+        'copy_text'                  => E::ts('COPY'),
         'id_pattern'                 => '{issue_year}-{serial}',
         'legal_address'              => array('0'),  // '0' is the primary address
         'postal_address'             => array('0'),

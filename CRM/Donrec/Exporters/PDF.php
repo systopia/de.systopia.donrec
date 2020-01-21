@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Exporter for ZIPPED PDF files
  */
@@ -18,7 +20,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
    *   the display name
    */
   static function name() {
-    return ts('Individual PDFs', array('domain' => 'de.systopia.donrec'));
+    return E::ts('Individual PDFs');
   }
 
   /**
@@ -66,7 +68,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
     $pdf_count = 0;
     $last_pdf_file = NULL;
-    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(ts("donation_receipts", array('domain' => 'de.systopia.donrec')), ".zip");
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(E::ts("donation_receipts"), ".zip");
     $zip = new ZipArchive();
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
@@ -102,7 +104,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
         $reply['download_url']  = $file;
       }
     } else {
-      $preferredFileName = ts("donation_receipts.zip", array('domain' => 'de.systopia.donrec'));
+      $preferredFileName = E::ts("donation_receipts.zip");
       $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
       CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting ZIP file URL is '$file'.");
       if (!empty($file)) {

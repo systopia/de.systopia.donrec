@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This is a dummy exporter, for testing purposes
  */
@@ -18,7 +20,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    *   the display name
    */
   static function name() {
-    return ts("Don't generate files", array('domain' => 'de.systopia.donrec'));
+    return E::ts("Don't generate files");
   }
 
   /**

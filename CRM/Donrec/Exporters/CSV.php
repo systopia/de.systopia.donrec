@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This exporter creates CSV files
  */
@@ -18,7 +20,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    *   the display name
    */
   static function name() {
-    return ts("CSV File", array('domain' => 'de.systopia.donrec'));
+    return E::ts("CSV File");
   }
 
   /**
@@ -84,8 +86,8 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
     $reply = array();
 
     // open file
-    $preferredFileName = ts('donation_receipts');
-    $preferredFileSuffix = ts('.csv', array('domain' => 'de.systopia.donrec'));
+    $preferredFileName = E::ts('donation_receipts');
+    $preferredFileSuffix = E::ts('.csv');
     $temp_file = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredFileSuffix);
     $handle = fopen($temp_file, 'w');
 

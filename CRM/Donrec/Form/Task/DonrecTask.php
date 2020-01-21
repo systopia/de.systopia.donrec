@@ -10,6 +10,8 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Form controller class
  *
@@ -20,30 +22,30 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
   private $availableCurrencies;
 
   function buildQuickForm() {
-    CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Issue Donation Receipts'));
 
     $this->addElement('hidden', 'rsid');
     $options = array(
-       'current_year'      => ts('This Year', array('domain' => 'de.systopia.donrec')),
-       'last_year'         => ts('last year', array('domain' => 'de.systopia.donrec')),
-       'customized_period' => ts('Choose Date Range', array('domain' => 'de.systopia.donrec'))
+       'current_year'      => E::ts('This Year'),
+       'last_year'         => E::ts('last year'),
+       'customized_period' => E::ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options, array('class' => 'crm-select2'));
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:', array('domain' => 'de.systopia.donrec')), 'searchDate', TRUE, FALSE);
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', E::ts('From:'), 'searchDate', TRUE, FALSE);
 
     // add profile selector
     $this->addElement('select', 
                       'profile', 
-                      ts('Profile', array('domain' => 'de.systopia.donrec')), 
+                      E::ts('Profile'),
                       CRM_Donrec_Logic_Profile::getAllNames(), 
                       array('class' => 'crm-select2'));
 
     // add currency selector
     $this->availableCurrencies = array_keys(CRM_Core_OptionGroup::values('currencies_enabled'));
-    $this->addElement('select', 'donrec_contribution_currency', ts('Currency'), $this->availableCurrencies);
+    $this->addElement('select', 'donrec_contribution_currency', E::ts('Currency'), $this->availableCurrencies);
 
     // call the (overwritten) Form's method, so the continue button is on the right...
-    CRM_Core_Form::addDefaultButtons(ts('Continue', array('domain' => 'de.systopia.donrec')));
+    CRM_Core_Form::addDefaultButtons(E::ts('Continue'));
   }
 
   function setDefaultValues() {
@@ -104,7 +106,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
     }elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(ts('There are no selectable contributions for these contacts in the selected time period.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
+      CRM_Core_Session::setStatus(E::ts('There are no selectable contributions for these contacts in the selected time period.'), E::ts('Warning'), 'warning');
       $qfKey = $values['qfKey'];
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
     }else{

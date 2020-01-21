@@ -225,7 +225,7 @@ class CRM_Donrec_Logic_Settings {
               }
             }
 
-            $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'.", array('domain' => 'de.systopia.donrec')), ts($col, array('domain' => 'de.systopia.donrec')));
+            $errors[$col] = sprintf(E::ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."), ts($col));
             if ($throw_exception) {
               throw new Exception($errors[$col]);
             }

@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 //FIXME: implement own getID-method
 /**
  * Exporter for GROUPED, ZIPPED PDF files
@@ -23,7 +25,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    *   the display name
    */
   static function name() {
-    return ts('Send PDFs via Email', array('domain' => 'de.systopia.donrec'));
+    return E::ts('Send PDFs via Email');
   }
 
   /**
@@ -57,7 +59,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
     } else {
       return array(
         'is_error' => TRUE, 
-        'message' => ts("Please select email template in the Donrec settings.", array('domain' => 'de.systopia.donrec')),
+        'message' => E::ts("Please select email template in the Donrec settings."),
         );
     }
   }
@@ -99,7 +101,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       if (!$is_test) {
         civicrm_api3('Activity', 'create', array(
           'activity_type_id'   => $this->getEmailErrorActivityID(),
-          'subject'            => ts("Donation receipt not delivered", array('domain' => 'de.systopia.donrec')),
+          'subject'            => E::ts("Donation receipt not delivered"),
           'status_id'          => CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name'),
           'activity_date_time' => date('YmdHis'),
           'source_contact_id'  => $receipt['created_by'],
@@ -157,7 +159,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       // compile the attachment
       $attachment   = array('fullPath'  => $pdf_file,
                             'mime_type' => 'application/pdf',
-                            'cleanName' => ts("Donation Receipt.pdf", array('domain' => 'de.systopia.donrec')));
+                            'cleanName' => E::ts("Donation Receipt.pdf"));
 
       // register some variables
       $smarty_variables = array(
@@ -226,9 +228,8 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         }
       }
       if(!empty($proc_info['sent'])) {
-        $message = ts("Email <i>would</i> be sent to '%1' (test mode).", array(
-          1 => $proc_info['sent'],
-          'domain' => 'de.systopia.donrec'));
+        $message = E::ts("Email <i>would</i> be sent to '%1' (test mode).", array(
+          1 => $proc_info['sent'],));
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, $message, CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
       }
     }
@@ -258,7 +259,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         $activity_type = civicrm_api3('OptionValue', 'create', array(
           'option_group_id' => $option_group['id'],
           'name'            => 'donrec_email_failed',
-          'label'           => ts("DonationReceipt Failure", array('domain' => 'de.systopia.donrec')),
+          'label'           => E::ts("DonationReceipt Failure"),
           ));
         $activity_type = civicrm_api3('OptionValue', 'getsingle', array('id' => $activity_type['id']));
         $this->activity_type_id = $activity_type['value'];
@@ -283,10 +284,10 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         return 'Internal error, problems with the snapshot. Please file a bug at https://github.com/systopia/de.systopia.donrec/issues';
 
       case 'no email':
-        return ts("No valid email address found for this contact.", array('domain' => 'de.systopia.donrec'));
+        return E::ts("No valid email address found for this contact.");
 
       default:
-        $error_msg = ts("Error was: ", array('domain' => 'de.systopia.donrec'));
+        $error_msg = E::ts("Error was: ");
         $error_msg .= $error;
         return $error_msg;
     }

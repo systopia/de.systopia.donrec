@@ -10,6 +10,8 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Form controller class
  */
@@ -20,16 +22,16 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Rebook', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Rebook'));
   
     $admin = CRM_Core_Permission::check('edit contributions');
     if (!$admin) {
-      CRM_Core_Error::fatal(ts('You do not have the permissions required to access this page.', array('domain' => 'de.systopia.donrec')));
+      CRM_Core_Error::fatal(E::ts('You do not have the permissions required to access this page.'));
       CRM_Utils_System::redirect();
     }
 
     if (empty($_REQUEST['contributionIds'])) {
-      die(ts("You need to specifiy a contribution to rebook.", array('domain' => 'de.systopia.donrec')));
+      die(E::ts("You need to specifiy a contribution to rebook."));
     }
 
     $this->contribution_ids = array((int) $_REQUEST['contributionIds']);
@@ -42,9 +44,9 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   function buildQuickForm() {
     $contributionIds = implode(',', $this->contribution_ids);
 
-    $this->add('text', 'contactId', ts('CiviCRM ID', array('domain' => 'de.systopia.donrec')), null, $required = true);
+    $this->add('text', 'contactId', E::ts('CiviCRM ID'), null, $required = true);
     $this->add('hidden', 'contributionIds', $contributionIds);
-    $this->addDefaultButtons(ts('Rebook', array('domain' => 'de.systopia.donrec')));
+    $this->addDefaultButtons(E::ts('Rebook'));
 
     parent::buildQuickForm();
   }
@@ -96,7 +98,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       if (empty($contribution['is_error'])) { // contribution exists
         array_push($contact_ids, $contribution['contact_id']);
       } else {
-        CRM_Core_Session::setStatus(ts("At least one of the given contributions doesn't exist!", array('domain' => 'de.systopia.donrec')), ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+        CRM_Core_Session::setStatus(E::ts("At least one of the given contributions doesn't exist!"), E::ts("Error"), "error");
         CRM_Utils_System::redirect($redirect_url);
         return NULL;
       }
@@ -104,7 +106,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
     $contact_ids = array_unique($contact_ids);
     if (count($contact_ids) > 1) {
-      CRM_Core_Session::setStatus(ts('Rebooking of multiple contributions from different contacts is not allowed!', array('domain' => 'de.systopia.donrec')), ts("Rebooking not allowed!", array('domain' => 'de.systopia.donrec')), "error");
+      CRM_Core_Session::setStatus(E::ts('Rebooking of multiple contributions from different contacts is not allowed!'), E::ts("Rebooking not allowed!"), "error");
       CRM_Utils_System::redirect($redirect_url);
       return NULL;
     } else {
@@ -145,14 +147,14 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         $params = array(
             'version'                 => 3,
             'contribution_status_id'  => $cancelledStatus,
-            'cancel_reason'           => ts('Rebooked to CiviCRM ID %1', array(1 => $contact_id, 'domain' => 'de.systopia.donrec')),
+            'cancel_reason'           => E::ts('Rebooked to CiviCRM ID %1', array(1 => $contact_id)),
             'cancel_date'             => date('YmdHis'),
             'currency'                => $contribution['currency'],    // see ticket #1455
             'id'                      => $contribution['id'],
         );
         $cancelledContribution = civicrm_api('Contribution', 'create', $params);
         if (!empty($cancelledContribution['is_error']) && !empty($cancelledContribution['error_message'])) {
-          CRM_Core_Session::setStatus($cancelledContribution['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+          CRM_Core_Session::setStatus($cancelledContribution['error_message'], E::ts("Error"), "error");
         }
 
         // Now compile $attributes, taking the exclusionList into account
@@ -186,7 +188,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         // create new contribution
         $newContribution = civicrm_api('Contribution', 'create', $attributes);
         if (!empty($newContribution['is_error']) && !empty($newContribution['error_message'])) {
-          CRM_Core_Session::setStatus($newContribution['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+          CRM_Core_Session::setStatus($newContribution['error_message'], E::ts("Error"), "error");
         }
 
         // Exception handling for SEPA OOFF payments (org.project60.sepa extension)
@@ -198,7 +200,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         $params = array(
             'version' => 3,
             'sequential' => 1,
-            'note' => ts('Rebooked from CiviCRM ID %1', array(1 => $contribution['contact_id'], 'domain' => 'de.systopia.donrec')),
+            'note' => E::ts('Rebooked from CiviCRM ID %1', array(1 => $contribution['contact_id'])),
             'entity_table' => 'civicrm_contribution',
             'entity_id' => $newContribution['id']
         );
@@ -223,10 +225,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     }
 
     if ($rebooked == $contribution_count) {
-      CRM_Core_Session::setStatus(ts('%1 contribution(s) successfully rebooked!', array(1 => $contribution_count, 'domain' => 'de.systopia.donrec')), ts('Successfully rebooked!'), 'success');
+      CRM_Core_Session::setStatus(E::ts('%1 contribution(s) successfully rebooked!', array(1 => $contribution_count)), E::ts('Successfully rebooked!'), 'success');
     } else {
       CRM_Core_Error::debug_log_message("de.systopia.donrec: Only $rebooked of $contribution_count contributions rebooked.", array('domain' => 'de.systopia.donrec'));
-      CRM_Core_Session::setStatus(ts('Please check your data and try again', array(1 => $contribution_count)), ts('Nothing rebooked!'), 'warning');
+      CRM_Core_Session::setStatus(ts('Please check your data and try again', array(1 => $contribution_count)), E::ts('Nothing rebooked!'), 'warning');
       CRM_Utils_System::redirect($redirect_url);
     }
   }
@@ -243,7 +245,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     $contributionIds = $values['contributionIds'];
 
     if (!preg_match('/^\d+$/', $contactId)) { // check if is int
-      $errors['contactId'] = ts('Please enter a CiviCRM ID!', array('domain' => 'de.systopia.donrec'));
+      $errors['contactId'] = E::ts('Please enter a CiviCRM ID!');
       return empty($errors) ? TRUE : $errors;
     }
 
@@ -252,21 +254,21 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     $contact->id = (int) $contactId;
 
     if (!$contact->find(true)) {
-      $errors['contactId'] = ts('A contact with CiviCRM ID %1 doesn\'t exist!', array(1 => $contactId, 'domain' => 'de.systopia.donrec'));
+      $errors['contactId'] = E::ts('A contact with CiviCRM ID %1 doesn\'t exist!', array(1 => $contactId));
       return empty($errors) ? TRUE : $errors;
     }
 
     // Der Kontakt, auf den umgebucht wird, darf kein Haushalt sein.
     $contactType = $contact->getContactType($contactId);
     if (!empty($contactType) && $contactType == 'Household') {
-      $errors['contactId'] = ts('The target contact can not be a household!', array('domain' => 'de.systopia.donrec'));
+      $errors['contactId'] = E::ts('The target contact can not be a household!');
       return empty($errors) ? TRUE : $errors;
     }
 
     // Der Kontakt, auf den umgebucht wird, darf nicht im Papierkorb sein.
     $contactIsDeleted = $contact->is_deleted;
     if ($contactIsDeleted == 1) {
-      $errors['contactId'] = ts('The target contact can not be in trash!', array('domain' => 'de.systopia.donrec'));
+      $errors['contactId'] = E::ts('The target contact can not be in trash!');
       return empty($errors) ? TRUE : $errors;
     }
 
@@ -279,13 +281,13 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       if ($contribution->find(true)) {
         // only 'completed' contributions can be rebooked
         if ($contribution->contribution_status_id != $completed) {
-          $errors['contactId'] = ts('The contribution with ID %1 is not completed!', array(1 => $contributionId, 'domain' => 'de.systopia.donrec'));
+          $errors['contactId'] = E::ts('The contribution with ID %1 is not completed!', array(1 => $contributionId));
           return empty($errors) ? TRUE : $errors;
         }
 
         // receipted contributions can NOT be rebooked
         if (CRM_Donrec_Logic_Receipt::isContributionLocked($contributionId)) {
-          $errors['contactId'] = ts('The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt.', array(1 => $contributionId, 'domain' => 'de.systopia.donrec'));
+          $errors['contactId'] = E::ts('The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt.', array(1 => $contributionId));
           return empty($errors) ? TRUE : $errors;          
         }
       }
@@ -307,7 +309,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   static function fixOOFFMandate($old_contribution, $new_contribution_id) {
     $old_mandate = civicrm_api('SepaMandate', 'getsingle', array('entity_id'=>$old_contribution['id'], 'entity_table'=>'civicrm_contribution', 'version' => 3));
     if (!empty($old_mandate['is_error'])) {
-      CRM_Core_Session::setStatus($old_mandate['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+      CRM_Core_Session::setStatus($old_mandate['error_message'], E::ts("Error"), "error");
       return;
     }
 
@@ -317,7 +319,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     for ($i = 1; $i <= 100; $i++) {
       $new_reference = sprintf($new_reference_pattern, $i);
       if (strlen($new_reference) > 35) {
-        CRM_Core_Session::setStatus(ts("Cannot find a new mandate reference, exceeds 35 characters.", array('domain' => 'de.systopia.donrec')), ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+        CRM_Core_Session::setStatus(E::ts("Cannot find a new mandate reference, exceeds 35 characters."), E::ts("Error"), "error");
         return;                  
       }
       
@@ -327,7 +329,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         // found -> it exists -> damn -> keep looking...
         if ($i == 100) {
           // that's it, we tried... maybe something else is wrong
-          CRM_Core_Session::setStatus(ts("Cannot find a new mandate reference", array('domain' => 'de.systopia.donrec')), ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+          CRM_Core_Session::setStatus(E::ts("Cannot find a new mandate reference"), E::ts("Error"), "error");
           break;
         } else {
           // keep looking!
@@ -357,21 +359,21 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       'bic'                   => $old_mandate['bic']);
     $create_clone = civicrm_api('SepaMandate', 'create', $new_mandate_data);
     if (!empty($create_clone['is_error'])) {
-      CRM_Core_Session::setStatus($create_clone['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+      CRM_Core_Session::setStatus($create_clone['error_message'], E::ts("Error"), "error");
       return;
     }
 
     // set old (original) mandate to new contribution
     $result = civicrm_api('SepaMandate', 'create', array('id' => $old_mandate['id'], 'entity_id' => $new_contribution_id, 'version' => 3));
     if (!empty($result['is_error'])) {
-      CRM_Core_Session::setStatus($result['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+      CRM_Core_Session::setStatus($result['error_message'], E::ts("Error"), "error");
       return;
     }
 
     // modify new mandate's (invalid clone's) reference, in case it got overridden
     $result = civicrm_api('SepaMandate', 'create', array('id' => $create_clone['id'], 'reference' => $new_reference, 'version' => 3));
     if (!empty($result['is_error'])) {
-      CRM_Core_Session::setStatus($result['error_message'], ts("Error", array('domain' => 'de.systopia.donrec')), "error");
+      CRM_Core_Session::setStatus($result['error_message'], E::ts("Error"), "error");
       return;
     }
   }

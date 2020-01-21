@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 class CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
@@ -15,7 +17,7 @@ class CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional extends CRM_Donrec_Logi
   }
 
   public static function getLabel() {
-    return ts('Markup traditional (dompdf)', array('domain' => 'de.systopia.donrec'));
+    return E::ts('Markup traditional (dompdf)');
   }
 
   public function injectMarkup(&$html, $paper_size) {
