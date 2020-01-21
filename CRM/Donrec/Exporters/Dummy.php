@@ -14,21 +14,24 @@
 class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
   /**
-   * @return the display name
+   * @return string
+   *   the display name
    */
   static function name() {
     return ts("Don't generate files", array('domain' => 'de.systopia.donrec'));
   }
 
   /**
-   * @return a html snippet that defines the options as form elements
+   * @return string
+   *   a html snippet that defines the options as form elements
    */
   static function htmlOptions() {
     return '';
   }
 
   /**
-   * @return the ID of this importer class
+   * @return string
+   *   the ID of this importer class
    */
   public function getID() {
     return 'Dummy';
@@ -38,7 +41,11 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   /**
    * export an individual receipt
    *
-   * @return TRUE on success; FALSE on failure
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
+   *   TRUE on success; FALSE on failure
    */
   public function exportSingle($snapshot_receipt, $is_test) {
 
@@ -53,7 +60,11 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   /**
    * export a bulk-receipt
    *
-   * @return TRUE on success; FALSE on failure
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
+   *   TRUE on success; FALSE on failure
    */
   public function exportBulk($snapshot_receipt, $is_test) {
 
@@ -63,6 +74,10 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
   /**
    * generate the final result
+   *
+   * @param $chunk
+   * @param $is_test
+   * @param $is_bulk
    *
    * @return array:
    *          'is_error': set if there is a fatal error

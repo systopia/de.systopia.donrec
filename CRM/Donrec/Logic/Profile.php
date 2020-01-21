@@ -74,6 +74,8 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * load setting entity with given ID
+   *
+   * @param int $profile_id
    */
   public function __construct($profile_id = NULL) {
     $all_profiles = self::getAllData();
@@ -107,7 +109,10 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Get the profile for the given name.
    *
+   * @param string $profile_name
+   * @param bool $warn
    * @return self
+   * @throws \Exception
    */
   public static function getProfileByName($profile_name, $warn = FALSE) {
     $profile_names = self::getAllNames();
@@ -373,6 +378,8 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * check if a profile of the given name exists
+   * @param $profile_name
+   * @return bool
    */
   public static function exists($profile_name) {
     $allNames = self::getAllNames();
@@ -420,7 +427,7 @@ class CRM_Donrec_Logic_Profile {
       $profiles[$profile_id] = self::getProfile($profile_id);
     }
 
-    return $allProfiles;
+    return $profiles;
   }
 
   /**
@@ -548,7 +555,8 @@ class CRM_Donrec_Logic_Profile {
    * that works in the WHERE clause on
    * civicrm_contribution queries.
    *
-   * @return SQL clause
+   * @return string
+   *   SQL clause
    * @author B. Endres
    */
   public function getContributionTypesClause() {
@@ -584,8 +592,10 @@ class CRM_Donrec_Logic_Profile {
    *
    * @param bool $default
    *   Whether to return only default addresses.
+   *
+   * @return string
    */
-  public function getFromEmailAddresses($default = FALSE) {
+  public static function getFromEmailAddresses($default = FALSE) {
     if ($default) {
       $condition = ' AND is_default = 1';
     }
@@ -601,13 +611,13 @@ class CRM_Donrec_Logic_Profile {
    * @return bool
    */
   public function saveOriginalPDF() {
-    return $this->getDataAttribute('store_original_pdf');
+    return (bool) $this->getDataAttribute('store_original_pdf');
   }
 
   /**
    * get the default template ID
    *
-   * @return \CRM_Donrec_Logic_Template
+   * @return \CRM_Donrec_Logic_Template | NULL
    */
   public function getTemplate() {
     return CRM_Donrec_Logic_Template::getTemplate($this->template, $this->template_pdf_format_id);
@@ -616,6 +626,7 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * Deletes the given profile
+   * @param int $profile_id
    */
   public static function deleteProfile($profile_id) {
     $query = "

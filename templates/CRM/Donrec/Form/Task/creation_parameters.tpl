@@ -9,7 +9,7 @@
 
 <table>
   <tr>
-    <h3>{ts domain="de.systopia.donrec"}Filter contributions by receive date{/ts}</h3>
+    <td><h3>{ts domain="de.systopia.donrec"}Filter contributions by receive date{/ts}</h3></td>
   </tr>
   <tr>
     <td class="label">
@@ -90,7 +90,7 @@
         custom_period.hide();
         break;
       }
-    }
+    };
 
     //evaluate initial value
     set_period();

@@ -25,16 +25,20 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   protected $Id;
 
   /**
-  * constructor
-  */
+   * constructor
+   *
+   * @param int $receipt_id
+   */
   public function __construct($receipt_id) {
     self::getCustomFields();
     $this->Id = $receipt_id;
   }
 
   /**
-  * get an existing receipt
-  */
+   * get an existing receipt
+   * @param int $receipt_id
+   * @return \CRM_Donrec_Logic_Receipt | NULL
+   */
   public static function get($receipt_id) {
     self::getCustomFields();
     $receipt = new self($receipt_id);
@@ -48,8 +52,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
   * Creates a receipt without receipt-items using the generic tokens
-  * @param $tokens             tokens coming from SnapshotReceipt->getAllTokens
-  * @return Receipt object if successfull, FALSE otherwise.
+  * @param array $tokens             tokens coming from SnapshotReceipt->getAllTokens
+  * @return \CRM_Core_DAO | bool
+   *   Receipt object if successfull, FALSE otherwise.
   */
   public static function _createReceiptFromTokens($tokens) {
     // initialize custom field map
@@ -88,10 +93,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Creates a new receipt and belonging receipt-items
    *
-   * @param $snapshot_receipt   a snapshotReceipt object
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt   a snapshotReceipt object
+   * @param array $parameters         an assoc. array of creation parameters TODO: to be defined
    *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   * @return self | bool
+   *   TRUE if successful, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   // TODO: createFromSnapshotReceipt and createFromSnapshot could be refactored to avoid redundant code
   public static function createFromSnapshotReceipt($snapshot_receipt, &$parameters) {
@@ -124,11 +130,12 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Creates a new receipt and belonging receipt-items
    *
-   * @param $snapshot           a snapshot object
-   * @param $snapshot_line_ids  an array with the IDs of the snapshot lines to be used for creation
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   * @param \CRM_Donrec_Logic_Snapshot $snapshot           a snapshot object
+   * @param arra $snapshot_line_ids  an array with the IDs of the snapshot lines to be used for creation
+   * @param array $parameters         an assoc. array of creation parameters TODO: to be defined
    *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   * @return self | bool
+   *   TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public static function createFromSnapshot($snapshot, $snapshot_line_ids, &$parameters) {
     // get all tokens form SnapshotReceipt
@@ -203,9 +210,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Delete this receipt.
    *
-   * @param $parameters         an assoc. array of creation parameters TODO: to be defined
+   * @param array $parameters         an assoc. array of creation parameters TODO: to be defined
    *
-   * @return TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
+   * @return bool
+   *   TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
    */
   public function delete(&$parameters) {
     self::getCustomFields();
@@ -250,7 +258,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get all copies of this receipt.
-   * @return list of receipt-objects
+   * @return array
+   *  array of receipt-objects
    */
   public function getCopies() {
     $receipt_id = $this->Id;
@@ -297,7 +306,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * This should only include the display properties, and be performance optimized
    *
-   * @return an array of all properties needed for display
+   * @return array
+   *   an array of all properties needed for display
    */
   public function getDisplayProperties() {
     // TODO: Remove stub
@@ -307,10 +317,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Find all receipts for the given contact ID
    *
-   * @param $contact_id    a contact ID
-   * @param $parameters    TODO: to be definied. Maybe for only to restrict search (like 'only copies')
+   * @param int $contact_id    a contact ID
+   * @param array $parameters    TODO: to be definied. Maybe for only to restrict search (like 'only copies')
    *
-   * @return an array of CRM_Donrec_Logic_Receipt instances
+   * @return array
+   *   array of CRM_Donrec_Logic_Receipt instances
    */
   public static function getReceiptsForContact($contact_id, &$parameters) {
     self::getCustomFields();
@@ -398,7 +409,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * This method should be HIGHLY optimized
    *
-   * @return TRUE if there is a VALID donation receipt, FALSE otherwise
+   * @param int $contribution_id
+   * @return bool
+   *   TRUE if there is a VALID donation receipt, FALSE otherwise
    */
   public static function isContributionLocked($contribution_id) {
     if (empty($contribution_id)) {
@@ -606,7 +619,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * This should only include the display properties, and be performance optimized
    *
-   * @return an array of all properties needed for display
+   * @return array
+   *   array of all properties needed for display
    */
   public function getDisplayTokens() {
     // TODO: optimize
@@ -637,7 +651,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get url to pdf exists.
-   * @return file-name or NULL
+   * @return string|null file-name or NULL
    */
   public function getOriginalFileId() {
     $receipt_fields = self::$_custom_fields;

@@ -150,10 +150,12 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
 
   /**
    * Convierte número a letras
+   *
    * @param $number
    * @param $miMoneda
    * @param $type tipo de dígito (entero/decimal)
-   * @return $converted string convertido
+   *
+   * @return bool|string|void $converted string convertido
    */
   static private function convertNumber($number, $miMoneda = NULL, $type) {
     $converted = '';
@@ -225,8 +227,8 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
   /**
    * Define el tipo de representación decimal (centenas/millares/millones)
    * @param $n
-   * @return $output
-   */
+   * @return mixed|string $output
+*/
   private static function convertGroup($n) {
 
     $output = '';

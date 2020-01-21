@@ -15,11 +15,11 @@ class CRM_Utils_DonrecHelper {
 
   /**
    * Converts a string to unix timestamp
-   * @param string Raw date string (i.e. '10/15/2014')
-   * @param int If $clamp is less than 0 the function will return a unix timestamp
+   * @param string $raw_date Raw date string (i.e. '10/15/2014')
+   * @param int $clamp If $clamp is less than 0 the function will return a unix timestamp
    *            set to 00:00 of the given date. If it is greater than 1, it will
    *            return a value clamped to 23:59:59 of the same day.
-   * @param format
+   * @param string $format
    * @return string timestamp
    */
   public static function convertDate($raw_date, $clamp=0, $format = 'm/d/Y') {
@@ -40,6 +40,8 @@ class CRM_Utils_DonrecHelper {
   }
   /**
    * Calls die() with a pretty template (WIP)
+   *
+   * @param string $error_message
    *
    * @deprecated 1.8 No longer used by internal code and not recommended.
    */
@@ -62,7 +64,12 @@ class CRM_Utils_DonrecHelper {
    * the lock is needed so that only one relevant process can access the
    * payment/statment data structures at a time
    *
-   * @return lock object. check if it ->isAcquired() before use
+   * @param $type
+   *
+   * @param $id
+   *
+   * @return \CRM_Utils_DonrecSafeLock | NULL
+   *   lock object. check if it ->isAcquired() before use
    */
   public static function getLock($type, $id) {
     if ($type=='') {
@@ -89,7 +96,12 @@ class CRM_Utils_DonrecHelper {
    * extracts the field ID from the field set provided in the format:
    * <field_name> => <column_name>
    *
-   * @return (int) field_id  or 0 if not found
+   * @param array $fields
+   *
+   * @param string $field_name
+   *
+   * @return int
+   *   field_id  or 0 if not found
    */
   public static function getFieldID($fields, $field_name) {
     if (!empty($fields[$field_name])) {
@@ -104,6 +116,12 @@ class CRM_Utils_DonrecHelper {
 
   /**
    * removes a field from a form - if it exists
+   *
+   * @param \CRM_Core_Form $form
+   *
+   * @param array $fields
+   *
+   * @param string $field_name
    */
   public static function removeFromForm(&$form, $fields, $field_name) {
     $field_id = self::getFieldID($fields, $field_name);
@@ -116,6 +134,12 @@ class CRM_Utils_DonrecHelper {
 
   /**
    * updates a date field's labels - if it exists
+   *
+   * @param $form
+   * @param $fields
+   * @param $field_name
+   * @param $from_label
+   * @param $to_label
    */
   public static function relabelDateField(&$form, $fields, $field_name, $from_label, $to_label) {
     $field_id = self::getFieldID($fields, $field_name);
@@ -133,6 +157,10 @@ class CRM_Utils_DonrecHelper {
    * SQL-escape the given string
    * (slightly abridged version of CRM_Core_DAO::escapeString)
    *
+   * @param string $string
+   *
+   * @return false|string
+   * @throws \CRM_Core_Exception
    * @see CRM_Core_DAO::escapeString
    */
   public static function escapeString($string) {

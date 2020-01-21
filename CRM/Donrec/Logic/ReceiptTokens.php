@@ -235,7 +235,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   /**
    * HELPER to verify that all the STORED_TOKENS have been set in the given value array
    *
-   * @return an array with all missing tokens
+   * @param array $values
+   *
+   * @return array
+   *   array with all missing tokens
    */
   public static function missingTokens($values) {
     $missing_tokens = array();
@@ -270,6 +273,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get address tokens for a given contact with fallback type
+   * @param int $contact_id
+   * @param $location_type
+   * @param $fallback_location_type
+   * @return array|null
    */
   public static function lookupAddressTokens($contact_id, $location_type, $fallback_location_type) {
     if (empty($contact_id)) return array();
@@ -296,6 +303,9 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get address tokens for a given contact
+   * @param int $contact_id
+   * @param $location_type
+   * @return array | null
    */
   private static function _lookupAddress($contact_id, $location_type) {
     if (empty($contact_id)) return NULL;

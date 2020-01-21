@@ -13,11 +13,14 @@
  */
 class CRM_Donrec_Logic_Selector {
 
-  /** 
+  /**
    * Build and run the query to select all contributions
    * matching the criteria, and try to create a snapshot
    *
-   * @return snapshot creation result/error
+   * @param array $values
+   *
+   * @return array
+   *   creation result/error
    */
   public static function createSnapshot($values) {
     // prepare timestamps

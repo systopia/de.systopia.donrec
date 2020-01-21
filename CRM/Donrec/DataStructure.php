@@ -527,7 +527,8 @@ class CRM_Donrec_DataStructure {
   /**
   * Find the first available option value id
   *
-  * @return option-value-id
+  * @return int
+   *   option-value-id
   */
   public static function getFirstUsedOptionValueId() {
     $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'donrec_status'));
@@ -613,6 +614,8 @@ class CRM_Donrec_DataStructure {
 
   /**
   * Populate $_custom_groups with all the relevant data - if not already done.
+   *
+   * @param string $group_name
   */
   protected static function _getCustomGroupData($group_name) {
     if (!self::$_custom_groups[$group_name]['id']) {
@@ -637,16 +640,24 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
-  * Returns an array with field-names to their column-names of $group_name
-  */
+   * Returns an array with field-names to their column-names of $group_name
+   *
+   * @param string $group_name
+   *
+   * @return array
+   */
   public static function getCustomFields($group_name) {
     self::_getCustomGroupData($group_name);
     return self::$_custom_groups[$group_name]['fields'];
   }
 
   /**
-  * Returns the table-name of the custom-group $group_name
-  */
+   * Returns the table-name of the custom-group $group_name
+   *
+   * @param string $group_name
+   *
+   * @return string
+   */
   public static function getTableName($group_name) {
     self::_getCustomGroupData($group_name);
     return self::$_custom_groups[$group_name]['table_name'];

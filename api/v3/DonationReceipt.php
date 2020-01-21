@@ -10,6 +10,10 @@
 
 /**
  * Withdraw an original donation receipt
+ *
+ * @param array $params
+ *
+ * @return array
  */
 function civicrm_api3_donation_receipt_withdraw($params) {
   // check for missing receipt id parameter
@@ -42,6 +46,8 @@ function civicrm_api3_donation_receipt_withdraw($params) {
 
 /**
  * Adjust Metadata for donation receipt withdraw
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_withdraw_spec(&$params) {
     $params['rid']['api.required'] = 1;
@@ -49,6 +55,10 @@ function _civicrm_api3_donation_receipt_withdraw_spec(&$params) {
 
 /**
  * Copy an original donation receipt
+ *
+ * @param array $params
+ *
+ * @return array
  */
 function civicrm_api3_donation_receipt_copy($params) {
   // check for missing receipt id parameter
@@ -73,6 +83,8 @@ function civicrm_api3_donation_receipt_copy($params) {
 
 /**
  * Adjust Metadata for donation receipt copy
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_copy_spec(&$params) {
     $params['rid']['api.required'] = 1;
@@ -80,6 +92,10 @@ function _civicrm_api3_donation_receipt_copy_spec(&$params) {
 
 /**
  * Delete an donation receipt
+ *
+ * @param array $params
+ *
+ * @return array
  */
 function civicrm_api3_donation_receipt_delete($params) {
   // check for missing receipt id parameter
@@ -102,6 +118,8 @@ function civicrm_api3_donation_receipt_delete($params) {
 
 /**
  * Adjust Metadata for donation receipt delete
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_delete_spec(&$params) {
     $params['rid']['api.required'] = 1;
@@ -109,6 +127,10 @@ function _civicrm_api3_donation_receipt_delete_spec(&$params) {
 
 /**
  * View Receipts
+ *
+ * @param array $params
+ *
+ * @return array
  */
 function civicrm_api3_donation_receipt_view($params) {
   // check for missing receipt id parameter
@@ -144,6 +166,8 @@ function civicrm_api3_donation_receipt_view($params) {
 
 /**
  * Adjust Metadata for donation receipt view
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_view_spec(&$params) {
     $params['rid']['api.required'] = 1;
@@ -151,6 +175,10 @@ function _civicrm_api3_donation_receipt_view_spec(&$params) {
 
 /**
  * View Receipts
+ *
+ * @param array $params
+ *
+ * @return array
  * @deprecated
  */
 // TODO: Thomas: kann das nicht weg?
@@ -173,6 +201,8 @@ function civicrm_api3_donation_receipt_details($params) {
 
 /**
  * Adjust Metadata for donation receipt view
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_details_spec(&$params) {
     $params['rid']['api.required'] = 1;

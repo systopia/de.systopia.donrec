@@ -261,7 +261,7 @@
             {success: function(data) {
                 if (data['is_error'] == 0) {
                   // use the following to urldecode the link url
-                  var view_url = cj("<div/>").html(data.values).text();
+                  var view_url = cj("<div>").html(data.values).text();
                   location.href = view_url;
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");

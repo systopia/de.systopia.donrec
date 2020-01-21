@@ -40,7 +40,12 @@ class CRM_Donrec_Logic_Engine {
    * and the given parameters. If anything is wrong,
    * an error message will be returned.
    *
+   * @param $snapshot_id
+   * @param array $params
+   * @param bool $testMode
+   *
    * @return string with an error message on fail, FALSE otherwise
+   * @throws \CiviCRM_API3_Exception
    */
   public function init($snapshot_id, $params=array(), $testMode = FALSE) {
     $this->parameters = $params;
@@ -261,7 +266,9 @@ class CRM_Donrec_Logic_Engine {
   /**
    * check what state the snapshot is in
    *
-   * @return possible results:
+   * @param null $states
+   * @return string
+   * possible results:
    *  'INIT':     freshly created snapshot
    *  'TESTING':  there is a test ongoing
    *  'TESTED':   there was a test and it's complete
@@ -331,8 +338,10 @@ class CRM_Donrec_Logic_Engine {
 
 
   /**
-  * get or create a pdf file for the snapshot line
-  */
+   * get or create a pdf file for the snapshot line
+   * @param $snapshot_line_ids
+   * @return mixed
+   */
   public function getPDF($snapshot_line_ids) {
     // get the proc-info for only one of the snapshot-lines
     // should be the same for all others
@@ -358,8 +367,10 @@ class CRM_Donrec_Logic_Engine {
   }
 
   /**
-  * get or create a pdf file for the snapshot line
-  */
+   * get or create a pdf file for the snapshot line
+   * @param $snapshot_line_id
+   * @param $file
+   */
   public function setPDF($snapshot_line_id, $file) {
     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
     $proc_info['PDF']['pdf_file'] = $file;

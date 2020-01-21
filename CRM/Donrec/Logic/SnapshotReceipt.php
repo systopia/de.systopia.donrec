@@ -47,7 +47,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line ID of the first line
    *
-   * @return snapshot line ID
+   * @return int snapshot line ID
    */
   public function getID() {
     return reset($this->snapshot_lines)['id'];
@@ -56,7 +56,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line ID of the first line
    *
-   * @return snapshot line ID
+   * @return int
+   *   unique line ID
    */
   public function getReceiptID() {
     return $this->receipt_id;
@@ -65,7 +66,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line IDs
    *
-   * @return snapshot line IDs
+   * @return array
+   *   line IDs
    */
   public function getIDs() {
     foreach ($this->snapshot_lines as $snapshot_line) {
@@ -152,7 +154,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * This should only include the display properties, and be performance optimized
    *
-   * @return an array of all properties needed for display
+   * @return array
+   *   array of all properties needed for display
    */
   public function getDisplayTokens() {
     // TODO: optimize
@@ -161,6 +164,10 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * read out the contributor
+   *
+   * @param int $contact_id
+   *
+   * @return array
    */
   public function getContributor($contact_id) {
     if ($this->cached_contributors[$contact_id]) {
@@ -196,7 +203,9 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * get addressee
-   */
+   * @param int $contact_id
+   * @return array|mixed|null
+*/
   public function getAddressee($contact_id) {
     if ($this->cached_addressees[$contact_id]) {
       return $this->cached_addressees[$contact_id];

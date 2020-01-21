@@ -17,7 +17,7 @@
       <div class="icon inform-icon"></div>
       {if $totalSelectedContributions gt 1}
       <p>{ts domain="de.systopia.donrec"}Are you sure you want to rebook the selected contributions?{/ts}</p>
-      <p>{ts domain="de.systopia.donrec"}Number of selected contributions:{/ts} {$totalSelectedContributions}</p><b/>
+      <p>{ts domain="de.systopia.donrec"}Number of selected contributions:{/ts} {$totalSelectedContributions}</p>
       {else}
       <p>{ts domain="de.systopia.donrec"}Are you sure you want to rebook the contribution?{/ts}</p>
       {/if}

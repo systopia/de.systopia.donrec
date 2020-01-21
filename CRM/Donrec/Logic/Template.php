@@ -60,14 +60,14 @@ class CRM_Donrec_Logic_Template
     return new self($result->msg_html, $result->pdf_format_id);
   }
 
-   /**
+  /**
    * Returns a template with the specified id or default template
    * if the template does not exist.
-   * @param int id of the template to retrieve
-   * @param bool defines whether the function should return the
-   *        default template if it cannot find a template with the
-   *        specified id
-   * @return template object or NULL
+   *
+   * @param string $template_html
+   * @param int $pdf_format_id
+   *
+   * @return self | NULL
    */
   public static function getTemplate($template_html, $pdf_format_id) {
     return new self($template_html, $pdf_format_id);
@@ -153,14 +153,14 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-  * Creates a PDF file from the specified values
-  *
-  * @param array associative array of values that will be
-  *        assigned to the template
-  * @param array of configuration parameters
+   * Creates a PDF file from the specified values
+   *
+   * @param $values
+   * @param $parameters
    * @param \CRM_Donrec_Logic_Profile $profile
-  * @return filename or False
-  */
+   * @return string | bool
+   *   The filename or FALSE if an error occurred.
+*/
   public function generatePDF($values, &$parameters, $profile) {
     $smarty = CRM_Core_Smarty::singleton();
     $config = CRM_Core_Config::singleton();

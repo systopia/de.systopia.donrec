@@ -232,6 +232,8 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
   /**
    * Verify that the mailbox folders are present
    *
+   * @param $folder
+   *
    * @throws \Exception
    */
   protected function check_or_create_mailbox_folder($folder) {

@@ -23,12 +23,16 @@ abstract class CRM_Donrec_Logic_WatermarkPreset {
   /**
    * @param string $html
    *
+   * @param int $pdf_format
+   *
    * @return bool
    */
   abstract public function injectStyles(&$html, $pdf_format);
 
   /**
    * @param string $html
+   *
+   * @param array $pdf_format
    *
    * @return bool
    */

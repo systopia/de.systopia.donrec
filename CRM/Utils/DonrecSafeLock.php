@@ -34,15 +34,20 @@ class CRM_Utils_DonrecSafeLock {
   }
 
   /**
-   * Will acquire a lock with the given name, 
+   * Will acquire a lock with the given name,
    * if no other lock has been acquired by this process.
-   * 
+   *
    * If the same lock has been acquired before (and not been released),
    * in internal counter is increased. Therefore you can acquire the same
-   * lock multiple times, but you will then have to release them 
+   * lock multiple times, but you will then have to release them
    * the same amount of times
    *
-   * @return a SafeLock instance or NULL if timed out
+   * @param $name
+   * @param int $timeout
+   *
+   * @return \CRM_Utils_DonrecSafeLock | NULL
+   *   a SafeLock instance or NULL if timed out
+   * @throws \CRM_Core_Exception
    */
   public static function acquireLock($name, $timeout=60) {
     if (self::$_acquired_lock == NULL) {
@@ -72,15 +77,19 @@ class CRM_Utils_DonrecSafeLock {
     } else {
       // this is the BAD case: somebody's trying to acquire ANOTHER LOCK,
       //  while we still own another one
-      $lock_name = $self::$_acquired_lock->getName();
+      $lock_name = self::$_acquired_lock->getName();
       throw new Exception("This process cannot acquire more than one lock! It still owns lock '$lock_name'.");
     }
 
   }
 
   /**
-   * Will release a lock with the given name, 
+   * Will release a lock with the given name,
    *  if it has been acquired before
+   *
+   * @param $name
+   *
+   * @throws \Exception
    */
   public static function releaseLock($name) {
     if (self::$_acquired_lock == NULL) {
@@ -94,7 +103,7 @@ class CRM_Utils_DonrecSafeLock {
 
     } else {
       // somebody is trying to release ANOTHER LOCK
-      $lock_name = $self::$_acquired_lock->getName();
+      $lock_name = self::$_acquired_lock->getName();
       CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot realease lock '$name', it still owns lock '$lock_name'.");
       throw new Exception("This process cannot realease lock '$name', it still owns lock '$lock_name'.");
     }
@@ -131,8 +140,8 @@ class CRM_Utils_DonrecSafeLock {
 
     } else {
       // lock has already been released!
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot realease lock '$name', it has already been released before.");
-      throw new Exception("This process cannot realease lock '$name', it has already been released before.");   
+      CRM_Core_Error::debug_log_message("de.systopia.donrec: This process cannot realease lock '$this->name', it has already been released before.");
+      throw new Exception("This process cannot realease lock '$this->name', it has already been released before.");
     }
   }
 }

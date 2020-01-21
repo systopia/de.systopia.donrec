@@ -14,7 +14,8 @@
 abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
   /**
-   * @return the ID of this importer class
+   * @return string
+   *   the ID of this importer class
    */
   public function getID() {
     return 'PDF';
@@ -66,7 +67,12 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   /**
    * export a bulk-receipt
    *
-   * @return TRUE on success; FALSE on failure
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   *
+   * @param bool $is_test
+   *
+   * @return bool
+   *   TRUE on success; FALSE on failure
    */
   public function exportBulk($snapshot_receipt, $is_test) {
 
@@ -76,6 +82,12 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
   /**
    * allows the subclasses to process the newly created PDF file
+   *
+   * @param $file
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     return TRUE;

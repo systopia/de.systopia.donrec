@@ -10,6 +10,11 @@
 
 /**
  * Execute the next chunk/step of the donation receipt run
+ *
+ * @param array $params
+ *
+ * @return array
+ * @throws \CiviCRM_API3_Exception
  */
 function civicrm_api3_donation_receipt_engine_next($params) {
   // first, check if the snapshot ID is there
@@ -34,6 +39,8 @@ function civicrm_api3_donation_receipt_engine_next($params) {
 
 /**
  * Adjust Metadata for donation receipt run
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_engine_next_spec(&$params) {
     $params['sid']['api.required'] = 1;

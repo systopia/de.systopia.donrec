@@ -19,21 +19,24 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   protected $_activity_type_id = NULL;
 
   /**
-   * @return the display name
+   * @return string
+   *   the display name
    */
   static function name() {
     return ts('Send PDFs via Email', array('domain' => 'de.systopia.donrec'));
   }
 
   /**
-   * @return a html snippet that defines the options as form elements
+   * @return string
+   *   a html snippet that defines the options as form elements
    */
   static function htmlOptions() {
     return '';
   }
 
   /**
-   * @return the ID of this importer class
+   * @return string
+   *   the ID of this importer class
    */
   public function getID() {
     return 'EMAIL';
@@ -62,6 +65,13 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * allows the subclasses to process the newly created PDF file
+   *
+   * @param $file
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
+   * @throws \CiviCRM_API3_Exception
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     // find the receipt
@@ -100,6 +110,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       }
 
       // store the error in the process information (to be processed in wrap-up)
+      // TODO: $snapshot_line_id is undefined, is this meant to be $receipt['id']?
       $this->updateProcessInformation($snapshot_line_id, array('email_error' => $error));
 
     } // END if $error
@@ -109,6 +120,11 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * Will try to send the PDF to the given email
+   *
+   * @param array $receipt
+   * @param $pdf_file
+   * @param bool $is_test
+   * @param int $snapshot_line_id
    *
    * @return NULL if all good, an error message string if it FAILED
    */
@@ -184,6 +200,10 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   /**
    * generate the final result
    *
+   * @param int $snapshot_id
+   * @param bool $is_test
+   * @param bool $is_bulk
+   *
    * @return array:
    *          'is_error': set if there is a fatal error
    *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
@@ -250,6 +270,10 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * Will produce a human-readable version of the given error
+   *
+   * @param string $error
+   *
+   * @return string
    */
   protected function getErrorMessage($error) {
     switch ($error) {
@@ -342,6 +366,9 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * Add headers to sent donation receipts
+   *
+   * @param array $params
+   * @param $context
    */
   public static function addDonrecMailCodeHeader(&$params, $context) {
     if (self::$_sending_to_contact_id && self::$_sending_contribution_id) {
@@ -355,6 +382,8 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * Set the mailing code to be included in the next outgoing email
+   *
+   * @param array $receipt
    */
   protected function setDonrecMailCode($receipt) {
     self::$_sending_contribution_id = $receipt['contribution_id'];

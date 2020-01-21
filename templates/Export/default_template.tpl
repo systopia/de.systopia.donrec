@@ -19,7 +19,7 @@ body {
 }
 
 .box {
-  padding: 0 0pt;
+  padding: 0 0;
 }
 
 table {
@@ -71,7 +71,7 @@ h1 {
 }
 
 #crm-container {
-    margin: 0px!important;
+    margin: 0 !important;
     font-family: Helvetica,sans-serif !important;
 }
 
@@ -121,7 +121,7 @@ h3 {
 }
 
 #exempt #text {
-  margin-left: 0px;
+  margin-left: 0;
   display: block;
 }
 
@@ -146,7 +146,7 @@ h3 {
 }
 
 .firstpage {
-    padding-top:0px;
+    padding-top:0;
     height:883px;
 }
 

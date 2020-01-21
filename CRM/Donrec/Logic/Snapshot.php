@@ -29,8 +29,12 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * get an existing snapshot
-  */
+   * get an existing snapshot
+   *
+   * @param int $snapshot_id
+   *
+   * @return \CRM_Donrec_Logic_Snapshot|null
+   */
   public static function get($snapshot_id) {
     $snapshot = new CRM_Donrec_Logic_Snapshot($snapshot_id);
     if ($snapshot->exists()) {
@@ -42,7 +46,9 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * get the snapshot of a given line_id
-   */
+   * @param int $snapshot_line_id
+   * @return \CRM_Donrec_Logic_Snapshot|null
+*/
   public static function getSnapshotForLineID($snapshot_line_id) {
     $snapshot_id = CRM_Core_DAO::singleValueQuery("SELECT `snapshot_id` FROM `donrec_snapshot` WHERE `id` = %1;",
       array(1 => array($snapshot_line_id, 'Integer')));
@@ -56,22 +62,25 @@ class CRM_Donrec_Logic_Snapshot {
 
 
   /**
-  * creates and returns a new snapshot object from the
-  * given parameters
-  *
-  * @param $contributions        array of contribution ids that should
-  *                              be part of the snapshot
-  * @param $creator_id           civicrm id of the contact which creates
-  *                              the snapshot
-  * @param $expired              just for debugging purposes: creates an
-  *                              expired snapshot if less/greater than
-  *                zero (-1/1: one day expired, -2/2: two
-  *                days etc.)
-  * @return array(
-  *      'snapshot' => snapshot-object or NULL,
-  *      'intersection_error' => intersection-error-object or NULL
-  *      )
-  */
+   * creates and returns a new snapshot object from the
+   * given parameters
+   *
+   * @param array $contributions        array of contribution ids that should
+   *                              be part of the snapshot
+   * @param int $creator_id           civicrm id of the contact which creates
+   *                              the snapshot
+   * @param $date_from
+   * @param $date_to
+   * @param $profile_id
+   * @param int $expired just for debugging purposes: creates an
+   *                              expired snapshot if less/greater than
+   *                zero (-1/1: one day expired, -2/2: two
+   *                days etc.)
+   * @return array(
+   *      'snapshot' => snapshot-object or NULL,
+   *      'intersection_error' => intersection-error-object or NULL
+   *      )
+*/
   public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_id, $expired = 0) {
 
     $return = array(
@@ -206,8 +215,10 @@ class CRM_Donrec_Logic_Snapshot {
   /**
    * will select a previously unprocessed set of snapshot items
    *
+   * @param bool $is_bulk
+   * @param bool $is_test
    * @return array: <id> => array with values
-   */
+*/
   public function getNextChunk($is_bulk, $is_test) {
     $chunk_size = CRM_Donrec_Logic_Settings::getChunkSize();
     $snapshot_id = $this->getId();
@@ -286,7 +297,9 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * reset the process information for the given chunk
-   */
+   * @param $chunk
+   * @param bool $is_bulk
+*/
   public function resetChunk($chunk, $is_bulk) {
     if ($chunk==NULL) return;
 
@@ -314,8 +327,11 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * will mark a chunk as produced by getNextChunk() as being processed
-  */
+   * will mark a chunk as produced by getNextChunk() as being processed
+   * @param $chunk
+   * @param bool $is_test
+   * @param bool $is_bulk
+*/
   public function markChunkProcessed($chunk, $is_test, $is_bulk=FALSE) {
     if ($chunk==NULL) return;
 
@@ -352,10 +368,11 @@ class CRM_Donrec_Logic_Snapshot {
 
 
   /**
-  * get the snapshot's state distribution
-  *
-  * @return an array <state> => <count>
-  */
+   * get the snapshot's state distribution
+   *
+   * @return array
+   *   array <state> => <count>
+*/
   public function getStates() {
     $states = array('NULL' => 0, 'TEST' => 0, 'DONE' => 0);
     $id = $this->Id;
@@ -394,9 +411,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * checks whether there are intersections in snapshots
-  * @return zero when no error occured,
-  */
+   * checks whether there are intersections in snapshots
+   * @param int $snapshot_id
+   * @return array|bool when no error occured,
+*/
   public static function hasIntersections($snapshot_id = 0) {
     // TODO: speed up by looking at one particular snapshot ?
     // We do not check snapshots with status DONE: If we delete a receipt but
@@ -444,8 +462,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * reads and parses the JSON process information field
-  */
+   * reads and parses the JSON process information field
+   * @param int $snapshot_item_id
+   * @return array|mixed
+*/
   public function getProcessInformation($snapshot_item_id) {
     $item_id = (int) $snapshot_item_id;
     if (!$item_id) return array();
@@ -465,8 +485,11 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * sets the JSON process information field
-  */
+   * sets the JSON process information field
+   * @param int $snapshot_item_id
+   * @param mixed $value
+   * @return bool|void
+*/
   public function setProcessInformation($snapshot_item_id, $value) {
     $item_id = (int) $snapshot_item_id;
     if (!$item_id) {
@@ -487,8 +510,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * updates the JSON process information field
-  */
+   * updates the JSON process information field
+   * @param int $snapshot_item_id
+   * @param array $array
+*/
   public function updateProcessInformation($snapshot_item_id, $array) {
     $infos = $this->getProcessInformation($snapshot_item_id);
     $merged_infos = array_merge($infos, $array);
@@ -514,9 +539,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Checks if a snapshot is marked as bulk or single
-  * @return string bulk|single or null
-  */
+   * Checks if a snapshot is marked as bulk or single
+   * @param int $id
+   * @return string bulk|single or null
+*/
   // TODO: refactor this. Process-infos are already accessed in getExporters.
   // Use a common method to not fetch process-infos twice.
   public static function singleOrBulk($id) {
@@ -589,9 +615,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Returns an array with statistic values of the snapshot
-  * @return array
-  */
+   * Returns an array with statistic values of the snapshot
+   * @param int $id
+   * @return array
+*/
   public static function getStatistic($id) {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
@@ -648,10 +675,11 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Returns an array with ids of already existing snapshots of a specific
-  * user.
-  * @return array
-  */
+   * Returns an array with ids of already existing snapshots of a specific
+   * user.
+   * @param int $creator_id
+   * @return array
+*/
   public static function getUserSnapshots($creator_id) {
     $remaining_snapshots = array();
 
@@ -670,9 +698,10 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Deletes all not processed snapshots of a given user.
-  * @return return-value from CRM_Core_DAO::executeQuery()
-  */
+   * Deletes all not processed snapshots of a given user.
+   * @param int $creator_id
+   * @return \CRM_Core_DAO|object return-value from CRM_Core_DAO::executeQuery()
+*/
   public static function deleteUserSnapshots($creator_id) {
     $remaining_snapshots = array();
 
@@ -687,10 +716,12 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Checks if there is a snapshot-entry for a non-processed snapshot for
-  * a given contribution.
-  * @return boolean
-  */
+   * Checks if there is a snapshot-entry for a non-processed snapshot for
+   * a given contribution.
+   * @param int $contribution_id
+   * @param bool $return_id
+   * @return boolean
+*/
   public static function isInOpenSnapshot($contribution_id, $return_id = FALSE) {
     // do a cleanup here (ticket #1616)
     self::cleanup();
@@ -714,8 +745,12 @@ class CRM_Donrec_Logic_Snapshot {
   /**
    * create a set of CRM_Donrec_Logic_SnapshotReceipt objects with a given chunk
    *
-   * @return an array of CRM_Donrec_Logic_SnapshotReceipts
-   */
+   * @param $chunk
+   * @param bool $is_bulk
+   * @param bool $is_test
+   * @return array
+   *   array of CRM_Donrec_Logic_SnapshotReceipts
+*/
    // FIXME: This function seems to be superfluous. Now where used anymore
   public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
     $temp_receipts = array();

@@ -21,6 +21,11 @@ class CRM_Donrec_Logic_Settings {
 
   /**
    * generic set setting
+   *
+   * @param string $name
+   *
+   * @return array
+   * @throws \CiviCRM_API3_Exception
    */
   public static function get($name) {
     return civicrm_api3('Setting', 'getvalue', array('name' => $name));
@@ -28,7 +33,10 @@ class CRM_Donrec_Logic_Settings {
 
   /**
    * generic set setting
-   */
+   * @param string $name
+   * @param mixed $value
+   * @throws \CiviCRM_API3_Exception
+*/
   public static function set($name, $value) {
     civicrm_api3('Setting', 'create', array($name => $value));
   }

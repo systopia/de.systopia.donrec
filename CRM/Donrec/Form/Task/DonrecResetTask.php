@@ -100,6 +100,10 @@ class CRM_Donrec_Form_Task_DonrecResetTask extends CRM_Contact_Form_Task {
 
   /**
    * Generate a basic SQL statement without SELECT clause
+   *
+   * @param string $modifiers
+   *
+   * @return string
    */
   protected function getBaseSQL($modifiers = '') {
     $where_clauses = [];

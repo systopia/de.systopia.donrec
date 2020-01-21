@@ -14,14 +14,16 @@
 class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
-   * @return the display name
+   * @return string
+   *   the display name
    */
   static function name() {
     return ts('Individual PDFs', array('domain' => 'de.systopia.donrec'));
   }
 
   /**
-   * @return a html snippet that defines the options as form elements
+   * @return string
+   *   a html snippet that defines the options as form elements
    */
   static function htmlOptions() {
     return '';
@@ -29,6 +31,12 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * allows the subclasses to process the newly created PDF file
+   *
+   * @param $file
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     $snapshot_line_id = $snapshot_receipt->getID();
@@ -39,6 +47,10 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
 
   /**
    * generate the final result
+   *
+   * @param int $snapshot_id
+   * @param bool $is_test
+   * @param bool $is_bulk
    *
    * @return array:
    *          'is_error': set if there is a fatal error

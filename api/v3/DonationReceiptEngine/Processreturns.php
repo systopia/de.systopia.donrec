@@ -14,6 +14,11 @@ use CRM_Donrec_ExtensionUtil as E;
  * Process email returns:
  *  - create activity (if requested)
  *  - withdraw receipt
+ *
+ * @param array $params
+ *
+ * @return array
+ * @throws \Exception
  */
 function civicrm_api3_donation_receipt_engine_processreturns($params) {
   if (!function_exists('imap_open')) {
@@ -28,6 +33,8 @@ function civicrm_api3_donation_receipt_engine_processreturns($params) {
 
 /**
  * Adjust Metadata for donation receipt run
+ *
+ * @param array $params
  */
 function _civicrm_api3_donation_receipt_engine_processreturns_spec(&$params) {
   $params['limit'] = array(

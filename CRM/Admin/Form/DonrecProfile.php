@@ -460,7 +460,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       if (isset($values['new_default_profile'])) {
         CRM_Donrec_Logic_Profile::changeDefaultProfile($values['new_default_profile']);
       }
-      $this->profile->deleteProfile();
+      CRM_Donrec_Logic_Profile::deleteProfile($this->profile->getId());
     }
     elseif ($this->_op == 'default') {
       CRM_Donrec_Logic_Profile::changeDefaultProfile($this->profile->getId());

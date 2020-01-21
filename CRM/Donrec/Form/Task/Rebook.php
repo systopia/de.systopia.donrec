@@ -71,14 +71,16 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   }
 
 
-
-
   /**
    * Checks if the given contributions are of the same contact - one of the requirements for rebooking
    *
-   * @param $contribution_ids  an array of contribution IDs
-   * 
-   * @return the one contact ID or NULL
+   * @param array $contribution_ids
+   *   an array of contribution IDs
+   *
+   * @param string $redirect_url
+   *
+   * @return int | NULL
+   *   the one contact ID or NULL
    */
   static function checkSameContact($contribution_ids, $redirect_url = NULL) {
     $contact_ids = array();
@@ -96,7 +98,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       } else {
         CRM_Core_Session::setStatus(ts("At least one of the given contributions doesn't exist!", array('domain' => 'de.systopia.donrec')), ts("Error", array('domain' => 'de.systopia.donrec')), "error");
         CRM_Utils_System::redirect($redirect_url);
-        return;
+        return NULL;
       }
     }
 
@@ -114,8 +116,9 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   /**
    * Will rebook all given contributions to the given target contact
    *
-   * @param $contribution_ids  an array of contribution IDs
-   * @param $contact_id        the target contact ID
+   * @param array $contribution_ids  an array of contribution IDs
+   * @param int $contact_id        the target contact ID
+   * @param string $redirect_url
    */
   static function rebook($contribution_ids, $contact_id, $redirect_url = NULL) {
     $contact_id = (int) $contact_id;
@@ -231,6 +234,8 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
   /**
    * Rule set for the rebooking forms
+   * @param array $values
+   * @return array|bool
    */
   static function rebookRules($values) {
     $errors = array();
@@ -294,8 +299,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
    * Approach is:
    *  1) move old (valid) mandate to new contribution
    *  2) create new (invalid) mandate and attach to old contribution
-   * 
+   *
    * @see org.project60.sepa extension
+   * @param array $old_contribution
+   * @param int $new_contribution_id
    */
   static function fixOOFFMandate($old_contribution, $new_contribution_id) {
     $old_mandate = civicrm_api('SepaMandate', 'getsingle', array('entity_id'=>$old_contribution['id'], 'entity_table'=>'civicrm_contribution', 'version' => 3));
