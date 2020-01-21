@@ -29,6 +29,7 @@
     <table>
       <thead>
       <tr>
+        <th>{ts domain="de.systopia.donrec"}Profile ID{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Profile name{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Default profile{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Active{/ts}</th>
@@ -40,6 +41,7 @@
       {foreach from=$profiles item=profile}
         {assign var="profile_id" value=$profile.id}
         <tr{if !$profile.is_active} class="disabled"{/if}>
+          <td>{$profile.id}</td>
           <td>{$profile.name}</td>
           <td>{if $profile.is_default}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Default{/ts}" />{/if}</td>
           <td>{if $profile.is_active}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Active{/ts}" />{/if}</td>
