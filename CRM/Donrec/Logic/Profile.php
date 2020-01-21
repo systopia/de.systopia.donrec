@@ -412,37 +412,8 @@ class CRM_Donrec_Logic_Profile {
    *
    * @deprecated Since 2.0
    */
-  public static function setAllData($profiles) {
-    foreach ($profile_data as $profile_id => $profile_data) {
-      $values_query = "
-        SET
-          `name` = {$profile_data['name']},
-          `data` = {$profile_data['data']},
-          `variables` = {$profile_data['variables']},
-          `template` = {$profile_data['template']},
-          `is_default` = {$profile_data['is_default']},
-          `is_active` = {$profile_data['is_active']},
-          `is_locked` = {$profile_data['is_locked']}
-      ";
-
-      if (is_numeric($profile_id)) {
-        $query = "
-          UPDATE
-            `donrec_profile`
-          $values_query
-          WHERE
-            `id` = $profile_id
-        ;";
-      }
-      else {
-        $query = "
-          INSERT INTO
-            `donrec_profile`
-          $values_query
-        ;";
-      }
-      CRM_Core_DAO::executeQuery($query);
-    }
+  public static function setAllData($profile_data) {
+    civicrm_api3('Setting', 'create', array('donrec_profiles' => $profile_data));
   }
 
 
