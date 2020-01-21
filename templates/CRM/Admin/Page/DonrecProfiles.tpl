@@ -34,6 +34,9 @@
         <th>{ts domain="de.systopia.donrec"}Default profile{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Active{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Locked{/ts}</th>
+        <th>{ts domain="de.systopia.donrec"}Usage count{/ts}</th>
+        <th>{ts domain="de.systopia.donrec"}First usage{/ts}</th>
+        <th>{ts domain="de.systopia.donrec"}Last usage{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Operations{/ts}</th>
       </tr>
       </thead>
@@ -46,6 +49,9 @@
           <td>{if $profile.is_default}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Default{/ts}" />{/if}</td>
           <td>{if $profile.is_active}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Active{/ts}" />{/if}</td>
           <td>{if $profile.is_locked}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Locked{/ts}" />{/if}</td>
+          <td>{$profile.usage_count}</td>
+          <td>{$profile.first_used}</td>
+          <td>{$profile.last_used}</td>
           <td>
             <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=edit&id=$profile_id"}" title="{ts domain="de.systopia.donrec" 1=$profile.name}Edit profile %1{/ts}" class="action-item crm-hover-button">{ts domain="de.systopia.donrec"}Edit{/ts}</a>
             <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=copy&id=$profile_id"}" title="{ts domain="de.systopia.donrec" 1=$profile.name}Copy profile %1{/ts}" class="action-item crm-hover-button">{ts domain="de.systopia.donrec"}Copy{/ts}</a>

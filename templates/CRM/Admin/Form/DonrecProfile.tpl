@@ -16,21 +16,24 @@
           {ts domain="de.systopia.donrec"}WARNING: Deleting this option will result in the loss of Donation Receipts profile data.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
 
-        {if $is_default}
-          <fieldset class="crm-form-block">
+      {if $is_default}
+        <div class="crm-error no-popup">
+          <div class="icon inform-icon"></div>
+            {ts domain="de.systopia.donrec"}You are about to delete the default profile. Please select which of the other profiles should be set as default instead.{/ts}
+        </div>
 
-            <p class="crm-error">You are about to delete the default profile. Please select which of the other profiles should be set as default instead.</p>
+        <fieldset class="crm-form-block">
 
-            <table class="form-layout">
+          <table class="form-layout">
 
-              <tr class="crm-donrec-profile-form-block-new_default_profile">
-                <td class="label">{$form.new_default_profile.label}</td>
-                <td>{$form.new_default_profile.html}</td>
-              </tr>
+            <tr class="crm-donrec-profile-form-block-new_default_profile">
+              <td class="label">{$form.new_default_profile.label}</td>
+              <td>{$form.new_default_profile.html}</td>
+            </tr>
 
-            </table>
-          </fieldset>
-        {/if}
+          </table>
+        </fieldset>
+      {/if}
 
     {elseif $op == 'default'}
 
@@ -52,6 +55,13 @@
         <div class="icon inform-icon"></div>
           {ts domain="de.systopia.donrec" 1="$profile_name"}This will deactivate the profile <em>%1</em>.{/ts} {ts domain="de.systopia.donrec"}Do you want to continue?{/ts}
       </div>
+
+      {if $is_default}
+        <div class="messages warning no-popup">
+          <div class="icon inform-icon"></div>
+            {ts domain="de.systopia.donrec" 1="$profile_name"}You are about to deactive the default profile, causing it not be selectable anymore for issueing donation receipts. Is this what you really intend to do?{/ts}
+        </div>
+      {/if}
 
     {else}
 

@@ -226,14 +226,14 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         `is_active` tinyint(4) DEFAULT 1,
         `is_locked` tinyint(4) DEFAULT 0,
         PRIMARY KEY (`id`)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
-    ";
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
+    ;";
     CRM_Core_DAO::executeQuery($query);
 
     // Add "profile_id" column to custom data table.
     CRM_Donrec_DataStructure::update();
-    $receipt_table       = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
-    $receipt_fields      = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
 
     // Retrieve profiles from settings, injecting default data if not set.
     $profiles = civicrm_api3('Setting', 'getvalue', array(
@@ -271,7 +271,18 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       $profile_data['contribution_unlock_fields'] = Civi::settings()->get('donrec_contribution_unlock_fields');
 
       // TODO: Set lock status for profiles that have already been used for issueing receipts.
-      $is_locked = 0;
+      $usage_query = "
+        SELECT
+          COUNT(`id`)
+        FROM
+          {$receipt_table}
+        WHERE
+          {$receipt_fields['profile']} = %1
+        ;";
+      $usage_query_params = array(
+        1 => array($profile_name, 'String'),
+      );
+      $is_locked = (int)(bool) CRM_Core_DAO::singleValueQuery($usage_query, $usage_query_params);
 
       $query = "
         INSERT INTO
@@ -282,8 +293,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
            `is_default` = %3,
            `is_locked` = %4,
            `template` = %5,
-           `template_pdf_format_id` = %6;
-      ";
+           `template_pdf_format_id` = %6
+      ;";
       $query_params = array(
         1 => array($profile_name, 'String'),
         2 => array(serialize($profile_data), 'String'),

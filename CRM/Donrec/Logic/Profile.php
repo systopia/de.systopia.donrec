@@ -240,6 +240,83 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * Retrieves the date this profile was last used for issueing a receipt.
+   *
+   * @return \DateTime | NULL
+   *   A DateTime object representing the last usage, or NULL when the profile
+   *   has never been used for issueing receipts.
+   */
+  public function getLastUsage() {
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+
+    $query = "
+      SELECT
+        MAX(`{$receipt_fields['issued_on']}`)
+      FROM
+        {$receipt_table}
+      WHERE
+        {$receipt_fields['profile_id']} = {$this->id}
+    ;";
+    $max_date = CRM_Core_DAO::singleValueQuery($query);
+
+    if (!is_null($max_date)) {
+      $max_date = date_create_from_format('Y-m-d H:i:s', $max_date);
+    }
+
+    return $max_date;
+  }
+
+  /**
+   * Retrieves the date this profile was first used for issueing a receipt.
+   *
+   * @return \DateTime | NULL
+   *   A DateTime object representing the first usage, or NULL when the profile
+   *   has never been used for issueing receipts.
+   */
+  public function getFirstUsage() {
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+
+    $query = "
+      SELECT
+        MIN(`{$receipt_fields['issued_on']}`)
+      FROM
+        {$receipt_table}
+      WHERE
+        {$receipt_fields['profile_id']} = {$this->id}
+    ;";
+    $min_date = CRM_Core_DAO::singleValueQuery($query);
+
+    if (!is_null($min_date)) {
+      $min_date = date_create_from_format('Y-m-d H:i:s', $min_date);
+    }
+
+    return $min_date;
+  }
+
+  /**
+   * Retrieves the number of receipts issued with this profile.
+   *
+   * @return int
+   *   The number of receipts issued with this profile.
+   */
+  public function getUsageCount() {
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+
+    $query = "
+      SELECT
+        COUNT(`id`)
+      FROM
+        {$receipt_table}
+      WHERE
+        {$receipt_fields['profile_id']} = {$this->id}
+    ;";
+    return (int) CRM_Core_DAO::singleValueQuery($query);
+  }
+
+  /**
    * Returns whether the profile is the default profile.
    *
    * @return bool

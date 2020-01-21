@@ -60,7 +60,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     switch ($this->_op) {
       case 'delete':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
-        // Deny deleting the default profile.
+        // Ask for new default profile when attempting to delete the current
+        // default profile.
         if ($this->profile->isDefault()) {
           $this->assign('is_default', $this->profile->isDefault());
           $this->add(
@@ -172,8 +173,9 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
             'name' => E::ts('Cancel')
           ),
         ));
-        // Pass profile name to template.
+        // Pass profile properties to template.
         $this->assign('profile_name', $this->profile->getName());
+        $this->assign('is_default', $this->profile->isDefault());
         return;
         break;
     }
