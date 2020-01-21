@@ -86,6 +86,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     // build query
     $query = "INSERT INTO `$table` SET $sql_set";
 
+    // Lock profile (mark as used for issueing receipts).
+    CRM_Donrec_Logic_Profile::getProfileByName($tokens['profile'])->lock();
+
     // run the query
     return CRM_Core_DAO::executeQuery($query);
   }
