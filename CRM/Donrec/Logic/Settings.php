@@ -152,7 +152,7 @@ class CRM_Donrec_Logic_Settings {
     $receipt_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id, TRUE);
     $snapshot_id = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id, TRUE);
 
-    if (!is_null($receipt_id) || !is_null($snapshot_id)) {
+    if ($receipt_id || $snapshot_id) {
       // Get all locked fields.
       $unlockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
       // Add custom fields to array of locked fields.
@@ -163,11 +163,11 @@ class CRM_Donrec_Logic_Settings {
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
       // Retrieve unlock settings from profile.
-      if (!is_null($snapshot_id)) {
+      if ($snapshot_id) {
         $unlock_mode = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
         $unlock_fields = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
       }
-      elseif (!is_null($receipt_id)) {
+      elseif ($receipt_id) {
         $unlock_mode = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
         $unlock_fields = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
       }
