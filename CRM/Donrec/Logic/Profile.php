@@ -377,6 +377,16 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
+   * Retrieves all profile variables.
+   *
+   * @return array
+   *   The variables for this profile.
+   */
+  public function getVariables() {
+    return $this->variables ? $this->variables : array();
+  }
+
+  /**
    * check if a profile of the given name exists
    * @param $profile_name
    * @return bool

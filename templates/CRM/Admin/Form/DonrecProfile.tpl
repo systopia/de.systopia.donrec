@@ -129,7 +129,7 @@
         <table class="form-layout">
 
           <tr class="crm-donrec-profile-form-block-id_pattern">
-            <td class="label">{$form.id_pattern.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Receipt ID{/ts}", {literal}{"id":"id-pattern","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+            <td class="label">{$form.id_pattern.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Receipt ID{/ts}", {literal}{"id":"id-id_pattern","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
             <td>{$form.id_pattern.html}</td>
           </tr>
 
@@ -139,7 +139,7 @@
           </tr>
 
           <tr class="crm-donrec-profile-form-block-store_original_pdf">
-            <td class="label">{$form.store_original_pdf.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store-pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+            <td class="label">{$form.store_original_pdf.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store_original_pdf","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
             <td>{$form.store_original_pdf.html}</td>
           </tr>
 

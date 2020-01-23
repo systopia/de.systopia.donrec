@@ -270,7 +270,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       $profile_data['contribution_unlock_mode'] = Civi::settings()->get('donrec_contribution_unlock');
       $profile_data['contribution_unlock_fields'] = Civi::settings()->get('donrec_contribution_unlock_fields');
 
-      // TODO: Set lock status for profiles that have already been used for issueing receipts.
+      // Set lock status for profiles that have already been used for issueing receipts.
       $usage_query = "
         SELECT
           COUNT(`id`)
@@ -293,7 +293,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
            `is_default` = %3,
            `is_locked` = %4,
            `template` = %5,
-           `template_pdf_format_id` = %6
+           `template_pdf_format_id` = %6,
+           `variables` = %7            
       ;";
       $query_params = array(
         1 => array($profile_name, 'String'),
@@ -302,6 +303,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         4 => array($is_locked, 'Int'),
         5 => array($template['msg_html'], 'String'),
         6 => array($template['pdf_format_id'], 'String'),
+        7 => array(serialize(array()), 'String'),
       );
 
       CRM_Core_DAO::executeQuery($query, $query_params);

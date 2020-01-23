@@ -23,7 +23,7 @@
     <p>{ts domain="de.systopia.donrec"}This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons.{/ts}</p>
 {/htxt}
 
-{htxt id='id-store-pdf'}
+{htxt id='id-store_original_pdf'}
     <p>{ts domain="de.systopia.donrec"}When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team.{/ts}</p>
 {/htxt}
 
@@ -91,7 +91,7 @@
     <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail.{/ts}</p>
 {/htxt}
 
-{htxt id='id-pattern'}
+{htxt id='id-id_pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}
         {ts domain="de.systopia.donrec"}The following tokens are available:{/ts}
