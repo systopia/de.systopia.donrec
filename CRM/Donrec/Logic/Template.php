@@ -20,9 +20,12 @@ class CRM_Donrec_Logic_Template
 
   private $pdf_format_id;
 
-  private function __construct($template_html, $pdf_format_id) {
+  private $profile_variables = array();
+
+  private function __construct($template_html, $pdf_format_id, $profile_variables = array()) {
     $this->template_html = $template_html;
     $this->pdf_format_id = $pdf_format_id;
+    $this->profile_variables = $profile_variables;
   }
 
   /**
@@ -49,6 +52,8 @@ class CRM_Donrec_Logic_Template
   * the specified CRM_Core_BAO_MessageTemplate
   * @param int template id
   * @return CRM_Donrec_Logic_Template object or NULL
+   *
+   * @deprecated Since 2.0
   */
   public static function create($template_id) {
     $params = array('id' => $template_id);
@@ -64,13 +69,12 @@ class CRM_Donrec_Logic_Template
    * Returns a template with the specified id or default template
    * if the template does not exist.
    *
-   * @param string $template_html
-   * @param int $pdf_format_id
+   * @param \CRM_Donrec_Logic_Profile $profile
    *
    * @return self | NULL
    */
-  public static function getTemplate($template_html, $pdf_format_id) {
-    return new self($template_html, $pdf_format_id);
+  public static function getTemplate($profile) {
+    return new self($profile->getTemplateHTML(), $profile->getTemplatePDFFormatId(), $profile->getVariables());
   }
 
   /**
@@ -168,6 +172,11 @@ class CRM_Donrec_Logic_Template
     // assign all values
     foreach ($values as $token => $value) {
        $smarty->assign($token, $value);
+    }
+
+    // Assign profile variables.
+    foreach ($this->profile_variables as $name => $value) {
+      $smarty->assign($name, $value);
     }
 
     // callback for custom variables

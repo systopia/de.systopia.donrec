@@ -386,6 +386,14 @@ class CRM_Donrec_Logic_Profile {
     return $this->variables ? $this->variables : array();
   }
 
+  public function getTemplateHTML() {
+    return $this->template;
+  }
+
+  public function getTemplatePDFFormatId() {
+    return $this->template_pdf_format_id;
+  }
+
   /**
    * check if a profile of the given name exists
    * @param $profile_name
@@ -470,6 +478,15 @@ class CRM_Donrec_Logic_Profile {
   public function activate($status = TRUE) {
     $this->is_active = (int) $status;
     $this->save();
+  }
+
+  public function addVariable($name = NULL, $value = NULL) {
+    if ($name) {
+      $this->variables[$name] = $value;
+    }
+    else {
+      $this->variables[] = $value;
+    }
   }
 
   /**
@@ -640,7 +657,7 @@ class CRM_Donrec_Logic_Profile {
    * @return \CRM_Donrec_Logic_Template | NULL
    */
   public function getTemplate() {
-    return CRM_Donrec_Logic_Template::getTemplate($this->template, $this->template_pdf_format_id);
+    return CRM_Donrec_Logic_Template::getTemplate($this);
   }
 
 

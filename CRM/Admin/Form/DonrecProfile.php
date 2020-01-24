@@ -30,10 +30,63 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
   protected $_op;
 
   /**
+   * @var string
+   */
+  protected $_ajax_action;
+
+  /**
    * @var int
    *   The profile ID.
    */
   protected $id;
+
+  /**
+   * Add form elements for variables to the form.
+   */
+  protected function addVariablesElements() {
+    $variable_count = 0;
+    $variable_elements = array();
+
+    //Get all current variable fields when adding via Ajax.
+    if (
+    ($this->_ajax_action = CRM_Utils_Request::retrieve('ajax_action', 'String', $this))
+      && $this->_ajax_action == 'add_variable'
+    ) {
+      while(TRUE) {
+        $variable_count++;
+        $current_name = CRM_Utils_Request::retrieve('variables--' . $variable_count . '--name', 'String', $this);
+        $current_value = CRM_Utils_Request::retrieve('variables--' . $variable_count . '--value', 'String', $this);
+        if (!is_null($current_name)) {
+          $this->profile->addVariable($current_name, $current_value);
+        }
+        else {
+          break;
+        }
+      }
+      $this->profile->addVariable();
+    }
+
+    if (empty($this->profile->getVariables())) {
+      $this->profile->addVariable();
+    }
+
+    $variable_count = 0;
+    foreach ($this->profile->getVariables() as $variable_name => $variable) {
+      $variable_count++;
+      $this->add(
+        'text',
+        'variables--' . $variable_count . '--name',
+        E::ts('variable name')
+      );
+      $this->add(
+        'textarea',
+        'variables--' . $variable_count . '--value',
+        E::ts('Variable value')
+      );
+      $variable_elements[$variable_count] = 'variables--' . $variable_count;
+    }
+    $this->assign('variable_elements', $variable_elements);
+  }
 
   /**
    * Build the form object.
@@ -254,6 +307,14 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Store original *.pdf files')
     );
 
+    $this->addVariablesElements();
+    $this->add(
+      'button',
+      'variables_more',
+      E::ts('Add variable')
+    );
+    CRM_Core_Resources::singleton()->addScriptFile(E::LONG_NAME, 'js/donrec-profile.js', 1, 'html-header');
+
     /**
      * Watermark settings.
      */
@@ -367,6 +428,15 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     $defaults['name'] = $this->profile->getName();
     $defaults['template'] = $this->profile->getTemplate()->getTemplateHTML();
 
+    // Set variables.
+    $variable_count = 0;
+    $variable_elements = array();
+    foreach ($this->profile->getVariables() as $variable_name => $variable_value) {
+      $variable_count++;
+      $defaults['variables--' . $variable_count . '--name'] = (is_numeric($variable_name) ? NULL : $variable_name);
+      $defaults['variables--' . $variable_count . '--value'] = $variable_value;
+    }
+
     // Set data properties.
     foreach ($this->profile->getData() as $key => $value) {
       if ($key == 'contribution_unlock_fields') {
@@ -402,27 +472,66 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
   }
 
   public function validate() {
-    $valid = FALSE;
     $values = $this->exportValues();
+    $session = CRM_Core_Session::singleton();
 
     if (in_array($this->_op, array('create', 'edit'))) {
+      /**
+       * validate receipt ID pattern.
+       */
       try {
         $generator = new CRM_Donrec_Logic_IDGenerator($values['id_pattern'], FALSE);
-        $valid = TRUE;
       } catch (Exception $exception) {
-        $session = CRM_Core_Session::singleton();
-        $session->setStatus(
-          E::ts("One of the Receipt ID patterns are invalid! Changes NOT saved!"),
-          E::ts('Error'),
-          'error'
-        );
+        $this->_errors['id_pattern'] = E::ts('One of the Receipt ID patterns are invalid! Changes NOT saved!');
+      }
+
+      /**
+       * Validate variables.
+       */
+      $matches = array();
+      $variables_values = array_filter($values, function($value, $key) use (&$matches) {
+        $match = array();
+        if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match)) {
+          $matches[$match[1]] = TRUE;
+          return TRUE;
+        }
+        else {
+          return FALSE;
+        }
+      }, ARRAY_FILTER_USE_BOTH);
+      foreach (array_keys($matches) as $variable_no) {
+        // Validate variable names.
+        if (
+          !empty($values['variables--' . $variable_no . '--name'])
+          && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $values['variables--' . $variable_no . '--name'])
+        ) {
+          $this->_errors['variables--' . $variable_no . '--name'] = E::ts('Variable names must be valid PHP variable names.');
+        }
+
+        // Check for empty variable names with non-empty values.
+        if (
+          empty($values['variables--' . $variable_no . '--name'])
+          && !empty($values['variables--' . $variable_no . '--value'])
+        ) {
+          $this->_errors['variables--' . $variable_no . '--name'] = E::ts('Variable names must not be empty when they have a value.');
+        }
+
+        // Check for duplicate variable names.
+        foreach (array_keys($matches) as $var_no) {
+          if ($variable_no == $var_no) {
+            continue;
+          }
+          if (
+            !empty($values['variables--' . $variable_no . '--name'])
+            && $values['variables--' . $variable_no . '--name'] == $values['variables--' . $var_no . '--name']
+          ) {
+            $this->_errors['variables--' . $var_no . '--name'] = E::ts('Duplicate variable name.');
+          }
+        }
       }
     }
-    else {
-      $valid = TRUE;
-    }
 
-    return $valid;
+    return empty($this->_errors);
   }
 
   /**
@@ -440,6 +549,26 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         'template_pdf_format_id',
         'variables'
                ) as $property) {
+        if ($property == 'variables') {
+          $values['variables'] = array();
+          $matches = array();
+          $variables_values = array_filter($values, function($value, $key) use (&$matches) {
+            $match = array();
+            if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match)) {
+              $matches[$match[1]] = TRUE;
+              return TRUE;
+            }
+            else {
+              return FALSE;
+            }
+          }, ARRAY_FILTER_USE_BOTH);
+          foreach (array_keys($matches) as $variable_no) {
+            // Save variables, discarding empty variable names.
+            if (!empty($values['variables--' . $variable_no . '--name'])) {
+              $values['variables'][$values['variables--' . $variable_no . '--name']] = $values['variables--' . $variable_no . '--value'];
+            }
+          }
+        }
         if (isset($values[$property])) {
           $this->profile->set($property, $values[$property]);
         }
