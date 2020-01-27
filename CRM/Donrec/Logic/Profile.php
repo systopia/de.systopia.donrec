@@ -531,10 +531,16 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * Lock the profile (mark as used for issueing receipt).
+   *
+   * @param bool $status
    */
-  public function lock() {
-    if (!$this->isLocked()) {
-      $this->set('is_locked', 1);
+  public function lock($status = TRUE) {
+    if ($status && !$this->isLocked()) {
+      $this->set('is_locked', (int) $status);
+      $this->save();
+    }
+    elseif (!$status && $this->isLocked()) {
+      $this->set('is_locked', (int) $status);
       $this->save();
     }
   }

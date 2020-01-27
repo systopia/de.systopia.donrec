@@ -158,6 +158,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
         // Copy the profile.
         $this->profile = CRM_Donrec_Logic_Profile::copyProfile($profile_id);
+        // Reset status values.
+        $this->profile->set('is_locked', 0);
+        $this->profile->set('is_active', 1);
+        $this->profile->set('is_default', 0);
         CRM_Utils_System::setTitle(E::ts('New Donation Receipts profile'));
         break;
       case 'create':
