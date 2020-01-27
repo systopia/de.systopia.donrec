@@ -4,688 +4,936 @@
 # make sure you license it to CiviCRM LLC under Academic Free License 3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: de.systopia.donrec\n"
-"POT-Creation-Date: 2019-02-15 08:41+0100\n"
+"Project-Id-Version: donrec\n"
+"POT-Creation-Date: 2020-01-27 10:10+0100\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Donation Receipts - Settings"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "variable name"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Profile"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
+msgid "Variable value"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Draft text"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Set new default profile"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Copy text"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Delete Donation Receipts profile <em>%1</em>"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php donrec.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Receipt ID"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
+msgid "Delete"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Contribution Types"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Template"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "From Email"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "primary address"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Legal Address-Type:"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Postal Address-Type:"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Fallback:"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "External Tool: path to <code>pdfinfo</code>"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Packet size"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "BCC Email"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Has to be a valid email address"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Email Return Path"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Email Template"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Save"
-msgstr ""
-
-#: CRM/Admin/Form/Setting/DonrecSettings.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Cancel"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-msgid "Packet size can only contain positive integers"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Edit Donation Receipts profile <em>%1</em>"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "New Donation Receipts profile"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Set Donation Receipts profile <em>%1</em> as default"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Set default"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Activate Donation Receipts profile <em>%1</em>"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Activate"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Deactivate Donation Receipts profile <em>%1</em>"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Deactivate"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Profile name"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Language"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Contribution Types"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Unlock receipted contributions"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "All fields"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "No fields"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Selected fields"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
+msgid "Receipt ID"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Template"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Store original *.pdf files"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Add variable"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Draft text"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Copy text"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Watermark preset"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "primary address"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Legal Address-Type:"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Postal Address-Type:"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Fallback:"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "E-mail template"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "From Email"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "BCc E-mail address"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Has to be a valid email address"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Return path e-mail address"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Save"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
 msgid "One of the Receipt ID patterns are invalid! Changes NOT saved!"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php CRM/Donrec/Form/ProcessReturns.php
-#: CRM/Donrec/Form/Task/DonrecResetTask.php CRM/Donrec/Form/Task/Rebook.php
-#: CRM/Utils/DonrecHelper.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Error"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Variable names must be valid PHP variable names."
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Variable names must not be empty when they have a value."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+msgid "Duplicate variable name."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Settings successfully saved"
 msgstr ""
 
-#: CRM/Admin/Form/Setting/DonrecSettings.php
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Settings"
 msgstr ""
 
-#: CRM/Donrec/DataStructure.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts - Settings"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfinfo</code>"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size can only contain positive integers"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Page/DonrecProfiles.php
+msgid "Never"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/DataStructure.php
 msgid "Donation Receipt"
 msgstr ""
 
-#: CRM/Donrec/DataStructure.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/DataStructure.php
 msgid "Donation Receipt Item"
 msgstr ""
 
-#: CRM/Donrec/Exporters/CSV.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/CSV.php
 msgid "CSV File"
 msgstr ""
 
-#: CRM/Donrec/Exporters/CSV.php CRM/Donrec/Exporters/GroupedPDF.php
-#: CRM/Donrec/Exporters/PDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/CSV.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/PDF.php
 msgid "donation_receipts"
 msgstr ""
 
-#: CRM/Donrec/Exporters/CSV.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/CSV.php
 msgid ".csv"
 msgstr ""
 
-#: CRM/Donrec/Exporters/Dummy.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/Dummy.php
 msgid "Don't generate files"
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Send PDFs via Email"
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Please select email template in the Donrec settings."
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Donation receipt not delivered"
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Donation Receipt.pdf"
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Email <i>would</i> be sent to '%1' (test mode)."
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "DonationReceipt Failure"
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "No valid email address found for this contact."
 msgstr ""
 
-#: CRM/Donrec/Exporters/EmailPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/EmailPDF.php
 msgid "Error was: "
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "Individual PDFs sorted by page count"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "using pdfinfo %s"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo %s is not supported"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "unknown pdfinfo version"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo is not executable. check permissions"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo not found"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo path is not set"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid ".zip"
 msgstr ""
 
-#: CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "%d-page"
 msgstr ""
 
-#: CRM/Donrec/Exporters/PDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/PDF.php
 msgid "Individual PDFs"
 msgstr ""
 
-#: CRM/Donrec/Exporters/PDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/PDF.php
 msgid "donation_receipts.zip"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Activity Type"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Activity Subject"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Limit"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Withdraw Receipts"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Server"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "User Name"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Password"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Run Now"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Limit needs to be greater than zero."
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid ""
 "Investigated %1 emails in the bounce folder. %2 of them have been processed, "
 "%3 seem to unrelated, and %4 have failed."
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "Done"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid ""
 "If you want to find out, why processing of %1 of the emails failed, please "
 "check the CiviCRM log."
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "Errors"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "It looks like there are more emails to be processed."
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "There's more"
 msgstr ""
 
-#: CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Utils/DonrecHelper.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
+msgid "Error"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/ProcessReturns.php
 msgid "No Activity"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
 msgid "Issue Donation Receipts"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid "This Year"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid "last year"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Choose Date Range"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid "From:"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Profile"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
 msgid "Currency"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid "Continue"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 msgid ""
 "There are no selectable contributions for these contacts in the selected "
 "time period."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
-#: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
 msgid "Warning"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Create.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
 msgid ""
 "This contact has no selectable contributions in the selected time period."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "Withdraw Donation Receipts"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "From Date"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "To Date"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid ""
 "Caution: %1 contact(s) will have more than one donation receipt withdrawn!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "Find"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "Withdraw %1 Receipts"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "%1 donation receipts have been withdrawn."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "Receipts Withdrawn"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/DonrecResetTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecResetTask.php
 msgid "%1 donation receipts have not been withdrawn and encountered an error."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/RebookTask.php
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
 msgid "Rebook"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/RebookTask.php
 msgid "You do not have the permissions required to access this page."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "You need to specifiy a contribution to rebook."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/RebookTask.php
 msgid "CiviCRM ID"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "At least one of the given contributions doesn't exist!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid ""
 "Rebooking of multiple contributions from different contacts is not allowed!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Rebooking not allowed!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Rebooked to CiviCRM ID %1"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Rebooked from CiviCRM ID %1"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "%1 contribution(s) successfully rebooked!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Successfully rebooked!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Please check your data and try again"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Nothing rebooked!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Please enter a CiviCRM ID!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "A contact with CiviCRM ID %1 doesn't exist!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "The target contact can not be a household!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "The target contact can not be in trash!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "The contribution with ID %1 is not completed!"
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid ""
 "The contribution with ID %1 cannot be rebooked, because it has a valid "
 "contribution receipt."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference, exceeds 35 characters."
 msgstr ""
 
-#: CRM/Donrec/Form/Task/Rebook.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Rebook.php
 msgid "Cannot find a new mandate reference"
 msgstr ""
 
-#: CRM/Donrec/Logic/Engine.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Lang/De/De.php
+msgid "German"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Lang/De/Xx.php
+msgid "German (with spaces)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Lang/En/Us.php
+msgid "English (U.S.)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Lang/Es/Es.php
+msgid "Spanish (Spain)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Lang/Pl/Pl.php
+msgid "Polish"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Engine.php
 msgid "Snapshot [%d] does not exist (any more)!"
 msgstr ""
 
-#: CRM/Donrec/Logic/Engine.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Engine.php
 msgid "Snapshot [%d] belongs to user '%s'[%s]!"
 msgstr ""
 
-#: CRM/Donrec/Logic/Engine.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Engine.php
 msgid "Snapshot [%d] is already processing!"
 msgstr ""
 
-#: CRM/Donrec/Logic/Engine.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Engine.php
 msgid "Snapshot [%d] is already completed!"
 msgstr ""
 
-#: CRM/Donrec/Logic/Profile.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/File.php
+msgid "Download failed: "
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Profile.php
+msgid "Profile with name %1 does not exist."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Profile.php
+msgid "Could not find a default profile."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Profile.php
 msgid "COPY"
 msgstr ""
 
-#: CRM/Donrec/Logic/Profile.php
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Profile.php
 msgid "DRAFT"
 msgstr ""
 
-#: CRM/Donrec/Logic/Template.php
-msgid "Donation Receipts"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Profile.php
+msgid "Property %1 does not exist in class %2"
 msgstr ""
 
-#: CRM/Donrec/Logic/Template.php
-msgid "Default template"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Financial type"
 msgstr ""
 
-#: CRM/Donrec/Logic/Template.php
-msgid "donationreceipt-"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Campaign"
 msgstr ""
 
-#: CRM/Donrec/Page/Runner.php
-msgid "Creating Donation Receipts"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Payment method"
 msgstr ""
 
-#: CRM/Donrec/Page/Runner.php
-msgid "No snapshot ID given. Please call this page from a proper selection."
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Contribution status"
 msgstr ""
 
-#: CRM/Donrec/Page/Staging.php
-msgid "No snapshot id has been provided!"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Source"
 msgstr ""
 
-#: CRM/Donrec/Page/Staging.php
-msgid "Invalid snapshot id!"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Receive date"
 msgstr ""
 
-#: CRM/Donrec/Page/Staging.php
-msgid "The older snapshot has been deleted. You can now proceed."
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
+msgid "Total amount"
 msgstr ""
 
-#: CRM/Donrec/Page/Staging.php
-msgid "The previously created snapshot has been deleted."
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Note"
 msgstr ""
 
-#: CRM/Donrec/Page/Staging.php
-msgid "Missing exporter!"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
+msgid "Custom fields"
 msgstr ""
 
-#: CRM/Donrec/Upgrader/Base.php
-msgid "Upgrade %1 to revision %2"
-msgstr ""
-
-#: api/v3/DonationReceipt.php
-msgid "No 'rid' parameter given."
-msgstr ""
-
-#: api/v3/DonationReceipt.php
-msgid "Only original donation receipts can be withdrawn."
-msgstr ""
-
-#: api/v3/DonationReceipt.php
-msgid "Receipt with id %d does not exist."
-msgstr ""
-
-#: api/v3/DonationReceipt.php
-msgid "Only original donation receipts can be copied."
-msgstr ""
-
-#: api/v3/DonationReceiptEngine/Next.php
-msgid "No 'sid' parameter given."
-msgstr ""
-
-#: api/v3/DonationReceiptEngine/Processreturns.php
-msgid "E-Mail delivery of donation receipt {receipt_id} failed."
-msgstr ""
-
-#: donrec.php templates/CRM/Donrec/Page/Staging.tpl
-msgid "Issue donation receipt(s)"
-msgstr ""
-
-#: donrec.php
-msgid "Withdraw donation receipt(s)"
-msgstr ""
-
-#: donrec.php
-msgid "Rebook to contact"
-msgstr ""
-
-#: donrec.php
-msgid "Receipted"
-msgstr ""
-
-#: donrec.php
-msgid "No"
-msgstr ""
-
-#: donrec.php
-msgid "Yes"
-msgstr ""
-
-#: donrec.php
-msgid "DonationReceipts"
-msgstr ""
-
-#: donrec.php
-msgid "view and create copies of receipts"
-msgstr ""
-
-#: donrec.php
-msgid "create and withdraw receipts"
-msgstr ""
-
-#: donrec.php
-msgid "delete receipts"
-msgstr ""
-
-#: donrec.php
-msgid "Donation receipts"
-msgstr ""
-
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
 msgid ""
 "A donation receipt has been issued for this contribution, or is being "
 "processed for a receipt right now. You are not allowed to change the value "
 "for '%s'."
 msgstr ""
 
-#: donrec.php
-msgid ""
-"The column '%s' of this contribution [%d] must not be changed because it has "
-"a receipt or is going to be receipted!"
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Template.php
+msgid "Donation Receipts"
 msgstr ""
 
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Template.php
+msgid "Default template"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/Template.php
+msgid "donationreceipt-"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/DompdfTraditional.php
+msgid "Markup traditional (dompdf)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/SvgAcrossLarge.php
+msgid "SVG across large"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/SvgAcrossSmall.php
+msgid "SVG across small"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/SvgHolohedral.php
+msgid "SVG holohedral"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/SvgTopCenter.php
+msgid "SVG top center"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/SvgUpperRightCorner.php
+msgid "SVG upper right corner"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Logic/WatermarkPreset/WkhtmltopdfTraditional.php
+msgid "Markup traditional (wkhtmltopdf)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Runner.php
+msgid "Creating Donation Receipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Runner.php
+msgid "No snapshot ID given. Please call this page from a proper selection."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
+msgid "No snapshot id has been provided!"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
+msgid "Invalid snapshot id!"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
+msgid "The older snapshot has been deleted. You can now proceed."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
+msgid "The previously created snapshot has been deleted."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Page/Staging.php
+msgid "Missing exporter!"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceipt.php
+msgid "No 'rid' parameter given."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be withdrawn."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceipt.php
+msgid "Receipt with id %d does not exist."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be copied."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceiptEngine/Next.php
+msgid "No 'sid' parameter given."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/api/v3/DonationReceiptEngine/Processreturns.php
+msgid "E-Mail delivery of donation receipt {receipt_id} failed."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
+msgid "Issue donation receipt(s)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "Withdraw donation receipt(s)"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "Rebook to contact"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "Receipted"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "No"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "Yes"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "DonationReceipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "view and create copies of receipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "create and withdraw receipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "delete receipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+msgid "Donation receipts"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
 msgid ""
 "This contribution [%d] must not be deleted because it has a receipt or is "
 "going to be receipted!"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Status"
 msgstr ""
 
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
 msgid "- any -"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "original"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "copy"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "withdrawn"
 msgstr ""
 
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
 msgid "withdrawn_copy"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "Type"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "single receipt"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "bulk receipt"
 msgstr ""
 
-#: donrec.php
+#: /home/jens/repositories/de.systopia.donrec/donrec.php
 msgid "Issued by contact"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
+msgid "Variable name"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "You can select the financial types that are eligable for donation receipts."
 "<br/>The default is, that all financial types marked as tax deductible are "
 "included,but you can adjust this selection to your organisation's needs."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Select a pre-configured way of displaying watermarks on copies and drafts."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "This watermark text is included in all invalid or test donation receipts.<br/"
 ">It cannot be left empty for legal reasons."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "This watermark text is included in all donation receipt copies.<br/>It "
 "cannot be left empty for legal reasons."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "When this option is activated, the originally generated PDF file will be "
 "stored with the donation receipt data set.This approach has the advantage, "
@@ -698,7 +946,8 @@ msgid ""
 "invalid.<br/>Discuss the best setting here with your legal team."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid ""
 "Defines the runner packed size.<br/>When creating large amounts of donation "
 "receipts, the runner will not process all of them at once.It will break the "
@@ -708,664 +957,784 @@ msgid ""
 "<br/>You should always test your settings in a test run."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"The language setting is especially important to the textual representation "
+"of the amount."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Not all languages that can be selected here have been implemented. If not "
+"implemented, the text defaults to English."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
 msgid ""
 "The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask "
 "your system administrator to set the correct setting, and install the tool "
 "if it's not there yet."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Some fields of receipted contributions are locked for editing to prevent "
+"accidentally causing inconsistencies between contribution records and "
+"already issued donation receipts."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Select which fields of receipted contributions should be unlocked for "
+"editing."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Unlock all fields for editing."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Do not unlock any field for editing."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Unlock only the selected fields for editing"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Note that editing fields that appear on issued receipts may be considered "
+"fraudulent behavior by tax authorities! Only unlock contribution fields for "
+"editing when you know what you are doing!"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "Select the address type where the legal address (wrt IRS) of the donor can "
 "be found."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "Select the postal address type where the donation receipt should be mailed "
 "to."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "In case the first address is empty, this is the fallback address to be used "
 "insted."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
 msgid ""
 "Profiles allow you to have different settings for different scenarios. But "
 "if you only have one, just work with the default profile."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
-"Select the template to be used for creating donation receipt PDFs with the "
-"current profile."
+"Configure the template to be used for creating donation receipt PDFs with "
+"the current profile."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Variables allow you to inject extra dynamic values into the template, saving "
+"you from having to edit the template when there are only small changes, such "
+"as tax bill dates or tax exemption purposes. Note that you should not just "
+"edit the profile's variables once there are changes, but create a copy of "
+"the profile and adjust variable values within that copy, so that already "
+"issued receipts will still use the old values."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"You may add as many variables as you like by clicking <em>Add variable</em>. "
+"To delete a variable, empty its name and value."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "In case you select the 'send via email' exporter, this template will be used "
 "for the email body."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "You can set an email address that will receive every email sent as a blind "
 "copy."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS "
 "requirements about the handling of the original receipt."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "It might be important to you to receive bounces from donation receipts sent "
 "out via email. However if the default bounce system is used this information "
 "will be processed without you noticing."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "By providing an email address here, the following happens during live "
 "generation:"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "The email is set as your default bounce address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "The task to send out newsletters will be disabled."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "<strong>Caution</strong>: All of these changes will be rolled back when the "
 "generation process has completed, however in rare cases (like crashes), this "
 "rollback might fail."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "This setting allows you to define the format for the donation receipt's "
 "serial number. You can use text and tokens to customize it."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "The following tokens are available:"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "Serial number. The system will make sure this is unique and continuous"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "Year in which the donation receipt was generated"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid ""
+"Year in which contribution(s) was received. If there is multiple years, the "
+"maximum is used."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "The CiviCRM ID of the donor"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "The following restrictions exist for the pattern:"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid "There has to be exactly one <code>&#123;serial&#125;</code> token."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "All tokens cannot be used adjacent to digits or other tokens. Use other "
 "characters like dashes or spaces to separate them."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid ""
+"WARNING: Deleting this option will result in the loss of Donation Receipts "
+"profile data."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Do you want to continue?"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid ""
+"You are about to delete the default profile. Please select which of the "
+"other profiles should be set as default instead."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will set the profile <em>%1</em> as default."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will activate the profile <em>%1</em>."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will deactivate the profile <em>%1</em>."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid ""
+"You are about to deactive the default profile, causing it not be selectable "
+"anymore for issueing donation receipts. Is this what you really intend to do?"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid ""
+"This profile has already been used for issueing receipts and is locked. You "
+"may still edit the profile, but be aware that this will cause copies of "
+"already issued receipts not be identical to their original anymore, which "
+"may be considered fraudulent behavior by tax authorities."
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "General Settings"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Languages"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Help"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Delete"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
+msgid "Contributions"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Remove the current configuration"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Create copy:"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Copy"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Create a clone of the current configuration"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Receipts"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Store original *.pdf files"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Store original PDF"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Variables"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Watermarks"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Draft Text"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Copy Text"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Address Types"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Legal Address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Legal Address Fallback"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Postal Address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Postal Address Fallback"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Email Settings"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "E-Mails"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid ""
 "Sending donation receipts by email can be tricky, make sure you know how you "
 "want to detect and handle bounces or returns."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid ""
 "You should also have a look at the <a href=\"%1\">return processing feature</"
 "a>."
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Email-Template"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "From Email Address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "BCC Email Address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.tpl
 msgid "Return Path Email Address"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "General Settings"
-msgstr ""
-
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Generator Packet Size"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "The <code>pdfinfo</code> Tool"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "You have to name your new profile!"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "New profile"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "There already is a profile with that name."
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Manage general extension settings"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Profile profile_name created."
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "General settings"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid ""
-"Remeber to save to settings page for all profile changes to take effect."
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Profile ID"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This is the only profile, you cannot delete this."
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Default profile"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Profile profile_name deleted"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Active"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "Are you sure?"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Locked"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid ""
-"Do you really want to delete this profile?<br/>If you have already created "
-"donation receipts with this profile, the profile-specific information will "
-"be lost (e.g. the template used)."
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Usage count"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This value cannot be empty!"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "First usage"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This can only contain letters"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Last usage"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "You need to include <code>&#123;serial&#125;</code>"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Operations"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "You can include <code>&#123;serial&#125;</code> only once!"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Default"
 msgstr ""
 
-#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
-msgid "This cannot contain more than 64 characters!"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Inactive"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Unlocked"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Edit profile %1"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Edit"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Copy profile %1"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Copy"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Activate profile %1"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Deactivate profile %1"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Set profile %1 as default"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Delete profile %1"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/ProcessReturns.tpl
 msgid "Process Email Returns"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/ProcessReturns.tpl
-#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
 msgid ""
 "This tool allows you to process bounced or returned (emailed) donation "
 "receipts into activities."
 msgstr ""
 
-#: templates/CRM/Donrec/Form/ProcessReturns.tpl
-#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
 msgid ""
 "You should create a new, exclusive email account, and set the return path to "
 "that account while sending."
 msgstr ""
 
-#: templates/CRM/Donrec/Form/ProcessReturns.tpl
-#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Account Access"
+msgstr ""
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
 msgid ""
 "To uniquely identify the contact the receipt had been sent to, you can add a "
 "code containing the contact ID to the the email template, and provide a "
 "pattern below to recognise it."
 msgstr ""
 
-#: templates/CRM/Donrec/Form/ProcessReturns.tpl
-msgid "Account Access"
-msgstr ""
-
-#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Are you sure you want to rebook the selected contributions?"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Number of selected contributions:"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Are you sure you want to rebook the contribution?"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/Rebook.tpl
 msgid "Please enter the target CiviCRM ID?"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/creation_parameters.tpl
 msgid "Filter contributions by receive date"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
-msgid "Select time span"
-msgstr ""
-
-#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
-msgid "Select the currency"
-msgstr ""
-
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Unfinished run detected"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "You have an unfinished run, do you want to continue with it?"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Otherwise it <b>will be deleted</b>!"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "An interrupted run has been detected. Do you want to continue with it?"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Otherwise the selection <b>will be deleted</b>!"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid ""
 "<b>Caution!</b> Some receipts have already been created. If you do not "
 "continue with this run, you should probably delete them manually."
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Statistics"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "contact count"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "contribution count"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "total amount"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "created on"
 msgstr ""
 
-#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
 msgid "Use remaining snapshot"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "creation in progress, please wait..."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Back"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "Progress Log"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Date"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "Message"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Download"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid ""
 "The donation receipts have been generated. You can now download the results."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid "There was a problem. Please check the log below for more information."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Runner.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Runner.tpl
 msgid ""
 "You haven't downloaded the resulting file yet. Are you sure you want to "
 "leave this page? The file would be lost."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "A number of contributions without (valid) receipt have been found for the "
 "selected time span. These will be marked as receipted once you hit the "
 "\"Issue donation receipt(s)\" button below."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "You can choose from a variety of result formats, depending on your needs. "
 "You can also choose \"Don't generate files\" if you only want to mark them "
 "as receipted."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "The \"Test run\" button will do all the same things except no contributions "
 "will be marked as receipted. We strongly recommend testing the creation of "
 "any larger batch of donation receipts."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "Please navigate this page using the buttons below and do not leave the page "
 "via the browser's back button."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "<b>Caution:</b> this is a resumed non-test run. If you press the abort "
 "button, the run will be deleted for good."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "selected contacts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Period from"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Period to"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid ""
 "Sorry, but at least one of the selected contributions is already being "
 "processed for a donation receipt:"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "The conflicting other donation receipt process was created by"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "It will automatically expire on"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Delete other process and restart"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Donation receipt type"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "single receipts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "bulk receipts"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Result formats"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Test run"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Staging.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Staging.tpl
 msgid "Abort"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Create new donation receipt"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "withdrawn copy"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Creation date"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Issued by"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Unknown"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Total amount"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Details"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "View"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Create copy"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Withdraw"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Issued To"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Name"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Supplemental Address 1"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Supplemental Address 2"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Postal Code"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Street"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "City"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Country"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Sent To"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Contributions"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Total Amount"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Received Date"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Financial Type"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "DonationReceipt"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "The donation receipt has been successfully withdrawn"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Success"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Are you sure you want to withdraw this donation receipt?"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "The donation receipt has been successfully copied"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Any existing copies of this receipt will have to be deleted manually."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "You could also just withdraw it."
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "The donation receipt has been successfully deleted"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tab.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tab.tpl
 msgid "Are you sure you want to delete this donation receipt?"
 msgstr ""
 
-#: templates/CRM/Donrec/Page/Tempfile.tpl
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tempfile.tpl
 msgid "Temporary file dowload failed."
 msgstr ""

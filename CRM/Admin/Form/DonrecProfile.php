@@ -76,7 +76,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $this->add(
         'text',
         'variables--' . $variable_count . '--name',
-        E::ts('variable name')
+        E::ts('Variable name')
       );
       $this->add(
         'textarea',
