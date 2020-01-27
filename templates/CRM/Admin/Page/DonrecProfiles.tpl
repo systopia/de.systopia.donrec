@@ -31,7 +31,7 @@
       <tr>
         <th>{ts domain="de.systopia.donrec"}Profile ID{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Profile name{/ts}</th>
-        <th>{ts domain="de.systopia.donrec"}Default profile{/ts}</th>
+        <th>{ts domain="de.systopia.donrec"}Default{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Active{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Locked{/ts}</th>
         <th>{ts domain="de.systopia.donrec"}Usage count{/ts}</th>
@@ -43,25 +43,25 @@
       <tbody>
       {foreach from=$profiles item=profile}
         {assign var="profile_id" value=$profile.id}
-        <tr{if !$profile.is_active} class="disabled"{/if}>
+        <tr class="{cycle values="odd-row,even-row"}{if !$profile.is_active} disabled{/if}">
           <td>{$profile.id}</td>
           <td>{$profile.name}</td>
-          <td>{if $profile.is_default}<span class="crm-i fa-check" title="{ts domain="de.systopia.donrec"}Default{/ts}"></span>{/if}</td>
-          <td>
+          <td class="center">{if $profile.is_default}<span class="crm-i fa-check" title="{ts domain="de.systopia.donrec"}Default{/ts}"></span>{/if}</td>
+          <td class="center">
             {if $profile.is_active}
               <span class="crm-i fa-check" title="{ts domain="de.systopia.donrec"}Active{/ts}"></span>
             {else}
               <span class="crm-i fa-ban" title="{ts domain="de.systopia.donrec"}Inactive{/ts}"></span>
             {/if}
           </td>
-          <td>
+          <td class="center">
             {if $profile.is_locked}
               <span class="crm-i fa-lock" title="{ts domain="de.systopia.donrec"}Locked{/ts}"></span>
             {else}
               <span class="crm-i fa-unlock" title="{ts domain="de.systopia.donrec"}Unlocked{/ts}"></span>
             {/if}
           </td>
-          <td>{$profile.usage_count}</td>
+          <td class="right">{$profile.usage_count}</td>
           <td>{$profile.first_used}</td>
           <td>{$profile.last_used}</td>
           <td>

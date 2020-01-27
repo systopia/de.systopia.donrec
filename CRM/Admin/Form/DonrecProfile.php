@@ -81,7 +81,11 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $this->add(
         'textarea',
         'variables--' . $variable_count . '--value',
-        E::ts('Variable value')
+        E::ts('Variable value'),
+        array(
+          'rows' => 10,
+          'cols' => 100,
+        )
       );
       $variable_elements[$variable_count] = 'variables--' . $variable_count;
     }
