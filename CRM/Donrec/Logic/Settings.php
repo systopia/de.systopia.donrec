@@ -100,10 +100,12 @@ class CRM_Donrec_Logic_Settings {
   /**
    * Get the internal ID of the selected template for sending emails
    *
+   * @param \CRM_Donrec_Logic_Profile $profile
+   *
    * @return int
    */
-  public static function getEmailTemplateID() {
-    $template_id = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_email_template'));
+  public static function getEmailTemplateID($profile) {
+    $template_id = $profile->getDataAttribute('email_template');
     if ($template_id >= 1) {
       return $template_id;
     } else {

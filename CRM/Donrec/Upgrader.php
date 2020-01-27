@@ -246,6 +246,14 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       $profiles['Default'] = CRM_Donrec_Logic_Profile::defaultProfileData()['data'];
     }
 
+    // Alter snapshot table structure.
+    $snapshot_query = "
+      ALTER TABLE
+        `donrec_snapshot`
+      ADD COLUMN `profile_id` int(10) unsigned NOT NULL AFTER `snapshot_id`
+    ;";
+    CRM_Core_DAO::executeQuery($snapshot_query);
+
     foreach ($profiles as $profile_name => $profile_data) {
       // Copy template contents and remove template reference from profile data.
       $template = civicrm_api3(
@@ -317,25 +325,55 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         WHERE
           `name` = %1
       ;";
-      $profile_query_params = array(
-        1 => array($profile_name, 'String'),
+      $donrec_profile_dao = CRM_Core_DAO::executeQuery(
+        $profile_query,
+        array(
+          1 => array($profile_name, 'String'),
+        )
       );
-      $donrec_profile_dao = CRM_Core_DAO::executeQuery($profile_query, $profile_query_params);
       $donrec_profile_dao->fetch();
 
       $custom_values_sql = "
-        UPDATE {$receipt_table}
+        UPDATE
+          {$receipt_table}
         SET
           `{$receipt_fields['profile_id']}` = %1
         WHERE
           `{$receipt_fields['profile']}` = %2
       ;";
-      $custom_values_params = array(
-        1 => array($donrec_profile_dao->id, 'Int'),
-        2 => array($donrec_profile_dao->name, 'String'),
+      CRM_Core_DAO::executeQuery(
+        $custom_values_sql,
+        array(
+          1 => array($donrec_profile_dao->id, 'Int'),
+          2 => array($donrec_profile_dao->name, 'String'),
+        )
       );
-      CRM_Core_DAO::executeQuery($custom_values_sql, $custom_values_params);
+
+      // Update snapshot table with profile IDs.
+      $snapshot_values_sql = "
+        UPDATE
+          `donrec_snapshot`
+        SET
+          `profile_id` = %1
+        WHERE
+          `profile` = %2
+      ;";
+      CRM_Core_DAO::executeQuery(
+        $snapshot_query,
+        array(
+          1 => array($donrec_profile_dao->id, 'Int'),
+          2 => array($donrec_profile_dao->name, 'String'),
+        )
+      );
     }
+
+    // Alter snapshot table structure.
+    $snapshot_query = "
+      ALTER TABLE
+        `donrec_snapshot`
+      DROP COLUMN `profile`
+    ;";
+    CRM_Core_DAO::executeQuery($snapshot_query);
 
 
     // Remove (revert) old settings entries.

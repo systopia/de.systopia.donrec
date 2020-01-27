@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS `donrec_snapshot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `snapshot_id` int(10) unsigned NOT NULL,
-  `profile` char(64),
+  `profile_id` int(10) unsigned NOT NULL,
   `contribution_id` int(10) unsigned NOT NULL,
   `contact_id` int(10) unsigned NOT NULL,
   `financial_type_id` int(10) unsigned NOT NULL,

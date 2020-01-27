@@ -47,13 +47,15 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   /**
    * check whether all requirements are met to run this exporter
    *
+   * @param \CRM_Donrec_Logic_Profile $profile
+   *
    * @return array:
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements() {
+  public function checkRequirements($profile) {
     // Check if email template is set up
-    $template_id = CRM_Donrec_Logic_Settings::getEmailTemplateID();
+    $template_id = CRM_Donrec_Logic_Settings::getEmailTemplateID($profile);
     if ($template_id) {
       return array('is_error' => FALSE, 'message' => '');
     } else {
@@ -141,7 +143,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       }
 
       // Get from e-mail from profile or load domain default.
-      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->getDataAttribute('from_email')) {
+      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])->getDataAttribute('from_email')) {
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
         foreach ($fromEmailAddress as $key => $value) {
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
@@ -179,14 +181,14 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         // send the email
         civicrm_api3('MessageTemplate', 'send', array(
           // TODO: Use template from profile, no MessageTemplate ID.
-          'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(),
+          'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])),
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
           'to_email'        => $contact['email'],
           'from'            => "\"{$from_email_name}\" <{$from_email_address}>",
           'template_params' => $smarty_variables,
           'attachments'     => array($attachment),
-          'bcc'             => CRM_Donrec_Logic_Profile::getProfileByName($receipt['profile'])->getDataAttribute('bcc_email'),
+          'bcc'             => CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])->getDataAttribute('bcc_email'),
           ));
 
         // unset the code
@@ -294,7 +296,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   }
 
   /** 
-   * If the setting donrec_return_path_email is set:
+   * If the profile setting return_path_email is set:
    *  - that email is set as the default bounce address, storing the old one
    *  - the task to send out newsletters will be disabled
    *  - the old values of the two settings above will be stored

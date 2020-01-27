@@ -129,7 +129,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
       // update general values
       $values['id']                     = $snapshot_line_id;    // just use one of them as ID
-      $values['profile']                = $snapshot_line['profile'];
+      $values['profile_id']             = $snapshot_line['profile_id'];
       $values['contact_id']             = $snapshot_line['contact_id'];
       $values['currency']               = $snapshot_line['currency'];
       $values['date_from']              = $snapshot_line['date_from'];

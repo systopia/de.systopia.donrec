@@ -110,11 +110,12 @@ class CRM_Donrec_Logic_Profile {
    * Get the profile for the given name.
    *
    * @param string $profile_name
-   * @param bool $warn
    * @return self
    * @throws \Exception
+   *
+   * @deprecated Since 2.0
    */
-  public static function getProfileByName($profile_name, $warn = FALSE) {
+  public static function getProfileByName($profile_name) {
     $profile_names = self::getAllNames();
     if (in_array($profile_name, $profile_names)) {
       return new self(array_search($profile_name, $profile_names));

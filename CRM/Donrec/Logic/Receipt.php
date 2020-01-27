@@ -67,7 +67,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     foreach ($fields as $key => $field) {
       $value = null;
       if ($key == 'profile_id') {
-        $value = CRM_Donrec_Logic_Profile::getProfileByName($tokens['profile'])->getId();
+        $value = CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'])->getId();
       }
       elseif (0 === strpos($key, 'shipping')) {
         $token_key = substr($key, strlen('shipping_'));
@@ -87,7 +87,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $query = "INSERT INTO `$table` SET $sql_set";
 
     // Lock profile (mark as used for issueing receipts).
-    CRM_Donrec_Logic_Profile::getProfileByName($tokens['profile'])->lock();
+    CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'])->lock();
 
     // run the query
     return CRM_Core_DAO::executeQuery($query);
@@ -514,7 +514,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
         receipt.`id`                                       AS `id`,
         receipt.`entity_id`                                AS `contributor__id`,
         receipt.`$receipt_fields[receipt_id]`              AS `receipt_id`,
-        receipt.`$receipt_fields[profile]`                 AS `profile`,
+        receipt.`$receipt_fields[profile_id]`              AS `profile_id`,
         receipt.`$receipt_fields[type]`                    AS `type`,
         receipt.`$receipt_fields[status]`                  AS `status`,
         receipt.`$receipt_fields[issued_on]`               AS `issued_on`,
@@ -676,8 +676,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getProfile() {
     CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
-    $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile'];
-    $profile = CRM_Core_DAO::singleValueQuery("SELECT `$profile_column_name` FROM `$receipt_table_name` WHERE `id` = %1", array(1=>array($this->Id, 'Integer')));
-    return CRM_Donrec_Logic_Profile::getProfileByName($profile, TRUE);
+    $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile_id'];
+    $profile_id = CRM_Core_DAO::singleValueQuery("SELECT `$profile_column_name` FROM `$receipt_table_name` WHERE `id` = %1", array(1=>array($this->Id, 'Integer')));
+    return CRM_Donrec_Logic_Profile::getProfile($profile_id);
   }
 }
