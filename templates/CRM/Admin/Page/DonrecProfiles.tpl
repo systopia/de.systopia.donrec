@@ -46,9 +46,21 @@
         <tr{if !$profile.is_active} class="disabled"{/if}>
           <td>{$profile.id}</td>
           <td>{$profile.name}</td>
-          <td>{if $profile.is_default}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Default{/ts}" />{/if}</td>
-          <td>{if $profile.is_active}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Active{/ts}" />{/if}</td>
-          <td>{if $profile.is_locked}<img src="{$config->resourceBase}i/check.gif" alt="{ts domain="de.systopia.donrec"}Locked{/ts}" />{/if}</td>
+          <td>{if $profile.is_default}<span class="crm-i fa-check" title="{ts domain="de.systopia.donrec"}Default{/ts}"></span>{/if}</td>
+          <td>
+            {if $profile.is_active}
+              <span class="crm-i fa-check" title="{ts domain="de.systopia.donrec"}Active{/ts}"></span>
+            {else}
+              <span class="crm-i fa-ban" title="{ts domain="de.systopia.donrec"}Inactive{/ts}"></span>
+            {/if}
+          </td>
+          <td>
+            {if $profile.is_locked}
+              <span class="crm-i fa-lock" title="{ts domain="de.systopia.donrec"}Locked{/ts}"></span>
+            {else}
+              <span class="crm-i fa-unlock" title="{ts domain="de.systopia.donrec"}Unlocked{/ts}"></span>
+            {/if}
+          </td>
           <td>{$profile.usage_count}</td>
           <td>{$profile.first_used}</td>
           <td>{$profile.last_used}</td>
