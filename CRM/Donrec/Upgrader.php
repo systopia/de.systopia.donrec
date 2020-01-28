@@ -333,7 +333,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       );
       $donrec_profile_dao->fetch();
 
-      $custom_values_sql = "
+      $custom_values_query = "
         UPDATE
           {$receipt_table}
         SET
@@ -342,7 +342,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
           `{$receipt_fields['profile']}` = %2
       ;";
       CRM_Core_DAO::executeQuery(
-        $custom_values_sql,
+        $custom_values_query,
         array(
           1 => array($donrec_profile_dao->id, 'Int'),
           2 => array($donrec_profile_dao->name, 'String'),
@@ -350,7 +350,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       );
 
       // Update snapshot table with profile IDs.
-      $snapshot_values_sql = "
+      $snapshot_query = "
         UPDATE
           `donrec_snapshot`
         SET

@@ -119,7 +119,7 @@ class CRM_Donrec_Logic_Snapshot {
           "INSERT INTO `donrec_snapshot` (
               `id`,
               `snapshot_id`,
-              `profile`,
+              `profile_id`,
               `contribution_id`,
               `contact_id`,
               `financial_type_id`,
@@ -136,7 +136,7 @@ class CRM_Donrec_Logic_Snapshot {
           SELECT
               NULL,
               %1 as `snapshot_id`,
-              %2 as `profile`,
+              %2 as `profile_id`,
               `id` as `contribution_id`,
               `contact_id`,
               `financial_type_id`,
@@ -161,8 +161,8 @@ class CRM_Donrec_Logic_Snapshot {
     $params = array(
       1 => array($new_snapshot_id, 'Integer'),
       2 => array(
-        CRM_Donrec_Logic_Profile::getProfile($profile_id)->getName(),
-        'String',
+        CRM_Donrec_Logic_Profile::getProfile($profile_id)->getId(),
+        'Int',
       ),
       3 => array($creator_id, 'Integer'),
     );
