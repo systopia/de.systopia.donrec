@@ -75,7 +75,9 @@
             {if !$profile.is_default}
               <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=default&id=$profile_id"}" title="{ts domain="de.systopia.donrec" 1=$profile.name}Set profile %1 as default{/ts}" class="action-item crm-hover-button">{ts domain="de.systopia.donrec"}Set default{/ts}</a>
             {/if}
-            <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=delete&id=$profile_id"}" title="{ts domain="de.systopia.donrec" 1=$profile.name}Delete profile %1{/ts}" class="action-item crm-hover-button">{ts domain="de.systopia.donrec"}Delete{/ts}</a>
+            {if !$profile.is_locked}
+              <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=delete&id=$profile_id"}" title="{ts domain="de.systopia.donrec" 1=$profile.name}Delete profile %1{/ts}" class="action-item crm-hover-button">{ts domain="de.systopia.donrec"}Delete{/ts}</a>
+            {/if}
           </td>
         </tr>
       {/foreach}
