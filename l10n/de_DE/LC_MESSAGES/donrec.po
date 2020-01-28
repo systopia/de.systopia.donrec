@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SYSTOPIA Donation Receipts\n"
-"POT-Creation-Date: 2020-01-27 10:11+0100\n"
+"POT-Creation-Date: 2020-01-28 15:49+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <endres@systopia.de>\n"
@@ -12,7 +12,8 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
-msgid "variable name"
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
+msgid "Variable name"
 msgstr "Variablenname"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
@@ -220,6 +221,10 @@ msgid "External Tool: path to <code>pdfinfo</code>"
 msgstr "Externes Programm: Pfad zu <code>pdfinfo</code>"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfunite</code>"
+msgstr "Externes Programm: Pfad zu <code>pdfunite</code>"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Admin/Form/Setting/DonrecSettings.php
 msgid "Packet size"
 msgstr "Paketgröße"
 
@@ -245,6 +250,7 @@ msgstr "CSV Datei"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/CSV.php
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/PDF.php
 msgid "donation_receipts"
 msgstr "Zuwendungsbescheinigungen"
@@ -305,7 +311,7 @@ msgstr "pdfinfo %s wird nicht unterstützt"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "unknown pdfinfo version"
-msgstr "unbekannte pdfinfo version"
+msgstr "Unbekannte pdfinfo-Version"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo is not executable. check permissions"
@@ -317,7 +323,7 @@ msgstr "pdfinfo nicht gefunden"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "pdfinfo path is not set"
-msgstr "pdfinfo Pfad nicht gesetzt"
+msgstr "pdfinfo-Pfad nicht gesetzt"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid ".zip"
@@ -326,6 +332,34 @@ msgstr ".zip"
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/GroupedPDF.php
 msgid "%d-page"
 msgstr "%d-seitig"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "PDFs merged into one PDF file"
+msgstr "PDFs in einer PDF-Datei zusammengefasst"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "using pdfunite %s"
+msgstr "verwendet pdfunite %s"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "unknown pdfunite version"
+msgstr "Unbekannte pdfunite-Version"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite is not executable. check permissions"
+msgstr "pdfunite kann nicht ausgeführt werden, Berechtigungen überprüfen."
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite not found"
+msgstr "pdfunite nicht gefunden"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite path is not set"
+msgstr "pdfunite-Pfad nicht gesetzt"
+
+#: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/MergedPDF.php
+msgid ".pdf"
+msgstr ".pdf"
 
 #: /home/jens/repositories/de.systopia.donrec/CRM/Donrec/Exporters/PDF.php
 msgid "Individual PDFs"
@@ -933,10 +967,6 @@ msgstr "Sammelbescheinigung"
 msgid "Issued by contact"
 msgstr "Ausgestellt von Kontakt"
 
-#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
-msgid "Variable name"
-msgstr "Variablenname"
-
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile.hlp
 msgid ""
 "You can select the financial types that are eligable for donation receipts."
@@ -1422,6 +1452,17 @@ msgstr "BCC E-Mail Adresse"
 msgid "Return Path Email Address"
 msgstr "Return Path E-Mail Adresse"
 
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"The <code>pdfunite</code> tool is need for the merged PDF exporter.<br/>Ask "
+"your system administrator to set the correct setting, and install the tool "
+"if it's not there yet."
+msgstr ""
+"Das <code>pdfunite</code>-Programm wird für den zusammenfassenden PDF-"
+"Exporter benötigt.<br/>Bitten Sie Ihren Administrator das Programm auf dem "
+"Server zu installieren und Ihnen den korrekten Wert für diese Einstellung zu "
+"sagen."
+
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "Generator Packet Size"
 msgstr "Paketgröße"
@@ -1429,6 +1470,10 @@ msgstr "Paketgröße"
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
 msgid "The <code>pdfinfo</code> Tool"
 msgstr "Das <code>pdfinfo</code> Programm"
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "The <code>pdfunite</code> Tool"
+msgstr "Das <code>pdfunite</code>-Programm"
 
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
 msgid "New profile"
@@ -1447,8 +1492,16 @@ msgid "Profile ID"
 msgstr "Profil-ID"
 
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
-msgid "Default profile"
-msgstr "Standard-Profil"
+msgid "Sort descending"
+msgstr "Absteigend sortieren"
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Sort ascending"
+msgstr "Aufsteigend sortieren"
+
+#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Default"
+msgstr "Standard"
 
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
 msgid "Active"
@@ -1473,10 +1526,6 @@ msgstr "Letzte Verwendung"
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
 msgid "Operations"
 msgstr "Operationen"
-
-#: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
-msgid "Default"
-msgstr "Standard"
 
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Admin/Page/DonrecProfiles.tpl
 msgid "Inactive"
@@ -1914,6 +1963,12 @@ msgstr ""
 #: /home/jens/repositories/de.systopia.donrec/templates/CRM/Donrec/Page/Tempfile.tpl
 msgid "Temporary file dowload failed."
 msgstr "Download der temporären Datei fehlgeschlagen."
+
+#~ msgid "variable name"
+#~ msgstr "Variablenname"
+
+#~ msgid "Default profile"
+#~ msgstr "Standard-Profil"
 
 #~ msgid "BCC Email"
 #~ msgstr "BCC E-Mail"
