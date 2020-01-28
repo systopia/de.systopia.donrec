@@ -27,6 +27,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path')
     );
 
+    $this->addElement('text',
+      'pdfunite_path',
+      E::ts('External Tool: path to <code>pdfunite</code>'),
+      CRM_Donrec_Logic_Settings::get('donrec_pdfunite_path'));
+
     $this->addElement(
       'text',
       'packet_size',
@@ -68,6 +73,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults = parent::setDefaultValues();
 
     $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
+    $defaults['pdfunite_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfunite_path');
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
 
     return $defaults;
@@ -85,8 +91,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // save generic settings
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
+
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
+    }
+
+    if ($values['pdfunite_path']) {
+      CRM_Donrec_Logic_Settings::set('donrec_pdfunite_path', $values['pdfunite_path']);
     }
 
     $session = CRM_Core_Session::singleton();

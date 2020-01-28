@@ -32,6 +32,14 @@
         <td>{$form.pdfinfo_path.html}</td>
       </tr>
 
+      <tr class="crm-donrec-profile-form-block-pdfunite_path">
+        <td class="label">{$form.pdfunite_path.label} <a
+                  onclick='CRM.help("{ts domain="de.systopia.donrec"}The <code>pdfunite</code> Tool{/ts}", {literal}{"id":"id-pdfunite-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+                  class="helpicon">&nbsp;</a></td>
+        <td>{$form.pdfunite_path.html}</td>
+      </tr>
+
     </table>
 
   </fieldset>

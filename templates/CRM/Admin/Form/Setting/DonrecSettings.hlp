@@ -14,3 +14,7 @@
 {htxt id='id-pdfinfo-text'}
     <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
+
+{htxt id='id-pdfunite-text'}
+    <p>{ts domain="de.systopia.donrec"}The <code>pdfunite</code> tool is need for the merged PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
+{/htxt}

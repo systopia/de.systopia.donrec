@@ -47,4 +47,15 @@ return array(
     'is_contact' => 0,
     'description' => 'pdfinfo binary path',
   ),
+  'donrec_pdfunite_path' => array(
+    'group_name' => 'Donation Receipt Settings',
+    'group' => 'de.systopia',
+    'name' => 'donrec_pdfunite_path',
+    'type' => 'String',
+    'default' => "/usr/bin/pdfunite",
+    'add' => '4.3',
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'pdfunite binary path',
+  ),
  );
