@@ -53,7 +53,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements($profile) {
+  public function checkRequirements($profile = NULL) {
     // Check if email template is set up
     $template_id = CRM_Donrec_Logic_Settings::getEmailTemplateID($profile);
     if ($template_id) {

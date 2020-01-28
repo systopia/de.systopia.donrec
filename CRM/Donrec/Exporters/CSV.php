@@ -148,7 +148,7 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements() {
+  public function checkRequirements($profile = NULL) {
     return array('is_error' => FALSE);
   }
 

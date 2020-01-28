@@ -99,7 +99,7 @@ abstract class CRM_Donrec_Logic_Exporter {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  abstract function checkRequirements();
+  abstract function checkRequirements($profile = NULL);
 
 
   // HELPERS

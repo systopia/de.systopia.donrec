@@ -39,7 +39,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements() {
+  public function checkRequirements($profile = NULL) {
     $result = array();
 
     $result['is_error'] = FALSE;
