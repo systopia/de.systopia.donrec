@@ -25,17 +25,6 @@ return array(
     'is_contact' => 0,
     'description' => 'Packet size',
   ),
-  'donrec_email_stashed_settings' => array(
-    'group_name' => 'Donation Receipt Settings',
-    'group' => 'de.systopia',
-    'name' => 'donrec_email_stashed_settings',
-    'type' => 'String',
-    'default' => 0,
-    'add' => '4.3',
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => 'If the EmailPDF exporter modifies the email settings temporarily, the old settings will be stored here.',
-  ),
   'donrec_pdfinfo_path' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',

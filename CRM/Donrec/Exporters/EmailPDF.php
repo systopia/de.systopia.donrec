@@ -18,6 +18,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
 
   protected static $_sending_to_contact_id   = NULL;
   protected static $_sending_contribution_id = NULL;
+  protected static $_sending_with_profile_id = NULL;
   protected $_activity_type_id = NULL;
 
   /**
@@ -172,15 +173,11 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
         // in test mode: create message
         $this->updateProcessInformation($snapshot_line_id, array('sent' => $contact['email']));
       } else {
-        // in case this is required: make sure the bounce processing is temporarily changed
-        self::modifyBounceProcessing($receipt);
-
         // set the code for the header hook
         $this->setDonrecMailCode($receipt);
 
         // send the email
         civicrm_api3('MessageTemplate', 'send', array(
-          // TODO: Use template from profile, no MessageTemplate ID.
           'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])),
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
@@ -241,9 +238,6 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       CRM_Donrec_Logic_Exporter::addLogEntry($reply, $error_msg, CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
     }
 
-    // in case there was temporary changes: roll back
-    self::rollbackBounceProcessing();
-
     return $reply;
   }
 
@@ -295,78 +289,6 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
     }
   }
 
-  /** 
-   * If the profile setting return_path_email is set:
-   *  - that email is set as the default bounce address, storing the old one
-   *  - the task to send out newsletters will be disabled
-   *  - the old values of the two settings above will be stored
-   *
-   * @param \CRM_Donrec_Logic_Receipt $receipt
-   */
-  public static function modifyBounceProcessing($receipt) {
-    $stashed_settings = CRM_Donrec_Logic_Settings::get('donrec_email_stashed_settings');
-    if (!empty($stashed_settings)) return; // the settings are already manipulated
-
-    // check if somebody entered something
-    // TODO: Retrieve from profile.
-    $custom_return_path = $receipt->getProfile()->getDataAttribute('return_path_email');
-    if (empty($custom_return_path)) return; // nothing to be done here
-
-    // disable running mail delivery jobs
-    $stashed_settings = array('disabled_jobs' => array());
-    $active_jobs = civicrm_api3('Job', 'get', array(
-      'api_entity' => 'job',
-      'api_action' => 'process_mailing',
-      'is_active'  => 1));
-    foreach ($active_jobs['values'] as $job) {
-      $stashed_settings['disabled_jobs'][] = $job['id'];
-      civicrm_api3('Job', 'create', array(
-        'id' => $job['id'], 
-        'is_active' => 0));
-    }
-
-    // adjust the return path
-    $stashed_settings['modified_return_paths'] = array();
-    $old_return_path = CRM_Core_DAO::executeQuery("SELECT id AS account_id, return_path FROM `civicrm_mail_settings` WHERE is_default=1;");
-    while ($old_return_path->fetch()) {
-      $stashed_settings['modified_return_paths'][$old_return_path->account_id] = $old_return_path->return_path;
-      CRM_Core_DAO::executeQuery("UPDATE `civicrm_mail_settings` SET return_path=%1 WHERE id=%2;", array(
-        1 => array($custom_return_path, 'String'),
-        2 => array($old_return_path->account_id, 'Integer')));
-    }
-
-    // stash the changes
-    CRM_Donrec_Logic_Settings::set('donrec_email_stashed_settings', json_encode($stashed_settings));
-  }
-
-  /** 
-   * If the modifyBounceProcessing had modified the settings, this should roll it back
-   */
-  public static function rollbackBounceProcessing() {
-    $stashed_settings = CRM_Donrec_Logic_Settings::get('donrec_email_stashed_settings');
-    if (empty($stashed_settings)) return; // no changes
-
-    // decode data
-    $stashed_settings = json_decode($stashed_settings, TRUE);
-
-    // re-enable the jobs
-    foreach ($stashed_settings['disabled_jobs'] as $job_id) {
-      civicrm_api3('Job', 'create', array('id' => $job_id, 'is_active' => 1));
-    }
-
-    // restore return paths
-    foreach ($stashed_settings['modified_return_paths'] as $account_id => $original_return_path) {
-      if ($account_id && $original_return_path) {
-        CRM_Core_DAO::executeQuery("UPDATE `civicrm_mail_settings` SET return_path=%1 WHERE id=%2;", array(
-            1 => array($original_return_path, 'String'),
-            2 => array($account_id, 'Integer')));
-      }
-    }
-
-    // clear stashed_settings
-    CRM_Donrec_Logic_Settings::set('donrec_email_stashed_settings', '');
-  }
-
   /**
    * Add headers to sent donation receipts
    *
@@ -374,12 +296,13 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * @param $context
    */
   public static function addDonrecMailCodeHeader(&$params, $context) {
-    if (self::$_sending_to_contact_id && self::$_sending_contribution_id) {
+    if (self::$_sending_to_contact_id && self::$_sending_contribution_id && self::$_sending_with_profile_id) {
       $donrec_header = CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_PATTERN;
       $donrec_header = str_replace('{contact_id}', self::$_sending_to_contact_id, $donrec_header);
       $donrec_header = str_replace('{contribution_id}', self::$_sending_contribution_id, $donrec_header);
       $donrec_header = str_replace('{timestamp}', date('YmdHis'), $donrec_header);
       $params['headers'][CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_FIELD] = $donrec_header;
+      $params['returnPath'] = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('return_path_email');
     }
   }
 
@@ -391,6 +314,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   protected function setDonrecMailCode($receipt) {
     self::$_sending_contribution_id = $receipt['contribution_id'];
     self::$_sending_to_contact_id   = $receipt['contact_id'];
+    self::$_sending_with_profile_id = $receipt['profile_id'];
   }
 
   /**
@@ -399,5 +323,6 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
   protected function unsetDonrecMailCode() {
     self::$_sending_to_contact_id   = NULL;
     self::$_sending_contribution_id = NULL;
+    self::$_sending_with_profile_id = NULL;
   }
 }
