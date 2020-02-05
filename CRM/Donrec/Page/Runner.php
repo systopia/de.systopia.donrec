@@ -38,7 +38,7 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
 
     // fallback make sure there is a link.
     if (empty($url_back)) {
-      $url_back = CRM_Utils_System::url('civicrm/dashboard');
+      $url_back = CRM_Utils_System::url('civicrm/dashboard', NULL, FALSE, NULL, TRUE, FALSE, TRUE);
     }
 
     $this->assign('url_back', $url_back);
