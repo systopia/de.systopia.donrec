@@ -310,6 +310,15 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       )
     );
     $this->add(
+      'select',
+      'template_pdf_format_id',
+      E::ts('PDF format'),
+      CRM_Core_BAO_PdfFormat::getList(TRUE),
+      TRUE,
+      array('class' => 'crm-select2')
+    );
+
+    $this->add(
       'checkbox',
       'store_original_pdf',
       E::ts('Store original *.pdf files')
@@ -435,6 +444,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     // Set individual properties.
     $defaults['name'] = $this->profile->getName();
     $defaults['template'] = $this->profile->getTemplate()->getTemplateHTML();
+    $defaults['template_pdf_format_id'] = $this->profile->getTemplatePDFFormatId();
 
     // Set variables.
     $variable_count = 0;

@@ -71,6 +71,10 @@
     <p>{ts domain="de.systopia.donrec"}Configure the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
 {/htxt}
 
+{htxt id='id-template_pdf_format_id'}
+    <p>{ts domain="de.systopia.donrec"}Configure the PDF page format to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
+{/htxt}
+
 {htxt id='id-variables'}
     <p>{ts domain="de.systopia.donrec"}Variables allow you to inject extra dynamic values into the template, saving you from having to edit the template when there are only small changes, such as tax bill dates or tax exemption purposes. Note that you should not just edit the profile's variables once there are changes, but create a copy of the profile and adjust variable values within that copy, so that already issued receipts will still use the old values.{/ts}</p>
     <p>{ts domain="de.systopia.donrec"}You may add as many variables as you like by clicking <em>Add variable</em>. To delete a variable, empty its name and value.{/ts}</p>

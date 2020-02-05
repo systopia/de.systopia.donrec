@@ -140,6 +140,11 @@
               <td>{$form.template.html}</td>
             </tr>
 
+            <tr class="crm-donrec-profile-form-block-template_pdf_format_id">
+              <td class="label"><label for="template_pdf_format_id">{$form.template_pdf_format_id.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}PDF format{/ts}", {literal}{"id":"id-template_pdf_format_id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+              <td>{$form.template_pdf_format_id.html}</td>
+            </tr>
+
             <tr class="crm-donrec-profile-form-block-variables">
               <td class="label"><label>{ts domain="de.systopia.donrec"}Variables{/ts}</label> <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Variables{/ts}", {literal}{"id":"id-variables","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>
