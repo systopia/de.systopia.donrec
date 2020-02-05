@@ -215,9 +215,12 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     /**
      * Migrate profiles to new storage.
      */
-
-    // Create `donrec_profile` database table.
-    $query = "
+    $profiles = civicrm_api3('Setting', 'getvalue', array(
+      'name' => 'donrec_profiles',
+    ));
+    if (is_array($profiles)) {
+      // Create `donrec_profile` database table.
+      $query = "
       CREATE TABLE IF NOT EXISTS `donrec_profile` (
         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
         `name` char(64) NOT NULL,
@@ -231,62 +234,70 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         PRIMARY KEY (`id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
     ;";
-    CRM_Core_DAO::executeQuery($query);
+      CRM_Core_DAO::executeQuery($query);
 
-    // Add "profile_id" column to custom data table.
-    CRM_Donrec_DataStructure::update();
-    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
-    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+      // Add "profile_id" column to custom data table.
+      CRM_Donrec_DataStructure::update();
+      $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+      $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
 
-    // Retrieve profiles from settings, injecting default data if not set.
-    $profiles = civicrm_api3('Setting', 'getvalue', array(
-      'name' => 'donrec_profiles',
-    ));
-    if (!is_array($profiles)) {
-      $profiles = array();
-    }
-    if (empty($profiles['Default'])) {
-      $profiles['Default'] = CRM_Donrec_Logic_Profile::defaultProfileData()['data'];
-    }
+      // Retrieve profiles from settings, injecting default data if not set.
+      if (empty($profiles['Default'])) {
+        $profiles['Default'] = CRM_Donrec_Logic_Profile::defaultProfileData()['data'];
+      }
 
-    // Alter snapshot table structure.
-    $snapshot_query = "
+      // Alter snapshot table structure.
+      try {
+        $snapshot_query = "
       ALTER TABLE
         `donrec_snapshot`
       ADD COLUMN `profile_id` int(10) unsigned NOT NULL AFTER `snapshot_id`
     ;";
-    CRM_Core_DAO::executeQuery($snapshot_query);
+        CRM_Core_DAO::executeQuery($snapshot_query);
+      }
+      catch (Exception $exception) {
+        // Do nothing.
+      }
 
-    foreach ($profiles as $profile_name => $profile_data) {
-      // Copy template contents and remove template reference from profile data.
-      $template = civicrm_api3(
-        'MessageTemplate',
-        'getsingle',
-        array(
-          'id' => $profile_data['template'],
-          'return' => array(
-            'msg_html',
-            'pdf_format_id',
-          ),
-        )
-      );
-      unset($profile_data['template']);
+      foreach ($profiles as $profile_name => $profile_data) {
+        // Copy template contents and remove template reference from profile data.
+        if (isset($profile_data['template'])) {
+          $template = civicrm_api3(
+            'MessageTemplate',
+            'getsingle',
+            array(
+              'id' => $profile_data['template'],
+              'return' => array(
+                'msg_html',
+                'pdf_format_id',
+              ),
+            )
+          );
+          unset($profile_data['template']);
+        }
+        else {
+          $pdf_format = CRM_Core_BAO_PdfFormat::getPdfFormat('is_default', 1);
+          $template = array(
+            'msg_html' => CRM_Donrec_Logic_Template::getDefaultTemplateHTML(),
+            'pdf_format_id' => $pdf_format['id'],
+          );
+        }
 
-      // Rename profile settings.
-      $profile_data['from_email'] = $profile_data['donrec_from_email'];
-      unset($profile_data['donrec_from_email']);
+        // Rename profile settings.
+        $profile_data['from_email'] = $profile_data['donrec_from_email'];
+        unset($profile_data['donrec_from_email']);
 
-      // Copy formerly global settings to profiles.
-      $profile_data['email_template'] = Civi::settings()->get('donrec_email_template');
-      $profile_data['bcc_email'] = Civi::settings()->get('donrec_bcc_email');
-      $profile_data['return_path_email'] = Civi::settings()->get('donrec_return_path_email');
-      $profile_data['watermark_preset'] = Civi::settings()->get('donrec_watermark_preset');
-      $profile_data['language'] = Civi::settings()->get('donrec_language');
-      $profile_data['contribution_unlock_mode'] = Civi::settings()->get('donrec_contribution_unlock');
-      $profile_data['contribution_unlock_fields'] = Civi::settings()->get('donrec_contribution_unlock_fields');
+        // Copy formerly global settings to profiles.
+        $profile_data['email_template'] = Civi::settings()->get('donrec_email_template');
+        $profile_data['bcc_email'] = Civi::settings()->get('donrec_bcc_email');
+        $profile_data['return_path_email'] = Civi::settings()->get('donrec_return_path_email');
+        $profile_data['watermark_preset'] = Civi::settings()->get('donrec_watermark_preset');
+        $profile_data['language'] = Civi::settings()->get('donrec_language');
+        $profile_data['contribution_unlock_mode'] = Civi::settings()->get('donrec_contribution_unlock');
+        $profile_data['contribution_unlock_fields'] = Civi::settings()->get('donrec_contribution_unlock_fields');
 
-      // Set lock status for profiles that have already been used for issueing receipts.
-      $usage_query = "
+        // Set lock status for profiles that have already been used for issueing receipts.
+        $usage_query = "
         SELECT
           COUNT(`id`)
         FROM
@@ -294,12 +305,12 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         WHERE
           {$receipt_fields['profile']} = %1
         ;";
-      $usage_query_params = array(
-        1 => array($profile_name, 'String'),
-      );
-      $is_locked = (int)(bool) CRM_Core_DAO::singleValueQuery($usage_query, $usage_query_params);
+        $usage_query_params = array(
+          1 => array($profile_name, 'String'),
+        );
+        $is_locked = (int)(bool) CRM_Core_DAO::singleValueQuery($usage_query, $usage_query_params);
 
-      $query = "
+        $query = "
         INSERT INTO
           `donrec_profile`
         SET
@@ -308,23 +319,27 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
            `is_default` = %3,
            `is_locked` = %4,
            `template` = %5,
-           `template_pdf_format_id` = %6,
-           `variables` = %7            
+           `variables` = %6            
       ;";
-      $query_params = array(
-        1 => array($profile_name, 'String'),
-        2 => array(serialize($profile_data), 'String'),
-        3 => array((int)($profile_name == 'Default'), 'Int'),
-        4 => array($is_locked, 'Int'),
-        5 => array($template['msg_html'], 'String'),
-        6 => array($template['pdf_format_id'], 'String'),
-        7 => array(serialize(array()), 'String'),
-      );
+        $query_params = array(
+          1 => array($profile_name, 'String'),
+          2 => array(serialize($profile_data), 'String'),
+          3 => array((int)($profile_name == 'Default'), 'Int'),
+          4 => array($is_locked, 'Int'),
+          5 => array($template['msg_html'], 'String'),
+          6 => array(serialize(array()), 'String'),
+        );
+        if (isset($template['pdf_format_id'])) {
+          $query .= "
+        ,`template_pdf_format_id` = %7
+        ";
+          $query_params[7] = array($template['pdf_format_id'], 'Int');
+        }
 
-      CRM_Core_DAO::executeQuery($query, $query_params);
+        CRM_Core_DAO::executeQuery($query, $query_params);
 
-      // Set "profile_id" custom fields.
-      $profile_query = "
+        // Set "profile_id" custom fields.
+        $profile_query = "
         SELECT
           *
         FROM
@@ -332,15 +347,15 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         WHERE
           `name` = %1
       ;";
-      $donrec_profile_dao = CRM_Core_DAO::executeQuery(
-        $profile_query,
-        array(
-          1 => array($profile_name, 'String'),
-        )
-      );
-      $donrec_profile_dao->fetch();
+        $donrec_profile_dao = CRM_Core_DAO::executeQuery(
+          $profile_query,
+          array(
+            1 => array($profile_name, 'String'),
+          )
+        );
+        $donrec_profile_dao->fetch();
 
-      $custom_values_query = "
+        $custom_values_query = "
         UPDATE
           {$receipt_table}
         SET
@@ -348,16 +363,17 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         WHERE
           `{$receipt_fields['profile']}` = %2
       ;";
-      CRM_Core_DAO::executeQuery(
-        $custom_values_query,
-        array(
-          1 => array($donrec_profile_dao->id, 'Int'),
-          2 => array($donrec_profile_dao->name, 'String'),
-        )
-      );
+        CRM_Core_DAO::executeQuery(
+          $custom_values_query,
+          array(
+            1 => array($donrec_profile_dao->id, 'Int'),
+            2 => array($donrec_profile_dao->name, 'String'),
+          )
+        );
 
-      // Update snapshot table with profile IDs.
-      $snapshot_query = "
+        // Update snapshot table with profile IDs.
+        try {
+          $snapshot_query = "
         UPDATE
           `donrec_snapshot`
         SET
@@ -365,35 +381,45 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         WHERE
           `profile` = %2
       ;";
-      CRM_Core_DAO::executeQuery(
-        $snapshot_query,
-        array(
-          1 => array($donrec_profile_dao->id, 'Int'),
-          2 => array($donrec_profile_dao->name, 'String'),
-        )
-      );
-    }
+          CRM_Core_DAO::executeQuery(
+            $snapshot_query,
+            array(
+              1 => array($donrec_profile_dao->id, 'Int'),
+              2 => array($donrec_profile_dao->name, 'String'),
+            )
+          );
+        }
+        catch (Exception $exception) {
+          // Do nothing.
+        }
+      }
 
-    // Alter snapshot table structure.
-    $snapshot_query = "
+      // Alter snapshot table structure.
+      try {
+        $snapshot_query = "
       ALTER TABLE
         `donrec_snapshot`
       DROP COLUMN `profile`
     ;";
-    CRM_Core_DAO::executeQuery($snapshot_query);
+        CRM_Core_DAO::executeQuery($snapshot_query);
+      }
+      catch (Exception $exception) {
+        // Do nothing.
+      }
 
 
-    // Remove (revert) old settings entries.
-    Civi::settings()->revert('donrec_profiles');
-    Civi::settings()->revert('donrec_email_template');
-    Civi::settings()->revert('donrec_bcc_email');
-    Civi::settings()->revert('donrec_return_path_email');
-    Civi::settings()->revert('donrec_watermark_preset');
-    Civi::settings()->revert('donrec_language');
-    Civi::settings()->revert('donrec_contribution_unlock');
-    Civi::settings()->revert('donrec_contribution_unlock_fields');
+      // Remove (revert) old settings entries.
+      Civi::settings()->revert('donrec_profiles');
+      Civi::settings()->revert('donrec_email_template');
+      Civi::settings()->revert('donrec_bcc_email');
+      Civi::settings()->revert('donrec_return_path_email');
+      Civi::settings()->revert('donrec_watermark_preset');
+      Civi::settings()->revert('donrec_language');
+      Civi::settings()->revert('donrec_contribution_unlock');
+      Civi::settings()->revert('donrec_contribution_unlock_fields');
 
-    CRM_Core_Invoke::rebuildMenuAndCaches();
+      CRM_Core_Invoke::rebuildMenuAndCaches();
+    }
 
     return TRUE;
   }
