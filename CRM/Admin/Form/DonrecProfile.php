@@ -502,6 +502,17 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       } catch (Exception $exception) {
         $this->_errors['id_pattern'] = E::ts('One of the Receipt ID patterns are invalid! Changes NOT saved!');
       }
+      /**
+       * Validate PDF format
+       */
+      if (!isset($values['template_pdf_format_id'])) {
+        $this->_errors['template_pdf_format_id'] = E::ts(
+          'Please select a PDF format. If there are none, create one <a href="%1" target="_blank">here</a>',
+          array(
+            1 => CRM_Utils_System::url('civicrm/admin/pdfFormats', 'reset=1'),
+          )
+        );
+      }
 
       /**
        * Validate variables.
