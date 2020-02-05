@@ -19,9 +19,11 @@ class CRM_Donrec_BaseTestCase extends CiviUnitTestCase {
   /**
    * creates a varible amount of contributions
    *
+   * @param int $count
+   *
+   * @return array with contribution ids
    * @author endres -at- systopia.de
    *         bochan -at- systopia.de
-   * @return array with contribution ids
    */
   function generateContributions($count = 2) {
     $contribution_status_pending = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Pending', 'name');

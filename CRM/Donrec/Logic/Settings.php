@@ -21,6 +21,11 @@ class CRM_Donrec_Logic_Settings {
 
   /**
    * generic set setting
+   *
+   * @param string $name
+   *
+   * @return array
+   * @throws \CiviCRM_API3_Exception
    */
   public static function get($name) {
     return civicrm_api3('Setting', 'getvalue', array('name' => $name));
@@ -28,7 +33,10 @@ class CRM_Donrec_Logic_Settings {
 
   /**
    * generic set setting
-   */
+   * @param string $name
+   * @param mixed $value
+   * @throws \CiviCRM_API3_Exception
+*/
   public static function set($name, $value) {
     civicrm_api3('Setting', 'create', array($name => $value));
   }
@@ -42,17 +50,10 @@ class CRM_Donrec_Logic_Settings {
     $relevant_templates = array();
     $all_templates = civicrm_api3('MessageTemplate', 'get', array(
       'is_active'    => 1,
-      'option.limit' => 9999));
+      'option.limit' => 0));
     foreach ($all_templates['values'] as $template) {
       // TODO: filter?
       $relevant_templates[$template['id']] = $template['msg_title'];
-    }
-
-    // add default, if not yet in there
-    $default_template_id = CRM_Donrec_Logic_Template::getDefaultTemplateID();
-    if (!empty($default_template_id) && empty($relevant_templates[$default_template_id])) {
-      $default_template = civicrm_api3('MessageTemplate', 'getsingle', array('id' => $default_template_id));
-      $relevant_templates[$default_template_id] = $default_template['msg_title'];
     }
 
     return $relevant_templates;
@@ -99,10 +100,12 @@ class CRM_Donrec_Logic_Settings {
   /**
    * Get the internal ID of the selected template for sending emails
    *
+   * @param \CRM_Donrec_Logic_Profile $profile
+   *
    * @return int
    */
-  public static function getEmailTemplateID() {
-    $template_id = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_email_template'));
+  public static function getEmailTemplateID($profile) {
+    $template_id = $profile->getDataAttribute('email_template');
     if ($template_id >= 1) {
       return $template_id;
     } else {
@@ -148,10 +151,10 @@ class CRM_Donrec_Logic_Settings {
   public static function validateContribution($contribution_id, $old_values, $new_values, $throw_exception = FALSE) {
     $errors = array();
 
-    $has_item = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id);
-    $in_snapshot = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id);
+    $receipt_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id, TRUE);
+    $snapshot_id = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id, TRUE);
 
-    if ($has_item || $in_snapshot) {
+    if ($receipt_id || $snapshot_id) {
       // Get all locked fields.
       $unlockable_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
       // Add custom fields to array of locked fields.
@@ -161,7 +164,16 @@ class CRM_Donrec_Logic_Settings {
       $unlockable_fields = array_merge($unlockable_fields, $custom_fields);
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
-      switch (CRM_Donrec_Logic_Settings::get('donrec_contribution_unlock')) {
+      // Retrieve unlock settings from profile.
+      if ($snapshot_id) {
+        $unlock_mode = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      }
+      elseif ($receipt_id) {
+        $unlock_mode = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      }
+      switch ($unlock_mode) {
         case 'unlock_all':
           $allowed = $unlockable_fields;
           break;
@@ -170,7 +182,7 @@ class CRM_Donrec_Logic_Settings {
           break;
         case 'unlock_selected':
           $allowed = array_keys(array_filter(
-            CRM_Donrec_Logic_Settings::get('donrec_contribution_unlock_fields'),
+            $unlock_fields,
             function($value) {
               return $value == 1;
             }
@@ -215,7 +227,7 @@ class CRM_Donrec_Logic_Settings {
               }
             }
 
-            $errors[$col] = sprintf(ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'.", array('domain' => 'de.systopia.donrec')), ts($col, array('domain' => 'de.systopia.donrec')));
+            $errors[$col] = sprintf(E::ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."), ts($col));
             if ($throw_exception) {
               throw new Exception($errors[$col]);
             }

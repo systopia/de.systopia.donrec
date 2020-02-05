@@ -18,12 +18,17 @@ class CRM_Donrec_Logic_File {
    * This function will take any file and make it temporarily available
    * for download
    *
-   * @param path          where to find the file
-   * @param name          end-user name of the file
-   * @param deleteSource  if true, the file will be moved to another place rather than copied
-   * @param mimetype      the document's MIME type. Autodetect if null
+   * @param string $path
+   *   where to find the file
+   * @param string $name
+   *   end-user name of the file
+   * @param bool $deleteSource
+   *   if true, the file will be moved to another place rather than copied
+   * @param string $mimetype
+   *   the document's MIME type. Autodetect if null
    *
-   * @return a string with an URL where to download the file
+   * @return string
+   *   a string with an URL where to download the file
    */
   public static function createTemporaryFile($path, $name = null, $deleteSource = true, $mimetype = null) {
     return CRM_Donrec_Page_Tempfile::createFromFile($path, $name, $deleteSource, $mimetype);
@@ -33,12 +38,16 @@ class CRM_Donrec_Logic_File {
    * This function will take any file and make it permanently
    * available as a CiviCRM File entity.
    *
-   * @param path          where to find the file
-   * @param contact_id    which contact to connect to
+   * @param string $path          where to find the file
+   * @param string $name
+   * @param int $contact_id    which contact to connect to
    *
-   * @param mimetype      the document's MIME type. Autodetect if null
+   * @param string $mimetype      the document's MIME type. Autodetect if null
    *
-   * @return an array containing the created file object, including a generated url
+   * @param string $description
+   *
+   * @return array
+   *   An array containing the created file object, including a generated url
    */
   public static function createPermanentFile($path, $name = null, $contact_id, $mimetype = null, $description = '') {
     $config = CRM_Core_Config::singleton();
@@ -90,9 +99,13 @@ class CRM_Donrec_Logic_File {
   /**
    * Will create a suitable file for writing to
    *
-   * @param preferredName The preferred name. There will probably by a suffix appended to it
+   * @param string $preferredName
+   *   The preferred name. There will probably by a suffix appended to it
    *
-   * @return a string with a file path
+   * @param string $suffix
+   *
+   * @return string
+   *   A string with a file path
    */
   public static function makeFileName($preferredName, $suffix='') {
     // generate a uniq temp file
@@ -110,8 +123,9 @@ class CRM_Donrec_Logic_File {
 
   /**
    * Delete the a file
-   * @param $fid - civicrm_file.id or civicrm_file.uri
-   * @return TRUE if file was deleted, FALSE otherwise
+   * @param $id - civicrm_file.id or civicrm_file.uri
+   * @return bool
+   *   TRUE if file was deleted, FALSE otherwise
    */
 
   public static function deleteFile($id) {
@@ -142,8 +156,9 @@ class CRM_Donrec_Logic_File {
 
   /**
    * Get civicrm_file.uri
-   * @param $id - civicrm_file.id
-   * @return civicrm_file.uri or NULL
+   * @param int $id - civicrm_file.id
+   * @return string | NULL
+   *   civicrm_file.uri or NULL
    */
   public static function getUri($id) {
     $query = "
@@ -161,15 +176,15 @@ class CRM_Donrec_Logic_File {
   /**
    * Generate a valid download link
    *
-   * @param $file_id integer   the file entity ID
-   * @param $entity_id integer the connected entity's ID (probably contact id)
+   * @param int $file_id   the file entity ID
+   * @param int $contact_id the connected entity's ID (probably contact id)
    *
    * @return string valid link
    */
   public static function getPermanentURL($file_id, $contact_id) {
     try {
       $file = civicrm_api3('File', 'getsingle', ['id' => $file_id]);
-      return CRM_Utils_System::url("civicrm/file", "reset=1&id={$file_id}&eid={$entity_id}&filename={$file['uri']}&mime-type={$file['mime_type']}");
+      return CRM_Utils_System::url("civicrm/file", "reset=1&id={$file_id}&eid={$contact_id}&filename={$file['uri']}&mime-type={$file['mime_type']}");
     } catch(Exception $ex) {
       CRM_Core_Session::setStatus(ts("Download failed: ", ['domain' => 'de.systopia.donrec']) . $ex->getMessage());
       return CRM_Utils_System::url("civicrm/dashboard");
@@ -178,8 +193,8 @@ class CRM_Donrec_Logic_File {
 
   /**
    * Get absolute Path for File
-   * @param $fid - either civicrm_file.id or civicrm_file.uri
-   * @return TRUE if file was deleted, FALSE otherwise
+   * @param int | string $fid - either civicrm_file.id or civicrm_file.uri
+   * @return string
    */
 
   public static function getAbsolutePath($fid) {

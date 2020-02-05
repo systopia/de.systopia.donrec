@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
@@ -15,7 +17,7 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge extends CRM_Donrec_Logic_W
   }
 
   public static function getLabel() {
-    return ts('SVG across large', array('domain' => 'de.systopia.donrec'));
+    return E::ts('SVG across large');
   }
 
   public function injectMarkup(&$html, $pdf_format) {

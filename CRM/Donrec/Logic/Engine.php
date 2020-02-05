@@ -8,12 +8,16 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class represents the engine for donation receipt runs
  */
 class CRM_Donrec_Logic_Engine {
 
   /**
+   * @var \CRM_Donrec_Logic_Snapshot
+   *
    * stores the related snapshot object
    */
   protected $snapshot = NULL;
@@ -38,13 +42,18 @@ class CRM_Donrec_Logic_Engine {
    * and the given parameters. If anything is wrong,
    * an error message will be returned.
    *
+   * @param $snapshot_id
+   * @param array $params
+   * @param bool $testMode
+   *
    * @return string with an error message on fail, FALSE otherwise
+   * @throws \CiviCRM_API3_Exception
    */
   public function init($snapshot_id, $params=array(), $testMode = FALSE) {
     $this->parameters = $params;
     $this->snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     if ($this->snapshot==NULL) {
-      return sprintf(ts("Snapshot [%d] does not exist (any more)!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
+      return sprintf(E::ts("Snapshot [%d] does not exist (any more)!"), $snapshot_id);
     }
 
     // now, check if it's ours:
@@ -53,16 +62,16 @@ class CRM_Donrec_Logic_Engine {
     if ($user_id != $snapshot_creator_id && (!$testMode)) {
       // load creator name
       $creator = civicrm_api3('Contact', 'getsingle', array('id' => $snapshot_creator_id));
-      return sprintf(ts("Snapshot [%d] belongs to user '%s'[%s]!", array('domain' => 'de.systopia.donrec')), $snapshot_id, $creator['display_name'], $snapshot_creator_id);
+      return sprintf(E::ts("Snapshot [%d] belongs to user '%s'[%s]!"), $snapshot_id, $creator['display_name'], $snapshot_creator_id);
     }
 
     // now, if this is supposed to be test mode, there must not be a real status
     if ($this->isTestRun()) {
       $snapshot_status = $this->getSnapshotStatus();
       if ($snapshot_status=='RUNNING') {
-        return sprintf(ts("Snapshot [%d] is already processing!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
+        return sprintf(E::ts("Snapshot [%d] is already processing!"), $snapshot_id);
       } elseif ($snapshot_status=='COMPLETE') {
-        return sprintf(ts("Snapshot [%d] is already completed!", array('domain' => 'de.systopia.donrec')), $snapshot_id);
+        return sprintf(E::ts("Snapshot [%d] is already completed!"), $snapshot_id);
       }
     }
 
@@ -259,7 +268,9 @@ class CRM_Donrec_Logic_Engine {
   /**
    * check what state the snapshot is in
    *
-   * @return possible results:
+   * @param null $states
+   * @return string
+   * possible results:
    *  'INIT':     freshly created snapshot
    *  'TESTING':  there is a test ongoing
    *  'TESTED':   there was a test and it's complete
@@ -329,8 +340,10 @@ class CRM_Donrec_Logic_Engine {
 
 
   /**
-  * get or create a pdf file for the snapshot line
-  */
+   * get or create a pdf file for the snapshot line
+   * @param $snapshot_line_ids
+   * @return mixed
+   */
   public function getPDF($snapshot_line_ids) {
     // get the proc-info for only one of the snapshot-lines
     // should be the same for all others
@@ -349,15 +362,17 @@ class CRM_Donrec_Logic_Engine {
       $tpl_param = array();
       $profile = $this->snapshot->getProfile();
       $template = $profile->getTemplate();
-      $filename = $template->generatePDF($tokens, $tpl_param);
+      $filename = $template->generatePDF($tokens, $tpl_param, $profile);
     }
 
     return $filename;
   }
 
   /**
-  * get or create a pdf file for the snapshot line
-  */
+   * get or create a pdf file for the snapshot line
+   * @param $snapshot_line_id
+   * @param $file
+   */
   public function setPDF($snapshot_line_id, $file) {
     $proc_info = $this->snapshot->getProcessInformation($snapshot_line_id);
     $proc_info['PDF']['pdf_file'] = $file;

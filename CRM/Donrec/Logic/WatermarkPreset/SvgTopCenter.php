@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 class CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
@@ -15,7 +17,7 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter extends CRM_Donrec_Logic_Wat
   }
 
   public static function getLabel() {
-    return ts('SVG top center', array('domain' => 'de.systopia.donrec'));
+    return E::ts('SVG top center');
   }
 
   public function injectMarkup(&$html, $pdf_format) {

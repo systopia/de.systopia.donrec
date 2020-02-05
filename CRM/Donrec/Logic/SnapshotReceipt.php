@@ -14,6 +14,9 @@
  */
 class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
+  /**
+   * @var \CRM_Donrec_Logic_Snapshot $snapshot
+   */
   protected $snapshot;
   protected $snapshot_lines;
   protected $is_test;
@@ -28,7 +31,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $this->is_test = $is_test;
 
     // generate receiptID
-    $pattern = $this->getProfile()->get('id_pattern');
+    $pattern = $this->getProfile()->getDataAttribute('id_pattern');
     $id_generator = new CRM_Donrec_Logic_IDGenerator($pattern, $this->is_test);
     $this->receipt_id = $id_generator->generateID($snapshot_lines);
   }
@@ -44,7 +47,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line ID of the first line
    *
-   * @return snapshot line ID
+   * @return int snapshot line ID
    */
   public function getID() {
     return reset($this->snapshot_lines)['id'];
@@ -53,7 +56,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line ID of the first line
    *
-   * @return snapshot line ID
+   * @return int
+   *   unique line ID
    */
   public function getReceiptID() {
     return $this->receipt_id;
@@ -62,7 +66,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * gets the line IDs
    *
-   * @return snapshot line IDs
+   * @return array
+   *   line IDs
    */
   public function getIDs() {
     foreach ($this->snapshot_lines as $snapshot_line) {
@@ -124,7 +129,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
       // update general values
       $values['id']                     = $snapshot_line_id;    // just use one of them as ID
-      $values['profile']                = $snapshot_line['profile'];
+      $values['profile_id']             = $snapshot_line['profile_id'];
       $values['contact_id']             = $snapshot_line['contact_id'];
       $values['currency']               = $snapshot_line['currency'];
       $values['date_from']              = $snapshot_line['date_from'];
@@ -138,7 +143,7 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
     $values['addressee']   = $this->getAddressee($values['contact_id']);
 
     // add dynamically created tokens
-    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values);
+    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values, self::getProfile());
 
     return $values;
   }
@@ -149,7 +154,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * This should only include the display properties, and be performance optimized
    *
-   * @return an array of all properties needed for display
+   * @return array
+   *   array of all properties needed for display
    */
   public function getDisplayTokens() {
     // TODO: optimize
@@ -158,6 +164,10 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * read out the contributor
+   *
+   * @param int $contact_id
+   *
+   * @return array
    */
   public function getContributor($contact_id) {
     if ($this->cached_contributors[$contact_id]) {
@@ -193,7 +203,9 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * get addressee
-   */
+   * @param int $contact_id
+   * @return array|mixed|null
+*/
   public function getAddressee($contact_id) {
     if ($this->cached_addressees[$contact_id]) {
       return $this->cached_addressees[$contact_id];
@@ -215,6 +227,8 @@ class CRM_Donrec_Logic_SnapshotReceipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * get the profile object that was used to create this receipt
+   *
+   * @return \CRM_Donrec_Logic_Profile
    */
   public function getProfile() {
     return $this->snapshot->getProfile();

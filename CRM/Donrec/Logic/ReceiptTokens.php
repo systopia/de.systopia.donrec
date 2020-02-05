@@ -23,7 +23,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   protected static $STORED_TOKENS = array(
       'id'                        => 'Receipt ID',
       'receipt_id'                => 'Custom Receipt ID',
-      'profile'                   => 'Profile',
+      'profile_id'                => 'Profile ID',
       'status'                    => 'Status',
       'type'                      => 'Single or bulk',
       'issued_by'                 => 'Creator Contact ID',
@@ -145,8 +145,8 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    * Takes a full list of token -> values and
    * adds the dynamic tokens
    */
-  public static function addDynamicTokens(&$values) {
-    $language = CRM_Donrec_Lang::getLanguage();
+  public static function addDynamicTokens(&$values, $profile) {
+    $language = CRM_Donrec_Lang::getLanguage(NULL, $profile);
 
     if (!empty($values['issued_by'])) {
       // add created_by_display_name
@@ -207,14 +207,14 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile']);
+    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile_id']);
     if ($values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
     } elseif ($values['status'] == 'COPY') {
-      $values['watermark'] = $profile->get('copy_text');
+      $values['watermark'] = $profile->getDataAttribute('copy_text');
     } else {
       // in all other cases, it's INVALID/DRAFT:
-      $values['watermark'] = $profile->get('draft_text');
+      $values['watermark'] = $profile->getDataAttribute('draft_text');
     }
 
     // copy contributor values to addressee, if not set separately
@@ -235,7 +235,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   /**
    * HELPER to verify that all the STORED_TOKENS have been set in the given value array
    *
-   * @return an array with all missing tokens
+   * @param array $values
+   *
+   * @return array
+   *   array with all missing tokens
    */
   public static function missingTokens($values) {
     $missing_tokens = array();
@@ -270,6 +273,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get address tokens for a given contact with fallback type
+   * @param int $contact_id
+   * @param $location_type
+   * @param $fallback_location_type
+   * @return array|null
    */
   public static function lookupAddressTokens($contact_id, $location_type, $fallback_location_type) {
     if (empty($contact_id)) return array();
@@ -296,6 +303,9 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get address tokens for a given contact
+   * @param int $contact_id
+   * @param $location_type
+   * @return array | null
    */
   private static function _lookupAddress($contact_id, $location_type) {
     if (empty($contact_id)) return NULL;

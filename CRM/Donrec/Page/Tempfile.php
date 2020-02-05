@@ -55,13 +55,14 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
   /**
    * This function will take any file and make it temporarily available
    * for download
-   * 
-   * @param path          where to find the file
-   * @param name          end-user name of the file
-   * @param deleteSource  if true, the file will be moved to another place rather than copied
-   * @param mimetype      the document's MIME type. Autodetect if null
-   * 
-   * @return a string with an URL where to download the file
+   *
+   * @param string $path
+   * @param null $name
+   * @param bool $deleteSource
+   * @param null $mimetype
+   *
+   * @return string | NULL
+   *   a string with an URL where to download the file
    */
   public static function createFromFile($path, $name = null, $deleteSource = true, $mimetype = null) {
     $tempfile = tempnam(sys_get_temp_dir(), self::PREFIX);

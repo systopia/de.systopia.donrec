@@ -1,0 +1,119 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2020 SYSTOPIA                       |
+| Author: J. Schuppe (schuppe@systopia.de)               |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| License: AGPLv3, see LICENSE file                      |
++--------------------------------------------------------*}
+
+{htxt id='id-contribution-types'}
+    <p>{ts domain="de.systopia.donrec"}You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs.{/ts}</p>
+{/htxt}
+
+{htxt id='id-watermark-preset'}
+    <p>{ts domain="de.systopia.donrec"}Select a pre-configured way of displaying watermarks on copies and drafts.{/ts}</p>
+{/htxt}
+
+{htxt id='id-draft-text'}
+    <p>{ts domain="de.systopia.donrec"}This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons.{/ts}</p>
+{/htxt}
+
+{htxt id='id-copy-text'}
+    <p>{ts domain="de.systopia.donrec"}This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons.{/ts}</p>
+{/htxt}
+
+{htxt id='id-store_original_pdf'}
+    <p>{ts domain="de.systopia.donrec"}When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team.{/ts}</p>
+{/htxt}
+
+{htxt id='id-packet-size'}
+    <p>{ts domain="de.systopia.donrec"}Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run.{/ts}</p>
+{/htxt}
+
+{htxt id='id-language'}
+    <p>{ts domain="de.systopia.donrec"}The language setting is especially important to the textual representation of the amount.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}Not all languages that can be selected here have been implemented. If not implemented, the text defaults to English.{/ts}</p>
+{/htxt}
+
+{htxt id='id-pdfinfo-text'}
+    <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
+{/htxt}
+
+{htxt id='id-contribution_unlock_mode'}
+    <p>{ts domain="de.systopia.donrec"}Some fields of receipted contributions are locked for editing to prevent accidentally causing inconsistencies between contribution records and already issued donation receipts.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}Select which fields of receipted contributions should be unlocked for editing.{/ts}</p>
+    <ul>
+      <li><em>{ts domain="de.systopia.donrec"}All fields{/ts}</em>: {ts domain="de.systopia.donrec"}Unlock all fields for editing.{/ts}</li>
+      <li><em>{ts domain="de.systopia.donrec"}No fields{/ts}</em>: {ts domain="de.systopia.donrec"}Do not unlock any field for editing.{/ts}</li>
+      <li><em>{ts domain="de.systopia.donrec"}Selected fields{/ts}</em>: {ts domain="de.systopia.donrec"}Unlock only the selected fields for editing{/ts}</li>
+    </ul>
+    <p>{ts domain="de.systopia.donrec"}Note that editing fields that appear on issued receipts may be considered fraudulent behavior by tax authorities! Only unlock contribution fields for editing when you know what you are doing!{/ts}</p>
+{/htxt}
+
+{htxt id='id-address-legal'}
+    <p>{ts domain="de.systopia.donrec"}Select the address type where the legal address (wrt IRS) of the donor can be found.{/ts}</p>
+{/htxt}
+
+{htxt id='id-address-shipping'}
+    <p>{ts domain="de.systopia.donrec"}Select the postal address type where the donation receipt should be mailed to.{/ts}</p>
+{/htxt}
+
+{htxt id='id-address-fallback'}
+    <p>{ts domain="de.systopia.donrec"}In case the first address is empty, this is the fallback address to be used insted.{/ts}</p>
+{/htxt}
+
+{htxt id='id-profile'}
+    <p>{ts domain="de.systopia.donrec"}Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile.{/ts}</p>
+{/htxt}
+
+{htxt id='id-template'}
+    <p>{ts domain="de.systopia.donrec"}Configure the template to be used for creating donation receipt PDFs with the current profile.{/ts}</p>
+{/htxt}
+
+{htxt id='id-variables'}
+    <p>{ts domain="de.systopia.donrec"}Variables allow you to inject extra dynamic values into the template, saving you from having to edit the template when there are only small changes, such as tax bill dates or tax exemption purposes. Note that you should not just edit the profile's variables once there are changes, but create a copy of the profile and adjust variable values within that copy, so that already issued receipts will still use the old values.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}You may add as many variables as you like by clicking <em>Add variable</em>. To delete a variable, empty its name and value.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}Use Smarty variables syntax to place the variable values in your template. A variable with the name <em>example_var</em> would be placed in the template like this: <code>{literal}{$example_var}{/literal}</code>{/ts}</p>
+{/htxt}
+
+{htxt id='id-email-template'}
+    <p>{ts domain="de.systopia.donrec"}In case you select the 'send via email' exporter, this template will be used for the email body.{/ts}</p>
+{/htxt}
+
+{htxt id='id-bcc-email'}
+    <p>{ts domain="de.systopia.donrec"}You can set an email address that will receive every email sent as a blind copy.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt.{/ts}</p>
+{/htxt}
+
+{htxt id='id-return-path-email'}
+    <p>{ts domain="de.systopia.donrec"}It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}By providing an email address here, the following happens during live generation:{/ts}
+        <ul>
+            <li>{ts domain="de.systopia.donrec"}The email is set as your default bounce address{/ts}</li>
+            <li>{ts domain="de.systopia.donrec"}The task to send out newsletters will be disabled.{/ts}</li>
+        </ul>
+    </p>
+    <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail.{/ts}</p>
+{/htxt}
+
+{htxt id='id-id_pattern'}
+    <p>
+        {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}
+        {ts domain="de.systopia.donrec"}The following tokens are available:{/ts}
+        <ul>
+            <li><code>&#123;serial&#125;</code>: {ts domain="de.systopia.donrec"}Serial number. The system will make sure this is unique and continuous{/ts}</li>
+            <li><code>&#123;issue_year&#125;</code>: {ts domain="de.systopia.donrec"}Year in which the donation receipt was generated{/ts}</li>
+            <li><code>&#123;contribution_year&#125;</code>: {ts domain="de.systopia.donrec"}Year in which contribution(s) was received. If there is multiple years, the maximum is used.{/ts}</li>
+            <li><code>&#123;contact_id&#125;</code>: {ts domain="de.systopia.donrec"}The CiviCRM ID of the donor{/ts}</li>
+        </ul>
+    </p>
+
+    <p>
+        {ts domain="de.systopia.donrec"}The following restrictions exist for the pattern:{/ts}
+        <ol>
+            <li>{ts domain="de.systopia.donrec"}There has to be exactly one <code>&#123;serial&#125;</code> token.{/ts}</li>
+            <li>{ts domain="de.systopia.donrec"}All tokens cannot be used adjacent to digits or other tokens. Use other characters like dashes or spaces to separate them.{/ts}</li>
+        </ol>
+    </p>
+{/htxt}

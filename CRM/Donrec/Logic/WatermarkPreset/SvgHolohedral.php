@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 class CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral extends CRM_Donrec_Logic_WatermarkPreset {
 
   public static function getName() {
@@ -15,7 +17,7 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral extends CRM_Donrec_Logic_Wa
   }
 
   public static function getLabel() {
-    return ts('SVG holohedral', array('domain' => 'de.systopia.donrec'));
+    return E::ts('SVG holohedral');
   }
 
   public function injectMarkup(&$html, $pdf_format) {

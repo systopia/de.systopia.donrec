@@ -8,27 +8,32 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This exporter creates CSV files
  */
 class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
 
   /**
-   * @return the display name
+   * @return string
+   *   the display name
    */
   static function name() {
-    return ts("CSV File", array('domain' => 'de.systopia.donrec'));
+    return E::ts("CSV File");
   }
 
   /**
-   * @return a html snippet that defines the options as form elements
+   * @return string
+   *   a html snippet that defines the options as form elements
    */
   static function htmlOptions() {
     return '';
   }
 
   /**
-   * @return the ID of this importer class
+   * @return string
+   *   the ID of this importer class
    */
   public function getID() {
     return 'CSV';
@@ -38,7 +43,11 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
   /**
    * export an individual receipt
    *
-   * @return TRUE on success; FALSE on failure
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
+   *   TRUE on success; FALSE on failure
    */
   public function exportSingle($snapshot_receipt, $is_test) {
     return $this->exportLine($snapshot_receipt, $is_test, false);
@@ -47,7 +56,11 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
   /**
    * export a bulk-receipt
    *
-   * @return TRUE on success; FALSE on failure
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   *
+   * @return bool
+   *   TRUE on success; FALSE on failure
    */
   public function exportBulk($snapshot_receipt, $is_test) {
     return $this->exportLine($snapshot_receipt, $is_test, true);
@@ -55,6 +68,12 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
 
   /**
    * generate the final result
+   *
+   * @param int $snapshot_id
+   *
+   * @param bool $is_test
+   *
+   * @param bool $is_bulk
    *
    * @return array:
    *          'is_error': set if there is a fatal error
@@ -67,8 +86,8 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
     $reply = array();
 
     // open file
-    $preferredFileName = ts('donation_receipts');
-    $preferredFileSuffix = ts('.csv', array('domain' => 'de.systopia.donrec'));
+    $preferredFileName = E::ts('donation_receipts');
+    $preferredFileSuffix = E::ts('.csv');
     $temp_file = CRM_Donrec_Logic_File::makeFileName($preferredFileName, $preferredFileSuffix);
     $handle = fopen($temp_file, 'w');
 
@@ -129,13 +148,19 @@ class CRM_Donrec_Exporters_CSV extends CRM_Donrec_Logic_Exporter {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements() {
+  public function checkRequirements($profile = NULL) {
     return array('is_error' => FALSE);
   }
 
   /**
    * wil create bulk and/or individual items as CSV lines that
    * are stored in the process information field
+   *
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshotReceipt
+   * @param bool $is_test
+   * @param bool $is_bulk
+   *
+   * @return bool
    */
   private function exportLine($snapshotReceipt, $is_test, $is_bulk) {
 

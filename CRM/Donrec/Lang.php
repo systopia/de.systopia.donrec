@@ -42,12 +42,14 @@ abstract class CRM_Donrec_Lang {
    * Get an instance of the language, or a fallback if it doesn't exist
    *
    * @param $locale string locale
+   *
+   * @param \CRM_Donrec_Logic_Profile $profile
    * @return  CRM_Donrec_Lang|null
    */
-  public static function getLanguage($locale = NULL) {
-    if (!$locale) {
+  public static function getLanguage($locale = NULL, $profile = NULL) {
+    if (!$locale && $profile) {
       // read the setting
-      $locale = CRM_Donrec_Logic_Settings::get('donrec_language');
+      $locale = $profile->getDataAttribute('language');
     }
 
     if (!$locale) {
@@ -94,7 +96,7 @@ abstract class CRM_Donrec_Lang {
    * Get an instance of the language class if it exists
    *
    * @param $locale string locale
-   * @return  CRM_Utils_DonrecLang|null
+   * @return  \CRM_Donrec_Lang | NULL
    */
   protected static function _getLanguage($locale) {
     $locale = substr($locale, 0, 5);

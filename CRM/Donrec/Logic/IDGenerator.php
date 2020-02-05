@@ -25,10 +25,15 @@ class CRM_Donrec_Logic_IDGenerator {
     'issue_year' => NULL,
     'contact_id' => NULL
   );
+
   /**
    * constructor
    *
-   * @param $pattern the pattern to be used for the ID
+   * @param string $pattern
+   *   the pattern to be used for the ID
+   * @param bool $is_test
+   *
+   * @throws \Exception
    */
   public function __construct($pattern, $is_test) {
     # serial-token must occur exactly one time
@@ -53,8 +58,10 @@ class CRM_Donrec_Logic_IDGenerator {
    *
    * The generator needs to be locked before this can happen.
    *
-   * @param $chunk the set of contributions used for this receipt as used in CRM_Donrec_Logic_Engine
-   * @return unique ID string
+   * @param $snapshot_lines
+   *   the set of contributions used for this receipt as used in CRM_Donrec_Logic_Engine
+   * @return string
+   *   unique ID string
    */
   public function generateID($snapshot_lines) {
 
@@ -130,6 +137,8 @@ class CRM_Donrec_Logic_IDGenerator {
   /**
    * Get the (maximum) year of the receive_date of the contributions referenced by the snapshot lines
    * @param $snapshot_lines array the lines
+   *
+   * @return int
    */
   private function getContributionYear($snapshot_lines) {
     $max_year = 0;

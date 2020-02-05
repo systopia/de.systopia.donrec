@@ -21,7 +21,6 @@
 </div>
 
 <!-- the log messages -->
-<p/>
 <div class="crm-accordion-wrapper.collapsed crm-donrec-process-log">
 <div class="crm-accordion-header active">{ts domain="de.systopia.donrec"}Progress Log{/ts}</div>
 <div class="crm-accordion-body">
@@ -130,7 +129,7 @@ function openURL(url) {
   if (!file_downloaded) {
     CRM.confirm(function() {
       window.onbeforeunload = null;
-      var view_url = cj("<div/>").html(url).text();
+      var view_url = cj("<div>").html(url).text();
       location.href = view_url;
     },
     {
@@ -139,7 +138,7 @@ function openURL(url) {
 
   } else {
     window.onbeforeunload = null;
-    var view_url = cj("<div/>").html(url).text();
+    var view_url = cj("<div>").html(url).text();
     location.href = view_url;
   }
 }

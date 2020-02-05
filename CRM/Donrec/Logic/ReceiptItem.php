@@ -34,10 +34,14 @@ class CRM_Donrec_Logic_ReceiptItem {
 
 
   /**
-  * Creates a new receipt item
-  * @param array of parameters
-  * @return TRUE or FALSE if there was an error //TODO
-  */
+   * Creates a new receipt item
+   *
+   * @param array $params array of parameters
+   *
+   * @return \CRM_Core_DAO | bool
+   *   FALSE if there was an error //TODO
+   * @throws \CRM_Core_Exception
+   */
   public static function create($params) {
     self::getCustomFields();
     $fields = self::$_custom_fields;
@@ -63,8 +67,8 @@ class CRM_Donrec_Logic_ReceiptItem {
 
   /**
   * Calculate sha1 checksum
-  * @param params
-  * @return checksum
+  * @param array params
+  * @return string checksum
   */
   public static function calculateChecksum($params) {
     $str = '';
@@ -240,11 +244,15 @@ class CRM_Donrec_Logic_ReceiptItem {
     }
     return self::$_custom_fields;
   }
+
   /**
-  * Check if a contribution has a receipt-item with status ORIGINAL.
-  *
-  * return boolean or item id
-  */
+   * Check if a contribution has a receipt-item with status ORIGINAL.
+   *
+   * return boolean or item id
+   * @param int $contribution_id
+   * @param bool $return_id
+   * @return bool|string|null
+*/
   public static function hasValidReceiptItem($contribution_id, $return_id=FALSE) {
     $contribution_id = (int) $contribution_id;
     if (empty($contribution_id)) return FALSE;    // prevent SQL errors

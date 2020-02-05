@@ -10,6 +10,8 @@
 
 require_once __DIR__ . "/../Utils/DonrecHelper.php";
 
+use CRM_Donrec_ExtensionUtil as E;
+
   /**
    * Class to manage the data-structure.
    */
@@ -54,6 +56,13 @@ class CRM_Donrec_DataStructure {
       'custom_group_name' => 'zwb_donation_receipt',
       'label' => 'Profile',
       'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'profile_id',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'Profile ID',
+      'data_type' => 'Int',
       'html_type' => 'Text',
     ),
     array(
@@ -484,7 +493,7 @@ class CRM_Donrec_DataStructure {
     foreach (self::$customGroups as $customGroup) {
       $params = array_merge($customGroup, self::$customGroupDefaults);
       // DISABLED! THERE'S HARDCODED TABLE NAMES EVERYWHERE:
-      //$params['title'] = ts($params['title'], array('domain' => 'de.systopia.donrec'));
+      //$params['title'] = E::ts($params['title']);
       $get_params['name'] = $params['name'];
       self::createIfNotExists('CustomGroup', $params, $get_params);
     }
@@ -520,7 +529,8 @@ class CRM_Donrec_DataStructure {
   /**
   * Find the first available option value id
   *
-  * @return option-value-id
+  * @return int
+   *   option-value-id
   */
   public static function getFirstUsedOptionValueId() {
     $optionGroup = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'donrec_status'));
@@ -547,14 +557,14 @@ class CRM_Donrec_DataStructure {
       // TRANSLATE zwb_donation_receipt title
       $custom_group_receipt = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt'));
       // since the API is not reliable here, we do this via SQL
-      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt', array('domain' => 'de.systopia.donrec')));
+      $new_title = CRM_Utils_DonrecHelper::escapeString(E::ts('Donation Receipt'));
       $custom_group_receipt_id = (int) $custom_group_receipt['id'];
       CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_id;");
 
       // TRANSLATE zwb_donation_receipt_item title
       $custom_group_receipt_item = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'zwb_donation_receipt_item'));
       // since the API is not reliable here, we do this via SQL
-      $new_title = CRM_Utils_DonrecHelper::escapeString(ts('Donation Receipt Item', array('domain' => 'de.systopia.donrec')));
+      $new_title = CRM_Utils_DonrecHelper::escapeString(E::ts('Donation Receipt Item'));
       $custom_group_receipt_item_id = (int) $custom_group_receipt_item['id'];
       CRM_Core_DAO::executeQuery("UPDATE `civicrm_custom_group` SET title='$new_title' WHERE id=$custom_group_receipt_item_id;");
 
@@ -606,6 +616,8 @@ class CRM_Donrec_DataStructure {
 
   /**
   * Populate $_custom_groups with all the relevant data - if not already done.
+   *
+   * @param string $group_name
   */
   protected static function _getCustomGroupData($group_name) {
     if (!self::$_custom_groups[$group_name]['id']) {
@@ -630,16 +642,24 @@ class CRM_Donrec_DataStructure {
   }
 
   /**
-  * Returns an array with field-names to their column-names of $group_name
-  */
+   * Returns an array with field-names to their column-names of $group_name
+   *
+   * @param string $group_name
+   *
+   * @return array
+   */
   public static function getCustomFields($group_name) {
     self::_getCustomGroupData($group_name);
     return self::$_custom_groups[$group_name]['fields'];
   }
 
   /**
-  * Returns the table-name of the custom-group $group_name
-  */
+   * Returns the table-name of the custom-group $group_name
+   *
+   * @param string $group_name
+   *
+   * @return string
+   */
   public static function getTableName($group_name) {
     self::_getCustomGroupData($group_name);
     return self::$_custom_groups[$group_name]['table_name'];

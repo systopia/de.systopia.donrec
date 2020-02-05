@@ -67,7 +67,7 @@
 <form id="stagingform" action="{$formAction}" method="post">
 {if $error}
 <br/>
-<div id="error-block" style="background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
+<div id="error-block" style="background-color: #FF6B6B; padding: 0 5px 0 5px;">
   <p style="color: #ffffff;">{ts domain="de.systopia.donrec"}Error{/ts}: {$error}</p>
 </div>
 <div id='donrec_buttons' class="crm-submit-buttons">
@@ -77,7 +77,7 @@
 </div>
 {elseif $conflict_error}
 <h3>Error</h3>
-<div id="error-block" style="color: #ffffff; background-color: #FF6B6B; padding: 0px 5px 0px 5px;">
+<div id="error-block" style="color: #ffffff; background-color: #FF6B6B; padding: 0 5px 0 5px;">
   <p>{ts domain="de.systopia.donrec"}Sorry, but at least one of the selected contributions is already being processed for a donation receipt:{/ts}</p>
   <p>{ts domain="de.systopia.donrec"}The conflicting other donation receipt process was created by{/ts} <b>{$conflict_error[1]}</b></p>
   <p>{ts domain="de.systopia.donrec"}It will automatically expire on{/ts} <b>{$conflict_error[2]}</b></p>
@@ -157,7 +157,7 @@ window.onbeforeunload = function(e) {
 // and provide a function to go around it
 function openURL(url) {
   window.onbeforeunload = null;
-  var view_url = cj("<div/>").html(url).text();
+  var view_url = cj("<div>").html(url).text();
   location.href = view_url;
 }
 

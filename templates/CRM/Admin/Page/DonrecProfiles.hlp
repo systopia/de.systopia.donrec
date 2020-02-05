@@ -1,0 +1,12 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Donation Receipts Extension                   |
+| Copyright (C) 2013-2020 SYSTOPIA                       |
+| Author: J. Schuppe (schuppe@systopia.de)               |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| License: AGPLv3, see LICENSE file                      |
++--------------------------------------------------------*}
+
+{htxt id='id-profiles'}
+    <p>{ts domain="de.systopia.donrec"}Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile.{/ts}</p>
+{/htxt}

@@ -10,6 +10,8 @@
 
 require_once 'CRM/Core/Page.php';
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This class generates the front end controller page for the
  * donation receipt engine.
@@ -20,7 +22,7 @@ require_once 'CRM/Core/Page.php';
  */
 class CRM_Donrec_Page_Runner extends CRM_Core_Page {
   function run() {
-    CRM_Utils_System::setTitle(ts('Creating Donation Receipts', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Creating Donation Receipts'));
 
     // extract the parameters
     $parameters = array();
@@ -38,14 +40,14 @@ class CRM_Donrec_Page_Runner extends CRM_Core_Page {
 
     // fallback make sure there is a link.
     if (empty($url_back)) {
-      $url_back = CRM_Utils_System::url('civicrm/dashboard');
+      $url_back = CRM_Utils_System::url('civicrm/dashboard', NULL, FALSE, NULL, TRUE, FALSE, TRUE);
     }
 
     $this->assign('url_back', $url_back);
 
     // get the snapshot_id
     if (empty($_REQUEST['sid'])) {
-      $this->assign('error', ts("No snapshot ID given. Please call this page from a proper selection.", array('domain' => 'de.systopia.donrec')));
+      $this->assign('error', E::ts("No snapshot ID given. Please call this page from a proper selection."));
     } else {
       // Init the engine
       $sid = (int) $_REQUEST['sid'];

@@ -10,6 +10,8 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * Form controller class
  *
@@ -20,31 +22,31 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
   private $availableCurrencies;
 
   function buildQuickForm() {
-    CRM_Utils_System::setTitle(ts('Issue Donation Receipts', array('domain' => 'de.systopia.donrec')));
+    CRM_Utils_System::setTitle(E::ts('Issue Donation Receipts'));
 
     $this->addElement('hidden', 'cid');
     $this->addElement('hidden', 'rsid');
     $options = array(
-       'current_year'      => ts('This Year', array('domain' => 'de.systopia.donrec')),
-       'last_year'         => ts('last year', array('domain' => 'de.systopia.donrec')),
-       'customized_period' => ts('Choose Date Range', array('domain' => 'de.systopia.donrec'))
+       'current_year'      => E::ts('This Year'),
+       'last_year'         => E::ts('last year'),
+       'customized_period' => E::ts('Choose Date Range')
     );
     $this->addElement('select', 'time_period', 'Time Period:', $options, array('class' => 'crm-select2'));
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', ts('From:', array('domain' => 'de.systopia.donrec')), 'searchDate', TRUE, FALSE);
+    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', E::ts('From:'), 'searchDate', TRUE, FALSE);
 
     // add profile selector
     $this->addElement('select', 
                       'profile', 
-                      ts('Profile', array('domain' => 'de.systopia.donrec')), 
-                      CRM_Donrec_Logic_Profile::getAllNames(), 
+                      E::ts('Profile'),
+                      CRM_Donrec_Logic_Profile::getAllActiveNames(),
                       array('class' => 'crm-select2'));
 
     // add currency selector
     $this->availableCurrencies = array_keys(CRM_Core_OptionGroup::values('currencies_enabled'));
-    $this->addElement('select', 'donrec_contribution_currency', ts('Currency'), $this->availableCurrencies);
+    $this->addElement('select', 'donrec_contribution_currency', E::ts('Currency'), $this->availableCurrencies);
 
     $this->addDefaultButtons(
-      ts('Continue', array('domain' => 'de.systopia.donrec')),
+      E::ts('Continue'),
       'next',
       'cancel'
     );
@@ -115,7 +117,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       CRM_Core_Session::singleton()->pushUserContext(
         CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $sid . '&ccount=1'));
     }elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(ts('This contact has no selectable contributions in the selected time period.', array('domain' => 'de.systopia.donrec')), ts('Warning', array('domain' => 'de.systopia.donrec')), 'warning');
+      CRM_Core_Session::setStatus(E::ts('This contact has no selectable contributions in the selected time period.'), E::ts('Warning'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/create', "reset=1&cid=$contactId"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
