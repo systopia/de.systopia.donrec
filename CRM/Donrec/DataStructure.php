@@ -269,6 +269,13 @@ class CRM_Donrec_DataStructure {
       'data_type' => 'String',
       'html_type' => 'Text',
     ),
+    array(
+      'name' => 'exporters',
+      'custom_group_name' => 'zwb_donation_receipt',
+      'label' => 'exporters',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
 
     /***** receipt-item *****/
     array(
@@ -356,6 +363,13 @@ class CRM_Donrec_DataStructure {
       'name' => 'contribution_hash',
       'custom_group_name' => 'zwb_donation_receipt_item',
       'label' => 'contribution_hash',
+      'data_type' => 'String',
+      'html_type' => 'Text',
+    ),
+    array(
+      'name' => 'exporters',
+      'custom_group_name' => 'zwb_donation_receipt_item',
+      'label' => 'exporters',
       'data_type' => 'String',
       'html_type' => 'Text',
     ),

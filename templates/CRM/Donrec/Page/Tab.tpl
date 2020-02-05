@@ -29,6 +29,7 @@
               {if $receipt.status eq 'COPY'}{ts domain="de.systopia.donrec"}copy{/ts}{/if}
               {if $receipt.status eq 'WITHDRAWN_COPY'}{ts domain="de.systopia.donrec"}withdrawn copy{/ts}{/if}
             </b></li>
+            <li>{ts domain="de.systopia.donrec"}Exporters{/ts}: {$receipt.exporters}</li>
             <li>{ts domain="de.systopia.donrec"}Receipt ID{/ts}:
               {if $receipt.receipt_id}
                 <span>{$receipt.receipt_id}</span>
