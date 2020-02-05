@@ -179,11 +179,27 @@ class CRM_Donrec_Logic_Profile {
           `data` = %2,
           `variables` = %3,
           `template` = %4,
-          `template_pdf_format_id` = %5,
           `is_default` = %6,
           `is_active` = %7,
           `is_locked` = %8
       ";
+
+    $query_params = array(
+      1 => array($this->name, 'String'),
+      2 => array(serialize($this->data), 'String'),
+      3 => array(serialize($this->variables), 'String'),
+      4 => array($this->template, 'String'),
+      6 => array($this->is_default, 'Int'),
+      7 => array($this->is_active, 'Int'),
+      8 => array($this->is_locked, 'Int'),
+    );
+
+    if (isset($this->template_pdf_format_id)) {
+      $values_query .= "
+        ,`template_pdf_format_id` = %5
+        ";
+      $query_params[5] = array($this->template_pdf_format_id, 'Int');
+    }
 
     if ($this->id) {
       $query = "
@@ -201,17 +217,6 @@ class CRM_Donrec_Logic_Profile {
           $values_query
         ;";
     }
-
-    $query_params = array(
-      1 => array($this->name, 'String'),
-      2 => array(serialize($this->data), 'String'),
-      3 => array(serialize($this->variables), 'String'),
-      4 => array($this->template, 'String'),
-      5 => array($this->template_pdf_format_id, 'Int'),
-      6 => array($this->is_default, 'Int'),
-      7 => array($this->is_active, 'Int'),
-      8 => array($this->is_locked, 'Int'),
-    );
 
     CRM_Core_DAO::executeQuery($query, $query_params);
   }
@@ -691,7 +696,7 @@ class CRM_Donrec_Logic_Profile {
   public static function defaultProfileData() {
     return array(
       'id' => 0, // 0 = new profile.
-      'name' => NULL,
+      'name' => 'Default',
       'data' => array(
         'financial_types'            => self::getAllDeductibleFinancialTypes(),
         'store_original_pdf'         => FALSE,
