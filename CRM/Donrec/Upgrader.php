@@ -269,6 +269,10 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       );
       unset($profile_data['template']);
 
+      // Rename profile settings.
+      $profile_data['from_email'] = $profile_data['donrec_from_email'];
+      unset($profile_data['donrec_from_email']);
+
       // Copy formerly global settings to profiles.
       $profile_data['email_template'] = Civi::settings()->get('donrec_email_template');
       $profile_data['bcc_email'] = Civi::settings()->get('donrec_bcc_email');
