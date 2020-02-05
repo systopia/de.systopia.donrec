@@ -23,6 +23,10 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     // Create database tables.
     $this->executeSqlFile('sql/donrec_uninstall.sql', true);
     $this->executeSqlFile('sql/donrec.sql', true);
+
+    // Create default profile.
+    $default_profile = new CRM_Donrec_Logic_Profile();
+    $default_profile->save();
   }
 
   /**
@@ -50,10 +54,9 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
    * Example: Run a simple query when a module is disabled.
    */
   public function disable() {
-    // delete the snapshot-table
+    // Empty the snapshot table.
     $query = "
-      DROP TABLE IF EXISTS `civicrm_donrec_snapshot`;
-      DROP TABLE IF EXISTS `donrec_snapshot`;
+      TRUNCATE `donrec_snapshot`;
     ";
     CRM_Core_DAO::executeQuery($query);
   }
