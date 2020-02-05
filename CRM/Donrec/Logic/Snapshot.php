@@ -421,7 +421,7 @@ class CRM_Donrec_Logic_Snapshot {
     // the snapshot still exists, we get an intersection-error on trying to
     // produce the receipt again.
     $query =   "
-      SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
+      SELECT original.`snapshot_id`, ANY_VALUE(contact.`display_name`), ANY_VALUE(original.`expires_timestamp`)
       FROM `donrec_snapshot` AS original
       INNER JOIN `donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
       AND (original.`status` != 'DONE' OR original.`status` IS NULL)
@@ -623,10 +623,10 @@ class CRM_Donrec_Logic_Snapshot {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
       SUM(total_amount) AS total_amount,
-      created_timestamp AS creation_date,
-      date_from AS date_from,
-      date_to AS date_to,
-      currency
+      ANY_VALUE(created_timestamp) AS creation_date,
+      ANY_VALUE(date_from) AS date_from,
+      ANY_VALUE(date_to) AS date_to,
+      ANY_VALUE(currency) AS currency
       FROM donrec_snapshot
       WHERE snapshot_id = $id";
 
