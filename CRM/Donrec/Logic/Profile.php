@@ -702,7 +702,7 @@ class CRM_Donrec_Logic_Profile {
         'postal_address'             => array('0'),
         'legal_address_fallback'     => array('0'),
         'postal_address_fallback'    => array('0'),
-        'donrec_from_email'          => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
+        'from_email'                 => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
         // TODO: Set correct defaults for formerly global settings here.
         'email_template'             => NULL,
         'bcc_email'                  => NULL,

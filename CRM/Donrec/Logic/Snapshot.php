@@ -19,9 +19,9 @@ class CRM_Donrec_Logic_Snapshot {
   private $_profile = NULL;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to', 'profile');
+  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to', 'profile_id');
   private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
-  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'date_from', 'date_to', 'profile');
+  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'date_from', 'date_to', 'profile_id');
   // private constructor to prevent
   // external instantiation
   private function __construct($id) {
