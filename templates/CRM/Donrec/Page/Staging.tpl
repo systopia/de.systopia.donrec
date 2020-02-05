@@ -32,8 +32,8 @@
 
 {if $statistic}
   <br/>
-  <div style="max-width:320px;">
-        <h2>{ts domain="de.systopia.donrec"}Statistics{/ts}</h2>
+  <div class="crm-form-block">
+        <h3>{ts domain="de.systopia.donrec"}Statistics{/ts}</h3>
 
         {if $statistic.requested_contacts}
         <div class="crm-summary-row">
@@ -89,15 +89,15 @@
 </div>
   {if $is_admin}
   <div class="form-item">
-    <input name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="form-submit" type="submit">
+    <input name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="crm-form-submit cancel" type="submit">
     <input type="hidden" name="return_to" value="{$return_to}">
   </div>
   {/if}
 {else}
-<div class="form-item">
-<h2>{ts domain="de.systopia.donrec"}Settings{/ts}</h2>
+<div class="crm-form-block">
+<h3>{ts domain="de.systopia.donrec"}Settings{/ts}</h3>
 <!-- result format radioboxes-->
-<table style="max-width:960px;">
+<table class="form-layout">
   <tr>
     <td class="label">{ts domain="de.systopia.donrec"}Donation receipt type{/ts}:</td>
     <td>
@@ -135,12 +135,24 @@
 </table>
 </div>
 <!-- the buttons -->
-<div class="form-item">
+<div class="crm-submit-buttons">
   {if $statistic.status != 'DONE'}
-    <input name="donrec_testrun" value="{ts domain="de.systopia.donrec"}Test run{/ts}" class="form-submit" type="submit">
+    <span class="crm-button crm-i-button">
+      <i class="crm-i fa-tachometer"></i>
+      <input name="donrec_testrun" value="{ts domain="de.systopia.donrec"}Test run{/ts}" class="crm-form-submit" type="submit">
+    </span>
   {/if}
-  <input name="donrec_run" value="{ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}" class="form-submit" type="submit">
-  <input name="donrec_abort" value="{ts domain="de.systopia.donrec"}Abort{/ts}" class="form-submit" type="submit">
+
+  <span class="crm-button crm-button-type-next crm-i-button">
+      <i class="crm-i fa-check"></i>
+      <input name="donrec_run" value="{ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}" class="crm-form-submit" type="submit">
+    </span>
+  <span class="crm-button crm-button-type-cancel crm-i-button">
+      <i class="crm-i fa-times"></i>
+      <input name="donrec_abort"
+             value="{ts domain="de.systopia.donrec"}Abort{/ts}"
+             class="crm-form-submit cancel" type="submit">
+    </span>
 </div>
 {/if}
 </form>
@@ -162,7 +174,7 @@ function openURL(url) {
 }
 
 // if you use the submit buttons, of course you may leave the page
-cj("input.form-submit").on('click', function(e){
+cj("input.crm-form-submit").on('click', function(e){
   window.onbeforeunload = null;
 });
 

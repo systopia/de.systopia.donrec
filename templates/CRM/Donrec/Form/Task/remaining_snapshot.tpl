@@ -32,7 +32,15 @@
       </table>
     {/if}
 
-    <input class="form-submit" type="submit" name='use_remaining_snapshot' value='{ts domain="de.systopia.donrec"}Use remaining snapshot{/ts}'/>
+
+    <div class="crm-submit-buttons">
+    <span class="crm-button crm-i-button">
+      <i class="crm-i fa-recycle"></i>
+      <input class="crm-form-submit" type="submit"
+             name='use_remaining_snapshot'
+             value='{ts domain="de.systopia.donrec"}Use remaining snapshot{/ts}'/>
+    </span>
+    </div>
   </div>
 </div>
 {/if}
