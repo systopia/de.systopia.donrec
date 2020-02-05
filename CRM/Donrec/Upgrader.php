@@ -319,8 +319,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
            `is_default` = %3,
            `is_locked` = %4,
            `template` = %5,
-           `variables` = %6            
-      ;";
+           `variables` = %6
+        ";
         $query_params = array(
           1 => array($profile_name, 'String'),
           2 => array(serialize($profile_data), 'String'),
@@ -335,6 +335,8 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
         ";
           $query_params[7] = array($template['pdf_format_id'], 'Int');
         }
+
+        $query .= ";";
 
         CRM_Core_DAO::executeQuery($query, $query_params);
 
