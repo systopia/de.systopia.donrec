@@ -545,7 +545,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
         SUM(item.`$item_fields[total_amount]`)             AS `total_amount`,
         SUM(item.`$item_fields[non_deductible_amount]`)    AS `non_deductible_amount`,
-        item.`$item_fields[currency]`                      AS `currency`
+        ANY_VALUE(item.`$item_fields[currency]`)                      AS `currency`
 
       FROM `$receipt_table_name`                           AS receipt
 
