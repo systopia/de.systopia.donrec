@@ -301,11 +301,11 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Receipt ID')
     );
     $this->add(
-      'wysiwyg',
+      'textarea',
       'template',
       E::ts('Template'),
       array(
-        'rows' => 6,
+        'rows' => 25,
         'cols' => 80,
       )
     );
