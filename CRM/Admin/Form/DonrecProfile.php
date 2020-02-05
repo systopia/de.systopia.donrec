@@ -301,14 +301,23 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Receipt ID')
     );
     $this->add(
-      'wysiwyg',
+      'textarea',
       'template',
       E::ts('Template'),
       array(
-        'rows' => 6,
+        'rows' => 25,
         'cols' => 80,
       )
     );
+    $this->add(
+      'select',
+      'template_pdf_format_id',
+      E::ts('PDF format'),
+      CRM_Core_BAO_PdfFormat::getList(TRUE),
+      TRUE,
+      array('class' => 'crm-select2')
+    );
+
     $this->add(
       'checkbox',
       'store_original_pdf',
@@ -435,6 +444,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     // Set individual properties.
     $defaults['name'] = $this->profile->getName();
     $defaults['template'] = $this->profile->getTemplate()->getTemplateHTML();
+    $defaults['template_pdf_format_id'] = $this->profile->getTemplatePDFFormatId();
 
     // Set variables.
     $variable_count = 0;
