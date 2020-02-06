@@ -101,6 +101,16 @@
     <p>{ts domain="de.systopia.donrec"}<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail.{/ts}</p>
 {/htxt}
 
+{htxt id='id-special-mail-handling'}
+    <p>{ts domain="de.systopia.donrec"}If this is checked, alternative mail handling is used. This means Contribution Mail Handling for bounces will be done via webhook.{/ts}</p>
+    <p>{ts domain="de.systopia.donrec"}The contribution values can be injected to a custom field, and will be parsed once a bounce event occurs. An Activity will be written and the Contribution will be reset.{/ts}</p>
+
+{/htxt}
+
+{htxt id='id-special-mail-header'}
+    <p>{ts domain="de.systopia.donrec"}Enter a custom header field here, if Special Mail handling is activated.{/ts}</p>
+{/htxt}
+
 {htxt id='id-id_pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}

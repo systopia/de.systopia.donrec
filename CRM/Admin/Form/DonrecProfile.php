@@ -428,6 +428,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Has to be a valid email address'),
       'email'
     );
+    $this->add(
+      'checkbox',
+      'special_mail_handling',
+      E::ts('Custom Mail Handling:'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_header',
+      E::ts('Custom Mail Header:'),
+      $options
+    );
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),
