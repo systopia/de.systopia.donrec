@@ -542,9 +542,6 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
        */
       if (isset($values['special_mail_handling']) && $values['special_mail_handling'] == TRUE) {
         // validate that all other custom mailing fields are set!
-//        'special_mail_header'        => NULL,
-        //        'activity_id'                => NULL,
-        //        'activity_subject'           => NULL,
         if (empty($values['special_mail_header'])) {
           $this->_errors['special_mail_header'] = E::ts('If custom Mail handling is activated, a custom mail Header must be set');
         }
