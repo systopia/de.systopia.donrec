@@ -301,9 +301,43 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       $donrec_header = str_replace('{contact_id}', self::$_sending_to_contact_id, $donrec_header);
       $donrec_header = str_replace('{contribution_id}', self::$_sending_contribution_id, $donrec_header);
       $donrec_header = str_replace('{timestamp}', date('YmdHis'), $donrec_header);
+
+      if(CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('special_mail_handling')) {
+        if (self::set_custom_mail_header($params, $donrec_header,self::$_sending_with_profile_id)) {
+          // we set header, no custom return path or the 'default' additions needed
+          return;
+        }
+      }
       $params['headers'][CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_FIELD] = $donrec_header;
       $params['returnPath'] = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('return_path_email');
     }
+  }
+
+  /**
+   * Add header to the configured sub Header. If something already is in there
+   * (assumed json encoded), add our values, otherwise just add the header to
+   * the configured field
+   * @param $params
+   * @param $donrec_header
+   * @param $profile_id
+   *
+   * @return bool
+   */
+  protected static function set_custom_mail_header(&$params, $donrec_header, $profile_id) {
+    $special_header = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('special_mail_header');
+    if (empty($special_header)) {
+      // we have special treatment configured, but can't get a mailheader. This is a configuration error.
+      return FALSE;
+    }
+    $header_value = json_decode($params[$special_header], TRUE);
+    $header_value['profile_id'] = $profile_id;
+    if (isset($params[$special_header])) {
+      // TOOD: what id $params[$special_header] is no array? Shouldn't happen, at least not with MJ
+      $params[$special_header] = array_merge($header_value, $donrec_header);
+    } else {
+      $params[$special_header] = json_encode($header_value);
+    }
+    return TRUE;
   }
 
   /**
