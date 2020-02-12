@@ -545,7 +545,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
         SUM(item.`$item_fields[total_amount]`)             AS `total_amount`,
         SUM(item.`$item_fields[non_deductible_amount]`)    AS `non_deductible_amount`,
-        ANY_VALUE(item.`$item_fields[currency]`)                      AS `currency`
+        item.`$item_fields[currency]`                      AS `currency`
 
       FROM `$receipt_table_name`                           AS receipt
 
@@ -555,7 +555,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
       WHERE receipt.`id` = $receipt_id";
 
+    CRM_Core_DAO::disableFullGroupByMode();
     $result = CRM_Core_DAO::executeQuery($query_receipt);
+    CRM_Core_DAO::reenableFullGroupByMode();
     if ($result->fetch()) {
       foreach ($expected_fields as $key => $value) {
         // copy all expected values, if they exist
