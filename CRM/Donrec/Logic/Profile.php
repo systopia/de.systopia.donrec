@@ -682,7 +682,7 @@ class CRM_Donrec_Logic_Profile {
       DELETE FROM
         `donrec_profile`
       WHERE
-        `id `= $profile_id;
+        `id`= $profile_id;
     ";
     CRM_Core_DAO::executeQuery($query);
   }
