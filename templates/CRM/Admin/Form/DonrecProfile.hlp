@@ -111,6 +111,14 @@
     <p>{ts domain="de.systopia.donrec"}Enter a custom header field here, if Special Mail handling is activated.{/ts}</p>
 {/htxt}
 
+{htxt id='id-special-mail-activity-id'}
+    <p>{ts domain="de.systopia.donrec"}Enter an activity id here, that shall be used in case of a donrec bounce event{/ts}</p>
+{/htxt}
+
+{htxt id='id-special-mail-activity-subject'}
+    <p>{ts domain="de.systopia.donrec"}Enter an activity subject here, that shall be used in case of a donrec bounce event{/ts}</p>
+{/htxt}
+
 {htxt id='id-id_pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}

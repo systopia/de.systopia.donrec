@@ -440,6 +440,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Custom Mail Header:'),
       $options
     );
+    $this->add(
+      'text',
+      'special_mail_activity_id',
+      E::ts('Activity ID'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_activity_subject',
+      E::ts('Activity Subject'),
+      $options
+    );
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),

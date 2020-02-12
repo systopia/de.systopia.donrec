@@ -224,6 +224,16 @@
               <td class="label">{$form.special_mail_header.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-header","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_header.html}</td>
             </tr>
+
+            <tr class="crm-donrec-profile-form-block-special_mail_header">
+              <td class="label">{$form.special_mail_activity_id.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td>{$form.special_mail_activity_id.html}</td>
+            </tr>
+
+            <tr class="crm-donrec-profile-form-block-special_mail_header">
+              <td class="label">{$form.special_mail_activity_subject.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-subject","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td>{$form.special_mail_activity_subject.html}</td>
+            </tr>
           </table>
 
         </fieldset>
