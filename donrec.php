@@ -260,6 +260,32 @@ function donrec_civicrm_alterMailParams(&$params, $context) {
 }
 
 /**
+ * Custom mailjet transactional bounce hook
+ * @param $bounce_message
+ *
+ */
+function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
+  CRM_Core_Error::debug_log_message("[com.proveg.mods - transactional bounce hook] " . json_encode($bounce_message));
+  $tmp = json_decode($bounce_message, TRUE);
+  if (isset($tmp['Payload'])) {
+    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
+  }
+}
+
+/**
+ * Custom mailjet mailing bounce hook
+ * @param $bounce_message
+ *
+ */
+function donrec_civicrm_mailjet_mailing_bounce($bounce_message) {
+  CRM_Core_Error::debug_log_message("[com.proveg.mods - mailing bounce hook] " . json_encode($bounce_message));
+  $tmp = json_decode($bounce_message, TRUE);
+  if (isset($tmp['Payload'])) {
+    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
+  }
+}
+
+/**
  * Set settings
  */
 function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
