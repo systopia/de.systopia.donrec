@@ -179,9 +179,9 @@ class CRM_Donrec_Logic_Profile {
           `data` = %2,
           `variables` = %3,
           `template` = %4,
-          `is_default` = %6,
-          `is_active` = %7,
-          `is_locked` = %8
+          `is_default` = %5,
+          `is_active` = %6,
+          `is_locked` = %7
       ";
 
     $query_params = array(
@@ -189,16 +189,16 @@ class CRM_Donrec_Logic_Profile {
       2 => array(serialize($this->data), 'String'),
       3 => array(serialize($this->variables), 'String'),
       4 => array($this->template, 'String'),
-      6 => array($this->is_default, 'Int'),
-      7 => array($this->is_active, 'Int'),
-      8 => array($this->is_locked, 'Int'),
+      5 => array((int) $this->is_default, 'Int'),
+      6 => array((int) $this->is_active, 'Int'),
+      7 => array((int) $this->is_locked, 'Int'),
     );
 
-    if (isset($this->template_pdf_format_id)) {
+    if (!empty(($this->template_pdf_format_id))) {
       $values_query .= "
-        ,`template_pdf_format_id` = %5
+        ,`template_pdf_format_id` = %8
         ";
-      $query_params[5] = array($this->template_pdf_format_id, 'Int');
+      $query_params[8] = array($this->template_pdf_format_id, 'Int');
     }
 
     if ($this->id) {
