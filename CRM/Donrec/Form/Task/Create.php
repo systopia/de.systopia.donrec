@@ -38,7 +38,7 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
     $this->addElement('select', 
                       'profile', 
                       E::ts('Profile'),
-                      CRM_Donrec_Logic_Profile::getAllActiveNames(),
+                      CRM_Donrec_Logic_Profile::getAllActiveNames('is_default', 'DESC'),
                       array('class' => 'crm-select2'));
 
     // add currency selector

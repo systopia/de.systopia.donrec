@@ -416,9 +416,9 @@ class CRM_Donrec_Logic_Profile {
    * @return string[]
    *   An array of names of Donation Receipts profiles, keyed by their IDs.
    */
-  public static function getAllNames() {
+  public static function getAllNames($sort = 'id', $sort_order = 'ASC') {
     $allNames = array();
-    $allProfiles = self::getAllData();
+    $allProfiles = self::getAllData($sort, $sort_order);
     foreach ($allProfiles as $profile_id => $profile) {
       $allNames[$profile_id] = $profile['name'];
     }
@@ -432,8 +432,8 @@ class CRM_Donrec_Logic_Profile {
    * @return array
    *   The names of all active profiles, keyed by their IDs.
    */
-  public static function getAllActiveNames() {
-    return array_filter(self::getAllNames(), function($profile_name, $profile_id) {
+  public static function getAllActiveNames($sort = 'id', $sort_order = 'ASC') {
+    return array_filter(self::getAllNames($sort, $sort_order), function($profile_name, $profile_id) {
       return (bool) self::getProfile($profile_id)->isActive();
     }, ARRAY_FILTER_USE_BOTH);
   }
@@ -444,10 +444,10 @@ class CRM_Donrec_Logic_Profile {
    * @return \CRM_Donrec_Logic_Profile[]
    *   An array with Donation Receipts profiles, keyed by their IDs.
    */
-  public static function getAll() {
+  public static function getAll($sort = 'id', $sort_order = 'ASC') {
     $profiles = array();
 
-    foreach (self::getAllData() as $profile_id => $profile_data) {
+    foreach (self::getAllData($sort, $sort_order) as $profile_id => $profile_data) {
       $profiles[$profile_id] = self::getProfile($profile_id);
     }
 
@@ -459,9 +459,9 @@ class CRM_Donrec_Logic_Profile {
    *
    * @return array
    */
-  public static function getAllData() {
+  public static function getAllData($sort = 'id', $sort_order = 'ASC') {
     $profiles = array();
-    $query = "SELECT * FROM `donrec_profile`";
+    $query = "SELECT * FROM `donrec_profile` ORDER BY `{$sort}` {$sort_order}";
     $dao = CRM_Core_DAO::executeQuery($query);
     while ($dao->fetch()) {
       $profiles[$dao->id] = $dao->toArray();
