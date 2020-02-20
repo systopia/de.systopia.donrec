@@ -83,8 +83,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         'variables--' . $variable_count . '--value',
         E::ts('Variable value'),
         array(
-          'rows' => 10,
-          'cols' => 100,
+          'rows' => 3,
+          'cols' => 80,
         )
       );
       $variable_elements[$variable_count] = 'variables--' . $variable_count;
