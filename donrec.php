@@ -266,24 +266,30 @@ function donrec_civicrm_alterMailParams(&$params, $context) {
  */
 function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
   CRM_Core_Error::debug_log_message("[com.proveg.mods - transactional bounce hook] " . json_encode($bounce_message));
-  $tmp = json_decode($bounce_message, TRUE);
-  if (isset($tmp['Payload'])) {
-    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
+  $message = json_decode($bounce_message, TRUE);
+  if (isset($message['X-MJ-EventPayload'])) {
+    //    parse bounce parameters here
+    $result = civicrm_api3('DonationReceipt', 'handlebounce', [
+      'contact_id' => $message['X-MJ-EventPayload']['contact_id'],
+      'contribution_id' => $message['X-MJ-EventPayload']['contribution_id'],
+      'timestamp' => $message['X-MJ-EventPayload']['timestamp'],
+      'profile_id' => $message['X-MJ-EventPayload']['profile_id'],
+    ]);
   }
 }
 
 /**
  * Custom mailjet mailing bounce hook
  * @param $bounce_message
- *
+ * Currently not needed here - ZWBs will always be sent in a transactional mail
  */
-function donrec_civicrm_mailjet_mailing_bounce($bounce_message) {
-  CRM_Core_Error::debug_log_message("[com.proveg.mods - mailing bounce hook] " . json_encode($bounce_message));
-  $tmp = json_decode($bounce_message, TRUE);
-  if (isset($tmp['Payload'])) {
-    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
-  }
-}
+//function donrec_civicrm_mailjet_mailing_bounce($bounce_message) {
+//  CRM_Core_Error::debug_log_message("[com.proveg.mods - mailing bounce hook] " . json_encode($bounce_message));
+//  $tmp = json_decode($bounce_message, TRUE);
+//  if (isset($tmp['Payload'])) {
+//    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
+//  }
+//}
 
 /**
  * Set settings
