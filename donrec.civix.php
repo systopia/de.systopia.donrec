@@ -83,8 +83,6 @@ use CRM_Donrec_ExtensionUtil as E;
  * (Delegated) Implements hook_civicrm_config().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
- *
- * @param null $config
  */
 function _donrec_civix_civicrm_config(&$config = NULL) {
   static $configured = FALSE;
@@ -256,18 +254,15 @@ function _donrec_civix_find_files($dir, $pattern) {
   }
   return $result;
 }
-
 /**
  * (Delegated) Implements hook_civicrm_managed().
  *
  * Find any *.mgd.php files, merge their content, and return.
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- * @param $entities
  */
 function _donrec_civix_civicrm_managed(&$entities) {
   $mgdFiles = _donrec_civix_find_files(__DIR__, '*.mgd.php');
-  sort($mgdFiles);
   foreach ($mgdFiles as $file) {
     $es = include $file;
     foreach ($es as $e) {
@@ -290,8 +285,6 @@ function _donrec_civix_civicrm_managed(&$entities) {
  * Note: This hook only runs in CiviCRM 4.4+.
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- * @param $caseTypes
- * @throws \Exception
  */
 function _donrec_civix_civicrm_caseTypes(&$caseTypes) {
   if (!is_dir(__DIR__ . '/xml/case')) {
@@ -321,7 +314,6 @@ function _donrec_civix_civicrm_caseTypes(&$caseTypes) {
  * Note: This hook only runs in CiviCRM 4.5+.
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_angularModules
- * @param $angularModules
  */
 function _donrec_civix_civicrm_angularModules(&$angularModules) {
   if (!is_dir(__DIR__ . '/ang')) {
@@ -395,7 +387,6 @@ function _donrec_civix_insert_navigation_menu(&$menu, $path, $item) {
 
 /**
  * (Delegated) Implements hook_civicrm_navigationMenu().
- * @param $nodes
  */
 function _donrec_civix_navigationMenu(&$nodes) {
   if (!is_callable(array('CRM_Core_BAO_Navigation', 'fixNavigationMenu'))) {
@@ -406,7 +397,6 @@ function _donrec_civix_navigationMenu(&$nodes) {
 /**
  * Given a navigation menu, generate navIDs for any items which are
  * missing them.
- * @param $nodes
  */
 function _donrec_civix_fixNavigationMenu(&$nodes) {
   $maxNavID = 1;
@@ -442,7 +432,6 @@ function _donrec_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID) {
  * (Delegated) Implements hook_civicrm_alterSettingsFolders().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- * @param null $metaDataFolders
  */
 function _donrec_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   static $configured = FALSE;
@@ -463,7 +452,6 @@ function _donrec_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * Find any *.entityType.php files, merge their content, and return.
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_entityTypes
- * @param $entityTypes
  */
 
 function _donrec_civix_civicrm_entityTypes(&$entityTypes) {
