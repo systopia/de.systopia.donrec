@@ -83,8 +83,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         'variables--' . $variable_count . '--value',
         E::ts('Variable value'),
         array(
-          'rows' => 10,
-          'cols' => 100,
+          'rows' => 3,
+          'cols' => 80,
         )
       );
       $variable_elements[$variable_count] = 'variables--' . $variable_count;
@@ -605,10 +605,15 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
    * Process the form submission.
    */
   public function postProcess() {
-    $values = $this->exportValues();
     $session = CRM_Core_Session::singleton();
 
     if (in_array($this->_op, array('create', 'edit'))) {
+      // Prevent "template" field from being encoded (HTML entities).
+      // @see HTML_QuickForm::exportValues() which is doing a check for that class.
+      $this->getElement('template')->setAttribute('class', 'crm-form-wysiwyg');
+
+      $values = $this->exportValues();
+
       // Set all profile properties.
       foreach (array(
         'name',
@@ -660,6 +665,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $session->setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
     }
     elseif ($this->_op == 'delete') {
+      $values = $this->exportValues();
+      
       if (isset($values['new_default_profile'])) {
         CRM_Donrec_Logic_Profile::changeDefaultProfile($values['new_default_profile']);
       }

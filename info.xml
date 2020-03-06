@@ -12,7 +12,7 @@
   <version>2.0-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.0</ver>
+    <ver>5.2</ver>
   </compatibility>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/de.systopia.donrec</url>
