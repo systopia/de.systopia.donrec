@@ -42,7 +42,6 @@ function _civicrm_api3_donation_receipt_Handlebounce_spec(&$spec) {
 function civicrm_api3_donation_receipt_Handlebounce($params) {
   $config_data = get_config_data($params['profile_id']);
   try {
-    CRM_Core_Error::debug_log_message("Debug API, params: " . json_encode($params) . "; Config data: " . json_encode($config_data));
     $email_processor = new CRM_Donrec_Logic_EmailReturnProcessor($config_data, TRUE);
     [$contact_id, $receipt_id]= $email_processor->get_receipt_id($params['contribution_id'], $params['timestamp'], $params['contact_id']);
     if ($email_processor->processBounce($contact_id, $receipt_id, get_activity_source_id($params['profile_id']))) {
