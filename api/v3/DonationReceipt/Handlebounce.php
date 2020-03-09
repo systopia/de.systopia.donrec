@@ -42,9 +42,10 @@ function _civicrm_api3_donation_receipt_Handlebounce_spec(&$spec) {
 function civicrm_api3_donation_receipt_Handlebounce($params) {
   $config_data = get_config_data($params['profile_id']);
   try {
+    CRM_Core_Error::debug_log_message("Debug API, params: " . json_encode($params) . "; Config data: " . json_encode($config_data));
     $email_processor = new CRM_Donrec_Logic_EmailReturnProcessor($config_data, TRUE);
     [$contact_id, $receipt_id]= $email_processor->get_receipt_id($params['contribution_id'], $params['timestamp'], $params['contact_id']);
-    if ($email_processor->processBounce($contact_id, $receipt_id)) {
+    if ($email_processor->processBounce($contact_id, $receipt_id, get_activity_source_id($params['profile_id']))) {
       return civicrm_api3_create_success("Parsed Bounce event for Contact {$contact_id} with Contribution {$params['contribution_id']}");
     }
   } catch (Exception $e) {
@@ -54,7 +55,22 @@ function civicrm_api3_donation_receipt_Handlebounce($params) {
 
 }
 
-// helper function to get configuration data for specified profile
+/**
+ * Helper function to get configured activity_source_id for given profile
+ * @param $profile_id
+ *
+ * @return mixed
+ */
+function get_activity_source_id($profile_id) {
+  return CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_activity_contact_id');
+}
+
+/**
+ * helper function to get configuration data for specified profile
+ * @param $profile_id
+ *
+ * @return array
+ */
 function get_config_data($profile_id) {
   $config_params = [];
   $config_params['activity_type_id'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_activity_id');

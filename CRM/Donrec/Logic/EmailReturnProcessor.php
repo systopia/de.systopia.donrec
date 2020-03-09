@@ -161,9 +161,11 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * @param $contact_id int contact ID
    * @param $receipt_id int receipt (internal) ID
    *
+   * @param null $activity_source_id
+   *
    * @return bool did the processing work?
    */
-  public function processBounce($contact_id, $receipt_id) {
+  public function processBounce($contact_id, $receipt_id, $activity_source_id = NULL) {
     try {
       // load and verify receipt
       $receipt = CRM_Donrec_Logic_Receipt::get($receipt_id);
@@ -186,7 +188,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
             'activity_date_time' => date('YmdHis'), // TODO: use email time?
             'target_id'          => $contact_id,
             'status_id'          => empty($this->params['withdraw']) ? 'Scheduled' : 'Completed',
-            'source_contact_id'  => CRM_Donrec_Logic_Settings::getLoggedInContactID(),
+            'source_contact_id'  => empty($activity_source_id) ? CRM_Donrec_Logic_Settings::getLoggedInContactID() : $activity_source_id,
             //'assignee_id'        => $assignee_id,
         ]);
       }
