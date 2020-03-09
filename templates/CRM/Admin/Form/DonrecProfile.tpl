@@ -234,6 +234,11 @@
               <td class="label">{$form.special_mail_activity_subject.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-subject","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_activity_subject.html}</td>
             </tr>
+
+            <tr class="crm-donrec-profile-form-block-special_mail_header">
+              <td class="label">{$form.special_mail_withdraw_receipt.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Withdraw Receipt{/ts}", {literal}{"id":"id-special-mail-withdraw-receipt","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td>{$form.special_mail_withdraw_receipt.html}</td>
+            </tr>
           </table>
 
         </fieldset>

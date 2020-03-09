@@ -452,6 +452,12 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Activity Subject'),
       $options
     );
+    $this->add(
+      'checkbox',
+      'special_mail_withdraw_receipt',
+      E::ts('Withdraw receipt'),
+      $options
+    );
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),

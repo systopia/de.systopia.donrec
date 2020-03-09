@@ -119,6 +119,10 @@
     <p>{ts domain="de.systopia.donrec"}Enter an activity subject here, that shall be used in case of a donrec bounce event{/ts}</p>
 {/htxt}
 
+{htxt id='id-special-mail-withdraw-receipt'}
+    <p>{ts domain="de.systopia.donrec"}If this option is checked, the receipt will be withdrawn if a bounce message occurs{/ts}</p>
+{/htxt}
+
 {htxt id='id-id_pattern'}
     <p>
         {ts domain="de.systopia.donrec"}This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it.{/ts}
