@@ -57,8 +57,8 @@ function civicrm_api3_donation_receipt_Handlebounce($params) {
 // helper function to get configuration data for specified profile
 function get_config_data($profile_id) {
   $config_params = [];
-  $config_params['activity_type_id'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('activity_type_id');
-  $config_params['withdraw'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('withdraw');
-  $config_params['activity_subject'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('activity_subject');
+  $config_params['activity_type_id'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_activity_id');
+  $config_params['withdraw'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_withdraw_receipt');
+  $config_params['activity_subject'] = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_activity_subject');
   return $config_params;
 }
