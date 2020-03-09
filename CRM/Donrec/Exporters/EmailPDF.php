@@ -61,7 +61,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       return array('is_error' => FALSE, 'message' => '');
     } else {
       return array(
-        'is_error' => TRUE, 
+        'is_error' => TRUE,
         'message' => E::ts("Please select email template in the Donrec settings."),
         );
     }
@@ -324,19 +324,19 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * @return bool
    */
   protected static function set_custom_mail_header(&$params, $donrec_header, $profile_id) {
-    $special_header = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('special_mail_header');
+    $special_header = CRM_Donrec_Logic_Profile::getProfile($profile_id)->getDataAttribute('special_mail_header');
     if (empty($special_header)) {
       // we have special treatment configured, but can't get a mailheader. This is a configuration error.
       return FALSE;
     }
-    $header_value = json_decode($params[$special_header], TRUE);
+    $header_value = json_decode($params['headers'][$special_header], TRUE);
+
     $header_value['profile_id'] = $profile_id;
-    if (isset($params[$special_header])) {
-      // TOOD: what id $params[$special_header] is no array? Shouldn't happen, at least not with MJ
-      $params[$special_header] = array_merge($header_value, $donrec_header);
-    } else {
-      $params[$special_header] = json_encode($header_value);
-    }
+    $header_value['contribution_id'] = self::$_sending_contribution_id;
+    $header_value['contact_id'] = self::$_sending_to_contact_id;
+    $header_value['timestamp'] = date('YmdHis');
+    $params['headers'][$special_header] = json_encode($header_value);
+
     return TRUE;
   }
 
