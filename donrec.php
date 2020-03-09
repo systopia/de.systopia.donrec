@@ -268,12 +268,14 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
   CRM_Core_Error::debug_log_message("[com.proveg.mods - transactional bounce hook] " . json_encode($bounce_message));
   $message = json_decode($bounce_message, TRUE);
   if (isset($message['Payload'])) {
+    $payload = json_decode($message['Payload'], TRUE);
     //    parse bounce parameters here
+    CRM_Core_Error::debug_log_message("[com.proveg.mods - PAYLOAD] " . json_encode($payload));
     $result = civicrm_api3('DonationReceipt', 'handlebounce', [
-      'contact_id' => $message['Payload']['contact_id'],
-      'contribution_id' => $message['Payload']['contribution_id'],
-      'timestamp' => $message['Payload']['timestamp'],
-      'profile_id' => $message['Payload']['profile_id'],
+      'contact_id' => $payload['contact_id'],
+      'contribution_id' => $payload['contribution_id'],
+      'timestamp' => $payload['timestamp'],
+      'profile_id' => $payload['profile_id'],
     ]);
   }
 }
