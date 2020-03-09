@@ -119,6 +119,10 @@
     <p>{ts domain="de.systopia.donrec"}Enter an activity subject here, that shall be used in case of a donrec bounce event{/ts}</p>
 {/htxt}
 
+{htxt id='id-special-mail-activity-contact-id'}
+    <p>{ts domain="de.systopia.donrec"}Contact id used to create activities{/ts}</p>
+{/htxt}
+
 {htxt id='id-special-mail-withdraw-receipt'}
     <p>{ts domain="de.systopia.donrec"}If this option is checked, the receipt will be withdrawn if a bounce message occurs{/ts}</p>
 {/htxt}

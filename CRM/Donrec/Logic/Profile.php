@@ -717,6 +717,7 @@ class CRM_Donrec_Logic_Profile {
         'special_mail_activity_id'                => NULL,
         'special_mail_activity_subject'           => NULL,
         'special_mail_withdraw_receipt'           => NULL,
+        'special_mail_activity_contact_id'        => NULL,
         'watermark_preset'           => CRM_Donrec_Logic_WatermarkPreset::getDefaultWatermarkPresetName(),
         'language'                   => (method_exists('CRM_Core_I18n', 'getLocale') ? CRM_Core_I18n::getLocale() : 'en_US'),
         'contribution_unlock_mode'   => 'unlock_none',

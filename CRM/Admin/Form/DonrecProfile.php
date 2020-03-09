@@ -453,6 +453,12 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $options
     );
     $this->add(
+      'text',
+      'special_mail_activity_contact_id',
+      E::ts('Activity Contact ID'),
+      $options
+    );
+    $this->add(
       'checkbox',
       'special_mail_withdraw_receipt',
       E::ts('Withdraw receipt'),
@@ -556,6 +562,9 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         }
         if (empty($values['special_mail_activity_subject'])) {
           $this->_errors['special_mail_activity_subject'] = E::ts('If custom Mail handling is activated, please specify an activity subject');
+        }
+        if (empty($values['special_mail_activity_contact_id'])) {
+          $this->_errors['special_mail_activity_contact_id'] = E::ts('If custom Mail handling is activated, please specify an activity contact_id');
         }
       }
       /**
@@ -672,7 +681,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     }
     elseif ($this->_op == 'delete') {
       $values = $this->exportValues();
-      
+
       if (isset($values['new_default_profile'])) {
         CRM_Donrec_Logic_Profile::changeDefaultProfile($values['new_default_profile']);
       }
