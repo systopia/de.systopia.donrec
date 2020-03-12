@@ -267,6 +267,10 @@ function donrec_civicrm_alterMailParams(&$params, $context) {
 function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
   $message = json_decode($bounce_message, TRUE);
   if (isset($message['Payload'])) {
+    if ($message['event'] != 'bounce') {
+      CRM_Core_Error::debug_log_message("Event isn't a bounce Event, but {$message['event']}. We can't handle this event here. Message: {$bounce_message}");
+      return;
+    }
     $payload = json_decode($message['Payload'], TRUE);
     //    parse bounce parameters here
     $result = civicrm_api3('DonationReceipt', 'handlebounce', [
