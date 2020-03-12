@@ -272,6 +272,10 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
       return;
     }
     $payload = json_decode($message['Payload'], TRUE);
+    if (!isset($payload['contact_id']) || !isset($payload['contribution_id']) || !isset($payload['timestamp']) || !isset($payload['profile_id'])) {
+      CRM_Core_Error::debug_log_message("Couldn't parse Bounce information for Event {$bounce_message}");
+      return;
+    }
     //    parse bounce parameters here
     $result = civicrm_api3('DonationReceipt', 'handlebounce', [
       'contact_id' => $payload['contact_id'],
