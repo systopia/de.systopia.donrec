@@ -662,7 +662,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       }
 
       // Set data attributes.
-      foreach ($this->profile->getData() as $element_name => $value) {
+      foreach (array_keys(CRM_Donrec_Logic_Profile::defaultProfileData()['data']) as $element_name) {
         // Set unchecked checkbox values.
         if (in_array($element_name, array(
           'store_original_pdf',
