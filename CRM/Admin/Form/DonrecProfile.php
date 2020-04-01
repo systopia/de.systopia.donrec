@@ -428,6 +428,42 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Has to be a valid email address'),
       'email'
     );
+    $this->add(
+      'checkbox',
+      'special_mail_handling',
+      E::ts('Custom Mail Handling:'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_header',
+      E::ts('Custom Mail Header:'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_activity_id',
+      E::ts('Activity ID'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_activity_subject',
+      E::ts('Activity Subject'),
+      $options
+    );
+    $this->add(
+      'text',
+      'special_mail_activity_contact_id',
+      E::ts('Activity Contact ID'),
+      $options
+    );
+    $this->add(
+      'checkbox',
+      'special_mail_withdraw_receipt',
+      E::ts('Withdraw receipt'),
+      $options
+    );
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),
@@ -513,7 +549,24 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
           )
         );
       }
-
+      /**
+       * Validate Custom Mail handling
+       */
+      if (isset($values['special_mail_handling']) && $values['special_mail_handling'] == TRUE) {
+        // validate that all other custom mailing fields are set!
+        if (empty($values['special_mail_header'])) {
+          $this->_errors['special_mail_header'] = E::ts('If custom Mail handling is activated, a custom mail Header must be set');
+        }
+        if (empty($values['special_mail_activity_id'])) {
+          $this->_errors['special_mail_activity_id'] = E::ts('If custom Mail handling is activated, please specify an activity_id');
+        }
+        if (empty($values['special_mail_activity_subject'])) {
+          $this->_errors['special_mail_activity_subject'] = E::ts('If custom Mail handling is activated, please specify an activity subject');
+        }
+        if (empty($values['special_mail_activity_contact_id'])) {
+          $this->_errors['special_mail_activity_contact_id'] = E::ts('If custom Mail handling is activated, please specify an activity contact_id');
+        }
+      }
       /**
        * Validate variables.
        */
@@ -628,7 +681,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     }
     elseif ($this->_op == 'delete') {
       $values = $this->exportValues();
-      
+
       if (isset($values['new_default_profile'])) {
         CRM_Donrec_Logic_Profile::changeDefaultProfile($values['new_default_profile']);
       }

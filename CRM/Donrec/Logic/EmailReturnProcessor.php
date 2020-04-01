@@ -34,10 +34,17 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * CRM_Donrec_Logic_EmailReturnProcessor constructor.
    *
    * @param $params array see civicrm_api3_donation_receipt_engine_processreturns
+   * @param null $from_api bool
+   *
+   * @throws \Exception
    */
-  public function __construct($params) {
-    $this->params = $params;
+  public function __construct($params, $from_api = NULL) {
 
+    $this->params = $params;
+    if ($from_api) {
+      // we have a bounce event directly triggered by API. no need for setting up IMAP connection
+      return;
+    }
     // connect
     $this->mailbox = $this->create_imap_connection();
 
@@ -83,9 +90,9 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
       }
 
       try {
-        list($contact_id, $receipt_id) = $this->parseMessage($message_id, $this->params['pattern']);
+        [$contact_id, $receipt_id] = $this->parseMessage($message_id, $this->params['pattern']);
         if ($contact_id && $receipt_id) {
-          $success = $this->processMatch($contact_id, $receipt_id);
+          $success = $this->processBounce($contact_id, $receipt_id);
           if ($success) {
             $stats['processed'] += 1;
             $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
@@ -129,16 +136,20 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     }
 
     if ($match) {
-      // resolve receipt_id
-      $receipt_ids = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID($match['contribution_id'], $match['timestamp'], 60);
-      if (count($receipt_ids) == 1) {
-        $receipt_id = reset($receipt_ids);
-        return [$match['contact_id'], $receipt_id];
-      } else {
-        return [$match['contact_id'], NULL];
-      }
+      return $this->get_receipt_id($match['contribution_id'], $match['timstamp'], $match['contact_id']);
     } else {
       return [NULL, NULL];
+    }
+  }
+
+  public function get_receipt_id($contribution_id, $timestamp, $contact_id) {
+    // resolve receipt_id
+    $receipt_ids = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID($contribution_id, $timestamp, 60);
+    if (count($receipt_ids) == 1) {
+      $receipt_id = reset($receipt_ids);
+      return [$contact_id, $receipt_id];
+    } else {
+      return [$contact_id, NULL];
     }
   }
 
@@ -150,9 +161,11 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * @param $contact_id int contact ID
    * @param $receipt_id int receipt (internal) ID
    *
+   * @param null $activity_source_id
+   *
    * @return bool did the processing work?
    */
-  protected function processMatch($contact_id, $receipt_id) {
+  public function processBounce($contact_id, $receipt_id, $activity_source_id = NULL) {
     try {
       // load and verify receipt
       $receipt = CRM_Donrec_Logic_Receipt::get($receipt_id);
@@ -175,7 +188,7 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
             'activity_date_time' => date('YmdHis'), // TODO: use email time?
             'target_id'          => $contact_id,
             'status_id'          => empty($this->params['withdraw']) ? 'Scheduled' : 'Completed',
-            'source_contact_id'  => CRM_Donrec_Logic_Settings::getLoggedInContactID(),
+            'source_contact_id'  => empty($activity_source_id) ? CRM_Donrec_Logic_Settings::getLoggedInContactID() : $activity_source_id,
             //'assignee_id'        => $assignee_id,
         ]);
       }

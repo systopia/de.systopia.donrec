@@ -260,6 +260,46 @@ function donrec_civicrm_alterMailParams(&$params, $context) {
 }
 
 /**
+ * Custom mailjet transactional bounce hook
+ * @param $bounce_message
+ *
+ */
+function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
+  $message = json_decode($bounce_message, TRUE);
+  if (isset($message['Payload'])) {
+    if ($message['event'] != 'bounce') {
+      CRM_Core_Error::debug_log_message("Event isn't a bounce Event, but {$message['event']}. We can't handle this event here. Message: {$bounce_message}");
+      return;
+    }
+    $payload = json_decode($message['Payload'], TRUE);
+    if (!isset($payload['contact_id']) || !isset($payload['contribution_id']) || !isset($payload['timestamp']) || !isset($payload['profile_id'])) {
+      CRM_Core_Error::debug_log_message("Couldn't parse Bounce information for Event {$bounce_message}");
+      return;
+    }
+    //    parse bounce parameters here
+    $result = civicrm_api3('DonationReceipt', 'handlebounce', [
+      'contact_id' => $payload['contact_id'],
+      'contribution_id' => $payload['contribution_id'],
+      'timestamp' => $payload['timestamp'],
+      'profile_id' => $payload['profile_id'],
+    ]);
+  }
+}
+
+/**
+ * Custom mailjet mailing bounce hook
+ * @param $bounce_message
+ * Currently not needed here - ZWBs will always be sent in a transactional mail
+ */
+//function donrec_civicrm_mailjet_mailing_bounce($bounce_message) {
+//  CRM_Core_Error::debug_log_message("[com.proveg.mods - mailing bounce hook] " . json_encode($bounce_message));
+//  $tmp = json_decode($bounce_message, TRUE);
+//  if (isset($tmp['Payload'])) {
+//    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
+//  }
+//}
+
+/**
  * Set settings
  */
 function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
