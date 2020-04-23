@@ -151,7 +151,18 @@ class CRM_Donrec_Logic_Settings {
   public static function validateContribution($contribution_id, $old_values, $new_values, $throw_exception = FALSE) {
     $errors = array();
 
-    $receipt_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($contribution_id, TRUE);
+    if (!empty($receipt_id = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID(
+        $contribution_id,
+        0,
+        60,
+        'ORIGINAL'
+    ))) {
+      $receipt_id = reset($receipt_id);
+    }
+    else {
+      $receipt_id = FALSE;
+    }
+
     $snapshot_id = CRM_Donrec_Logic_Snapshot::isInOpenSnapshot($contribution_id, TRUE);
 
     if ($receipt_id || $snapshot_id) {
