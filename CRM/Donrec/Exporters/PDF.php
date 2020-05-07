@@ -74,7 +74,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
     $ids = $snapshot->getIds();
     $toRemove = array();
 
-    if ($zip->open($archiveFileName, ZIPARCHIVE::CREATE) === TRUE) {
+    if ($zip->open($archiveFileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) === TRUE) {
       foreach($ids as $id) {
         $proc_info = $snapshot->getProcessInformation($id);
         if(!empty($proc_info)) {
