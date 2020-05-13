@@ -147,7 +147,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
 
     // add files to sub-archives
     // open main archive and add sub-archives
-    if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE) === TRUE) {
+    if ($outerArchive->open($fileURL, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) === TRUE) {
       foreach($pageCountArr as $entry) {
         foreach ($entry as $item) {
           if($item[0] && $item[2]) { // if page count and file name exists
