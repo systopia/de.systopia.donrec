@@ -289,13 +289,14 @@ Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anla
       erstellt oder veranlasst, dass Zuwendungen nicht zu den in der
       Zuwendungsbestätigung angegebenen steuerbegünstigten Zwecken verwendet
       werden, haftet für die entgangene Steuer
-      (§ 10b Abs. 4 EStG, §9 Abs. 3 KStG, § 9 Nr. 5 GewStG).
+      (§&nbsp;10b&nbsp;Abs.&nbsp;4&nbsp;EStG, §9&nbsp;Abs.&nbsp;3&nbsp;KStG,
+      §&nbsp;9&nbsp;Nr.&nbsp;5&nbsp;GewStG).
       Diese Bestätigung wird nicht als Nachweis für die steuerliche
       Berücksichtigung der Zuwendung anerkannt, wenn das Datum des
       Freistellungsbescheides länger als 5 Jahre bzw. das Datum der Feststellung
       der Einhaltung der satzungsmäßigen Voraussetzungen nach
-      § 60a Abs. 1 AO länger als 3 Jahre seit Ausstellung des Bescheides
-      zurückliegt (§ 63 Abs. 5 AO).
+      §&nbsp;60a&nbsp;Abs.&nbsp;1&nbsp;AO länger als 3 Jahre seit Ausstellung
+      des Bescheides zurückliegt (§&nbsp;63&nbsp;Abs.&nbsp;5&nbsp;AO).
     </p>
 </div>
 
