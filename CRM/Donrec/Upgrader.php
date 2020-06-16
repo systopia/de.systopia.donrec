@@ -425,4 +425,62 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
     return TRUE;
   }
+
+  /**
+   * Upgrade to 2.0:
+   * - Delete erroneously copied ReceiptItem custom value entries for
+   *   contributions created by the Contribution.repeattransaction API action.
+   * @see donrec_civicrm_post().
+   * @link https://github.com/civicrm/civicrm-core/pull/17454
+   */
+  public function upgrade_0201() {
+    $receipt_item_table = CRM_Donrec_DataStructure::getTableName(
+      'zwb_donation_receipt_item'
+    );
+    $receipt_item_fields = CRM_Donrec_DataStructure::getCustomFields(
+      'zwb_donation_receipt_item'
+    );
+    $ids_query = "
+      SELECT
+        item_delete.id AS `id`,
+        item_delete.{$receipt_item_fields['contribution_hash']} AS `hash`
+      FROM
+        `{$receipt_item_table}` item_delete
+      WHERE
+        IFNULL(item_delete.{$receipt_item_fields['contribution_hash']}, '') != ''
+        AND item_delete.{$receipt_item_fields['contribution_hash']} IN(
+          SELECT
+            item_duplicate.{$receipt_item_fields['contribution_hash']}
+          FROM
+            `{$receipt_item_table}` item_duplicate
+          GROUP BY
+            item_duplicate.{$receipt_item_fields['contribution_hash']}
+          HAVING
+            COUNT(*) > 1
+        )
+        AND item_delete.id != (
+          SELECT
+            MIN(item_keep.id)
+          FROM
+            `{$receipt_item_table}` item_keep
+          WHERE
+            item_keep.{$receipt_item_fields['contribution_hash']} = item_delete.{$receipt_item_fields['contribution_hash']}
+        )
+    ;";
+    $ids = CRM_Core_DAO::executeQuery($ids_query)->fetchMap('id', 'hash');
+    if (!empty($ids)) {
+      $ids_sql = implode(',', array_keys($ids));
+
+      $delete_query = "
+      DELETE
+      FROM
+        `{$receipt_item_table}`
+      WHERE
+        `id` IN ({$ids_sql})
+      ;";
+      CRM_Core_DAO::executeQuery($delete_query);
+    }
+
+    return TRUE;
+  }
 }

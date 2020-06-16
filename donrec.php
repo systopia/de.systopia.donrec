@@ -372,6 +372,67 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 }
 
 /**
+ * Implements hook_civicrm_post().
+ */
+function donrec_civicrm_post($op, $objectName, $objectId, &$objectRef) {
+  // Care for transaction-wrapped calls by deferring to a callback.
+  if (CRM_Core_Transaction::isActive()) {
+    CRM_Core_Transaction::addCallback(
+      CRM_Core_Transaction::PHASE_POST_COMMIT,
+      '_donrec_civicrm_post_callback',
+      [$op, $objectName, $objectId, $objectRef]
+    );
+  }
+  else {
+    _donrec_civicrm_post_callback(
+      $op,
+      $objectName,
+      $objectId,
+      $objectRef
+    );
+  }
+}
+
+/**
+ * Actual implementation of hook_civicrm_post(), used as a callback in the hook
+ * implementation itself to care for transaction-wrapped calls.
+ *
+ * @see donrec_civicrm_post().
+ *
+ * @param $op
+ * @param $objectName
+ * @param $objectId
+ * @param $objectRef
+ */
+function _donrec_civicrm_post_callback($op, $objectName, $objectId, $objectRef) {
+  if ($objectName == 'Contribution') {
+    switch ($op) {
+      case 'create':
+        // Clear donrec custom fields, since they might have got values copied
+        // from a previous contribution when created through the
+        // Contribution.repeattransaction API action, which is especially true
+        // for recurring contributions created by payment processors.
+        // TODO: Remove this workaround when the issue is fixed in CiviCRM core,
+        //   i.e. custom field values are not being copied anymore when creating
+        //   contributions through Contribution.repeattransaction.
+        //   @link https://github.com/civicrm/civicrm-core/pull/17454
+        static $receipt_item_table = NULL;
+        if (!isset($receipt_item_table)) {
+          $receipt_item_table = CRM_Donrec_DataStructure::getTableName(
+            'zwb_donation_receipt_item'
+          );
+        }
+        $query = "
+          DELETE FROM {$receipt_item_table}
+          WHERE `entity_id` = {$objectId}
+          ;";
+        CRM_Core_DAO::executeQuery($query);
+        break;
+    }
+  }
+}
+
+/**
  * Prune the "find contributions" and "advanced contact search" forms
  * by removing the fields that don't make sense or don't work
  */
