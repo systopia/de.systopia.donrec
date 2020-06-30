@@ -129,6 +129,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     $completedStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
     $contribution_fieldKeys = CRM_Contribute_DAO_Contribution::fieldKeys();
     $sepa_ooff_payment_id = CRM_Core_OptionGroup::getValue('payment_instrument', 'OOFF', 'name');
+    // Get contribution default return properties.
+    $contribution_return = CRM_Contribute_BAO_Query::defaultReturnProperties(CRM_Contact_BAO_Query::MODE_CONTRIBUTE);
+    // Add non-default fields.
+    $contribution_return = array_merge($contribution_fieldKeys, $contribution_return);
 
     $contribution_count = count($contribution_ids);
     $session = CRM_Core_Session::singleton();
@@ -139,6 +143,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
           'version' => 3,
           'sequential' => 1,
           'id' => $contributionId,
+          'return' => array_keys($contribution_return),
       );
       $contribution = civicrm_api('Contribution', 'getsingle', $params);
 
