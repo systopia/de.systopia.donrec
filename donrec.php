@@ -314,14 +314,16 @@ function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
   }
 }
 
-function donrec_civicrm_tabs(&$tabs, $contactID) {
-  if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
+function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
+  if ($tabsetName === 'civicrm/contact/view' && !empty($context['contact_id']) && CRM_Core_Permission::check([['view and copy receipts', 'create and withdraw receipts']])) {
+    $contactID = $context['contact_id'];
     $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
                                   "reset=1&snippet=1&force=1&cid=$contactID" );
     $tabs[] = array( 'id'    => 'donation_receipts',
                      'url'   => $url,
                      'title' => E::ts('Donation receipts'),
                      'count' => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($contactID),
+                     'icon'  => 'crm-i fa-file-text-o',
                      'weight' => 300);
   }
 }
