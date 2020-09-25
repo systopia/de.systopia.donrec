@@ -175,6 +175,7 @@ class CRM_Donrec_Logic_Template
     }
 
     // Assign profile variables.
+    $smarty->assign('profile_variables', $this->profile_variables);
     foreach ($this->profile_variables as $name => $value) {
       $smarty->assign($name, $value);
     }
