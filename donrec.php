@@ -180,7 +180,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
       $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
       $title = ts('Rebook', array('domain' => 'de.systopia.donrec'));
       $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
-      $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
+      $action = "<a title=\"$title\" class=\"action-item crm-hover-button\" href=\"$url\">$title</a>";
 
       // add 'rebook' action link to each row
       foreach ($values as $rownr => $row) {
