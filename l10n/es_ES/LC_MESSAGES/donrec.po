@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: \n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 2.4.1\n"
 "Last-Translator: Alejandro <a.salgado@ixiam.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: es\n"
@@ -480,7 +480,7 @@ msgstr "Estado"
 
 #: donrec.php
 msgid "- any -"
-msgstr "- Cualquiera -"
+msgstr "- cualquiera -"
 
 #: donrec.php templates/CRM/Donrec/Page/Tab.tpl
 msgid "original"
