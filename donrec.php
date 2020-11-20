@@ -274,17 +274,27 @@ function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
   }
 }
 
-function donrec_civicrm_tabs(&$tabs, $contactID) {
-  if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
-    $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
-                                  "reset=1&snippet=1&force=1&cid=$contactID" );
-    $tabs[] = array( 'id'    => 'donation_receipts',
-                     'url'   => $url,
-                     'title' => E::ts('Donation receipts'),
-                     'count' => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($contactID),
-                     'weight' => 300);
+/**
+ * Implements hook_civicrm_tabset()
+ *
+ * Will inject the SepaMandate tab
+ */
+function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
+  if ($tabsetName == 'civicrm/contact/view' && !empty($context['contact_id'])) {
+    if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
+      $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
+                                    "reset=1&snippet=1&force=1&cid={$context['contact_id']}" );
+      $tabs[] = [
+          'id'     => 'donation_receipts',
+          'url'    => $url,
+          'title'  => E::ts('Donation receipts'),
+          'count'  => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($context['contact_id']),
+          'weight' => 300
+      ];
+    }
   }
 }
+
 
 /*
  * return errors if a receipted contribution is going to be changed
