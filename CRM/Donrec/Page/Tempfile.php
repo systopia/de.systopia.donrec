@@ -28,8 +28,6 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
     if (!empty($_REQUEST['path'])) {
       $filename = sys_get_temp_dir() . '/' . self::PREFIX . $_REQUEST['path'];
       if (file_exists($filename)) {
-        // dump file contents in stream
-        readfile($filename);
 
         // set file name
         if (empty($_REQUEST['name'])) {
@@ -44,6 +42,9 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
         } else {
           header('Content-Type: ' . $_REQUEST['type']);
         }
+
+        // dump file contents in stream
+        readfile($filename);
 
         CRM_Utils_System::civiExit();
       }
