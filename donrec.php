@@ -317,7 +317,7 @@ function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
 /**
  * Implements hook_civicrm_tabset()
  *
- * Will inject the SepaMandate tab
+ * Will inject the FastActivity tab
  */
 function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
   if ($tabsetName == 'civicrm/contact/view' && !empty($context['contact_id'])) {
