@@ -261,21 +261,27 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
       foreach ($profiles as $profile_name => $profile_data) {
         // Copy template contents and remove template reference from profile data.
-        if (isset($profile_data['template'])) {
-          $template = civicrm_api3(
-            'MessageTemplate',
-            'getsingle',
-            array(
-              'id' => $profile_data['template'],
-              'return' => array(
-                'msg_html',
-                'pdf_format_id',
-              ),
-            )
-          );
-          unset($profile_data['template']);
+        unset($template);
+        if (!empty($profile_data['template'])) {
+          try {
+            $template = civicrm_api3(
+              'MessageTemplate',
+              'getsingle',
+              array(
+                'id' => $profile_data['template'],
+                'return' => array(
+                  'msg_html',
+                  'pdf_format_id',
+                ),
+              )
+            );
+            unset($profile_data['template']);
+          }
+          catch (Exception $exception) {
+            // Nothing to do here, there is a fallback for $template below.
+          }
         }
-        else {
+        if (!isset($template)) {
           $pdf_format = CRM_Core_BAO_PdfFormat::getPdfFormat('is_default', 1);
           $template = array(
             'msg_html' => CRM_Donrec_Logic_Template::getDefaultTemplateHTML(),
