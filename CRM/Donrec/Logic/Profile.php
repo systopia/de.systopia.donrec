@@ -501,7 +501,12 @@ class CRM_Donrec_Logic_Profile {
    * @throws \Exception
    */
   public static function changeDefaultProfile($new_default_profile_id) {
-    self::getDefaultProfile()->setDefault(FALSE);
+    try {
+      self::getDefaultProfile()->setDefault(FALSE);
+    }
+    catch (Exception $exception) {
+      // There is no profile currently set as default, nothing to do.
+    }
     self::getProfile($new_default_profile_id)->setDefault();
   }
 
