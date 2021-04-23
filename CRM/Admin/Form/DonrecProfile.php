@@ -675,6 +675,16 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         }
       }
 
+      // extract and set unlock fields
+      $donrec_contribution_unlock_fields = array_keys(CRM_Donrec_Logic_Settings::getContributionUnlockableFields());
+      $unlock_field_values = [];
+      foreach ($donrec_contribution_unlock_fields as $property_name) {
+        $field_name                          = 'contribution_unlock_field_' . $property_name;
+        $unlock_field_values[$property_name] = (int)!empty($values[$field_name]);
+      }
+      $this->profile->setDataAttribute('contribution_unlock_fields', $unlock_field_values);
+
+
       $this->profile->save();
 
       $session->setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
