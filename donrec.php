@@ -193,7 +193,12 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
             // this contribution is o.k. => add the rebook action
             $contribution_id = $row['contribution_id'];
             $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
-            $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+            if (strpos($row['action'], '</ul>') !== FALSE) {
+              $values[$rownr]['action'] = str_replace('</ul></span>', '<li>'.$this_action.'</li></ul></span>', $row['action']);
+            }
+            else {
+              $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+            }
           }
         }
       }
