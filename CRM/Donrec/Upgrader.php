@@ -489,4 +489,13 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
 
     return TRUE;
   }
+
+  /**
+   * Upgrade to 2.1:
+   * - Flush cache for registering new settings for CiviOffice integration.
+   */
+  public function upgrade_0210() {
+    civicrm_api3('System', 'flush');
+    return TRUE;
+  }
 }

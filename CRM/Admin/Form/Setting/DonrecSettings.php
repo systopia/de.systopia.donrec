@@ -39,6 +39,60 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::get('donrec_packet_size')
     );
 
+    // Add CiviOffice configuration.
+    $manager = CRM_Extension_System::singleton()->getManager();
+    if ($manager->getStatus('de.systopia.civioffice') === CRM_Extension_Manager::STATUS_INSTALLED) {
+      $this->assign('civioffice_enabled', TRUE);
+      /**
+       * Code borrowed from CiviOffice
+       * @see CRM_Civioffice_Form_DocumentFromSingleContact::buildQuickForm()
+       */
+      $civioffice_config = CRM_Civioffice_Configuration::getConfig();
+      $document_renderer_list = [
+        '' => E::ts('- None -')
+      ];
+      foreach ($civioffice_config->getDocumentRenderers(true) as $dr) {
+        foreach ($dr->getSupportedOutputMimeTypes() as $mime_type) {
+          $output_mimetypes[$mime_type] = CRM_Civioffice_MimeType::mapMimeTypeToFileExtension($mime_type);
+        }
+        $document_renderer_list[$dr->getURI()] = $dr->getName();
+      }
+      $this->add(
+        'select',
+        'civioffice_document_renderer_uri',
+        E::ts("Document Renderer"),
+        $document_renderer_list,
+        FALSE,
+        ['class' => 'crm-select2 huge']
+      );
+
+      // build document list
+      $document_list = [
+        '' => E::ts('- None -')
+      ];
+      // todo: only show supported source mime types
+      foreach ($civioffice_config->getDocumentStores(true) as $document_store) {
+        foreach ($document_store->getDocuments() as $document) {  // todo: recursive
+          /** @var CRM_Civioffice_Document $document */
+
+          // TODO: Mimetype checks could be handled differently in the future: https://github.com/systopia/de.systopia.civioffice/issues/2
+          if (!CRM_Civioffice_MimeType::hasSpecificFileNameExtension($document->getName(), CRM_Civioffice_MimeType::DOCX)) {
+            continue; // for now only allow/return docx files
+          }
+
+          $document_list[$document->getURI()] = "[{$document_store->getName()}] {$document->getName()}";
+        }
+      }
+      $this->add(
+        'select',
+        'civioffice_document_uri',
+        E::ts("Document"),
+        $document_list,
+        FALSE,
+        ['class' => 'crm-select2 huge']
+      );
+    }
+
     $this->addButtons(array(
       array(
         'type' => 'next',
@@ -75,6 +129,8 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     $defaults['pdfunite_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfunite_path');
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
+    $defaults['civioffice_document_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri');
+    $defaults['civioffice_document_renderer_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri');
 
     return $defaults;
   }
@@ -99,6 +155,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfunite_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfunite_path', $values['pdfunite_path']);
     }
+
+    CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_uri', $values['civioffice_document_uri'] ?: NULL);
+    CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_renderer_uri', $values['civioffice_document_renderer_uri'] ?: NULL);
 
     $session = CRM_Core_Session::singleton();
     $session->setStatus(
