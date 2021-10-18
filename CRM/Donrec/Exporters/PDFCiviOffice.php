@@ -75,27 +75,34 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
     $snapshot_line_id = $snapshot_receipt->getID();
     $files = [$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('donation-receipt') => $file];
 
-    // TODO: Generate cover letter PDF using CiviOffice and add to pdf_files array.
-    $civioffice_result = civicrm_api3(
-      'CiviOffice',
-      'convert',
-      [
-        'document_uri' => CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri'),
-        'entity_ids' => [$snapshot_receipt->getContactID()],
-        'entity_type' => 'contact',
-        'renderer_uri' => CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri'),
-        'target_mime_type' => 'application/pdf',
-      ]
-    );
-    $result_store_uri = $civioffice_result['values'][0];
-    $result_store = CRM_Civioffice_Configuration::getDocumentStore($result_store_uri);
-    foreach ($result_store->getDocuments() as $document) {
-      /* @var CRM_Civioffice_Document $document */
-      $files[$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('cover-letter')] = $document->getLocalTempCopy();
+    // Generate cover letter PDF using CiviOffice and add to pdf_files array.
+    try {
+      $civioffice_result = civicrm_api3(
+        'CiviOffice',
+        'convert',
+        [
+          'document_uri' => CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri'),
+          'entity_ids' => [$snapshot_receipt->getContactID()],
+          'entity_type' => 'contact',
+          'renderer_uri' => CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri'),
+          'target_mime_type' => 'application/pdf',
+        ]
+      );
+      if (!empty($civioffice_result['is_error'])) {
+        throw new Exception($civioffice_result['error_message']);
+      }
+      $result_store_uri = $civioffice_result['values'][0];
+      $result_store = CRM_Civioffice_Configuration::getDocumentStore($result_store_uri);
+      foreach ($result_store->getDocuments() as $document) {
+        /* @var CRM_Civioffice_Document $document */
+        $files[$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('cover-letter')] = $document->getLocalTempCopy();
+      }
+      $this->updateProcessInformation($snapshot_line_id, array('pdf_files' => $files));
+      return TRUE;
     }
-
-    $this->updateProcessInformation($snapshot_line_id, array('pdf_files' => $files));
-    return TRUE;
+    catch (Exception $exception) {
+      return FALSE;
+    }
   }
 
 
