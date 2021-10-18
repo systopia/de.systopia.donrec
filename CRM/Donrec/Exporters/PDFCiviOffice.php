@@ -88,7 +88,7 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
           'target_mime_type' => 'application/pdf',
         ]
       );
-      if (!empty($civioffice_result['is_error'])) {
+      if (!empty($civioffice_result['is_error']) || empty($civioffice_result['values'][0])) {
         throw new Exception($civioffice_result['error_message']);
       }
       $result_store_uri = $civioffice_result['values'][0];
