@@ -8,9 +8,9 @@
     <author>B. Endres</author>
     <email>endres@systopia.de</email>
   </maintainer>
-  <releaseDate></releaseDate>
-  <version>2.1-dev</version>
-  <develStage>dev</develStage>
+  <releaseDate>2021-10-26</releaseDate>
+  <version>2.1-alpha3</version>
+  <develStage>testing</develStage>
   <compatibility>
     <ver>5.2</ver>
   </compatibility>
