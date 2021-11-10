@@ -25,7 +25,14 @@ abstract class CRM_Donrec_Logic_Exporter {
    * returns the list of implemented exporters
    */
   public static function listExporters() {
-    return array('PDF', 'Dummy', 'CSV', 'GroupedPDF', 'MergedPDF', 'EmailPDF');
+    $exporters = ['PDF', 'Dummy', 'CSV', 'GroupedPDF', 'MergedPDF', 'EmailPDF'];
+
+    $manager = CRM_Extension_System::singleton()->getManager();
+    if ($manager->getStatus('de.systopia.civioffice') === CRM_Extension_Manager::STATUS_INSTALLED) {
+      $exporters[] = 'PDFCiviOffice';
+    }
+
+    return $exporters;
   }
 
   /**

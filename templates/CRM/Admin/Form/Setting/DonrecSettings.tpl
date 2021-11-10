@@ -44,6 +44,28 @@
 
   </fieldset>
 
+  {if $civioffice_enabled}
+      <fieldset class="crm-form-block">
+
+        <h3>{ts domain="de.systopia.donrec"}CiviOffice Integration{/ts}</h3>
+
+        <table class="form-layout-compressed">
+
+          <tr class="crm-donrec-settings-form-block-civioffice_document_uri">
+            <td class="label">{$form.civioffice_document_uri.label}</td>
+            <td>{$form.civioffice_document_uri.html}</td>
+          </tr>
+
+          <tr class="crm-donrec-settings-form-block-civioffice_document_renderer_uri">
+            <td class="label">{$form.civioffice_document_renderer_uri.label}</td>
+            <td>{$form.civioffice_document_renderer_uri.html}</td>
+          </tr>
+
+        </table>
+
+      </fieldset>
+  {/if}
+
   <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 
 </div>
