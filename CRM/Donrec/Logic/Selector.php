@@ -89,18 +89,28 @@ class CRM_Donrec_Logic_Selector {
     // run the main query
     $query = "SELECT `civicrm_contribution`.`id`
               FROM `civicrm_contribution`
+              LEFT JOIN `civicrm_line_item`
+                  ON `civicrm_line_item`.`entity_table` = 'civicrm_contribution'
+                  AND `civicrm_line_item`.`entity_id` = `civicrm_contribution`.`id`
+                  AND `civicrm_line_item`.$financialTypeClause
               LEFT JOIN `$custom_group_table` AS existing_receipt
                   ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
                   AND existing_receipt.`$status_column` = 'ORIGINAL'
               WHERE
                   ($main_selector)
                   $query_date_limit
-                  AND $financialTypeClause
-                  AND (`non_deductible_amount` = 0 OR `non_deductible_amount` IS NULL)
+                  AND (`civicrm_contribution`.$financialTypeClause OR `civicrm_line_item`.`id` IS NULL)
+                  AND (
+                    `civicrm_contribution`.`non_deductible_amount` = 0
+                    OR `civicrm_contribution`.`non_deductible_amount` IS NULL
+                    OR `civicrm_line_item`.`non_deductible_amount` = 0
+                    OR `civicrm_line_item`.`non_deductible_amount` IS NULL
+                  )
                   AND `contribution_status_id` = 1
                   AND `is_test` = 0
                   AND `currency` = '$currency'
-                  AND existing_receipt.`entity_id` IS NULL;";
+                  AND existing_receipt.`entity_id` IS NULL
+              GROUP BY `civicrm_contribution`.`id`;";
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);
@@ -112,9 +122,9 @@ class CRM_Donrec_Logic_Selector {
     }
 
     // finally, build the snapshot with it
-    return CRM_Donrec_Logic_Snapshot::create( $contributionIds, 
-                                              CRM_Donrec_Logic_Settings::getLoggedInContactID(), 
-                                              $formatted_date_from, 
+    return CRM_Donrec_Logic_Snapshot::create( $contributionIds,
+                                              CRM_Donrec_Logic_Settings::getLoggedInContactID(),
+                                              $formatted_date_from,
                                               $formatted_date_to,
                                               $values['profile']);
   }

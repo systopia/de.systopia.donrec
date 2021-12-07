@@ -103,9 +103,12 @@ class CRM_Donrec_Logic_Snapshot {
     // FIXME: this might cause race conditions
     $new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `donrec_snapshot`;");
     $new_snapshot_id++;
+    $profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
 
     // build id string from contribution array
     $id_string = implode(', ', $contributions);
+    // Build financial type clause for financial type
+    $financialTypeClause = $profile->getContributionTypesClause();
 
     // debugging/testing
     $operator = "+ INTERVAL 1 DAY";
@@ -121,6 +124,7 @@ class CRM_Donrec_Logic_Snapshot {
               `snapshot_id`,
               `profile_id`,
               `contribution_id`,
+              `line_item_id`,
               `contact_id`,
               `financial_type_id`,
               `created_timestamp`,
@@ -137,31 +141,36 @@ class CRM_Donrec_Logic_Snapshot {
               NULL,
               %1 as `snapshot_id`,
               %2 as `profile_id`,
-              `id` as `contribution_id`,
+              `civicrm_contribution`.`id` as `contribution_id`,
+              `civicrm_line_item`.`id` as `line_item_id`,
               `contact_id`,
-              `financial_type_id`,
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`financial_type_id`, `civicrm_contribution`.`financial_type_id`),
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
               %3,
-              `total_amount`,
-              `non_deductible_amount`,
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`line_total`, `civicrm_contribution`.`total_amount`),
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`non_deductible_amount`, `civicrm_contribution`.`non_deductible_amount`),
               `currency`,
               `receive_date`,
               '$date_from' as `date_from`,
               '$date_to' as `date_to`
           FROM
               `civicrm_contribution`
+          LEFT JOIN `civicrm_line_item`
+                  ON `civicrm_line_item`.`entity_table` = 'civicrm_contribution'
+                  AND `civicrm_line_item`.`entity_id` = `civicrm_contribution`.`id`
+                  AND `civicrm_line_item`.$financialTypeClause
           WHERE
-              `id` IN ($id_string)
-              ;";
+              `civicrm_contribution`.`id` IN ($id_string)
+          ;";
     // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters
     $params = array(
       1 => array($new_snapshot_id, 'Integer'),
       2 => array(
-        CRM_Donrec_Logic_Profile::getProfile($profile_id)->getId(),
+        $profile->getId(),
         'Int',
       ),
       3 => array($creator_id, 'Integer'),
