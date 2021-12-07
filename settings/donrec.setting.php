@@ -13,6 +13,18 @@
 */
 
 return array(
+  'donrec_enable_line_item' => array(
+    'group_name' => 'Donation Receipt Settings',
+    'group' => 'de.systopia',
+    'name' => 'donrec_enable_line_item',
+    'type' => 'Integer',
+    'html_type' => 'radio',
+    'default' => 1,
+    'add' => '4.3',
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'Enable line items. Switching this on/off requires testing whether your donation receipts are still working as expected.',
+  ),
   'donrec_packet_size' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',

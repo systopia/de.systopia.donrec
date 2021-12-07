@@ -509,6 +509,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     if (!$fieldExistsDao->N) {
       \CRM_Core_DAO::executeQuery("ALTER TABLE `donrec_snapshot` ADD `line_item_id` INT UNSIGNED NULL DEFAULT NULL AFTER `contribution_id`, ADD INDEX `line_item_id` (`line_item_id`);");
     }
+    CRM_Donrec_Logic_Settings::set('donrec_enable_line_item', 0);
     return TRUE;
   }
 

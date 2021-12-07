@@ -99,6 +99,8 @@ class CRM_Donrec_Logic_Snapshot {
       return $return;
     }
 
+    $enable_line_item = CRM_Donrec_Logic_Settings::get('donrec_enable_line_item');
+
     // get next snapshot id
     // FIXME: this might cause race conditions
     $new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `donrec_snapshot`;");
@@ -118,8 +120,9 @@ class CRM_Donrec_Logic_Snapshot {
 
     // assemble the query
     // remark: if you change this, also adapt the $CHUNK_FIELDS list
-    $insert_query =
-          "INSERT INTO `donrec_snapshot` (
+    if ($enable_line_item) {
+      $insert_query =
+        "INSERT INTO `donrec_snapshot` (
               `id`,
               `snapshot_id`,
               `profile_id`,
@@ -164,6 +167,48 @@ class CRM_Donrec_Logic_Snapshot {
           WHERE
               `civicrm_contribution`.`id` IN ($id_string)
           ;";
+    } else {
+      $insert_query =
+        "INSERT INTO `donrec_snapshot` (
+              `id`,
+              `snapshot_id`,
+              `profile_id`,
+              `contribution_id`,
+              `contact_id`,
+              `financial_type_id`,
+              `created_timestamp`,
+              `expires_timestamp`,
+              `status`,
+              `created_by`,
+              `total_amount`,
+              `non_deductible_amount`,
+              `currency`,
+              `receive_date`,
+              `date_from`,
+              `date_to`)
+          SELECT
+              NULL,
+              %1 as `snapshot_id`,
+              %2 as `profile_id`,
+              `id` as `contribution_id`,
+              `contact_id`,
+              `financial_type_id`,
+              NOW() as `created_timestamp`,
+              NOW() $operator as `expires_timestamp`,
+              NULL,
+              %3,
+              `total_amount`,
+              `non_deductible_amount`,
+              `currency`,
+              `receive_date`,
+              '$date_from' as `date_from`,
+              '$date_to' as `date_to`
+          FROM
+              `civicrm_contribution`
+          WHERE
+              `id` IN ($id_string)
+              ;";
+    }
     // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters

@@ -85,9 +85,12 @@ class CRM_Donrec_Logic_Selector {
     $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile']);
     $financialTypeClause = $profile->getContributionTypesClause();
 
+    $enable_line_item = CRM_Donrec_Logic_Settings::get('donrec_enable_line_item');
+
 
     // run the main query
-    $query = "SELECT `civicrm_contribution`.`id`
+    if ($enable_line_item) {
+      $query = "SELECT `civicrm_contribution`.`id`
               FROM `civicrm_contribution`
               LEFT JOIN `civicrm_line_item`
                   ON `civicrm_line_item`.`entity_table` = 'civicrm_contribution'
@@ -111,6 +114,22 @@ class CRM_Donrec_Logic_Selector {
                   AND `currency` = '$currency'
                   AND existing_receipt.`entity_id` IS NULL
               GROUP BY `civicrm_contribution`.`id`;";
+    } else {
+      $query = "SELECT `civicrm_contribution`.`id`
+              FROM `civicrm_contribution`
+              LEFT JOIN `$custom_group_table` AS existing_receipt
+                  ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`
+                  AND existing_receipt.`$status_column` = 'ORIGINAL'
+              WHERE
+                  ($main_selector)
+                  $query_date_limit
+                  AND $financialTypeClause
+                  AND (`non_deductible_amount` = 0 OR `non_deductible_amount` IS NULL)
+                  AND `contribution_status_id` = 1
+                  AND `is_test` = 0
+                  AND `currency` = '$currency'
+                  AND existing_receipt.`entity_id` IS NULL;";
+    }
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($query);

@@ -7,6 +7,12 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*}
 
+{htxt id='id-enable-line-item'}
+    <p>{ts domain="de.systopia.donrec"}Creates the donation receipts based on the line items attached to a contribution. It will create one receipt for each line item. If enabled you can create a donation receipt for a contribution with multiple line items but only create the receipt for line items with a specific financial type.<br /><br />
+    For example you want donation receipts for financial type Donation but not Event Fee. You organized an event where people had to pay the event fee and could give an additional donation. This ended up as one contribution with two line items, one for with financial type Event Fee the other line item has the financial type Donation. So only the last line items will have a donation receipt.<br /> <br />
+    Switching this on or off is not without a risk and therefor it is advisable to test extensively before using this in production.{/ts}</p>
+{/htxt}
+
 {htxt id='id-packet-size'}
     <p>{ts domain="de.systopia.donrec"}Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run.{/ts}</p>
 {/htxt}

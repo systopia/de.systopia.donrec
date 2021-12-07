@@ -16,6 +16,14 @@
 
     <table class="form-layout-compressed">
 
+      <tr class="crm-donrec-profile-form-block-enable_line_item">
+        <td class="label">{$form.enable_line_item.label} <a
+            onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable line item{/ts}", {literal}{"id":"id-enable-line-item","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+            href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+            class="helpicon">&nbsp;</a></td>
+        <td>{$form.enable_line_item.html}</td>
+      </tr>
+
       <tr class="crm-donrec-profile-form-block-packet_size">
         <td class="label">{$form.packet_size.label} <a
                   onclick='CRM.help("{ts domain="de.systopia.donrec"}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
