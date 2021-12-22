@@ -93,8 +93,7 @@ class CRM_Donrec_Logic_Selector {
       $query = "SELECT `civicrm_contribution`.`id`
               FROM `civicrm_contribution`
               LEFT JOIN `civicrm_line_item`
-                  ON `civicrm_line_item`.`entity_table` = 'civicrm_contribution'
-                  AND `civicrm_line_item`.`entity_id` = `civicrm_contribution`.`id`
+                  ON `civicrm_line_item`.`contribution_id` = `civicrm_contribution`.`id`
                   AND `civicrm_line_item`.$financialTypeClause
               LEFT JOIN `$custom_group_table` AS existing_receipt
                   ON  `civicrm_contribution`.`id` = existing_receipt.`entity_id`

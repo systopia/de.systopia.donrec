@@ -161,8 +161,7 @@ class CRM_Donrec_Logic_Snapshot {
           FROM
               `civicrm_contribution`
           LEFT JOIN `civicrm_line_item`
-                  ON `civicrm_line_item`.`entity_table` = 'civicrm_contribution'
-                  AND `civicrm_line_item`.`entity_id` = `civicrm_contribution`.`id`
+                  ON `civicrm_line_item`.`contribution_id` = `civicrm_contribution`.`id`
                   AND `civicrm_line_item`.$financialTypeClause
           WHERE
               `civicrm_contribution`.`id` IN ($id_string)
