@@ -102,7 +102,7 @@ class CRM_Donrec_Logic_Selector {
               WHERE
                   ($main_selector)
                   $query_date_limit
-                  AND (`civicrm_contribution`.$financialTypeClause OR `civicrm_line_item`.`id` IS NULL)
+                  AND ((`civicrm_contribution`.$financialTypeClause AND `civicrm_line_item`.`id` IS NULL) OR `civicrm_line_item`.`id` IS NOT NULL)
                   AND (
                     `civicrm_contribution`.`non_deductible_amount` = 0
                     OR `civicrm_contribution`.`non_deductible_amount` IS NULL
