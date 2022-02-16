@@ -301,6 +301,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
       $donrec_header = str_replace('{contact_id}', self::$_sending_to_contact_id, $donrec_header);
       $donrec_header = str_replace('{contribution_id}', self::$_sending_contribution_id, $donrec_header);
       $donrec_header = str_replace('{timestamp}', date('YmdHis'), $donrec_header);
+      $donrec_header = str_replace('{profile_id}', self::$_sending_with_profile_id, $donrec_header);
 
       if(CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('special_mail_handling')) {
         if (self::set_custom_mail_header($params, $donrec_header,self::$_sending_with_profile_id)) {

@@ -14,7 +14,7 @@
  */
 class CRM_Donrec_Logic_EmailReturnProcessor {
 
-  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{contribution_id}#{timestamp}#";
+  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{contribution_id}#{timestamp}#{profile_id}#";
   public static $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
   public static $PROCESSED_FOLDER   = 'INBOX.CiviMail.processed';
   public static $IGNORED_FOLDER     = 'INBOX.CiviMail.ignored';
@@ -142,6 +142,15 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     }
   }
 
+  /**
+   * Gets a receipt_id for given contribution_id
+   * Returns0 if none, or more than one receipts are found
+   *
+   * @param $contribution_id
+   * @param $timestamp
+   * @param $contact_id
+   * @return array
+   */
   public function get_receipt_id($contribution_id, $timestamp, $contact_id) {
     // resolve receipt_id
     $receipt_ids = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID($contribution_id, $timestamp, 60);
