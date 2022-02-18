@@ -19,8 +19,3 @@ Restrictions (ask us for a fix):
 * "Amount in words" currently German only
 * Client side (JavaScript) only thoroughly tested on Firefox
 * Doesn't process partially deductible contributions yet (see [#23](https://github.com/systopia/de.systopia.donrec/issues/23))
-
-If you want to support the development of this CiviCRM extension, we would be
-happy to receive your donation.
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=schuttenberg%40systopia.de&currency_code=EUR)
