@@ -92,7 +92,7 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
       }
     }
 
-    // Migrate profiles 
+    // Migrate profiles
     //  (only works on 4.6. With 4.7 the group_name was dropped, and we cannot find the profiles any more)
     $existing_profiles = civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_profiles'));
     if (empty($existing_profiles) && version_compare(CRM_Utils_System::version(), '4.6', '<=')) {
@@ -491,11 +491,26 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
   }
 
   /**
-   * Upgrade to 2.1:
    * - Flush cache for registering new settings for CiviOffice integration.
    */
   public function upgrade_0210() {
     civicrm_api3('System', 'flush');
     return TRUE;
   }
+
+  /**
+   * Upgrade to 2.1:
+   * - Added functionality to create donation recepeits for contributions with more than one
+   *   line item.
+   * @link https://github.com/systopia/de.systopia.donrec/issues/136
+   */
+  public function upgrade_0220() {
+    $fieldExistsDao = \CRM_Core_DAO::executeQuery("SHOW COLUMNS FROM `donrec_snapshot` LIKE 'line_item_id';");
+    if (!$fieldExistsDao->N) {
+      \CRM_Core_DAO::executeQuery("ALTER TABLE `donrec_snapshot` ADD `line_item_id` INT UNSIGNED NULL DEFAULT NULL AFTER `contribution_id`, ADD INDEX `line_item_id` (`line_item_id`);");
+    }
+    CRM_Donrec_Logic_Settings::set('donrec_enable_line_item', 0);
+    return TRUE;
+  }
+
 }

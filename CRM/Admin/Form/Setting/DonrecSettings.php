@@ -20,6 +20,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     CRM_Utils_System::setTitle(E::ts('Donation Receipts - Settings'));
 
     // add generic elements
+    $this->addYesNo(
+      'enable_line_item',
+      E::ts('Enable Line Item'),
+      CRM_Donrec_Logic_Settings::get('donrec_enable_line_item')
+    );
+
+    // add generic elements
     $this->addElement(
       'text',
       'pdfinfo_path',
@@ -126,6 +133,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
   public function setDefaultValues() {
     $defaults = parent::setDefaultValues();
 
+    $defaults['enable_line_item'] = CRM_Donrec_Logic_Settings::get('donrec_enable_line_item');
     $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     $defaults['pdfunite_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfunite_path');
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
@@ -147,6 +155,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
 
     // save generic settings
     CRM_Donrec_Logic_Settings::set('donrec_packet_size', $values['packet_size']);
+    CRM_Donrec_Logic_Settings::set('donrec_enable_line_item', $values['enable_line_item']);
 
     if ($values['pdfinfo_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfinfo_path', $values['pdfinfo_path']);
