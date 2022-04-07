@@ -197,7 +197,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
               $values[$rownr]['action'] = str_replace('</ul></span>', '<li>'.$this_action.'</li></ul></span>', $row['action']);
             }
             else {
-              $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+              $values[$rownr]['action'] = str_replace('</span><span', $this_action.'</span><span', $row['action']);
             }
           }
         }
