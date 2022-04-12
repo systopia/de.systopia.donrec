@@ -513,4 +513,19 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Change the primary key of the table. See https://github.com/systopia/de.systopia.donrec/issues/145
+   *
+   * @return bool
+   */
+  public function upgrade_0221() {
+    \CRM_Core_DAO::executeQuery("
+      ALTER TABLE `donrec_snapshot`
+        DROP PRIMARY KEY,
+        ADD PRIMARY KEY (`id`),
+        ADD UNIQUE `snapshot_contrib_line_item` (`snapshot_id`, `contribution_id`, `line_item_id`);
+    ");
+    return TRUE;
+  }
+
 }
