@@ -34,12 +34,8 @@
 
 
     <div class="crm-submit-buttons">
-    <span class="crm-button crm-i-button">
-      <i class="crm-i fa-recycle"></i>
-      <input class="crm-form-submit" type="submit"
-             name='use_remaining_snapshot'
-             value='{ts domain="de.systopia.donrec"}Use remaining snapshot{/ts}'/>
-    </span>
+      <button class="crm-form-submit default validate crm-button crm-button-type-next crm-button_qf_Create_next" type="submit"
+             name='use_remaining_snapshot'><i aria-hidden="true"  class="crm-i fa-recycle"></i> {ts domain="de.systopia.donrec"}Use remaining snapshot{/ts}</button>
     </div>
   </div>
 </div>
