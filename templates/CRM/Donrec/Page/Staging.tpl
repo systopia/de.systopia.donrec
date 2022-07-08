@@ -89,7 +89,7 @@
 </div>
   {if $is_admin}
   <div class="form-item">
-    <button name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="crm-form-submit cancel" type="submit">
+      <button name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="crm-form-submit cancel" type="submit"></button>
     <input type="hidden" name="return_to" value="{$return_to}">
   </div>
   {/if}
