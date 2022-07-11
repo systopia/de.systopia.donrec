@@ -162,7 +162,7 @@ function openURL(url) {
 }
 
 // if you use the submit buttons, of course you may leave the page
-cj("input.crm-form-submit").on('click', function(e){
+cj("form#stagingform").on('submit', function(e){
   window.onbeforeunload = null;
 });
 
