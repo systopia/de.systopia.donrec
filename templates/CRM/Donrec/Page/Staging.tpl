@@ -89,7 +89,7 @@
 </div>
   {if $is_admin}
   <div class="form-item">
-      <button name="donrec_abort_by_admin" value="{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}" class="crm-form-submit cancel" type="submit"></button>
+      <button name="donrec_abort_by_admin" value="donrec_abort_by_admin" class="crm-form-submit cancel" type="submit">{ts domain="de.systopia.donrec"}Delete other process and restart{/ts}</button>
     <input type="hidden" name="return_to" value="{$return_to}">
   </div>
   {/if}
@@ -137,10 +137,10 @@
 <!-- the buttons -->
 <div class="crm-submit-buttons">
   {if $statistic.status != 'DONE'}
-       <button name="donrec_testrun" class="crm-form-submit default validate crm-button crm-button-type-next crm-button_qf_Create_next" type="submit"><i aria-hidden="true" class="crm-i fa-tachometer"></i> {ts domain="de.systopia.donrec"}Test run{/ts}</button>
+       <button name="donrec_testrun" value="donrec_testrun" class="crm-form-submit default validate crm-button crm-button-type-next crm-button_qf_Create_next" type="submit"><i aria-hidden="true" class="crm-i fa-tachometer"></i> {ts domain="de.systopia.donrec"}Test run{/ts}</button>
   {/if}
-      <button name="donrec_run" class="crm-form-submit default validate crm-button crm-button-type-next crm-button_qf_Create_next" type="submit"><i aria-hidden="true" class="crm-i fa-check"></i> {ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}</button>
-      <button name="donrec_abort" class="crm-form-submit cancel crm-button crm-button-type-cancel crm-button_qf_Create_cancel" type="submit"><i aria-hidden="true" class="crm-i fa-times"></i> {ts domain="de.systopia.donrec"}Abort{/ts}</button>
+      <button name="donrec_run" value="donrec_run" class="crm-form-submit default validate crm-button crm-button-type-next crm-button_qf_Create_next" type="submit"><i aria-hidden="true" class="crm-i fa-check"></i> {ts domain="de.systopia.donrec"}Issue donation receipt(s){/ts}</button>
+      <button name="donrec_abort" value="donrec_abort" class="crm-form-submit cancel crm-button crm-button-type-cancel crm-button_qf_Create_cancel" type="submit"><i aria-hidden="true" class="crm-i fa-times"></i> {ts domain="de.systopia.donrec"}Abort{/ts}</button>
 </div>
 {/if}
 </form>
