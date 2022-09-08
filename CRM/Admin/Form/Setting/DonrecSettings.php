@@ -59,9 +59,6 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
         '' => E::ts('- None -')
       ];
       foreach ($civioffice_config->getDocumentRenderers(true) as $dr) {
-        foreach ($dr->getSupportedOutputMimeTypes() as $mime_type) {
-          $output_mimetypes[$mime_type] = CRM_Civioffice_MimeType::mapMimeTypeToFileExtension($mime_type);
-        }
         $document_renderer_list[$dr->getURI()] = $dr->getName();
       }
       $this->add(
