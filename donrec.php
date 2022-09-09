@@ -341,6 +341,45 @@ function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
 }
 
 
+
+/**
+ * Implements hook_civicrm_navigationMenu().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
+ */
+function donrec_civicrm_navigationMenu(&$menu) {
+  _newsletter_civix_insert_navigation_menu(
+    $menu,
+    'Administer/CiviContribute',
+    [
+      'label' => E::ts('Donation Receipts'),
+      'name' => 'donrec',
+      'operator' => 'OR',
+      'separator' => 0,
+      'icon' => 'crm-i fa-balance-scale',
+    ]
+  );
+  _civioffice_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+    'label' => E::ts('Donation Receipts Settings'),
+    'name' => 'donrec_settings',
+    'url' => 'civicrm/admin/setting/donrec',
+    // TODO: Adjust permission once there is a separate one.
+    'permission' => 'administer CiviCRM',
+    'operator' => 'OR',
+    'separator' => 0,
+    'icon' => 'crm-i fa-cog',
+  ));
+  _civioffice_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+    'label' => E::ts('Donation Receipts Profiles'),
+    'name' => 'donrec_profiles',
+    'url' => 'civicrm/admin/setting/donrec/profiles',
+    'permission' => 'administer CiviCRM',
+    'operator' => 'OR',
+    'separator' => 0,
+    'icon' => 'crm-i fa-cogs',
+  ));
+}
+
 /*
  * return errors if a receipted contribution is going to be changed
  */
