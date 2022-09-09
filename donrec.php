@@ -356,6 +356,7 @@ function donrec_civicrm_navigationMenu(&$menu) {
       'name' => 'donrec',
       'operator' => 'OR',
       'separator' => 0,
+      // TODO: Once FontAwesome has been updated, use "fa-receipt".
       'icon' => 'crm-i fa-balance-scale',
     ]
   );
