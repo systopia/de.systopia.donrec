@@ -360,7 +360,7 @@ function donrec_civicrm_navigationMenu(&$menu) {
       'icon' => 'crm-i fa-balance-scale',
     ]
   );
-  _civioffice_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
     'label' => E::ts('Donation Receipts Settings'),
     'name' => 'donrec_settings',
     'url' => 'civicrm/admin/setting/donrec',
@@ -370,7 +370,7 @@ function donrec_civicrm_navigationMenu(&$menu) {
     'separator' => 0,
     'icon' => 'crm-i fa-cog',
   ));
-  _civioffice_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
     'label' => E::ts('Donation Receipts Profiles'),
     'name' => 'donrec_profiles',
     'url' => 'civicrm/admin/setting/donrec/profiles',
