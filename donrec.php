@@ -348,7 +348,7 @@ function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
 function donrec_civicrm_navigationMenu(&$menu) {
-  _newsletter_civix_insert_navigation_menu(
+  _donrec_civix_insert_navigation_menu(
     $menu,
     'Administer/CiviContribute',
     [
