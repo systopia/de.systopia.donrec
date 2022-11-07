@@ -45,13 +45,21 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
     }
     else {
       $civioffice_config = CRM_Civioffice_Configuration::getConfig();
-      $result['message'] = E::ts(
-        'using document <em>%1</em> and document renderer <em>%2</em>',
-        [
-          1 => $civioffice_config->getDocument($civioffice_document_uri)->getName(),
-          2 => $civioffice_config->getDocumentRenderer($civioffice_document_renderer_uri)->getName(),
-        ]
-      );
+      $civioffice_document = $civioffice_config->getDocument($civioffice_document_uri);
+      $civioffice_document_renderer = $civioffice_config->getDocumentRenderer($civioffice_document_renderer_uri);
+      if ($civioffice_document && $civioffice_document_renderer) {
+        $result['message'] = E::ts(
+          'using document <em>%1</em> and document renderer <em>%2</em>',
+          [
+            1 => $civioffice_document->getName(),
+            2 => $civioffice_document_renderer->getName(),
+          ]
+        );
+      }
+      else {
+        $result['is_error'] = TRUE;
+        $result['message'] = E::ts('Missing document or renderer configuration.');
+      }
     }
 
     $result['message'] .= ' &ndash; ' . E::ts(
