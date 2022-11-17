@@ -23,15 +23,6 @@ function donrec_civicrm_config(&$config) {
 }
 
 /**
- * Implementation of hook_civicrm_xmlMenu
- *
- * @param $files array(string)
- */
-function donrec_civicrm_xmlMenu(&$files) {
-  _donrec_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implementation of hook_civicrm_install
  */
 function donrec_civicrm_install() {
@@ -70,27 +61,6 @@ function donrec_civicrm_disable() {
  */
 function donrec_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
   return _donrec_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implementation of hook_civicrm_managed
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- */
-function donrec_civicrm_managed(&$entities) {
-  return _donrec_civix_civicrm_managed($entities);
-}
-
-/**
- * Implementation of hook_civicrm_caseTypes
- *
- * Generate a list of case-types
- *
- * Note: This hook only runs in CiviCRM 4.4+.
- */
-function donrec_civicrm_caseTypes(&$caseTypes) {
-  _donrec_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -206,7 +176,6 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
   }
 }
 
-
 /**
  * The extra search column (see above) does not alter the template,
  * so we inject javascript into the template-content.
@@ -232,7 +201,6 @@ function donrec_civicrm_alterContent(&$content, $context, $tplName, &$object) {
     }
   }
 }
-
 
 /**
  * Set permissions for runner/engine API call
@@ -304,20 +272,7 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
 //  }
 //}
 
-/**
- * Set settings
- */
-function donrec_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
-  static $configured = FALSE;
-  if ($configured) return;
-  $configured = TRUE;
 
-  $extRoot = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
-  $extDir = $extRoot . 'settings';
-  if(!in_array($extDir, $metaDataFolders)){
-    $metaDataFolders[] = $extDir;
-  }
-}
 
 /**
  * Implements hook_civicrm_tabset()
@@ -339,8 +294,6 @@ function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
     }
   }
 }
-
-
 
 /**
  * Implements hook_civicrm_navigationMenu().
@@ -637,3 +590,21 @@ function donrec_civicrm_buildForm($formName, &$form) {
     if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
   }
 }
+
+/**
+ * Implements hook_civicrm_postInstall().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
+ */
+function donrec_civicrm_postInstall() {
+  _donrec_civix_civicrm_postInstall();
+}
+
+// /**
+//  * Implements hook_civicrm_entityTypes().
+//  *
+//  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
+//  */
+// function donrec_civicrm_entityTypes(&$entityTypes) {
+//   _donrec_civix_civicrm_entityTypes($entityTypes);
+// }

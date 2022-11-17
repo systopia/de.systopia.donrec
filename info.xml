@@ -19,8 +19,13 @@
     <url desc="Documentation">http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension</url>
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
-  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfuß.</comments>
+  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfuß</comments>
   <civix>
     <namespace>CRM/Donrec</namespace>
+    <format>22.05.2</format>
   </civix>
+  <mixins>
+    <mixin>menu-xml@1.0.0</mixin>
+    <mixin>setting-php@1.0.0</mixin>
+  </mixins>
 </extension>
