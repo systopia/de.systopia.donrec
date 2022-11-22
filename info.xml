@@ -8,7 +8,7 @@
     <author>B. Endres</author>
     <email>endres@systopia.de</email>
   </maintainer>
-  <releaseDate></releaseDate>
+  <releaseDate/>
   <version>2.1-dev</version>
   <develStage>dev</develStage>
   <compatibility>
@@ -19,7 +19,7 @@
     <url desc="Documentation">http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension</url>
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
-  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfuß</comments>
+  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfu&#xDF;</comments>
   <civix>
     <namespace>CRM/Donrec</namespace>
     <format>22.05.2</format>
