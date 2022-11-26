@@ -8,9 +8,39 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-require_once 'CiviTest/CiviUnitTestCase.php';
+# require_once 'CiviTest/CiviUnitTestCase.php';
 
-class CRM_Donrec_BaseTestCase extends CiviUnitTestCase {
+use Civi\Test;
+use Civi\Test\CiviEnvBuilder;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @group headless
+ */
+class CRM_Donrec_BaseTestCase extends CiviUnitTestCase implements \Civi\Test\HeadlessInterface, \Civi\Test\TransactionalInterface {
+
+/*
+  use Api3DocTrait;
+  use \Civi\Test\GenericAssertionsTrait;
+  use \Civi\Test\DbTestTrait;
+  use \Civi\Test\ContactTestTrait;
+  use \Civi\Test\MailingTestTrait;
+  use \Civi\Test\LocaleTestTrait;
+*/
+  /*
+  public function __construct() {
+    $this->setUpHeadless();
+    parent::__construct();
+  }*/
+
+  public function setUpHeadless(): CiviEnvBuilder {
+      return Test::headless()
+        ->installMe(__DIR__)
+        ->apply();
+  }
+
+
+
 
   // ############################################################################
   //                              Helper functions
@@ -35,6 +65,7 @@ class CRM_Donrec_BaseTestCase extends CiviUnitTestCase {
       'currency'                => 'EUR',
       'contribution_status_id'  => $contribution_status_pending,
       'is_test'                 => 0,
+      'id'                      => NULL,
     );
 
     $create_contribution['payment_instrument_id'] = 1;

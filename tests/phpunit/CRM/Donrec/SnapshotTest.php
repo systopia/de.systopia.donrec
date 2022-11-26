@@ -8,7 +8,7 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-require_once 'CiviTest/CiviUnitTestCase.php';
+# require_once 'CiviTest/CiviUnitTestCase.php';
 
 /**
  * Snapshot Test Suite
@@ -16,12 +16,12 @@ require_once 'CiviTest/CiviUnitTestCase.php';
 class CRM_Donrec_SnapshotTest extends CRM_Donrec_BaseTestCase {
   private $tablesToTruncate = array('donrec_snapshot');
 
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->quickCleanup($this->tablesToTruncate);
   }
 
-  function tearDown() {
+  function tearDown(): void {
     parent::tearDown();
   }
 
