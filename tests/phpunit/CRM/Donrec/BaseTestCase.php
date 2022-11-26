@@ -11,22 +11,23 @@
 # require_once 'CiviTest/CiviUnitTestCase.php';
 
 use Civi\Test;
+use Civi\Test\Api3TestTrait;
 use Civi\Test\CiviEnvBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @group headless
  */
-class CRM_Donrec_BaseTestCase extends CiviUnitTestCase implements \Civi\Test\HeadlessInterface, \Civi\Test\TransactionalInterface {
+class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Civi\Test\HeadlessInterface, \Civi\Test\TransactionalInterface {
 
-/*
-  use Api3DocTrait;
+//  use Api3DocTrait;
+use Api3TestTrait;
   use \Civi\Test\GenericAssertionsTrait;
   use \Civi\Test\DbTestTrait;
   use \Civi\Test\ContactTestTrait;
   use \Civi\Test\MailingTestTrait;
   use \Civi\Test\LocaleTestTrait;
-*/
+
   /*
   public function __construct() {
     $this->setUpHeadless();
@@ -79,4 +80,19 @@ class CRM_Donrec_BaseTestCase extends CiviUnitTestCase implements \Civi\Test\Hea
     
     return $result;
   }
+
+    /**
+     * Quick clean by emptying tables created for the test.
+     *
+     * @param array $tablesToTruncate
+     * @param bool $dropCustomValueTables
+     */
+    public function quickCleanup(array $tablesToTruncate, $dropCustomValueTables = FALSE): void {
+        CRM_Core_DAO::executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
+        foreach ($tablesToTruncate as $table) {
+            $sql = "TRUNCATE TABLE $table";
+            CRM_Core_DAO::executeQuery($sql);
+        }
+        CRM_Core_DAO::executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
+    }
 }

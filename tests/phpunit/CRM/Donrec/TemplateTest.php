@@ -12,6 +12,7 @@
 
 /**
  * Snapshot Test Suite
+ * @group headless
  */
 class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
   private $tablesToTruncate = array();

@@ -12,6 +12,7 @@
 
 /**
  * Engine Test Suite
+ * @group headless
  */
 class CRM_Donrec_ReceiptTest extends CRM_Donrec_BaseTestCase {
   private $tablesToTruncate = array('donrec_snapshot');
