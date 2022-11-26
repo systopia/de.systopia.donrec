@@ -12,8 +12,6 @@
 
 /**
  * Engine Test Suite
- */
-/**
  * @group headless
  */
 class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
@@ -21,7 +19,7 @@ class CRM_Donrec_EngineTest extends CRM_Donrec_BaseTestCase {
 
   function setUp(): void {
     parent::setUp();
-#    $this->quickCleanup($this->tablesToTruncate);
+    $this->quickCleanup($this->tablesToTruncate);
   }
 
   function tearDown(): void {
