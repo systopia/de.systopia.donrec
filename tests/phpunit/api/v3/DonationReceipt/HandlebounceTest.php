@@ -9,6 +9,13 @@ use Civi\Test\TransactionalInterface;
  * This is a generic test class implemented with PHPUnit.
  * @group headless
  */
+
+/*
+spl_autoload_register(function($name){
+  var_dump($name);
+});
+*/
+
 class api_v3_DonationReceipt_HandlebounceTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
   use \Civi\Test\Api3TestTrait;
 
@@ -25,7 +32,7 @@ class api_v3_DonationReceipt_HandlebounceTest extends \PHPUnit\Framework\TestCas
   /**
    * The setup() method is executed before the test is executed (optional).
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
   }
 
@@ -33,7 +40,7 @@ class api_v3_DonationReceipt_HandlebounceTest extends \PHPUnit\Framework\TestCas
    * The tearDown() method is executed after the test was executed (optional)
    * This can be used for cleanup.
    */
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
   }
 
