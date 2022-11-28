@@ -47,19 +47,17 @@ class CRM_Donrec_PdfcryptTest extends \PHPUnit\Framework\TestCase implements Hea
     parent::tearDown();
   }
 
-  /**
-   * Example: Test that a version is returned.
+  /*
+   * tests that our settings are set
    */
-  public function testWellFormedVersion():void {
-    $this->assertNotEmpty(E::SHORT_NAME);
-    $this->assertRegExp('/^([0-9\.]|alpha|beta)*$/', \CRM_Utils_System::version());
-  }
-
-  /**
-   * Example: Test that we're using a fake CMS.
-   */
-  public function testWellFormedUF():void {
-    $this->assertEquals('UnitTests', CIVICRM_UF);
+  public function testSettings():void {
+    $settings = ['donrec_civioffice_document_renderer_uri','donrec_civioffice_document_uri','donrec_pdfunite_path','donrec_pdfinfo_path','donrec_packet_size','donrec_enable_line_item'];
+    foreach ($settings as &$val) {
+      $fields = \Civi\Api4\Setting::getFields()
+        ->addWhere('name', '=', $val)
+        ->execute();
+      $this->assertCount(1, $fields);
+    }
   }
 
 }
