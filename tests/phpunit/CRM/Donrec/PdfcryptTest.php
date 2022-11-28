@@ -51,7 +51,7 @@ class CRM_Donrec_PdfcryptTest extends \PHPUnit\Framework\TestCase implements Hea
    * tests that our settings are set
    */
   public function testSettings():void {
-    $settings = ['donrec_civioffice_document_renderer_uri','donrec_civioffice_document_uri','donrec_pdfunite_path','donrec_pdfinfo_path','donrec_packet_size','donrec_enable_line_item'];
+    $settings = ['donrec_civioffice_document_renderer_uri','donrec_civioffice_document_uri','donrec_pdfunite_path','donrec_pdfinfo_path','donrec_packet_size','donrec_enable_line_item','donrec_crypt_command','donrec_enable_crypt'];
     foreach ($settings as &$val) {
       $fields = \Civi\Api4\Setting::getFields()
         ->addWhere('name', '=', $val)
