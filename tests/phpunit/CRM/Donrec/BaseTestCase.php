@@ -20,19 +20,12 @@ use PHPUnit\Framework\TestCase;
  */
 class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Civi\Test\HeadlessInterface, \Civi\Test\TransactionalInterface {
 
-//  use Api3DocTrait;
-use Api3TestTrait;
+  use Api3TestTrait;
   use \Civi\Test\GenericAssertionsTrait;
   use \Civi\Test\DbTestTrait;
   use \Civi\Test\ContactTestTrait;
   use \Civi\Test\MailingTestTrait;
   use \Civi\Test\LocaleTestTrait;
-
-  /*
-  public function __construct() {
-    $this->setUpHeadless();
-    parent::__construct();
-  }*/
 
   public function setUpHeadless(): CiviEnvBuilder {
       return Test::headless()
