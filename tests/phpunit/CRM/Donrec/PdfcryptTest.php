@@ -20,7 +20,7 @@ use Civi\Test\CiviEnvBuilder;
  *
  * @group headless
  */
-class CRM_Donrec_PdfcryptTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
+class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
 
   /**
    * Setup used when HeadlessInterface is implemented.
