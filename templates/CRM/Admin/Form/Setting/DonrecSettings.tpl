@@ -53,7 +53,7 @@
                   onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable crypted pdf{/ts}", {literal}{"id":"id-enable-crypt","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
                   href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
-        <td>{$form.pdfunite_path.html}</td>
+        <td>{$form.enable_crypt.html}</td>
       </tr>
 
 
