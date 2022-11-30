@@ -61,7 +61,7 @@
 
   </fieldset>
 
-  {if $civioffice_enabled}
+  {if !empty($civioffice_enabled)}
       <fieldset class="crm-form-block">
 
         <h3>{ts domain="de.systopia.donrec"}CiviOffice Integration{/ts}</h3>

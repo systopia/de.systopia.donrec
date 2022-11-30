@@ -46,6 +46,13 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::get('donrec_packet_size')
     );
 
+    $this->addYesNo(
+      'enable_crypt',
+      E::ts('Enable crypted pdf'),
+      CRM_Donrec_Logic_Settings::get('donrec_enable_crypt')
+    );
+
+
     // Add CiviOffice configuration.
     $manager = CRM_Extension_System::singleton()->getManager();
     if ($manager->getStatus('de.systopia.civioffice') === CRM_Extension_Manager::STATUS_INSTALLED) {

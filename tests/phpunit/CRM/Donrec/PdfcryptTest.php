@@ -60,4 +60,18 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     }
   }
 
+  public function testSettingsPage(): void {
+    $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec?reset=1';
+    $_GET['q'] = 'civicrm/admin/setting/donrec';
+    $_GET['reset'] = 1;
+
+    $item = CRM_Core_Invoke::getItem([$_GET['q']]);
+    ob_start();
+    CRM_Core_Invoke::runItem($item);
+    $contents = ob_get_clean();
+
+    unset($_GET['reset']);
+    $this->assertStringContainsString('Enable crypted pdf', $contents);
+  }
+
 }

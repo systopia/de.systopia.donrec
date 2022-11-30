@@ -34,8 +34,6 @@ class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Ci
   }
 
 
-
-
   // ############################################################################
   //                              Helper functions
   // ############################################################################
