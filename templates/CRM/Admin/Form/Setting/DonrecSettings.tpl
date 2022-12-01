@@ -48,12 +48,12 @@
         <td>{$form.pdfunite_path.html}</td>
       </tr>
 
-      <tr class="crm-donrec-enable-crypt">
+      <tr class="crm-donrec-crypt-command">
         <td class="label">{$form.enable_crypt.label} <a
-                  onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable crypted pdf{/ts}", {literal}{"id":"id-enable-crypt","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  onclick='CRM.help("{ts domain="de.systopia.donrec"}External Tool: command line for encryption{/ts}", {literal}{"id":"id-crypt-command","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
                   href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
-        <td>{$form.enable_crypt.html}</td>
+        <td>{$form.crypt_command.html}</td>
       </tr>
 
 
