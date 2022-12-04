@@ -280,8 +280,9 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
  * Will inject the FastActivity tab
  */
 function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
-  if ($tabsetName == 'civicrm/contact/view' && !empty($context['contact_id'])) {
-    if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
+  if ($tabsetName == 'civicrm/contact/view') {
+    // If contact_id is not provided, this is being called from the ContactLayout extension to retrieve tab info
+    if (!$context['contact_id'] || CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
       $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
                                     "reset=1&snippet=1&force=1&cid={$context['contact_id']}" );
       $tabs[] = [
@@ -289,6 +290,7 @@ function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
           'url'    => $url,
           'title'  => E::ts('Donation receipts'),
           'count'  => CRM_Donrec_Logic_Receipt::getReceiptCountForContact($context['contact_id']),
+          'icon'   => 'crm-i fa-paperclip',
           'weight' => 300
       ];
     }
