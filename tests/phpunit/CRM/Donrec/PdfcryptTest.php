@@ -60,6 +60,7 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     }
   }
 
+  // test basic function of general setting for encryption tool
   public function testSettingsPage(): void {
     $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec?reset=1';
     $_GET['q'] = 'civicrm/admin/setting/donrec';
@@ -74,6 +75,7 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     $this->assertStringContainsString('External Tool: command line for encryption', $contents);
   }
 
+  // test basic function of the enable encryption setting on profile page
   public function testProfileSettingsPage(): void {
     $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec/profile?op=edit&id=1';
     $_GET['q'] = 'civicrm/admin/setting/donrec/profile';
@@ -90,6 +92,11 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     # unset($_GET['reset']);
     $this->assertStringContainsString('Enable "encryption"', $contents);
     $this->assertStringContainsString('<input id="enable_encryption" name="enable_encryption" type="checkbox" value="1" class="crm-form-checkbox" />', $contents);
+  }
+
+  // test if we can enable encryption in the profile settings
+  public function testProfileSettingsEnableEncryption(): void {
+
   }
 
 }

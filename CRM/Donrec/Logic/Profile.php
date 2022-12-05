@@ -727,6 +727,7 @@ class CRM_Donrec_Logic_Profile {
         'language'                   => (method_exists('CRM_Core_I18n', 'getLocale') ? CRM_Core_I18n::getLocale() : 'en_US'),
         'contribution_unlock_mode'   => 'unlock_none',
         'contribution_unlock_fields' => array(),
+        'encryption_enabled' => FALSE,
       ),
       'variables' => array(),
       'template' => CRM_Donrec_Logic_Template::getDefaultTemplateHTML(),
