@@ -99,4 +99,13 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
 
   }
 
+  // test if the helper function for encryption works as intended
+  public function testEncryptionHelper(): void {
+    $filename = '/tmp/hurzelbrums';
+    unlink($filename);
+    fopen($filename);
+
+
+  }
+
 }
