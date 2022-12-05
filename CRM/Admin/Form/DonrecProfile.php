@@ -259,6 +259,11 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       CRM_Donrec_Lang::getLanguageList()
     );
 
+    $this->add('checkbox',
+      'enable_encryption',
+      E::ts('Enable "encryption"')
+    );
+
     /**
      * Contribution settings.
      */
