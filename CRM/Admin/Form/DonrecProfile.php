@@ -431,38 +431,32 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     $this->add(
       'checkbox',
       'special_mail_handling',
-      E::ts('Custom Mail Handling:'),
-      $options
+      E::ts('Custom Mail Handling:')
     );
     $this->add(
       'text',
       'special_mail_header',
-      E::ts('Custom Mail Header:'),
-      $options
+      E::ts('Custom Mail Header:')
     );
     $this->add(
       'text',
       'special_mail_activity_id',
-      E::ts('Activity ID'),
-      $options
+      E::ts('Activity ID')
     );
     $this->add(
       'text',
       'special_mail_activity_subject',
-      E::ts('Activity Subject'),
-      $options
+      E::ts('Activity Subject')
     );
     $this->add(
       'text',
       'special_mail_activity_contact_id',
-      E::ts('Activity Contact ID'),
-      $options
+      E::ts('Activity Contact ID')
     );
     $this->add(
       'checkbox',
       'special_mail_withdraw_receipt',
-      E::ts('Withdraw receipt'),
-      $options
+      E::ts('Withdraw receipt')
     );
 
     $this->addButtons(array(
