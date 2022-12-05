@@ -89,7 +89,7 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     unset($_GET['id']); unset($_REQUEST['id']);
     # unset($_GET['reset']);
     $this->assertStringContainsString('Enable "encryption"', $contents);
-    $this->assertStringContainsString('<input value="1" type="radio" id="CIVICRM_QFID_1_enable_crypt" name="enable_crypt" class="crm-form-radio" /><label for="CIVICRM_QFID_1_enable_crypt">Yes</label>', $contents);
+    $this->assertStringContainsString('<input id="enable_encryption" name="enable_encryption" type="checkbox" value="1" class="crm-form-checkbox" />', $contents);
   }
 
 }
