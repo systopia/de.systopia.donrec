@@ -665,6 +665,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         // Set unchecked checkbox values.
         if (in_array($element_name, array(
           'store_original_pdf',
+          'enable_encryption',
         )) && !isset($values[$element_name])) {
           $values[$element_name] = 0;
         }
