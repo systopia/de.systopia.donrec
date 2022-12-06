@@ -96,9 +96,11 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
 
   // test if we can enable encryption in the profile settings
   public function testProfileSettingsEnableEncryption(): void {
-    $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec/profile';
+    $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec/profile?op=edit&id=1';
     $_GET['q'] = 'civicrm/admin/setting/donrec/profile';
     $_POST['enable_encryption'] = '1';
+    $_GET['op'] = $_REQUEST['op'] = 'edit';
+    $_GET['id'] = $_REQUEST['id'] = 1;
 
     $item = CRM_Core_Invoke::getItem([$_GET['q']]);
     ob_start();
