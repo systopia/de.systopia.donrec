@@ -41,10 +41,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * @return bool
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
-    // TODO: encrypt PDF if configured.
-    if ($snapshot_receipt->getProfile()->getDataAttribute('enable_encryption')) {
-      $this->encrypt_file($file);
-    }
+    $this->encrypt_file($file, $snapshot_receipt);
 
     $snapshot_line_id = $snapshot_receipt->getID();
     $this->updateProcessInformation($snapshot_line_id, array('pdf_file' => $file));
