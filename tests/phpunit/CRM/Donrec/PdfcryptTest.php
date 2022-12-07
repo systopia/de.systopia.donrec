@@ -94,7 +94,16 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     $this->assertStringContainsString('<input id="enable_encryption" name="enable_encryption" type="checkbox" value="1" class="crm-form-checkbox" />', $contents);
   }
 
+  // test if our new form element exists
+  public function testElementExists(): void {
+    $form = new CRM_Admin_Form_DonrecProfile();
+    $form->controller = new CRM_Core_Controller();
+    $form->buildForm();
+    $this->assertNotNull($form->elementExists('enable_encryption'));
+  }
+
   // test if we can enable encryption in the profile settings
+  // TODO: take the approach from testElementExists() instead
   public function testProfileSettingsEnableEncryption(): void {
     $_SERVER['REQUEST_URI'] = 'civicrm/admin/setting/donrec/profile?op=edit&id=1';
     $_GET['q'] = 'civicrm/admin/setting/donrec/profile';
@@ -119,7 +128,7 @@ class CRM_Donrec_PdfcryptTest extends CRM_Donrec_BaseTestCase {
     unlink($filename);
     fopen($filename);
 
-
+    // TODO
   }
 
 }
