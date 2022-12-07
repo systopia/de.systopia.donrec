@@ -24,6 +24,9 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
     return $password;
   }
 
-  
+  // encrypt the given file if the setting in the profile says so
+  protected function encrypt_file($file): void {
+    $password = $this->generate_password();
 
+  }
 }

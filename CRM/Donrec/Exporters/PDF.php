@@ -13,7 +13,7 @@ use CRM_Donrec_ExtensionUtil as E;
 /**
  * Exporter for ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
+class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
   /**
    * @return string
@@ -43,7 +43,7 @@ class CRM_Donrec_Exporters_PDF extends CRM_Donrec_Exporters_BasePDF {
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     // TODO: encrypt PDF if configured.
     if ($snapshot_receipt->getProfile()->getDataAttribute('enable_encryption')) {
-      
+      $this->encrypt_file($file);
     }
 
     $snapshot_line_id = $snapshot_receipt->getID();
