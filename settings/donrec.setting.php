@@ -92,10 +92,10 @@ return array(
     'is_contact' => 0,
     'description' => 'Do you want to enable encrypted pdfs?',
   ),
-  'donrec_crypt_command' => array(
+  'donrec_enccryption_command' => array(
     'group_name' => 'Donation Receipt Settings',
     'group' => 'de.systopia',
-    'name' => 'donrec_crypt_command',
+    'name' => 'donrec_encryption_command',
     'type' => 'String',
     'default' => "pdftk input.pdf output crypt.pdf owner_pw zufallspasswort allow printing screenreaders",
     'add' => '4.3',
