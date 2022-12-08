@@ -31,6 +31,7 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
       $this->encrypt_file($file);
       $password = $this->generate_password();
       $cmd = CRM_Donrec_Logic_Settings::get('encryption_command');
+      // TODO: puzzle the real command together here
       $ouput = shell_exec(escapeshellcmd($cmd));
     }
   }

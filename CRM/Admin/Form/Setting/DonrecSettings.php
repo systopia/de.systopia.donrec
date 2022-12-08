@@ -46,10 +46,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::get('donrec_packet_size')
     );
 
-    $this->addYesNo(
-      'enable_crypt',
-      E::ts('Enable crypted pdf'),
-      CRM_Donrec_Logic_Settings::get('donrec_enable_crypt')
+    $this->addElement(
+      'text',
+      'encryption_command',
+      E::ts('Command line for "encryption"'),
+      CRM_Donrec_Logic_Settings::get('encryption_command')
     );
 
 
@@ -141,6 +142,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['pdfinfo_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfinfo_path');
     $defaults['pdfunite_path'] = CRM_Donrec_Logic_Settings::get('donrec_pdfunite_path');
     $defaults['packet_size'] = CRM_Donrec_Logic_Settings::get('donrec_packet_size');
+    $defaults['encryption_command'] = CRM_Donrec_Logic_Settings::get('encryption_command');
     $defaults['civioffice_document_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri');
     $defaults['civioffice_document_renderer_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri');
 
@@ -168,6 +170,11 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     if ($values['pdfunite_path']) {
       CRM_Donrec_Logic_Settings::set('donrec_pdfunite_path', $values['pdfunite_path']);
     }
+
+    if ($values['encryption_command']) {
+      CRM_Donrec_Logic_Settings::set('encryption_command', $values['encryption_command']);
+    }
+
 
     CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_uri', $values['civioffice_document_uri'] ?: NULL);
     CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_renderer_uri', $values['civioffice_document_renderer_uri'] ?: NULL);
