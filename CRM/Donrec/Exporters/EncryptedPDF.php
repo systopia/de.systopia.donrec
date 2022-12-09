@@ -28,10 +28,16 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
   protected function encrypt_file($file, $snapshot_receipt): void {
 
     if ($snapshot_receipt->getProfile()->getDataAttribute('enable_encryption')) {
-      $this->encrypt_file($file);
       $password = $this->generate_password();
       $cmd = CRM_Donrec_Logic_Settings::get('encryption_command');
-      // TODO: puzzle the real command together here
+      $tmpfile = $file . "_tmp";
+      rename($file,$tmpfile);
+
+      // puzzle the real command together here
+      $cmd .= " ". $tmpfile . " output " . $file . " owner_pw " . $password . " allow printing screenreaders";
+
+      // TODO: Error handling of the command execution
+
       $ouput = shell_exec(escapeshellcmd($cmd));
     }
   }
