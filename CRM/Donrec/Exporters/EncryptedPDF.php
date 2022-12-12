@@ -28,10 +28,8 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
   public function checkRequirements($profile = NULL): array {
       $result = array();
       $result['is_error'] = FALSE;
-      $result['messgae'] ='';
+      $result['message'] ='';
       if($profile->getDataAttribute('enable_encryption')){
-        // $result['is_error'] = TRUE;
-        // $result['message'] = 'just for testing';
 
         // Check if encryption tool is available.
         $path = CRM_Donrec_Logic_Settings::get('encryption_command');
