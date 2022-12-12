@@ -78,6 +78,9 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * @throws \CiviCRM_API3_Exception
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
+    // encrypt file if configured in profile
+    $this->encrypt_file($file, $snapshot_receipt);
+
     // find the receipt
     $error = NULL;
 

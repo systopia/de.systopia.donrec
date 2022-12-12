@@ -44,7 +44,7 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
 
           if($ret_status != 0){
             $result['is_error'] = TRUE;
-            $result['message'] ='execution of ' . $path . ' failed.';
+            $result['message'] ='execution of ' . $path . ' failed';
           }
         }
       }
