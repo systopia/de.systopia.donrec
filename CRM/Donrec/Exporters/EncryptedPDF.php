@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+use CRM_Donrec_ExtensionUtil as E;
+
 /**
  * This is the PDF exporter base class
  */
@@ -28,14 +30,14 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
   public function checkRequirements($profile = NULL): array {
       $result = array();
       $result['is_error'] = FALSE;
-      # $result['message'] ='';
+      $result['message'] ='';
       if($profile->getDataAttribute('enable_encryption')){
 
         // Check if encryption tool is available.
         $path = CRM_Donrec_Logic_Settings::get('encryption_command');
         if (empty($path)) {
           $result['is_error'] = TRUE;
-          $result['message'] = 'no path to encryption tool given. please check the donrec settings';
+          $result['message'] = E::ts('no path to encryption tool given. please check the donrec settings');
         }else{
 
           // "Ping" encyrption command.
@@ -44,7 +46,7 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
 
           if($ret_status != 0){
             $result['is_error'] = TRUE;
-            $result['message'] ='execution of ' . $path . ' failed';
+            $result['message'] = E::ts('execution of') . ' ' . $path . ' ' . E::ts('failed');
           }
         }
       }
@@ -64,7 +66,7 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
       // puzzle the real command together here
       $cmd .= " ". $tmpfile . " output " . $file . " owner_pw " . $password . " allow printing screenreaders";
 
-      // TODO: Error handling of the command execution
+      // TODO: Error handling of the command execution needed?
 
       $ouput = shell_exec(escapeshellcmd($cmd));
     }
