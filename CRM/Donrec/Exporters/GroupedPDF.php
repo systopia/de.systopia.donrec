@@ -81,7 +81,11 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_EncryptedPDF 
         $result['message'] = E::ts("pdfinfo path is not set");
     }
     if($result['is_error'] == FALSE) {
+      $msg = $result['message'];
       $result = parent::checkRequirements($profile);
+      if($result['is_error'] == FALSE){
+        $result['message'] = $msg;
+      }
     }
     return $result;
   }
