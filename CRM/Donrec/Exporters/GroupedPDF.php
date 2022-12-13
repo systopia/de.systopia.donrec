@@ -14,7 +14,7 @@ use CRM_Donrec_ExtensionUtil as E;
 /**
  * Exporter for GROUPED, ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
+class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
   /**
    * @return string
@@ -39,7 +39,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements($profile = NULL) {
+  public function checkRequirements($profile = NULL): array {
     $result = array();
 
     $result['is_error'] = FALSE;
@@ -80,6 +80,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
         $result['is_error'] = TRUE;
         $result['message'] = E::ts("pdfinfo path is not set");
     }
+    if($result['is_error'] == FALSE) {
+      $result = parent::checkRequirements($profile);
+    }
     return $result;
   }
 
@@ -96,6 +99,9 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_BasePDF {
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     $snapshot_line_id = $snapshot_receipt->getID();
     $pageCount = $this->getPDFPageCount($file);
+
+    // encrypt PDF if configured in profile.
+    $this->encrypt_file($file, $snapshot_receipt);
 
     $this->updateProcessInformation($snapshot_line_id,
       array( 'pdf_file'      => $file,
