@@ -36,6 +36,10 @@
     <p>{ts domain="de.systopia.donrec"}Not all languages that can be selected here have been implemented. If not implemented, the text defaults to English.{/ts}</p>
 {/htxt}
 
+{htxt id='id-enable_encryption'}
+    <p>{ts domain="de.systopia.donrec"}If you choose this, donrec will "encrypt" the generated PDFs in such a way, that they can only be seen on screen and printed. This works only for PDF-Viewers, which implement this feature correctly.{/ts}</p>
+{/htxt}
+
 {htxt id='id-pdfinfo-text'}
     <p>{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
