@@ -24,7 +24,7 @@ class CRM_Donrec_Logic_Settings {
    *
    * @param string $name
    *
-   * @return array
+   * @return array|string
    * @throws \CiviCRM_API3_Exception
    */
   public static function get($name) {
