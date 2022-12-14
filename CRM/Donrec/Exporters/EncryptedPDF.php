@@ -64,7 +64,7 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
       rename($file,$tmpfile);
 
       // puzzle the real command together here
-      $cmd .= " ". $tmpfile . " output " . $file . " owner_pw " . $password . " allow printing screenreaders";
+      $cmd .= " '". $tmpfile . "' output '" . $file . "' owner_pw " . $password . " allow printing screenreaders";
       $output = shell_exec(escapeshellcmd($cmd));
       if (is_null($output)) {
         Civi::log()->error("Encryption of DonRec PDF failed.");
