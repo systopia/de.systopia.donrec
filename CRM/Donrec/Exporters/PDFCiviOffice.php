@@ -84,6 +84,10 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     $snapshot_line_id = $snapshot_receipt->getID();
+
+    // encrypt PDF if configured in profile. Coverletter will not be encrypted
+    $this->encrypt_file($file, $snapshot_receipt);
+    
     $files = [$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('donation-receipt') => $file];
 
     // Generate cover letter PDF using CiviOffice and add to pdf_files array.
