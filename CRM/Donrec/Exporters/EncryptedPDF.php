@@ -57,16 +57,21 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
   protected function encrypt_file($file, $snapshot_receipt): void {
 
     if ($snapshot_receipt->getProfile()->getDataAttribute('enable_encryption')) {
-
       $password = $this->generate_password();
       $cmd = CRM_Donrec_Logic_Settings::get('encryption_command');
       $tmpfile = $file . "_tmp";
       rename($file,$tmpfile);
 
-      // puzzle the real command together here
-      $cmd .= " '". $tmpfile . "' output '" . $file . "' owner_pw " . $password . " allow printing screenreaders";
-      $output = shell_exec(escapeshellcmd($cmd));
-      if (is_null($output)) {
+      // Puzzle the real command together here.
+      $cmd .= " "
+        . escapeshellarg($tmpfile)
+        . " output " . escapeshellarg($file)
+        . " owner_pw " . escapeshellarg($password)
+        . " allow printing screenreaders";
+      $output = [];
+      $result_code = NULL;
+      exec(escapeshellcmd($cmd) . " 2>&1", $output, $result_code);
+      if ($result_code !== 0) {
         Civi::log()->error("Encryption of DonRec PDF failed.");
       }
     }
