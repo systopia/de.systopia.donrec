@@ -72,7 +72,9 @@ abstract class CRM_Donrec_Exporters_EncryptedPDF extends CRM_Donrec_Exporters_Ba
       $result_code = NULL;
       exec(escapeshellcmd($cmd) . " 2>&1", $output, $result_code);
       if ($result_code !== 0) {
-        Civi::log()->error("Encryption of DonRec PDF failed.");
+        Civi::log()->error(E::ts('Encryption of DonRec PDF failed. Output was: %1', [
+          1 => implode("\n", $output)
+        ]));
       }
     }
   }
