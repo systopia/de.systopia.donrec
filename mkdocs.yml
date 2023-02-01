@@ -4,8 +4,6 @@ theme: material
 
 pages:
 - 'Preface': index.md
-- 'Quick facts': quick-facts.md
-- 'Acknowledgements': acknowledgements.md
 - 'Installation': installation.md
 - 'Usage':
   - 'Creating donation receipts': usage/creating-donation-receipts.md

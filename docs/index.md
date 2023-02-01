@@ -8,10 +8,19 @@ too. Great care has to be applied when using the software in other countries. In
 order to facilitate the assessment of possibilities and limitations under
 foreign tax laws, this documentation is now also given in english.
 
-The extension in its last stable version ist well tested up to version 4.6.9 of
-CiviCRM.
+This CiviCRM extension is licensed under
+the [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html) license.
 
-**Urgent Note**: Proper function is only to be assured when working with Firefox web
-browser (Mozilla Foundation). This has been tested and verified extensively
-under Linux and MS Windows and holds true, although less thoroughly tested,
-under Android.
+# Acknowledgements
+
+A big thank you to the organisations that funded the initial development of this
+extension. These are (in order of contribution):
+
+- muslimehelfen e.V.
+- Robin Wood e.V.
+- Software für Engagierte e.V.
+- Forum Ziviler Friedensdienst e.V.
+- ArbeiterKind gUG
+- Bergwaldprojekt e.V.
+- Digitalcourage e.V.
+- Wir sind Kirche e.V.

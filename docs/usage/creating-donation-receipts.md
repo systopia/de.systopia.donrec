@@ -24,84 +24,101 @@ order to assure consistency of data. With the extension, one can also reset,
 delete and copy receipts as well as transfer donations to another contact. For
 these procedures, a deliberate set of user permissions is provided.
 
+In addition to search results, receipts can also be generated for a single
+contact, which a button can be found for in the *Donation Receipts* tab on the
+contact overview page.
+
 ## Parameters
 
 For receipting a donation, the following parameters can be chosen and set:
 
-- *Type of donation receipt*: bulk receipt / single receipt<br />  
-  The generation of receipts is done using a message template, stored in the
-  corresponding templates location of CiviCRM, which is a HTML template
-  optimised for pdf generation. Please note that the existing templates are
-  user-specific and designed according to german tax requirements, they will
-  have to be modified for use with other organisations and in other countries.
-  <br />
-  When chosing the type of receipt, one has to bear in mind that when
-  "single receipt" is chosen, only single receipts are rendered, no matter how
-  many donations exist in the current snapshot. In contrast, when "bulk receipt"
-  is chosen, the template switches to single receipt when there is only one
-  deductable donation to be receipted. This all is done with one single
-  template. The template can be modified and is found in
-  administration > communication > message templates > system workflow message.
-  Some expertise in HTML is required.
+### Type of donation receipt
 
-- *Time period of the receipt*: this year / last year / custom range of dates  
-    - "this year" renders receipts for the actual year, starting with 01.
-      January and including the actual day of receipting.
-  
-    - "last year" renders receipts for the whole of the calendary year that is
-      the last before the actual year.
+Available values: *bulk receipt*, *single receipt*
+The generation of receipts is done using a message template, stored in the
+Donation Receipts profile, which is an HTML/Smarty template optimised for PDF
+generation. Please note that the existing templates are user-specific and
+designed according to german tax requirements, they will have to be modified
+for use with other organisations and in other countries.
+When chosing the type of receipt, one has to bear in mind that when
+"single receipt" is chosen, only single receipts are rendered, no matter how
+many donations exist in the current snapshot. In contrast, when "bulk receipt"
+is chosen, the template switches to single receipt when there is only one
+deductable donation to be receipted. This is all done utilizing one single
+template. Some expertise in HTML and/or the Smarty template engine is required
+for modifying the template.
 
-    - "custom range of dates" behaves according to other searches using the
-      parameter date/ range of dates. As it is a custom search, the user may
-      choose a range of dates appropriate for the task at hand. On the other
-      hand, care has to be taken in order to produce meaningful results. Bulk
-      receipts may be rendered over a period of several years. Whether this may
-      be acceptable under your tax laws ist to be assured by the user.
+### Time period of the receipt
 
-  **Caution**: There is no link between the date of an official permit to
-  receipt donations and the date of the donation. You may receipt donations that
-  have been received before the date of the permit to do so. It is under the
-  responsibility of the user to assure compliance to local law and rules!
+Available values: *this year*, *last year*, *custom range of dates*
+* "this year" renders receipts for the actual year, starting with 01.
+January and including the actual day of receipting.
+* "last year" renders receipts for the whole of the calendary year that is
+  the last before the current year.
+* "custom range of dates" behaves according to other searches using the
+  parameter date/ range of dates. As it is a custom search, the user may
+  choose a range of dates appropriate for the task at hand. On the other
+  hand, care has to be taken in order to produce meaningful results. Bulk
+  receipts may be rendered over a period of several years. Whether this may
+  be acceptable under your tax laws ist to be assured by the user.
 
-- *Minimum total (currency) necessary for rendering a receipt*:<br />
-  There is no such threshold to be set within the extension. All selections of
-  data may be performed by the search tools already provided by CiviCRM. For
-  setting am minimum total, the search tool "contributors by aggregate totals"
-  may be used.
+!!!note There is no link between the date of an official permit to
+receipt donations and the date of the donation. You may receipt donations that
+have been received before the date of the permit to do so. It is under the
+responsibility of the user to assure compliance to local law and rules!
 
-- *Format to be rendered*: individual pdf file(s) / csv file(s) /
-  pdf files grouped according to number of pages<br />
-  The receipts may be rendered as pdf files. For handling a vast number of
-  files, archives are generated. Under Linux, the suitable tools are provided
-  with the most of distributions. Under MS Windows, the use of "7zip" is
-  recommended. You may render a pdf, that will be stored with the donating
-  contact, or you may regenerate the receipt for single use in order to save
-  disk space. Please note that the rendering process can only make use of the
-  actual template. When not storing receipts as pdf files, they will change
-  according to the template in use.
+### Minimum total (currency) necessary for rendering a receipt
 
-  For printing in a lettershop, you may use the csv format. Having pdfinfo
-  installed on the server, grouping according to the number of pages becomes
-  possible.
+There is no such threshold to be set within the extension. All selections of
+data may be performed by the search tools already provided by CiviCRM. For
+setting am minimum total, the search tool "contributors by aggregate totals"
+may be used.
 
-  In all cases, a receipted donation cannot be altered or receipted again as
-  long as the receipt is active.
+### Format to be rendered
 
-  *Please note*: In the process of setting the rendering options, you may choose
-  "don't generate files". This setting is overruled by the global setting on the
-  administration console "store original *.pdf files". Check there to see
-  whether settings are consistent. When choosing the options
-  "don't generate files" and "store original *.pdf files", the pdf is rendered
-  and saved with the contact but not displayed automatically.
+The extension provides several different formats for rendering donation receipts
+through the following *exporters*.
 
-  The pdf files may be grouped according to the number of pages when pdfinfo is
-  installed on the server. This is a useful option when printing on front and
-  back of the pages, especially when printing merged pdf's. Merging pdf files is
-  not included in the described extension. Free software such as pdfsam for
-  Linux is available for batching and merging pdf files.
+!!!note In the process of setting the rendering options, you may choose
+"don't generate files". This setting is overruled by the global setting on the
+administration console "store original *.pdf files". Check there to see
+whether settings are consistent. When choosing the options
+"don't generate files" and "store original *.pdf files", the pdf is rendered
+and saved with the contact but not displayed automatically.
 
-  When rendering a csv file for use in a lettershop, the default coding will be
-  UTF-8.
+#### individual pdf file(s)
+
+The receipts may be rendered as pdf files. For handling a vast number of
+files, archives are generated. Under Linux, the suitable tools are provided
+with the most of distributions. Under MS Windows, the use of "7zip" is
+recommended. You may render a pdf, that will be stored with the donating
+contact, or you may regenerate the receipt for single use in order to save
+disk space. Please note that the rendering process can only make use of the
+actual template. When not storing receipts as pdf files, they will change
+according to the template in use.
+
+#### csv file(s)
+
+For printing in a lettershop, you may use the csv format. When rendering a csv
+file for use in a lettershop, the default coding will be UTF-8.
+
+#### pdf files grouped according to number of pages
+
+The pdf files may be grouped according to the number of pages when pdfinfo is
+installed on the server. This is a useful option when printing on front and
+back of the pages
+
+#### Receipts merged into a single PDF file
+
+TODO.
+
+#### PDF files sent via e-mail
+
+TODO.
+
+#### PDF with *CiviOffice*-generated cover letter
+
+TODO.
 
 ## Generating donation receipts
 
@@ -140,15 +157,15 @@ consistent is difficult and should thus be avoided.
 When receipting, always bear in mind the following:
 
 - The process of receipting, as already mentioned, ist triggered by the active
-window on the workstation. Shutting down the workstation, closing or reloading
-of the window will result in a disruption of the process. Do NOT do that. The
-process should run at a rate of about 2000 PDF files per hour.
+  window on the workstation. Shutting down the workstation, closing or reloading
+  of the window will result in a disruption of the process. Do NOT do that. The
+  process should run at a rate of about 2000 PDF files per hour.
 
 - A snapshot of the data is used for receipting. The snapshot is valid for 24
-hours. As long as the snapshot is valid, an interrupted process can be
-continued. The snapshot belongs to the user that created it. With a different
-login, it will not be possible to restart an interrupted process with that
-snapshot!
+  hours. As long as the snapshot is valid, an interrupted process can be
+  continued. The snapshot belongs to the user that created it. With a different
+  login, it will not be possible to restart an interrupted process with that
+  snapshot!
 
 *Test run*: Tapping this button will result in the receipting process, except
 that no donation will be tagged as receipted and the resulting pdf will have a
