@@ -157,7 +157,7 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
    *
    * @return bool|string|void $converted string convertido
    */
-  static private function convertNumber($number, $miMoneda = NULL, $type) {
+  static private function convertNumber($number, string $miMoneda = NULL, $type) {
     $converted = '';
     if ($miMoneda !== NULL) {
       try {

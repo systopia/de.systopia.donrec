@@ -15,7 +15,7 @@ use CRM_Donrec_ExtensionUtil as E;
 /**
  * Exporter for ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
+class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedPDF {
 
   /**
    * @return string
@@ -33,7 +33,7 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
     return '';
   }
 
-  public function checkRequirements($profile = NULL) {
+  public function checkRequirements($profile = NULL): array {
     $result = [];
 
     if (
@@ -47,18 +47,21 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
       $civioffice_config = CRM_Civioffice_Configuration::getConfig();
       $civioffice_document = $civioffice_config->getDocument($civioffice_document_uri);
       $civioffice_document_renderer = $civioffice_config->getDocumentRenderer($civioffice_document_renderer_uri);
-      if ($civioffice_document && $civioffice_document_renderer) {
-        $result['message'] = E::ts(
-          'using document <em>%1</em> and document renderer <em>%2</em>',
-          [
-            1 => $civioffice_document->getName(),
-            2 => $civioffice_document_renderer->getName(),
-          ]
-        );
-      }
-      else {
-        $result['is_error'] = TRUE;
-        $result['message'] = E::ts('Missing document or renderer configuration.');
+      $result = parent::checkRequirements($profile);
+      if(!$result['is_error'] == TRUE) {
+        if ($civioffice_document && $civioffice_document_renderer) {
+          $result['message'] = E::ts(
+            'using document <em>%1</em> and document renderer <em>%2</em>',
+            [
+              1 => $civioffice_document->getName(),
+              2 => $civioffice_document_renderer->getName(),
+            ]
+          );
+        }
+        else {
+          $result['is_error'] = TRUE;
+          $result['message'] = E::ts('Missing document or renderer configuration.');
+        }
       }
     }
 
@@ -81,6 +84,10 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_BasePDF {
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
     $snapshot_line_id = $snapshot_receipt->getID();
+
+    // encrypt PDF if configured in profile. Coverletter will not be encrypted
+    $this->encrypt_file($file, $snapshot_receipt);
+    
     $files = [$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('donation-receipt') => $file];
 
     // Generate cover letter PDF using CiviOffice and add to pdf_files array.

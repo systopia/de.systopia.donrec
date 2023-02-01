@@ -93,6 +93,11 @@
               <td>{$form.language.html}</td>
             </tr>
 
+            <tr class="crm-donrec-profile-form-block-enable_encryption">
+              <td class="label">{$form.enable_encryption.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable encryption{/ts}", {literal}{"id":"id-enable_encryption","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td>{$form.enable_encryption.html}</td>
+            </tr>
+
             <tr class="crm-donrec-profile-form-block-financial_types">
               <td class="label">{$form.financial_types.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Contribution Types{/ts}", {literal}{"id":"id-contribution-types","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.financial_types.html}</td>

@@ -48,11 +48,20 @@
         <td>{$form.pdfunite_path.html}</td>
       </tr>
 
+      <tr class="crm-donrec-encryption-command">
+        <td class="label">{$form.encryption_command.label} <a
+                  onclick='CRM.help("{ts domain="de.systopia.donrec"}External Tool: command line for encryption{/ts}", {literal}{"id":"id-encryption-command","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+                  class="helpicon">&nbsp;</a></td>
+        <td>{$form.encryption_command.html}</td>
+      </tr>
+
+
     </table>
 
   </fieldset>
 
-  {if $civioffice_enabled}
+  {if !empty($civioffice_enabled)}
       <fieldset class="crm-form-block">
 
         <h3>{ts domain="de.systopia.donrec"}CiviOffice Integration{/ts}</h3>

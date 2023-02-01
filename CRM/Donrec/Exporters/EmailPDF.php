@@ -14,7 +14,7 @@ use CRM_Donrec_ExtensionUtil as E;
 /**
  * Exporter for GROUPED, ZIPPED PDF files
  */
-class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
+class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
   protected static $_sending_to_contact_id   = NULL;
   protected static $_sending_contribution_id = NULL;
@@ -54,17 +54,16 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    *         'is_error': set if there is a fatal error
    *         'message': error message
    */
-  public function checkRequirements($profile = NULL) {
+  public function checkRequirements($profile = NULL): array {
     // Check if email template is set up
     $template_id = CRM_Donrec_Logic_Settings::getEmailTemplateID($profile);
-    if ($template_id) {
-      return array('is_error' => FALSE, 'message' => '');
-    } else {
+    if (! $template_id) {
       return array(
         'is_error' => TRUE,
         'message' => E::ts("Please select email template in the Donrec settings."),
         );
     }
+    return parent::checkRequirements($profile);
   }
 
 
@@ -79,6 +78,9 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_BasePDF {
    * @throws \CiviCRM_API3_Exception
    */
   protected function postprocessPDF($file, $snapshot_receipt, $is_test) {
+    // encrypt file if configured in profile
+    $this->encrypt_file($file, $snapshot_receipt);
+
     // find the receipt
     $error = NULL;
 
