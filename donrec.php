@@ -282,11 +282,11 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
 function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
   if ($tabsetName == 'civicrm/contact/view') {
     if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
-      $url = CRM_Utils_System::url( 'civicrm/donrec/tab',
-                                    "reset=1&snippet=1&force=1&cid={$context['contact_id']}" );
+      $context['contact_id'] ??= NULL;
       $tabs[] = [
         'id' => 'donation_receipts',
-        'url' => $url,
+        'url' => CRM_Utils_System::url( 'civicrm/donrec/tab',
+          "reset=1&snippet=1&force=1&cid={$context['contact_id']}" ),
         'title' => E::ts('Donation receipts'),
         // If contact_id is not provided, this is being called from the ContactLayout extension to retrieve tab info
         'count' => !empty($context['contact_id']) ? CRM_Donrec_Logic_Receipt::getReceiptCountForContact($context['contact_id']) : NULL,
