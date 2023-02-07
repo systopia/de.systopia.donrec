@@ -117,7 +117,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
       }
 
       // store the error in the process information (to be processed in wrap-up)
-      // TODO: $snapshot_line_id is undefined, is this meant to be $receipt['id']?
+      $snapshot_line_id = $snapshot_receipt->getID();
       $this->updateProcessInformation($snapshot_line_id, array('email_error' => $error));
 
     } // END if $error
