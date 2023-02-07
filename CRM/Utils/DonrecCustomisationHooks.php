@@ -61,7 +61,7 @@ class CRM_Utils_DonrecCustomisationHooks {
    *
    * TODO: The $chunk parameter is not used, instead $chunk_item
    */
-  static function pdf_shared_token(&$template, &$chunk) {
+  static function pdf_shared_token(&$template, &$chunk_item) {
     if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
     {
       return CRM_Utils_Hook::singleton()->invoke(1, $template, $chunk_item, self::$null, self::$null, self::$null, $hook = 'civicrm_pdf_shared_token');
