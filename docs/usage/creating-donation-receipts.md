@@ -62,10 +62,11 @@ January and including the actual day of receipting.
   receipts may be rendered over a period of several years. Whether this may
   be acceptable under your tax laws ist to be assured by the user.
 
-!!!note There is no link between the date of an official permit to
-receipt donations and the date of the donation. You may receipt donations that
-have been received before the date of the permit to do so. It is under the
-responsibility of the user to assure compliance to local law and rules!
+!!! note
+    There is no link between the date of an official permit to
+    receipt donations and the date of the donation. You may receipt donations that
+    have been received before the date of the permit to do so. It is under the
+    responsibility of the user to assure compliance to local law and rules!
 
 ### Minimum total (currency) necessary for rendering a receipt
 
@@ -79,12 +80,13 @@ may be used.
 The extension provides several different formats for rendering donation receipts
 through the following *exporters*.
 
-!!!note In the process of setting the rendering options, you may choose
-"don't generate files". This setting is overruled by the global setting on the
-administration console "store original *.pdf files". Check there to see
-whether settings are consistent. When choosing the options
-"don't generate files" and "store original *.pdf files", the pdf is rendered
-and saved with the contact but not displayed automatically.
+!!!note
+    In the process of setting the rendering options, you may choose
+    "don't generate files". This setting is overruled by the global setting on the
+    administration console "store original *.pdf files". Check there to see
+    whether settings are consistent. When choosing the options
+    "don't generate files" and "store original *.pdf files", the pdf is rendered
+    and saved with the contact but not displayed automatically.
 
 #### individual pdf file(s)
 
@@ -110,15 +112,18 @@ back of the pages
 
 #### Receipts merged into a single PDF file
 
-TODO.
+!!! note
+    This section is yet to be completed.
 
 #### PDF files sent via e-mail
 
-TODO.
+!!! note
+    This section is yet to be completed.
 
 #### PDF with *CiviOffice*-generated cover letter
 
-TODO.
+!!! note
+    This section is yet to be completed.
 
 ## Generating donation receipts
 
