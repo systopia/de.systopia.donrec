@@ -22,10 +22,13 @@
   <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfu&#xDF;</comments>
   <civix>
     <namespace>CRM/Donrec</namespace>
-    <format>22.05.2</format>
+    <format>22.10.0</format>
   </civix>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
     <mixin>setting-php@1.0.0</mixin>
   </mixins>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+  </classloader>
 </extension>
