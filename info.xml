@@ -5,8 +5,8 @@
   <description>This extensions can generate and manage donation receipts for tax deductions.</description>
   <license>AGPLv3</license>
   <maintainer>
-    <author>B. Endres</author>
-    <email>endres@systopia.de</email>
+    <author>SYSTOPIA</author>
+    <email>info@systopia.de</email>
   </maintainer>
   <releaseDate/>
   <version>2.1-dev</version>
@@ -19,7 +19,7 @@
     <url desc="Documentation">http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension</url>
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
-  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan and Thomas Leichtfu&#xDF;</comments>
+  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan, Thomas Leichtfuß and Björn Endres.</comments>
   <civix>
     <namespace>CRM/Donrec</namespace>
     <format>22.10.0</format>
