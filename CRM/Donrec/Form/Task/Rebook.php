@@ -125,10 +125,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   static function rebook($contribution_ids, $contact_id, $redirect_url = NULL) {
     $contact_id = (int) $contact_id;
     $excludeList = array('id', 'contribution_id', 'trxn_id', 'invoice_id', 'cancel_date', 'cancel_reason', 'address_id', 'contribution_contact_id', 'contribution_status_id');
-    $cancelledStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Cancelled', 'name');
-    $completedStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $cancelledStatus = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status', 'Cancelled');
+    $completedStatus = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status', 'Completed');
     $contribution_fieldKeys = CRM_Contribute_DAO_Contribution::fieldKeys();
-    $sepa_ooff_payment_id = CRM_Core_OptionGroup::getValue('payment_instrument', 'OOFF', 'name');
+    $sepa_ooff_payment_id = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'payment_instrument', 'OOFF');
     // Get contribution default return properties.
     $contribution_return = CRM_Contribute_BAO_Query::defaultReturnProperties(CRM_Contact_BAO_Query::MODE_CONTRIBUTE);
     // Add non-default fields.
@@ -167,7 +167,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
             'version'                 => 3,
             'contribution_contact_id' => $contact_id,
             'contribution_status_id'  => $completedStatus,
-            'payment_instrument_id'   => CRM_Core_OptionGroup::getValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
+            'payment_instrument_id'   => CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'payment_instrument', $contribution['instrument_id']), // this seems to be an API bug
         );
         foreach ($contribution as $key => $value) {
 
@@ -278,7 +278,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     }
 
     // Check contributions
-    $completed = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $completed = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status', 'Completed');
     $arr = explode(",", $contributionIds);
     foreach ($arr as $contributionId) {
       $contribution = new CRM_Contribute_DAO_Contribution();

@@ -48,7 +48,7 @@ class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Ci
    *         bochan -at- systopia.de
    */
   function generateContributions($count = 2) {
-    $contribution_status_pending = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Pending', 'name');
+    $contribution_status_pending = (int) CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status', 'Pending');
     $this->assertNotEmpty($contribution_status_pending, "Could not find the 'Pending' contribution status.");
 
     $create_contribution = array(

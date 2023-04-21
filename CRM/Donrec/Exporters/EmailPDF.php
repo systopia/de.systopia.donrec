@@ -107,7 +107,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
         civicrm_api3('Activity', 'create', array(
           'activity_type_id'   => $this->getEmailErrorActivityID(),
           'subject'            => E::ts("Donation receipt not delivered"),
-          'status_id'          => CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name'),
+          'status_id'          => CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name'), // TODO CRM_Core_PseudoConstant::getKey('BAO_NAME ???', 'activity_status', 'Scheduled')
           'activity_date_time' => date('YmdHis'),
           'source_contact_id'  => $receipt['created_by'],
           'target_id'          => $receipt['contact_id'],
@@ -147,8 +147,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
       // Get from e-mail from profile or load domain default.
       if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])->getDataAttribute('from_email')) {
-        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
-        foreach ($fromEmailAddress as $key => $value) {
+        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id); // TODO is CRM_Core_OptionGroup::values still allowed or also deprecated?
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
           $fromArray = explode('"', $value);
           $from_email_name = CRM_Utils_Array::value(1, $fromArray);
@@ -250,7 +249,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    */
   public function getEmailErrorActivityID() {
     if ($this->activity_type_id === NULL) {
-      $this->activity_type_id = (int) CRM_Core_OptionGroup::getValue('activity_type', 'donrec_email_failed', 'name');
+      $this->activity_type_id = (int) CRM_Core_OptionGroup::getValue('activity_type', 'donrec_email_failed', 'name'); // TODO CRM_Core_PseudoConstant::getKey('BAO_NAME ???', 'activity_type', 'donrec_email_failed')
       if (!$this->activity_type_id) {
         // create new activity type
         $option_group = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'activity_type'));
