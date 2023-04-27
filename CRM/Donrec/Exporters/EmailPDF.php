@@ -107,7 +107,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
         civicrm_api3('Activity', 'create', array(
           'activity_type_id'   => $this->getEmailErrorActivityID(),
           'subject'            => E::ts("Donation receipt not delivered"),
-          'status_id'          => CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name'),
+          'status_id'          => CRM_Doncrec_CustomData::getOptionValue('activity_status', 'Scheduled', 'name'),
           'activity_date_time' => date('YmdHis'),
           'source_contact_id'  => $receipt['created_by'],
           'target_id'          => $receipt['contact_id'],
@@ -250,7 +250,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    */
   public function getEmailErrorActivityID() {
     if ($this->activity_type_id === NULL) {
-      $this->activity_type_id = (int) CRM_Core_OptionGroup::getValue('activity_type', 'donrec_email_failed', 'name');
+      $this->activity_type_id = (int) CRM_Doncrec_CustomData::getOptionValue('activity_type', 'donrec_email_failed', 'name');
       if (!$this->activity_type_id) {
         // create new activity type
         $option_group = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'activity_type'));

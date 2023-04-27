@@ -18,12 +18,12 @@ use CRM_Donrec_ExtensionUtil as E;
 class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
 
   protected $contribution_ids = array();
-  
+
 
   function preProcess() {
     parent::preProcess();
     CRM_Utils_System::setTitle(E::ts('Rebook'));
-  
+
     $admin = CRM_Core_Permission::check('edit contributions');
     if (!$admin) {
       CRM_Core_Error::fatal(E::ts('You do not have the permissions required to access this page.'));
@@ -125,10 +125,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   static function rebook($contribution_ids, $contact_id, $redirect_url = NULL) {
     $contact_id = (int) $contact_id;
     $excludeList = array('id', 'contribution_id', 'trxn_id', 'invoice_id', 'cancel_date', 'cancel_reason', 'address_id', 'contribution_contact_id', 'contribution_status_id');
-    $cancelledStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Cancelled', 'name');
-    $completedStatus = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $cancelledStatus = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Cancelled', 'name');
+    $completedStatus = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
     $contribution_fieldKeys = CRM_Contribute_DAO_Contribution::fieldKeys();
-    $sepa_ooff_payment_id = CRM_Core_OptionGroup::getValue('payment_instrument', 'OOFF', 'name');
+    $sepa_ooff_payment_id = CRM_Doncrec_CustomData::getOptionValue('payment_instrument', 'OOFF', 'name');
     // Get contribution default return properties.
     $contribution_return = CRM_Contribute_BAO_Query::defaultReturnProperties(CRM_Contact_BAO_Query::MODE_CONTRIBUTE);
     // Add non-default fields.
@@ -167,7 +167,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
             'version'                 => 3,
             'contribution_contact_id' => $contact_id,
             'contribution_status_id'  => $completedStatus,
-            'payment_instrument_id'   => CRM_Core_OptionGroup::getValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
+            'payment_instrument_id'   => CRM_Doncrec_CustomData::getOptionValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
         );
         foreach ($contribution as $key => $value) {
 
@@ -175,7 +175,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
             $attributes[$key] = $value;
           }
 
-          if (strstr($key, 'custom')) { // get custom fields 
+          if (strstr($key, 'custom')) { // get custom fields
             // load custom field spec for exception handling
             $custom_field_id = substr($key, 7);
             $custom_field = civicrm_api('CustomField', 'getsingle', array('id'=>$custom_field_id,'version'=>3));
@@ -278,7 +278,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     }
 
     // Check contributions
-    $completed = CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+    $completed = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
     $arr = explode(",", $contributionIds);
     foreach ($arr as $contributionId) {
       $contribution = new CRM_Contribute_DAO_Contribution();
@@ -293,7 +293,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         // receipted contributions can NOT be rebooked
         if (CRM_Donrec_Logic_Receipt::isContributionLocked($contributionId)) {
           $errors['contactId'] = E::ts('The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt.', array(1 => $contributionId));
-          return empty($errors) ? TRUE : $errors;          
+          return empty($errors) ? TRUE : $errors;
         }
       }
     }
@@ -325,9 +325,9 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
       $new_reference = sprintf($new_reference_pattern, $i);
       if (strlen($new_reference) > 35) {
         CRM_Core_Session::setStatus(E::ts("Cannot find a new mandate reference, exceeds 35 characters."), E::ts("Error"), "error");
-        return;                  
+        return;
       }
-      
+
       // see if this reference already exists
       $exists = civicrm_api('SepaMandate', 'getsingle', array('reference' => $new_reference, 'version' => 3));
       if (empty($exists['is_error'])) {
