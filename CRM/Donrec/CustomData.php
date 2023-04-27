@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-class CRM_Doncrec_CustomData {
+class CRM_Donrec_CustomData {
   const CUSTOM_DATA_HELPER_VERSION   = '0.8-dev+bc5237e69d379e4108373f';
   const CUSTOM_DATA_HELPER_LOG_LEVEL = 0;
   const CUSTOM_DATA_HELPER_LOG_DEBUG = 1;

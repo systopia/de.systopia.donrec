@@ -125,10 +125,10 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
   static function rebook($contribution_ids, $contact_id, $redirect_url = NULL) {
     $contact_id = (int) $contact_id;
     $excludeList = array('id', 'contribution_id', 'trxn_id', 'invoice_id', 'cancel_date', 'cancel_reason', 'address_id', 'contribution_contact_id', 'contribution_status_id');
-    $cancelledStatus = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Cancelled', 'name');
-    $completedStatus = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
+    $cancelledStatus = CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Cancelled', 'name');
+    $completedStatus = CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
     $contribution_fieldKeys = CRM_Contribute_DAO_Contribution::fieldKeys();
-    $sepa_ooff_payment_id = CRM_Doncrec_CustomData::getOptionValue('payment_instrument', 'OOFF', 'name');
+    $sepa_ooff_payment_id = CRM_Donrec_CustomData::getOptionValue('payment_instrument', 'OOFF', 'name');
     // Get contribution default return properties.
     $contribution_return = CRM_Contribute_BAO_Query::defaultReturnProperties(CRM_Contact_BAO_Query::MODE_CONTRIBUTE);
     // Add non-default fields.
@@ -167,7 +167,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
             'version'                 => 3,
             'contribution_contact_id' => $contact_id,
             'contribution_status_id'  => $completedStatus,
-            'payment_instrument_id'   => CRM_Doncrec_CustomData::getOptionValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
+            'payment_instrument_id'   => CRM_Donrec_CustomData::getOptionValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
         );
         foreach ($contribution as $key => $value) {
 
@@ -278,7 +278,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     }
 
     // Check contributions
-    $completed = CRM_Doncrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
+    $completed = CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
     $arr = explode(",", $contributionIds);
     foreach ($arr as $contributionId) {
       $contribution = new CRM_Contribute_DAO_Contribution();
