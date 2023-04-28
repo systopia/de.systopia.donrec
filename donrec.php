@@ -148,7 +148,7 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // ************************************
     // only offer rebook only if the user has the correct permissions
     if (CRM_Core_Permission::check('edit contributions')) {
-      $contribution_status_complete = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Completed', 'name');
+      $contribution_status_complete = (int) CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
       $title = E::ts('Rebook');
       $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
       $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";

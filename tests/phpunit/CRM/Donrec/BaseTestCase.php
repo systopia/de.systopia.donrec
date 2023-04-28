@@ -48,7 +48,7 @@ class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Ci
    *         bochan -at- systopia.de
    */
   function generateContributions($count = 2) {
-    $contribution_status_pending = (int) CRM_Core_OptionGroup::getValue('contribution_status', 'Pending', 'name');
+    $contribution_status_pending = (int) CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Pending', 'name');
     $this->assertNotEmpty($contribution_status_pending, "Could not find the 'Pending' contribution status.");
 
     $create_contribution = array(
@@ -62,13 +62,13 @@ class CRM_Donrec_BaseTestCase extends \PHPUnit\Framework\TestCase implements \Ci
 
     $create_contribution['payment_instrument_id'] = 1;
     $result = array();
-    for ($c = 0; $c < $count; $c++) { 
+    for ($c = 0; $c < $count; $c++) {
       $create_contribution['total_amount'] = number_format((float)rand(1, 1000), 2, '.', '');
       $create_contribution['receive_date'] = date('YmdHis');
       $contribution = $this->callAPISuccess("Contribution", "create", $create_contribution);
       $result[] = $contribution['id'];
     }
-    
+
     return $result;
   }
 
