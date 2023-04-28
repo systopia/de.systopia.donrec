@@ -8,11 +8,12 @@
     <author>SYSTOPIA</author>
     <email>info@systopia.de</email>
   </maintainer>
-  <releaseDate></releaseDate>
-  <version>2.2-dev</version>
-  <develStage>dev</develStage>
+  <releaseDate>2023-04-28</releaseDate>
+  <version>2.2-beta1</version>
+  <develStage>beta</develStage>
   <compatibility>
     <ver>5.2</ver>
+    <ver>5.60</ver>
   </compatibility>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/de.systopia.donrec</url>
