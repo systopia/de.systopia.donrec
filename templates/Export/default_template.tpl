@@ -275,7 +275,7 @@ Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anla
 </div>
 
 <div class="signature">
-  {$organisation.city}, den {$today|crmDate:$config->dateformatFull}
+  {$organisation.city}, den {$issued_on|crmDate:$config->dateformatFull}
     <p>
     [Unterschrift]<br />
 
@@ -300,7 +300,7 @@ Ob es sich um den Verzicht auf Erstattung von Aufwendungen handelt, ist der Anla
 
 {if $items}
 <div class="newpage">
-<h2 class='box'>Anlage zur Sammelbestätigung vom {$today|crmDate:'%d.%m.%Y'} für {$contributor.display_name}</h2>
+<h2 class='box'>Anlage zur Sammelbestätigung vom {$issued_on|crmDate:'%d.%m.%Y'} für {$contributor.display_name}</h2>
 <table>
   <tr><th>Datum der Zuwendung</th><th>Art der Zuwendung</th><th>Verzicht auf die Erstattung von Aufwendungen</th><th>Betrag</th></tr>
   {foreach from=$items item=item}
