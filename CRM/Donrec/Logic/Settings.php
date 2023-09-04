@@ -176,13 +176,13 @@ class CRM_Donrec_Logic_Settings {
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
       // Retrieve unlock settings from profile.
-      if ($snapshot_id) {
-        $unlock_mode = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
-        $unlock_fields = CRM_Donrec_Logic_Snapshot::get($snapshot_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      if ($snapshot_id && $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id)) {
+        $unlock_mode = $snapshot->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = $snapshot->getProfile()->getDataAttribute('contribution_unlock_fields');
       }
-      elseif ($receipt_id) {
-        $unlock_mode = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_mode');
-        $unlock_fields = CRM_Donrec_Logic_Receipt::get($receipt_id)->getProfile()->getDataAttribute('contribution_unlock_fields');
+      elseif ($receipt_id && $receipt = CRM_Donrec_Logic_Receipt::get($receipt_id)) {
+        $unlock_mode = $receipt->getProfile()->getDataAttribute('contribution_unlock_mode');
+        $unlock_fields = $receipt->getProfile()->getDataAttribute('contribution_unlock_fields');
       }
       switch ($unlock_mode) {
         case 'unlock_all':
