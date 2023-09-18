@@ -185,7 +185,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // sort contribution lines by receive date (#1497)
     $receive_dates = array();
-    $sorted_lines = $values['lines'];
+    $sorted_lines = $values['lines'] ?? [];
     foreach ($sorted_lines as $key => $line) {
       $sorted_lines[$key]['id'] = $key;
       $receive_dates[$key] = $line['receive_date'];
