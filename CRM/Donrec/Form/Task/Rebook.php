@@ -128,7 +128,12 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
     $cancelledStatus = CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Cancelled', 'name');
     $completedStatus = CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
     $contribution_fieldKeys = CRM_Contribute_DAO_Contribution::fieldKeys();
-    $sepa_ooff_payment_id = CRM_Donrec_CustomData::getOptionValue('payment_instrument', 'OOFF', 'name');
+    try {
+      $sepa_ooff_payment_id = CRM_Donrec_CustomData::getOptionValue('payment_instrument', 'OOFF', 'name');
+    } catch (\Throwable $th) {
+      Civi::log()->error(E::ts('DonRec - Error getting SEPA OOFF payment instrument ID: %1', [1 => $th->getMessage()]));
+    }
+
     // Get contribution default return properties.
     $contribution_return = CRM_Contribute_BAO_Query::defaultReturnProperties(CRM_Contact_BAO_Query::MODE_CONTRIBUTE);
     // Add non-default fields.
@@ -163,11 +168,18 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         }
 
         // Now compile $attributes, taking the exclusionList into account
+        try {
+          $paymentInstrument = CRM_Donrec_CustomData::getOptionValue('payment_instrument', $contribution['instrument_id'], 'id');
+        }
+        catch (\Throwable $th) {
+          Civi::log()->error(E::ts('DonRec - Error getting payment instrument', [1 => $th->getMessage()]));
+        }
+
         $attributes = array(
             'version'                 => 3,
             'contribution_contact_id' => $contact_id,
             'contribution_status_id'  => $completedStatus,
-            'payment_instrument_id'   => CRM_Donrec_CustomData::getOptionValue('payment_instrument', $contribution['instrument_id'], 'id'), // this seems to be an API bug
+            'payment_instrument_id'   => $paymentInstrument, // this seems to be an API bug
         );
         foreach ($contribution as $key => $value) {
 
