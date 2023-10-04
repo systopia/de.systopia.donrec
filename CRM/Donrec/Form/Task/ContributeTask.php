@@ -104,14 +104,26 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->getContactIDs())));
-    }elseif (empty($result['snapshot'])) {
+        CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          'conflict=1'
+          . '&sid=' . $result['snapshot']->getId()
+          . '&ccount=' . count($this->getContactIDs())
+        )
+      );
+    }
+    elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(E::ts('There are no selectable contributions for these contacts in the selected time period.'), E::ts('Warning'), 'warning');
       $qfKey = $values['qfKey'];
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
-    }else{
+    }
+    else {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->getContactIDs()))
+        CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          'sid=' . $result['snapshot']->getId()
+          . '&ccount=' . count($this->getContactIDs())
+        )
       );
     }
   }
