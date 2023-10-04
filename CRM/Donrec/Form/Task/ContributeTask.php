@@ -110,8 +110,9 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
       $qfKey = $values['qfKey'];
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
     }else{
+ if (is_countable($this->_contactIds))$count=count($this->_contactIds); else $count=0;
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds))
+        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . $count)
       );
     }
   }
