@@ -23,12 +23,22 @@ class CRM_Donrec_Logic_Selector {
    *   creation result/error
    */
   public static function createSnapshot($values) {
+    // Process date picker values.
+    [
+      $values['donrec_contribution_horizon_from'],
+      $values['donrec_contribution_horizon_to']
+    ] = CRM_Utils_Date::getFromTo(
+      $values['donrec_contribution_horizon_relative'],
+      $values['donrec_contribution_horizon_from'],
+      $values['donrec_contribution_horizon_to']
+    );
+
     // prepare timestamps
     $raw_from_ts = $values['donrec_contribution_horizon_from'];
     $raw_to_ts = $values['donrec_contribution_horizon_to'];
 
-    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1);
-    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1);
+    $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1, 'YmdHis');
+    $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1, 'YmdHis');
 
     $formatted_date_from = date('Y-m-d H:i:s', $date_from);
     $formatted_date_to = date('Y-m-d H:i:s', $date_to);

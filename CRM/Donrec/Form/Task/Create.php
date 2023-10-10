@@ -31,12 +31,21 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
        'last_year'         => E::ts('last year'),
        'customized_period' => E::ts('Choose Date Range')
     );
-    $this->addElement('select', 'time_period', 'Time Period:', $options, array('class' => 'crm-select2'));
-    $this->addDateRange('donrec_contribution_horizon', '_from', '_to', E::ts('From:'), 'searchDate', TRUE, FALSE);
+    $this->addDatePickerRange(
+      'donrec_contribution_horizon',
+      E::ts('Time period'),
+      FALSE,
+      FALSE,
+      E::ts('From:'),
+      E::ts('To:'),
+      [],
+      '_to',
+      '_from',
+    );
 
     // add profile selector
-    $this->addElement('select', 
-                      'profile', 
+    $this->addElement('select',
+                      'profile',
                       E::ts('Profile'),
                       CRM_Donrec_Logic_Profile::getAllActiveNames('is_default', 'DESC'),
                       array('class' => 'crm-select2'));
