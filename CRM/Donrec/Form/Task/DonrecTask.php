@@ -34,8 +34,8 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
     $this->addDateRange('donrec_contribution_horizon', '_from', '_to', E::ts('From:'), 'searchDate', TRUE, FALSE);
 
     // add profile selector
-    $this->addElement('select', 
-                      'profile', 
+    $this->addElement('select',
+                      'profile',
                       E::ts('Profile'),
                       CRM_Donrec_Logic_Profile::getAllActiveNames('is_default', 'DESC'),
                       array('class' => 'crm-select2'));
@@ -104,14 +104,24 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'conflict=1' . '&sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds)));
+        CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          'conflict=1'
+          . '&sid=' . $result['snapshot']->getId()
+          . '&ccount=' . count($this->getContactIDs())
+        )
+      );
     }elseif (empty($result['snapshot'])) {
       CRM_Core_Session::setStatus(E::ts('There are no selectable contributions for these contacts in the selected time period.'), E::ts('Warning'), 'warning');
       $qfKey = $values['qfKey'];
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
     }else{
       CRM_Core_Session::singleton()->pushUserContext(
-        CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $result['snapshot']->getId() . '&ccount=' . count($this->_contactIds))
+        CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          'sid=' . $result['snapshot']->getId()
+          . '&ccount=' . count($this - $this->getContactIDs())
+        )
       );
     }
   }
