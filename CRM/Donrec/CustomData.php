@@ -15,7 +15,7 @@
 +--------------------------------------------------------*/
 
 class CRM_Donrec_CustomData {
-  const CUSTOM_DATA_HELPER_VERSION   = '0.8-dev+bc5237e69d379e4108373f';
+  const CUSTOM_DATA_HELPER_VERSION   = '0.11';
   const CUSTOM_DATA_HELPER_LOG_LEVEL = 0;
   const CUSTOM_DATA_HELPER_LOG_DEBUG = 1;
   const CUSTOM_DATA_HELPER_LOG_INFO  = 3;
@@ -40,7 +40,7 @@ class CRM_Donrec_CustomData {
    */
   protected function log($level, $message) {
     if ($level >= self::CUSTOM_DATA_HELPER_LOG_LEVEL) {
-      CRM_Core_Error::debug_log_message("CustomDataHelper {$this->version} ({$this->ts_domain}): {$message}");
+      Civi::log()->debug("CustomDataHelper {$this->version} ({$this->ts_domain}): {$message}");
     }
   }
 
@@ -225,8 +225,8 @@ class CRM_Donrec_CustomData {
    */
   protected function identifyEntity($entity_type, $data) {
     $lookup_query = array(
-        'sequential' => 1,
-        'options'    => array('limit' => 2));
+      'sequential' => 1,
+      'options'    => array('limit' => 2));
 
     foreach ($data['_lookup'] as $lookup_key) {
       $lookup_query[$lookup_key] = CRM_Utils_Array::value($lookup_key, $data, '');
@@ -262,7 +262,7 @@ class CRM_Donrec_CustomData {
     }
 
     // then run query
-    CRM_Core_Error::debug_log_message("CustomDataHelper ({$this->ts_domain}): CREATE {$entity_type}: " . json_encode($data));
+    Civi::log()->debug("CustomDataHelper ({$this->ts_domain}): CREATE {$entity_type}: " . json_encode($data));
     return civicrm_api3($entity_type, 'create', $data);
   }
 
@@ -332,11 +332,13 @@ class CRM_Donrec_CustomData {
    * function to replace custom_XX notation with the more
    * stable "<custom_group_name>.<custom_field_name>" format
    *
-   * @param $data   array  key=>value data, keys will be changed
-   * @param $depth  int    recursively follow arrays
+   * @param $data       array   key=>value data, keys will be changed
+   * @param $depth      int     recursively follow arrays
+   * @param $separator  string  separator to be used.
+   *                            examples are '.' (default) or '__' to avoid drupal form field id issues
    */
-  public static function labelCustomFields(&$data, $depth=1) {
-    if ($depth == 0) return;
+  public static function labelCustomFields(&$data, $depth=1, $separator = '.') {
+    if ($depth <= 0) return;
 
     $custom_fields_used = array();
     foreach ($data as $key => $value) {
@@ -351,19 +353,31 @@ class CRM_Donrec_CustomData {
     // replace names
     foreach ($data as $key => &$value) {
       if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
-        $new_key = self::getFieldIdentifier($match['field_id']);
+        $new_key = self::getFieldIdentifier($match['field_id'], $separator);
         $data[$new_key] = $value;
         unset($data[$key]);
       }
 
       // recursively look into that array
       if (is_array($value) && $depth > 0) {
-        self::labelCustomFields($value, $depth-1);
+        self::labelCustomFields($value, $depth-1, $separator);
       }
     }
   }
 
-  public static function getFieldIdentifier($field_id) {
+  /**
+   * Function to render a unified field identifier of the compatible
+   *  "<custom_group_name>.<custom_field_name>"
+   * format
+   *
+   * @note This is intended for use with APIv3, since APIv4 already has a similar thing built in
+   *
+   * @param $field_id   string the field ID
+   * @param $separator  string the separator to used, by default '.'
+   *
+   * @see getFieldIdentifier
+   */
+  public static function getFieldIdentifier($field_id, $separator = '.') {
     // just to be on the safe side
     self::cacheCustomFields(array($field_id));
 
@@ -371,7 +385,7 @@ class CRM_Donrec_CustomData {
     $custom_field = self::$custom_field_cache[$field_id];
     if ($custom_field) {
       $group_name = self::getGroupName($custom_field['custom_group_id']);
-      return "{$group_name}.{$custom_field['name']}";
+      return "{$group_name}{$separator}{$custom_field['name']}";
     } else {
       return 'FIELD_NOT_FOUND_' . $field_id;
     }
@@ -494,8 +508,8 @@ class CRM_Donrec_CustomData {
         // set to empty array to indicate our intentions
         self::$custom_group_cache[$custom_group_name] = array();
         $fields = civicrm_api3('CustomField', 'get', array(
-            'custom_group_id' => $custom_group_name,
-            'option.limit'    => 0));
+          'custom_group_id' => $custom_group_name,
+          'option.limit'    => 0));
         foreach ($fields['values'] as $field) {
           self::$custom_group_cache[$custom_group_name][$field['name']] = $field;
           self::$custom_group_cache[$custom_group_name][$field['id']]   = $field;
@@ -519,8 +533,8 @@ class CRM_Donrec_CustomData {
     // load missing fields
     if (!empty($fields_to_load)) {
       $loaded_fields = civicrm_api3('CustomField', 'get', array(
-          'id'           => array('IN' => $fields_to_load),
-          'option.limit' => 0,
+        'id'           => array('IN' => $fields_to_load),
+        'option.limit' => 0,
       ));
       foreach ($loaded_fields['values'] as $field) {
         self::$custom_field_cache[$field['id']] = $field;
@@ -545,8 +559,8 @@ class CRM_Donrec_CustomData {
     // load missing fields
     if (!empty($groups_to_load)) {
       $loaded_groups = civicrm_api3('CustomGroup', 'get', array(
-          'id'           => array('IN' => $groups_to_load),
-          'option.limit' => 0,
+        'id'           => array('IN' => $groups_to_load),
+        'option.limit' => 0,
       ));
       foreach ($loaded_groups['values'] as $group) {
         self::$custom_group_spec_cache[$group['id']] = $group;
@@ -587,8 +601,8 @@ class CRM_Donrec_CustomData {
     self::$custom_group2name = array();
     self::$custom_group2table_name = array();
     $group_search = civicrm_api3('CustomGroup', 'get', array(
-        'return'       => 'name,table_name',
-        'option.limit' => 0,
+      'return'       => 'name,table_name',
+      'option.limit' => 0,
     ));
     foreach ($group_search['values'] as $customGroup) {
       self::$custom_group2name[$customGroup['id']]       = $customGroup['name'];
@@ -768,13 +782,13 @@ class CRM_Donrec_CustomData {
       $field_specs = self::getFieldSpecs($field_id);
       $group_specs = self::getGroupSpecs($field_specs['custom_group_id']);
       return               [
-          'value'           => $value,
-          'type'            => CRM_Utils_Array::value('data_type', $field_specs, 'String'),
-          'custom_field_id' => $field_id,
-          'custom_group_id' => CRM_Utils_Array::value('custom_group_id', $field_specs, NULL),
-          'table_name'      => CRM_Utils_Array::value('table_name', $group_specs, NULL),
-          'column_name'     => CRM_Utils_Array::value('column_name', $field_specs, NULL),
-          'is_multiple'     => CRM_Utils_Array::value('is_multiple', $group_specs, 0),
+        'value'           => $value,
+        'type'            => CRM_Utils_Array::value('data_type', $field_specs, 'String'),
+        'custom_field_id' => $field_id,
+        'custom_group_id' => CRM_Utils_Array::value('custom_group_id', $field_specs, NULL),
+        'table_name'      => CRM_Utils_Array::value('table_name', $group_specs, NULL),
+        'column_name'     => CRM_Utils_Array::value('column_name', $field_specs, NULL),
+        'is_multiple'     => CRM_Utils_Array::value('is_multiple', $group_specs, 0),
       ];
     } else {
       return NULL;
@@ -830,11 +844,16 @@ class CRM_Donrec_CustomData {
     }
 
     // build/run API query
-    $value = civicrm_api3('OptionValue', 'getvalue', [
-      'option_group_id' => $group_name,
-      $label_field => $label,
-      'return' => $value_field
-    ]);
+    try {
+      $value = civicrm_api3('OptionValue', 'getvalue', [
+        'option_group_id' => $group_name,
+        $label_field => $label,
+        'return' => $value_field
+      ]);
+    }
+    catch (CRM_Core_Exception $exception) {
+      return NULL;
+    }
 
     // anything else to do here?
     return (string) $value;
