@@ -175,7 +175,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // add financial type name
     $financialTypes  = CRM_Contribute_PseudoConstant::financialType();
-    if (is_array($values['lines'])) {
+    if (!empty($values['lines']) && is_array($values['lines'])) {
       foreach ($values['lines'] as $key => $line) {
         if (!empty($line['financial_type_id'])) {
           $values['lines'][$key]['financial_type'] = $financialTypes[$line['financial_type_id']];
@@ -208,10 +208,10 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile_id']);
-    if ($values['status'] == 'ORIGINAL') {
+    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile_id'] ?? NULL);
+    if (isset($values['status']) && $values['status'] == 'ORIGINAL') {
       // nothing to to in this case..
-    } elseif ($values['status'] == 'COPY') {
+    } elseif (isset($values['status']) && $values['status'] == 'COPY') {
       $values['watermark'] = $profile->getDataAttribute('copy_text');
     } else {
       // in all other cases, it's INVALID/DRAFT:
@@ -220,9 +220,9 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
 
     // copy contributor values to addressee, if not set separately
     if (!isset($values['addressee']['display_name']))
-      $values['addressee']['display_name'] = $values['contributor']['display_name'];
+      $values['addressee']['display_name'] = $values['contributor']['display_name'] ?? NULL;
     if (!isset($values['addressee']['addressee_display']))
-      $values['addressee']['addressee_display'] = $values['contributor']['addressee_display'];
+      $values['addressee']['addressee_display'] = $values['contributor']['addressee_display'] ?? NULL;
 
     // add URL to view original file, if it exists
     if (!empty($values['original_file'])) {
