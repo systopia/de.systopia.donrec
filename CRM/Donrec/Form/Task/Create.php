@@ -26,21 +26,16 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
 
     $this->addElement('hidden', 'cid');
     $this->addElement('hidden', 'rsid');
-    $options = array(
-       'current_year'      => E::ts('This Year'),
-       'last_year'         => E::ts('last year'),
-       'customized_period' => E::ts('Choose Date Range')
-    );
     $this->addDatePickerRange(
       'donrec_contribution_horizon',
       E::ts('Time period'),
       FALSE,
-      FALSE,
+      TRUE,
       E::ts('From:'),
       E::ts('To:'),
       [],
       '_to',
-      '_from',
+      '_from'
     );
 
     // add profile selector
@@ -78,6 +73,20 @@ class CRM_Donrec_Form_Task_Create extends CRM_Core_Form {
       $this->assign('statistic', CRM_Donrec_Logic_Snapshot::getStatistic($remaining_snapshot));
       $this->assign('remaining_snapshot', TRUE);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function validate() {
+    // Do not require "from" and "to" fields for time period with relative date
+    // selected. Custom time period has value "0".
+    $selectedPeriod = $this->getElement('donrec_contribution_horizon_relative')->getValue();
+    if (reset($selectedPeriod) !== "0") {
+      unset($this->_required[array_search('donrec_contribution_horizon_from', $this->_required)]);
+      unset($this->_required[array_search('donrec_contribution_horizon_to', $this->_required)]);
+    }
+    return parent::validate();
   }
 
   function postProcess() {
