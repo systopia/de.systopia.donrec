@@ -39,7 +39,7 @@
             </li>
             <li>{ts domain="de.systopia.donrec"}Creation date{/ts}: {$receipt.issued_on|crmDate:$config->dateformatFull}</li>
             <li>
-              {ts domain="de.systopia.donrec"}Issued by{/ts}: 
+              {ts domain="de.systopia.donrec"}Issued by{/ts}:
               {if $receipt.issued_by}
                 {assign var=contact_id value=$receipt.issued_by}
                 <a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=$contact_id"}">{$receipt.issued_by_display_name}</a>
@@ -63,7 +63,7 @@
       </td>
       <td>
         {if $can_view_copy}
-          {if $receipt.view_url}
+          {if !empty($receipt.view_url)}
             <a href="{$receipt.view_url}" class="button"><span><div class="icon details-icon ui-icon-zoomin"></div>{ts domain="de.systopia.donrec"}Download{/ts}</span></a>
           {else}
             <a id="view_receipt_{$receipt_id}" class="button"><span><div class="icon details-icon ui-icon-zoomin"></div>{ts domain="de.systopia.donrec"}View{/ts}</span></a>
@@ -243,7 +243,7 @@
 
     });
     // auto scroll
-    {/literal}{if $scroll_to}{literal}
+    {/literal}{if !empty($scroll_to)}{literal}
       cj('html, body').animate({
                           scrollTop: cj('#donrec_stats_' + {/literal}{$scroll_to}{literal}).offset().top - 40
                       }, 1000);
