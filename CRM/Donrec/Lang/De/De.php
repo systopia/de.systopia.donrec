@@ -153,7 +153,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         }
         break;
       case $number < 1000:
-        $hundreds  = $number / 100;
+        $hundreds  = (int) ($number / 100);
         $remainder = $number % 100;
         $string = $dictionary[$hundreds] . $dictionary[100];
         if ($remainder) {
