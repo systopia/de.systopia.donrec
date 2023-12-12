@@ -559,25 +559,21 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     if ($result->fetch()) {
       foreach ($expected_fields as $key => $value) {
         // copy all expected values, if they exist
-        if (!is_array($key) && isset($result->$key)) {
-          $values[$key] = $result->$key;
+        if (!is_array($key)) {
+          $values[$key] = $result->$key ?? NULL;
         }
       }
 
       // also, copy the contributor data
       foreach ($expected_fields['contributor'] as $key => $value) {
         $qkey = 'contributor__' . $key;
-        if (isset($result->$qkey)) {
-          $values['contributor'][$key] = $result->$qkey;
-        }
+        $values['contributor'][$key] = $result->$qkey ?? NULL;
       }
 
       // and the addresse data
       foreach ($expected_fields['addressee'] as $key => $value) {
         $qkey = 'addressee__' . $key;
-        if (isset($result->$qkey)) {
-          $values['addressee'][$key] = $result->$qkey;
-        }
+        $values['addressee'][$key] = $result->$qkey ?? NULL;
       }
     } else {
       CRM_Core_Error::debug_log_message("de.systopia.donrec - couldn't load receipt data.");
