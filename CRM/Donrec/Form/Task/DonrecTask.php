@@ -34,7 +34,7 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       'donrec_contribution_horizon',
       E::ts('Time Period'),
       FALSE,
-      FALSE,
+      TRUE,
       E::ts('From:'),
       E::ts('To:'),
       [],
@@ -69,6 +69,20 @@ class CRM_Donrec_Form_Task_DonrecTask extends CRM_Contact_Form_Task {
       $this->assign('statistic', CRM_Donrec_Logic_Snapshot::getStatistic($remaining_snapshot));
       $this->assign('remaining_snapshot', TRUE);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function validate() {
+    // Do not require "from" and "to" fields for time period with relative date
+    // selected. Custom time period has value "0".
+    $selectedPeriod = $this->getElement('donrec_contribution_horizon_relative')->getValue();
+    if (reset($selectedPeriod) !== "0") {
+      unset($this->_required[array_search('donrec_contribution_horizon_from', $this->_required)]);
+      unset($this->_required[array_search('donrec_contribution_horizon_to', $this->_required)]);
+    }
+    return parent::validate();
   }
 
   function postProcess() {
