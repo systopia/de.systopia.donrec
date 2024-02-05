@@ -24,6 +24,7 @@ generation.
   see [#23](https://github.com/systopia/de.systopia.donrec/issues/23)
 
 ## Documentation:
+
 https://docs.civicrm.org/donationreceipts/en/latest (automatic publishing)
 
 ## We need your support
