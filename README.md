@@ -23,6 +23,9 @@ generation.
 * Doesn't process partially deductible contributions yet, 
   see [#23](https://github.com/systopia/de.systopia.donrec/issues/23)
 
+## Documentation:
+https://docs.civicrm.org/donationreceipts/en/latest (automatic publishing)
+
 ## We need your support
 This CiviCRM extension is provided as Free and Open Source Software, and we are happy if you find it useful. However, we have put a lot of work into it (and continue to do so), much of it unpaid for. So if you benefit from our software, please consider making a financial contribution so we can continue to maintain and develop it further.
 
