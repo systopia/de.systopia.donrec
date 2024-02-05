@@ -1,12 +1,22 @@
-# Preface
+This is a CiviCRM extension designed for "heavy duty" donation receipt
+generation.
 
-The described software was developed and published in and under legislative
-terms of Germany. The said software is an extension for CiviCRM and may be used
-to receipt donations according to tax laws. As taxation is specific for certain
-countries, the underlying conventions in this extension have to be specific,
-too. Great care has to be applied when using the software in other countries. In
-order to facilitate the assessment of possibilities and limitations under
-foreign tax laws, this documentation is now also given in english.
+## Features
 
-This CiviCRM extension is licensed under
-the [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html) license.
+* Single or batch donation receipts
+* Choose from various output formats (CSV, PDF, sorted PDF, ...)
+* Status control: ``draft``, ``receipted``, ``withdrawn``
+* Modification control: certain attributes of receipted contributions can not be
+  changed any more (unless receipt withdrawn)
+* Comes with ``rebook`` feature to rebook contributions to another contact in a
+  traceable way
+* Allows generation of receipts in big numbers by asynchronous generator
+* Snapshot approach prevents modification or duplicates while generating
+  donation receipts
+* Compliant with German tax requirements
+
+## Restrictions:
+
+* Shipped template in German and optimised for ``wkhtm2pdf``
+* Doesn't process partially deductible contributions yet, 
+  see [#23](https://github.com/systopia/de.systopia.donrec/issues/23)
