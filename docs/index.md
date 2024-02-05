@@ -10,25 +10,3 @@ foreign tax laws, this documentation is now also given in english.
 
 This CiviCRM extension is licensed under
 the [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html) license.
-
-# Status of this documentation
-
-This documentation is out-of-date as of at least version 1.6 and does not
-include changes made in version 2.0 and up, which are quite significant.
-
-If you'd like to contribute to updating this documentation, see
-[this issue on GitHub](https://github.com/systopia/de.systopia.donrec/issues/160).
-
-# Acknowledgements
-
-A big thank you to the organisations that funded the initial development of this
-extension. These are (in order of contribution):
-
-- muslimehelfen e.V.
-- Robin Wood e.V.
-- Software für Engagierte e.V.
-- Forum Ziviler Friedensdienst e.V.
-- ArbeiterKind gUG
-- Bergwaldprojekt e.V.
-- Digitalcourage e.V.
-- Wir sind Kirche e.V.
