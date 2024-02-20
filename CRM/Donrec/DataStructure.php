@@ -21,18 +21,19 @@ class CRM_Donrec_DataStructure {
     'style' => 'Inline',
     'collapse_display' => 1,
     'is_active' => 1,
-    'is_multiple' => 1,
   );
   public static $customGroups = array(
     array(
       'name' => 'zwb_donation_receipt',
       'title' => 'donation-receipt',
       'extends' => 'Contact',
+      'is_multiple' => 1,
     ),
     array(
       'name' => 'zwb_donation_receipt_item',
       'title' => 'donation-receipt-item',
       'extends' => 'Contribution',
+      'is_multiple' => 0,
     )
   );
   public static $customFieldDefaults = array(

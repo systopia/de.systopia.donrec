@@ -513,4 +513,17 @@ class CRM_Donrec_Upgrader extends CRM_Donrec_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Upgrade to 2.2:
+   * - Update zwb_donation_receipt_item custom field group
+   * @link https://github.com/systopia/de.systopia.donrec/issues/156
+   */
+  public function upgrade_0230() {
+    civicrm_api3('CustomGroup', 'get', [
+      'name' => "zwb_donation_receipt_item",
+      'api.CustomGroup.create' => ['id' => "\$value.id", 'is_multiple' => 0],
+    ]);
+    return TRUE;
+  }
+
 }
