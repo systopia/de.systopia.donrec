@@ -217,13 +217,23 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
 /**
  * Custom permissions
  */
- function donrec_civicrm_permission(&$permissions) {
-  $prefix = E::ts('DonationReceipts') . ': ';
+function donrec_civicrm_permission(&$permissions)
+{
+    $permissions['view and copy receipts'] = [
+        'label' => E::ts('DonationReceipts: create and withdraw receipts'),
+        'description' => E::ts('Allows access create and withdraw receipts')
+    ];
 
-  $permissions['view and copy receipts'] = $prefix . E::ts('view and create copies of receipts');
-  $permissions['create and withdraw receipts'] = $prefix . E::ts('create and withdraw receipts');
-  $permissions['delete receipts'] = $prefix . E::ts('delete receipts');
- }
+    $permissions['create and withdraw receipts'] = [
+        'label' => E::ts('DonationReceipts: view and create copies of receipts'),
+        'description' => E::ts('Allows access to view and create copies of receipts')
+    ];
+
+    $permissions['delete receipts'] = [
+        'label' => E::ts('DonationReceipts: delete receipts'),
+        'description' => E::ts('Allows access to delete receipts')
+    ];
+}
 
 /**
  * Add headers to sent donation receipts
