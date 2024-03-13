@@ -215,24 +215,22 @@ function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
 }
 
 /**
- * Custom permissions
+ * Implements hook_civicrm_permission().
  */
-function donrec_civicrm_permission(&$permissions)
-{
-    $permissions['view and copy receipts'] = [
-        'label' => E::ts('DonationReceipts: create and withdraw receipts'),
-        'description' => E::ts('Allows access create and withdraw receipts')
-    ];
-
-    $permissions['create and withdraw receipts'] = [
-        'label' => E::ts('DonationReceipts: view and create copies of receipts'),
-        'description' => E::ts('Allows access to view and create copies of receipts')
-    ];
-
-    $permissions['delete receipts'] = [
-        'label' => E::ts('DonationReceipts: delete receipts'),
-        'description' => E::ts('Allows access to delete receipts')
-    ];
+function donrec_civicrm_permission(&$permissions) {
+  $prefix = E::ts('DonationReceipts') . ': ';
+  $permissions['view and copy receipts'] = [
+    'label' => $prefix . E::ts('view and create copies of receipts'),
+    'description' => E::ts('Allows viewing and creating copies of donation receipts.'),
+  ];
+  $permissions['create and withdraw receipts'] = [
+    'label' => $prefix . E::ts('create and withdraw receipts'),
+    'description' => E::ts('Allows creating and withdrawing donation receipts.'),
+  ];
+  $permissions['delete receipts'] = [
+    'label' => $prefix . E::ts('delete receipts'),
+    'description' => E::ts('Allows deleting donation receipts.'),
+  ];
 }
 
 /**
