@@ -618,6 +618,12 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
   /**
    * Process the form submission.
    */
+  
+  // Prevent HTML template from being sanitized
+  protected function getFieldsToExcludeFromPurification(): array {
+    return ['template'];
+  } 
+  
   public function postProcess() {
     $session = CRM_Core_Session::singleton();
 
