@@ -12,7 +12,6 @@
   <version>2.2-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.2</ver>
     <ver>5.60</ver>
   </compatibility>
   <urls>
@@ -20,16 +19,19 @@
     <url desc="Documentation">http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension</url>
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
-  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan, Thomas Leichtfuß and Björn Endres.</comments>
+  <comments>Developed by SYSTOPIA. Thanks to Niko Bochan, Thomas Leichtfu&#xDF; and Bj&#xF6;rn Endres.</comments>
   <civix>
     <namespace>CRM/Donrec</namespace>
-    <format>22.10.0</format>
+    <format>23.02.1</format>
   </civix>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
     <mixin>setting-php@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
   </mixins>
   <classloader>
     <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
   </classloader>
+  <upgrader>CRM_Donrec_Upgrader</upgrader>
 </extension>
