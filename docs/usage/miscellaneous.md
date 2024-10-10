@@ -33,8 +33,8 @@ various roles:
 ## Template
 
 The template used for generating receipts as pdf-files is done in HTML. It will
-be converted to PDF via the program selected in the CiviCRM settings (either
-dompdf or wkhtmltopdf - the latter one is recommended). Within the template, you
+be converted to PDF via the program selected in the CiviCRM settings (please use
+dompdf as wkhtmltopdf is not secure https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35583 and is no longer actively maintained with last tagged release in June 2020 https://github.com/wkhtmltopdf/wkhtmltopdf/tree/0.12.6). Within the template, you
 can implement program logic using "Smarty".
 
 ## Tokens
