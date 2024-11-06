@@ -181,7 +181,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
 
-    $exclude = array('status', 'issued_on', 'issued_by', 'original_file');
+    $exclude = array('status', 'issued_by', 'original_file');
     $field_query = '`entity_id`';
     foreach($receipt_fields as $key => $field) {
       if (!in_array($key, $exclude)) {
@@ -191,13 +191,11 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $query = "
       INSERT INTO `$receipt_table` (
         `$receipt_fields[status]`,
-        `$receipt_fields[issued_on]`,
         `$receipt_fields[issued_by]`,
         $field_query
       )
       SELECT
         'COPY' AS `$receipt_fields[status]`,
-        NOW() AS `$receipt_fields[issued_on]`,
         $uid AS `$receipt_fields[issued_by]`,
         $field_query
       FROM `$receipt_table`
