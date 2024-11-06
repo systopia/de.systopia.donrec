@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | SYSTOPIA CUSTOM DATA HELPER                            |
-| Copyright (C) 2018-2020 SYSTOPIA                       |
+| Copyright (C) 2018-2023 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 | Source: https://github.com/systopia/Custom-Data-Helper |
 +--------------------------------------------------------+
