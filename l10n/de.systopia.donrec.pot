@@ -2,14 +2,18 @@
 # This file is distributed under the same license as the CiviCRM package.
 # If you contribute heavily to a translation and deem your work copyrightable,
 # make sure you license it to CiviCRM LLC under Academic Free License 3.0.
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: donrec\n"
-"POT-Creation-Date: 2020-02-05 15:41+0100\n"
+"POT-Creation-Date: 2025-04-25 12:54+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: repositories/de.systopia.donrec/CRM/Admin/Form/DonrecProfile.php
 #: repositories/de.systopia.donrec/templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
@@ -491,6 +495,12 @@ msgstr ""
 #: repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
 #: repositories/de.systopia.donrec/CRM/Donrec/Logic/Settings.php
 msgid "Currency"
+msgstr ""
+
+#: repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
+#: repositories/de.systopia.donrec/CRM/Donrec/Form/Task/Create.php
+#: repositories/de.systopia.donrec/CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Time period"
 msgstr ""
 
 #: repositories/de.systopia.donrec/CRM/Donrec/Form/Task/ContributeTask.php
