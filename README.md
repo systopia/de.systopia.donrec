@@ -19,7 +19,7 @@ generation.
 
 ## Restrictions:
 
-* Shipped template in German and optimised for ``wkhtm2pdf``
+* Shipped template in German and optimised for ``dompdf`` and for a ``Print Page (PDF) Format`` of ``ISO A4`` with a 10 mm margin on each side.
 * Doesn't process partially deductible contributions yet, 
   see [#23](https://github.com/systopia/de.systopia.donrec/issues/23)
 
