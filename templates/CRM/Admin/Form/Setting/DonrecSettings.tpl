@@ -56,6 +56,13 @@
         <td>{$form.encryption_command.html}</td>
       </tr>
 
+      <tr class="crm-donrec-email-location-type">
+        <td class="label">{$form.email_location_type_id.label} <a
+                  onclick='CRM.help("{ts domain="de.systopia.donrec"}Email Location Type{/ts}", {literal}{"id":"id-email-location-type","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+                  class="helpicon">&nbsp;</a></td>
+        <td>{$form.email_location_type_id.html}</td>
+      </tr>
 
     </table>
 
