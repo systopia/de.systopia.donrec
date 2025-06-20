@@ -53,6 +53,22 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::get('encryption_command')
     );
 
+    $locationTypeOptions = \Civi\Api4\LocationType::get(FALSE)
+        ->addSelect('id', 'display_name')
+        ->addWhere('is_active', '=', 1)
+        ->execute()
+        ->column('display_name', 'id');
+
+    $locationTypeOptions = ['' => E::ts('- None -')] + $locationTypeOptions;
+
+    $this->addElement(
+        'select',
+        'email_location_type_id',
+        E::ts('Email Location Type'),
+        $locationTypeOptions,
+        ['class' => 'crm-select2 huge']
+    );
+
 
     // Add CiviOffice configuration.
     $manager = CRM_Extension_System::singleton()->getManager();
@@ -145,6 +161,7 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
     $defaults['encryption_command'] = CRM_Donrec_Logic_Settings::get('encryption_command');
     $defaults['civioffice_document_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri');
     $defaults['civioffice_document_renderer_uri'] = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri');
+    $defaults['email_location_type_id'] = CRM_Donrec_Logic_Settings::get('email_location_type_id');
 
     return $defaults;
   }
@@ -175,6 +192,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
       CRM_Donrec_Logic_Settings::set('encryption_command', $values['encryption_command']);
     }
 
+    if ($values['email_location_type_id']) {
+      CRM_Donrec_Logic_Settings::set('email_location_type_id', $values['email_location_type_id']);
+    }
 
     CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_uri', $values['civioffice_document_uri'] ?: NULL);
     CRM_Donrec_Logic_Settings::set('donrec_civioffice_document_renderer_uri', $values['civioffice_document_renderer_uri'] ?: NULL);
