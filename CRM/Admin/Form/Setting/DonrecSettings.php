@@ -57,7 +57,9 @@ class CRM_Admin_Form_Setting_DonrecSettings extends CRM_Admin_Form_Setting
         ->addSelect('id', 'display_name')
         ->addWhere('is_active', '=', 1)
         ->execute()
-        ->column('display_name', 'id'); // This creates id => display_name array
+        ->column('display_name', 'id');
+
+    $locationTypeOptions = ['' => E::ts('- None -')] + $locationTypeOptions;
 
     $this->addElement(
         'select',
