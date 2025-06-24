@@ -27,15 +27,18 @@ In the Drupal access control, the following permissions may be granted to one or
 various roles:
 
 - View receipts and make copies thereof
-- Create and reset receipts, editing 
+- Create and reset receipts, editing
 - Delete receipts
 
 ## Template
 
 The template used for generating receipts as pdf-files is done in HTML. It will
-be converted to PDF via the program selected in the CiviCRM settings (either
-dompdf or wkhtmltopdf - the latter one is recommended). Within the template, you
-can implement program logic using "Smarty".
+be converted to PDF via the program selected in the CiviCRM settings (please use
+dompdf as wkhtmltopdf
+is [not secure](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35583)
+and is no longer actively maintained with last
+tagged [release](https://github.com/wkhtmltopdf/wkhtmltopdf/tree/0.12.6) in June
+2020). Within the template, you can implement program logic using "Smarty".
 
 ## Tokens
 
@@ -45,7 +48,7 @@ the template before applying changes. Please note that the process "HTML to pdf"
 ist not straightforward, setting up a new or modified template will take try and
 error.
 
-The following tokens are supported within the extension: 
+The following tokens are supported within the extension:
 
 *Remark: What is referred here as tokens, in fact are are Smarty variables.
 Therefore, they cannot be selected from the Token Menu of the editor, but have
