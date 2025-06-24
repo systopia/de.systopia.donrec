@@ -130,6 +130,7 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
         foreach ($exporters as $exporter) {
           $classname = CRM_Donrec_Logic_Exporter::getClassForExporter($exporter);
           // check requirements
+          /** @var \CRM_Donrec_Logic_Exporter $instance */
           $instance = new $classname();
           $result = $instance->checkRequirements(CRM_Donrec_Logic_Snapshot::get($id)->getProfile());
           $is_usable = TRUE;
