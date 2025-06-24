@@ -25,6 +25,10 @@
     <p>{ts domain="de.systopia.donrec"}The <code>pdfunite</code> tool is need for the merged PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet.{/ts}</p>
 {/htxt}
 
-{htxt id='id-encryption-command}
+{htxt id='id-encryption-command'}
     <p>{ts domain="de.systopia.donrec"}You can give the path to pdftk here. This will be used to "encrypt" the generated PDFs in such a way, that they can only be seen on screen and printed. This works only for PDF-Viewers, which implement this feature correctly.{/ts}</p>
+{/htxt}
+
+{htxt id='id-email-location-type'}
+    <p>{ts domain="de.systopia.donrec"}Select the location type from which the recipient's email address will be used when sending donation receipts. If not set, the primary email address will be used by default. This is useful if you want to use a specific email (e.g., work, home) for sending receipts.{/ts}</p>
 {/htxt}

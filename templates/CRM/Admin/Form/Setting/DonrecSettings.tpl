@@ -56,6 +56,10 @@
         <td>{$form.encryption_command.html}</td>
       </tr>
 
+      <tr class="crm-donrec-email-location-type">
+        <td class="label">{$form.email_location_type_id.label} {help id='id-email-location-type' file='CRM/Admin/Form/Setting/DonrecSettings'}</td>
+        <td>{$form.email_location_type_id.html}</td>
+      </tr>
 
     </table>
 
