@@ -140,17 +140,17 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
       // load contact data
       $contact = civicrm_api3('Contact', 'getsingle', array('id' => $receipt['contact_id']));
 
-      $email_location_type_id = CRM_Donrec_Logic_Settings::get('email_location_type_id');
-      if ($email_location_type_id) {
+      $emailLocationTypeId = CRM_Donrec_Logic_Settings::get('email_location_type_id');
+      if (isset($emailLocationTypeId)) {
         // load email address from the configured location type
         $email = \Civi\Api4\Email::get(FALSE)
           ->addSelect('email')
-          ->addWhere('location_type_id', '=', $email_location_type_id)
+          ->addWhere('location_type_id', '=', $emailLocationTypeId)
           ->addWhere('contact_id', '=', $contact['id'])
           ->addOrderBy('id', 'DESC')
           ->execute()
           ->first();
-        if ($email) {
+        if (NULL !== $email) {
           $contact['email'] = $email['email'];
         }
       }
