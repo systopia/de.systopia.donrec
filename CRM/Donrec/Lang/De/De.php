@@ -66,7 +66,31 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         return parent::currency2word($currency, $quantity);
     }
   }
+    /**
+     * Get a spoken word representation for the decimal unit of the given currency
+     *
+     * @param string $currency currency symbol, e.g. 'EUR' or 'USD'
+     * @param float|int $fraction decimal amount
+     * @return string spoken word for the decimal unit, e.g. 'Cent' or 'Pence'
+     */
+    public function currencyDecimal2word(string $currency, float|int $fraction = 1): string {
+        $isSingular = (float)$fraction === 1.0;
 
+        switch ($currency) {
+            case 'EUR':
+            case 'USD':
+            case 'CAD':
+            case 'AUD':
+                return 'Cent';
+            case 'GBP':
+                return $isSingular ? 'Penny' : 'Pence';
+            case 'CHF':
+                return 'Rappen';
+            case 'JPY':
+            default:
+                return '';
+        }
+    }
 
   /**
    * Internal (legacy) function
@@ -203,6 +227,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
             }
             break;
         }
+        $string .= " " . $this->currencyDecimal2word($currency, $fraction);
       }
     } elseif (!$recursion) {
       $string .= $decimal;
