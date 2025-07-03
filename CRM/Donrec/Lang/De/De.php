@@ -73,7 +73,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
      * @param float|int $fraction decimal amount
      * @return string spoken word for the decimal unit, e.g. 'Cent' or 'Pence'
      */
-    public function currencyDecimal2word($currency, $fraction = 1) {
+    public function currencyDecimal2word(string $currency, float|int $fraction = 1): string {
         $isSingular = (float)$fraction === 1.0;
 
         switch ($currency) {
