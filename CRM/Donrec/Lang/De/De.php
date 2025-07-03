@@ -66,7 +66,28 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
         return parent::currency2word($currency, $quantity);
     }
   }
-
+    /**
+     * Get a spoken word representation for the decimal unit of the given currency
+     *
+     * @param string $currency currency symbol, e.g. 'EUR' or 'USD'
+     * @return string          spoken word for the decimal unit, e.g. 'Cent' or 'Rappen'
+     */
+    public function currencyDecimal2word($currency) {
+        switch ($currency) {
+            case 'EUR':
+            case 'USD':
+            case 'CAD':
+            case 'AUD':
+                return 'Cent';
+            case 'GBP':
+                return 'Penny';
+            case 'CHF':
+                return 'Rappen';
+            case 'JPY':
+            default:
+                return '';
+        }
+    }
 
   /**
    * Internal (legacy) function
@@ -203,6 +224,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
             }
             break;
         }
+        $string .= " ". $this->currencyDecimal2word($currency);
       }
     } elseif (!$recursion) {
       $string .= $decimal;
