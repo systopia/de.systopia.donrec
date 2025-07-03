@@ -70,9 +70,12 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
      * Get a spoken word representation for the decimal unit of the given currency
      *
      * @param string $currency currency symbol, e.g. 'EUR' or 'USD'
-     * @return string          spoken word for the decimal unit, e.g. 'Cent' or 'Rappen'
+     * @param float|int $fraction decimal amount
+     * @return string spoken word for the decimal unit, e.g. 'Cent' or 'Pence'
      */
-    public function currencyDecimal2word($currency) {
+    public function currencyDecimal2word($currency, $fraction = 1) {
+        $isSingular = (float)$fraction === 1.0;
+
         switch ($currency) {
             case 'EUR':
             case 'USD':
@@ -80,7 +83,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
             case 'AUD':
                 return 'Cent';
             case 'GBP':
-                return 'Penny';
+                return $isSingular ? 'Penny' : 'Pence';
             case 'CHF':
                 return 'Rappen';
             case 'JPY':
@@ -224,7 +227,7 @@ class CRM_Donrec_Lang_De_De extends CRM_Donrec_Lang {
             }
             break;
         }
-        $string .= " ". $this->currencyDecimal2word($currency);
+        $string .= " " . $this->currencyDecimal2word($currency, $fraction);
       }
     } elseif (!$recursion) {
       $string .= $decimal;
