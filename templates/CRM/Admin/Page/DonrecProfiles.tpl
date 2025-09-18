@@ -12,11 +12,11 @@
   <div class="crm-submit-buttons">
 
     <a href="{crmURL p="civicrm/admin/setting/donrec/profile" q="op=create"}" title="{ts domain="de.systopia.donrec"}New profile{/ts}" class="button">
-      <span><i class="crm-i fa-plus-circle"></i> {ts domain="de.systopia.donrec"}New profile{/ts}</span>
+      <span><i class="crm-i fa-plus-circle" role="img" aria-hidden="true"></i> {ts domain="de.systopia.donrec"}New profile{/ts}</span>
     </a>
 
     <a href="{crmURL p="civicrm/admin/setting/donrec" q="reset=1"}" title="{ts domain="de.systopia.donrec"}Manage general extension settings{/ts}" class="button">
-      <span><i class="crm-i fa-cog"></i> {ts domain="de.systopia.donrec"}General settings{/ts}</span>
+      <span><i class="crm-i fa-cog" role="img" aria-hidden="true"></i> {ts domain="de.systopia.donrec"}General settings{/ts}</span>
     </a>
 
   </div>
