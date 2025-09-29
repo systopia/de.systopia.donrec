@@ -287,7 +287,7 @@
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully withdrawn{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
-                  cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  CRM.refreshParent('#' + contentId);
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
@@ -313,7 +313,7 @@
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully copied{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
-                  CRM.refreshParent('#' + contentId)
+                  CRM.refreshParent('#' + contentId);
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
@@ -344,7 +344,7 @@
                 if (data['is_error'] == 0) {
                   CRM.alert("{/literal}{ts domain="de.systopia.donrec"}The donation receipt has been successfully deleted{/ts}", "{ts domain="de.systopia.donrec"}Success{/ts}{literal}", "success");
                   var contentId = cj('#tab_donation_receipts').attr('aria-controls');
-                  cj('#' + contentId).load(CRM.url('civicrm/donrec/tab', {'reset': 1, 'snippet': 1, 'force': 1, 'cid':{/literal}{$cid}{literal}}));
+                  CRM.refreshParent('#' + contentId);
                 }else{
                   CRM.alert("{/literal}" + data['error_message'], "{ts domain="de.systopia.donrec"}Error{/ts}{literal}", "error");
                 }
