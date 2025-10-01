@@ -89,44 +89,44 @@
             </tr>
 
             <tr class="crm-donrec-profile-form-block-language">
-              <td class="label">{$form.language.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Languages{/ts}", {literal}{"id":"id-language","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.language.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Languages{/ts}", {literal}{"id":"id-language","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.language.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-enable_encryption">
-              <td class="label">{$form.enable_encryption.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable encryption{/ts}", {literal}{"id":"id-enable_encryption","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.enable_encryption.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Enable encryption{/ts}", {literal}{"id":"id-enable_encryption","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.enable_encryption.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-financial_types">
-              <td class="label">{$form.financial_types.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Contribution Types{/ts}", {literal}{"id":"id-contribution-types","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.financial_types.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Contribution Types{/ts}", {literal}{"id":"id-contribution-types","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.financial_types.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-id_pattern">
-              <td class="label">{$form.id_pattern.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Receipt ID{/ts}", {literal}{"id":"id-id_pattern","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.id_pattern.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Receipt ID{/ts}", {literal}{"id":"id-id_pattern","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.id_pattern.html}</td>
             </tr>
 
             <tr><td><h4>{ts domain="de.systopia.donrec"}Address Types{/ts}</h4></td></tr>
 
             <tr class="crm-donrec-profile-form-block-legal_address">
-              <td class="label">{$form.legal_address.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Legal Address{/ts}", {literal}{"id":"id-address-legal","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.legal_address.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Legal Address{/ts}", {literal}{"id":"id-address-legal","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.legal_address.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-legal_address_fallback">
-              <td class="label">{$form.legal_address_fallback.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Legal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.legal_address_fallback.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Legal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.legal_address_fallback.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-postal_address">
-              <td class="label">{$form.postal_address.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Postal Address{/ts}", {literal}{"id":"id-address-shipping","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.postal_address.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Postal Address{/ts}", {literal}{"id":"id-address-shipping","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.postal_address.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-postal_address_fallback">
-              <td class="label">{$form.postal_address_fallback.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Postal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.postal_address_fallback.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Postal Address Fallback{/ts}", {literal}{"id":"id-address-fallback","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.postal_address_fallback.html}</td>
             </tr>
 
@@ -141,17 +141,17 @@
           <table class="form-layout">
 
             <tr class="crm-donrec-profile-form-block-template">
-              <td class="label"><label for="template">{$form.template.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Template{/ts}", {literal}{"id":"id-template","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+              <td class="label"><label for="template">{$form.template.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Template{/ts}", {literal}{"id":"id-template","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
               <td>{$form.template.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-template_pdf_format_id">
-              <td class="label"><label for="template_pdf_format_id">{$form.template_pdf_format_id.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}PDF format{/ts}", {literal}{"id":"id-template_pdf_format_id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
+              <td class="label"><label for="template_pdf_format_id">{$form.template_pdf_format_id.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}PDF format{/ts}", {literal}{"id":"id-template_pdf_format_id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></label></td>
               <td>{$form.template_pdf_format_id.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-variables">
-              <td class="label"><label>{ts domain="de.systopia.donrec"}Variables{/ts}</label> <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Variables{/ts}", {literal}{"id":"id-variables","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label"><label>{ts domain="de.systopia.donrec"}Variables{/ts}</label> <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Variables{/ts}", {literal}{"id":"id-variables","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>
                 <div id="crm-donrec-profile-form-block-variables-wrapper">
                   {include file='CRM/Admin/Form/DonrecProfile/Variables.tpl'}
@@ -161,7 +161,7 @@
             </tr>
 
             <tr class="crm-donrec-profile-form-block-store_original_pdf">
-              <td class="label">{$form.store_original_pdf.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store_original_pdf","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.store_original_pdf.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Store original PDF{/ts}", {literal}{"id":"id-store_original_pdf","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.store_original_pdf.html}</td>
             </tr>
 
@@ -170,17 +170,17 @@
             </tr>
 
             <tr class="crm-donrec-profile-form-block-draft_text">
-              <td class="label">{$form.draft_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Draft Text{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.draft_text.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Draft Text{/ts}", {literal}{"id":"id-draft-text","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.draft_text.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-copy_text">
-              <td class="label">{$form.copy_text.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Copy Text{/ts}", {literal}{"id":"id-copy-text","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.copy_text.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Copy Text{/ts}", {literal}{"id":"id-copy-text","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.copy_text.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-watermark_preset">
-              <td class="label">{$form.watermark_preset.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Watermark preset{/ts}", {literal}{"id":"id-watermark-preset","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.watermark_preset.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Watermark preset{/ts}", {literal}{"id":"id-watermark-preset","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.watermark_preset.html}</td>
             </tr>
 
@@ -201,52 +201,52 @@
           <table class="form-layout">
 
             <tr class="crm-donrec-profile-form-block-email_template">
-              <td class="label">{$form.email_template.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Email-Template{/ts}", {literal}{"id":"id-email-template","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.email_template.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Email-Template{/ts}", {literal}{"id":"id-email-template","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.email_template.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-from_email">
-              <td class="label">{$form.from_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}From Email Address{/ts}", {literal}{"id":"id-from-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.from_email.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}From Email Address{/ts}", {literal}{"id":"id-from-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.from_email.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-bcc_email">
-              <td class="label">{$form.bcc_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}BCC Email Address{/ts}", {literal}{"id":"id-bcc-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.bcc_email.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}BCC Email Address{/ts}", {literal}{"id":"id-bcc-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.bcc_email.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-return_path_email">
-              <td class="label">{$form.return_path_email.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Return Path Email Address{/ts}", {literal}{"id":"id-return-path-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.return_path_email.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Return Path Email Address{/ts}", {literal}{"id":"id-return-path-email","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.return_path_email.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_handling">
-              <td class="label">{$form.special_mail_handling.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail handling{/ts}", {literal}{"id":"id-special-mail-handling","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_handling.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Custom Mail handling{/ts}", {literal}{"id":"id-special-mail-handling","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_handling.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_header">
-              <td class="label">{$form.special_mail_header.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-header","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_header.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-header","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_header.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_header">
-              <td class="label">{$form.special_mail_activity_id.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_activity_id.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_activity_id.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_header">
-              <td class="label">{$form.special_mail_activity_subject.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-subject","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_activity_subject.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Custom Mail Header{/ts}", {literal}{"id":"id-special-mail-activity-subject","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_activity_subject.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_header">
-              <td class="label">{$form.special_mail_activity_contact_id.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Activity Contact Id{/ts}", {literal}{"id":"id-special-mail-activity-contact-id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_activity_contact_id.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Activity Contact Id{/ts}", {literal}{"id":"id-special-mail-activity-contact-id","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_activity_contact_id.html}</td>
             </tr>
 
             <tr class="crm-donrec-profile-form-block-special_mail_header">
-              <td class="label">{$form.special_mail_withdraw_receipt.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Withdraw Receipt{/ts}", {literal}{"id":"id-special-mail-withdraw-receipt","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.special_mail_withdraw_receipt.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Withdraw Receipt{/ts}", {literal}{"id":"id-special-mail-withdraw-receipt","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>{$form.special_mail_withdraw_receipt.html}</td>
             </tr>
           </table>
@@ -260,7 +260,7 @@
           <table class="form-layout">
 
             <tr class="crm-donrec-profile-form-block-contribution_unlock_mode">
-              <td class="label">{$form.contribution_unlock_mode.label} <a onclick='CRM.help("{ts domain="de.systopia.donrec"}Unlock receipted contributions{/ts}", {literal}{"id":"id-contribution_unlock_mode","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
+              <td class="label">{$form.contribution_unlock_mode.label} <a onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Unlock receipted contributions{/ts}", {literal}{"id":"id-contribution_unlock_mode","file":"CRM\/Admin\/Form\/DonrecProfile"}{/literal}); return false;' href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}" class="helpicon">&nbsp;</a></td>
               <td>
                   {$form.contribution_unlock_mode.html}
                 <fieldset id="contribution_unlock_fields">

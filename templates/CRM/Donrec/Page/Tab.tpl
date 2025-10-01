@@ -80,18 +80,18 @@
         {/if}
 
         {*ALTERNATIVELY: CiviCRM List style: if $receipt.original_file}
-          <a id="view_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts domain="de.systopia.donrec"}View{/ts}</a>
+          <a id="view_receipt_{$receipt_id}" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="{$receipt.original_file}">{ts domain="de.systopia.donrec"}View{/ts}</a>
         {else}
-          <a id="view_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="#">{ts domain="de.systopia.donrec"}View{/ts}</a>
+          <a id="view_receipt_{$receipt_id}" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}View{/ts}" class="action-item action-item-first" href="#">{ts domain="de.systopia.donrec"}View{/ts}</a>
         {/if}
         {if $receipt.status == 'ORIGINAL' && $can_view_copy}
-          <a id="copy_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Create copy{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Create copy{/ts}</a>
+          <a id="copy_receipt_{$receipt_id}" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Create copy{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Create copy{/ts}</a>
         {/if}
         {if $can_create_withdraw}
-          <a id="withdraw_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Withdraw{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Withdraw{/ts}</a>
+          <a id="withdraw_receipt_{$receipt_id}" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Withdraw{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Withdraw{/ts}</a>
         {/if}
         {if $can_delete}
-          <a id="delete_receipt_{$receipt_id}" title="{ts domain="de.systopia.donrec"}Delete{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Delete{/ts}</a>
+          <a id="delete_receipt_{$receipt_id}" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Delete{/ts}" class="action-item" href="#">{ts domain="de.systopia.donrec"}Delete{/ts}</a>
         {/if*}
       </td>
     </tr>
