@@ -18,23 +18,23 @@
 
       <tr class="crm-donrec-profile-form-block-enable_line_item">
         <td class="label">{$form.enable_line_item.label} <a
-            onclick='CRM.help("{ts domain="de.systopia.donrec"}Enable line item{/ts}", {literal}{"id":"id-enable-line-item","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
-            href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+            onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Enable line item{/ts}", {literal}{"id":"id-enable-line-item","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+            href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}"
             class="helpicon">&nbsp;</a></td>
         <td>{$form.enable_line_item.html}</td>
       </tr>
 
       <tr class="crm-donrec-profile-form-block-packet_size">
         <td class="label">{$form.packet_size.label} <a
-                  onclick='CRM.help("{ts domain="de.systopia.donrec"}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
-                  href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+                  onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}Generator Packet Size{/ts}", {literal}{"id":"id-packet-size","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
         <td>{$form.packet_size.html}</td>
       </tr>
 
       <tr class="crm-donrec-profile-form-block-pdfinfo_path">
         <td class="label">{$form.pdfinfo_path.label} <a
-                  onclick='CRM.help("{ts domain="de.systopia.donrec"}The <code>pdfinfo</code> Tool{/ts}", {literal}{"id":"id-pdfinfo-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}The <code>pdfinfo</code> Tool{/ts}", {literal}{"id":"id-pdfinfo-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
                   href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
         <td>{$form.pdfinfo_path.html}</td>
@@ -42,7 +42,7 @@
 
       <tr class="crm-donrec-profile-form-block-pdfunite_path">
         <td class="label">{$form.pdfunite_path.label} <a
-                  onclick='CRM.help("{ts domain="de.systopia.donrec"}The <code>pdfunite</code> Tool{/ts}", {literal}{"id":"id-pdfunite-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}The <code>pdfunite</code> Tool{/ts}", {literal}{"id":"id-pdfunite-text","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
                   href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
         <td>{$form.pdfunite_path.html}</td>
@@ -50,8 +50,8 @@
 
       <tr class="crm-donrec-encryption-command">
         <td class="label">{$form.encryption_command.label} <a
-                  onclick='CRM.help("{ts domain="de.systopia.donrec"}External Tool: command line for encryption{/ts}", {literal}{"id":"id-encryption-command","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
-                  href="#" title="{ts domain="de.systopia.donrec"}Help{/ts}"
+                  onclick='CRM.help("{ts escape='htmlattribute' domain="de.systopia.donrec"}External Tool: command line for encryption{/ts}", {literal}{"id":"id-encryption-command","file":"CRM\/Admin\/Form\/Setting\/DonrecSettings"}{/literal}); return false;'
+                  href="#" title="{ts escape='htmlattribute' domain="de.systopia.donrec"}Help{/ts}"
                   class="helpicon">&nbsp;</a></td>
         <td>{$form.encryption_command.html}</td>
       </tr>

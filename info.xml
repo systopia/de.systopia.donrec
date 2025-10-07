@@ -8,11 +8,11 @@
     <author>SYSTOPIA</author>
     <email>info@systopia.de</email>
   </maintainer>
-  <releaseDate></releaseDate>
+  <releaseDate/>
   <version>2.4.0-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.60</ver>
+    <ver>5.65</ver>
   </compatibility>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/de.systopia.donrec</url>
