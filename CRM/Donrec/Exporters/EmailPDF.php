@@ -166,7 +166,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
         foreach ($fromEmailAddress as $key => $value) {
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
           $fromArray = explode('"', $value);
-          $from_email_name = CRM_Utils_Array::value(1, $fromArray);
+          $from_email_name = $fromArray[1] ?? NULL;
           break;
         }
       }

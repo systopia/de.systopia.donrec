@@ -369,7 +369,7 @@ class CRM_Donrec_Logic_Profile {
    *   The value of the profile data property.
    */
   public function getDataAttribute($key) {
-    return CRM_Utils_Array::value($key, $this->data, NULL);
+    return $this->data[$key] ?? NULL;
   }
 
   /**
