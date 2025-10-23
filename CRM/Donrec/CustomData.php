@@ -735,7 +735,7 @@ class CRM_Donrec_CustomData {
         return $field_data['value'];
       } else {
         // unlikely, but worth a shot:
-        return CRM_Utils_Array::value("custom_{$field_id}", $params, NULL);
+        return $params["custom_{$field_id}"] ?? NULL;
       }
     }
     return NULL;
@@ -785,9 +785,9 @@ class CRM_Donrec_CustomData {
         'value'           => $value,
         'type'            => CRM_Utils_Array::value('data_type', $field_specs, 'String'),
         'custom_field_id' => $field_id,
-        'custom_group_id' => CRM_Utils_Array::value('custom_group_id', $field_specs, NULL),
-        'table_name'      => CRM_Utils_Array::value('table_name', $group_specs, NULL),
-        'column_name'     => CRM_Utils_Array::value('column_name', $field_specs, NULL),
+        'custom_group_id' => $field_specs['custom_group_id'] ?? NULL,
+        'table_name'      => $group_specs['table_name'] ?? NULL,
+        'column_name'     => $field_specs['column_name'] ?? NULL,
         'is_multiple'     => CRM_Utils_Array::value('is_multiple', $group_specs, 0),
       ];
     } else {

@@ -93,7 +93,7 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
     if (!empty($rsid)) {
 
       //work on with a remaining snapshot...
-      $use_remaining_snapshot = CRM_Utils_Array::value('use_remaining_snapshot', $_REQUEST, NULL);
+      $use_remaining_snapshot = $_REQUEST['use_remaining_snapshot'] ?? NULL;
       if (!empty($use_remaining_snapshot)) {
         CRM_Core_Session::singleton()->pushUserContext(
           CRM_Utils_System::url('civicrm/donrec/task', 'sid=' . $rsid)
