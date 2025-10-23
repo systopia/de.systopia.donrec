@@ -69,7 +69,7 @@ class CRM_Donrec_Form_Task_DonrecResetTask extends CRM_Contact_Form_Task {
         try {
           civicrm_api3('DonationReceipt', 'withdraw', ['rid' => $receipt_query->receipt_id]);
           $success_counter += 1;
-        } catch(CiviCRM_API3_Exception $ex) {
+        } catch(CRM_Core_Exception $ex) {
           $error_counter += 1;
         }
       }

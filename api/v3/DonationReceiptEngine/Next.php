@@ -16,7 +16,7 @@ use CRM_Donrec_ExtensionUtil as E;
  * @param array $params
  *
  * @return array
- * @throws \CiviCRM_API3_Exception
+ * @throws \CRM_Core_Exception
  */
 function civicrm_api3_donation_receipt_engine_next($params) {
   // first, check if the snapshot ID is there
