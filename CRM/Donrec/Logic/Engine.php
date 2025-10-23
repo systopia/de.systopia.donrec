@@ -47,7 +47,7 @@ class CRM_Donrec_Logic_Engine {
    * @param bool $testMode
    *
    * @return string with an error message on fail, FALSE otherwise
-   * @throws \CiviCRM_API3_Exception
+   * @throws \CRM_Core_Exception
    */
   public function init($snapshot_id, $params=array(), $testMode = FALSE) {
     $this->parameters = $params;

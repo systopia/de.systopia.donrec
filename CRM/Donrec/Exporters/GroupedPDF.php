@@ -198,7 +198,7 @@ class CRM_Donrec_Exporters_GroupedPDF extends CRM_Donrec_Exporters_EncryptedPDF 
    * @param string $document
    *
    * @return int page count (-1 if there is an error)
-   * @throws \CiviCRM_API3_Exception
+   * @throws \CRM_Core_Exception
    */
   private function getPDFPageCount($document)
   {
