@@ -173,7 +173,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
       $values['totalmoney']   = CRM_Utils_Money::format($values['total_amount'], '');
     }
 
-    // add financial type name
+    // add financial type name and initialize $sorted_lines
     $financialTypes  = CRM_Contribute_PseudoConstant::financialType();
     if (!empty($values['lines']) && is_array($values['lines'])) {
       foreach ($values['lines'] as $key => $line) {
@@ -181,18 +181,21 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
           $values['lines'][$key]['financial_type'] = $financialTypes[$line['financial_type_id']];
         }
       }
+      $sorted_lines = $values['lines'];
+    }
+    else {
+      $sorted_lines = [];
     }
 
     // sort contribution lines by receive date (#1497)
-    $receive_dates = array();
-    $sorted_lines = $values['lines'] ?? [];
+    $receive_dates = [];
     foreach ($sorted_lines as $key => $line) {
       $sorted_lines[$key]['id'] = $key;
       $receive_dates[$key] = $line['receive_date'];
     }
-    array_multisort($receive_dates, SORT_ASC, $sorted_lines);
-    $values['lines'] = array();
-    foreach ($sorted_lines as $key => $line) {
+    array_multisort($receive_dates, SORT_ASC, SORT_REGULAR, $sorted_lines);
+    $values['lines'] = [];
+    foreach ($sorted_lines as $line) {
       $values['lines'][$line['id']] = $line;
     }
 
