@@ -12,11 +12,11 @@
   <version>2.4.0-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.65</ver>
+    <ver>5.76</ver>
   </compatibility>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/de.systopia.donrec</url>
-    <url desc="Documentation">http://wiki.civicrm.org/confluence/display/CRM/DonationReceipts+Extension</url>
+    <url desc="Documentation">https://docs.civicrm.org/donationreceipts/</url>
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
   <comments>Developed by SYSTOPIA. Thanks to Niko Bochan, Thomas Leichtfu&#xDF; and Bj&#xF6;rn Endres.</comments>
