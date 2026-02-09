@@ -5,6 +5,7 @@
 
     <file>api</file>
     <file>CRM</file>
+    <file>settings</file>
     <file>tests</file>
     <file>donrec.php</file>
 

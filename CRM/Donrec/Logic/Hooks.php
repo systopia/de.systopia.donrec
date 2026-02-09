@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * This class represents the engine for donation receipt runs
  */
@@ -21,18 +23,24 @@ class CRM_Donrec_Logic_Hooks {
    * CAUTION: These values are not necessarily stored in the receipt, resulting
    *   in a receipt copy potentially being different from the original
    *
-   * @param array  $values  all the currently available tokens - to be extended by you!
+   * @param array $values
+   * @param-out array $values
    *
    * @access public
    * @return mixed
    */
-  static function donationReceiptTokenValues(&$values) {
-    if (version_compare(CRM_Utils_System::version(), '4.5', '<'))
-    {
-      return CRM_Utils_Hook::singleton()->invoke(['values'], $values, self::$null, self::$null, self::$null, self::$null, $hook = 'civicrm_donationReceiptTokenValues');
-    } else {
-      return CRM_Utils_Hook::singleton()->invoke(['values'], $values, self::$null, self::$null, self::$null, self::$null, self::$null, $hook = 'civicrm_donationReceiptTokenValues');
-    }
+  public static function donationReceiptTokenValues(&$values) {
+    return CRM_Utils_Hook::singleton()->invoke(
+      ['values'],
+      // @phpstan-ignore paramOut.type
+      $values,
+      self::$null,
+      self::$null,
+      self::$null,
+      self::$null,
+      self::$null,
+      $hook = 'civicrm_donationReceiptTokenValues'
+    );
   }
 
 }

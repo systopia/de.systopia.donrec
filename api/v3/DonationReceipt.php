@@ -8,39 +8,43 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * Withdraw an original donation receipt
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *
- * @return array
+ * @return array<string, mixed>
  */
-function civicrm_api3_donation_receipt_withdraw($params) {
+function civicrm_api3_donation_receipt_withdraw(array $params): array {
   // check for missing receipt id parameter
   if (empty($params['rid'])) {
     return civicrm_api3_create_error(E::ts("No 'rid' parameter given."));
   }
 
-  $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
+  $receipt = CRM_Donrec_Logic_Receipt::get((int) $params['rid']);
 
-  if(!empty($receipt)) {
-    if($receipt->isOriginal()) {
+  if (!empty($receipt)) {
+    if ($receipt->isOriginal()) {
       // TODO: error-handling...
       // TODO: define status centrally
       $copies = $receipt->getCopies();
-      $result = $receipt->setStatus('WITHDRAWN', $params);
+      $result = $receipt->setStatus('WITHDRAWN');
       $deleted = $receipt->deleteOriginalFile();
       foreach ($copies as $copy) {
-        $result = $copy->setStatus('WITHDRAWN_COPY', $params);
+        $result = $copy->setStatus('WITHDRAWN_COPY');
         $deleted = $copy->deleteOriginalFile();
       }
-    }else{
-      return civicrm_api3_create_error(sprintf(E::ts("Only original donation receipts can be withdrawn."), $params['rid']));
     }
-  }else{
-    return civicrm_api3_create_error(sprintf(E::ts("Receipt with id %d does not exist."), $params['rid']));
+    else {
+      return civicrm_api3_create_error(E::ts('Only original donation receipts can be withdrawn.'));
+    }
+  }
+  else {
+    return civicrm_api3_create_error(E::ts('Receipt with id %d does not exist.'));
   }
   // and return the result
   return civicrm_api3_create_success($result);
@@ -49,35 +53,37 @@ function civicrm_api3_donation_receipt_withdraw($params) {
 /**
  * Adjust Metadata for donation receipt withdraw
  *
- * @param array $params
+ * @param array<string, array<string, mixed>> $params
  */
-function _civicrm_api3_donation_receipt_withdraw_spec(&$params) {
-    $params['rid']['api.required'] = 1;
+function _civicrm_api3_donation_receipt_withdraw_spec(array &$params): void {
+  $params['rid']['api.required'] = 1;
 }
 
 /**
  * Copy an original donation receipt
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *
- * @return array
+ * @return array<string, mixed>
  */
-function civicrm_api3_donation_receipt_copy($params) {
+function civicrm_api3_donation_receipt_copy(array $params): array {
   // check for missing receipt id parameter
   if (empty($params['rid'])) {
     return civicrm_api3_create_error(E::ts("No 'rid' parameter given."));
   }
 
-  $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
+  $receipt = CRM_Donrec_Logic_Receipt::get((int) $params['rid']);
 
-  if(!empty($receipt)) {
-    if($receipt->isOriginal()) {
+  if (!empty($receipt)) {
+    if ($receipt->isOriginal()) {
       $result = $receipt->createCopy();
-    }else{
-      return civicrm_api3_create_error(sprintf(E::ts("Only original donation receipts can be copied."), $params['rid']));
     }
-  }else{
-    return civicrm_api3_create_error(sprintf(E::ts("Receipt with id %d does not exist."), $params['rid']));
+    else {
+      return civicrm_api3_create_error(E::ts('Only original donation receipts can be copied.'));
+    }
+  }
+  else {
+    return civicrm_api3_create_error(E::ts('Receipt with id %d does not exist.'));
   }
   // and return the result
   return civicrm_api3_create_success($result);
@@ -86,33 +92,34 @@ function civicrm_api3_donation_receipt_copy($params) {
 /**
  * Adjust Metadata for donation receipt copy
  *
- * @param array $params
+ * @param array<string, array<string, mixed>> $params
  */
-function _civicrm_api3_donation_receipt_copy_spec(&$params) {
-    $params['rid']['api.required'] = 1;
+function _civicrm_api3_donation_receipt_copy_spec(array &$params): void {
+  $params['rid']['api.required'] = 1;
 }
 
 /**
  * Delete an donation receipt
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *
- * @return array
+ * @return array<string, mixed>
  */
-function civicrm_api3_donation_receipt_delete($params) {
+function civicrm_api3_donation_receipt_delete(array $params): array {
   // check for missing receipt id parameter
   if (empty($params['rid'])) {
     return civicrm_api3_create_error(E::ts("No 'rid' parameter given."));
   }
 
-  $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
+  $receipt = CRM_Donrec_Logic_Receipt::get((int) $params['rid']);
 
-  if(!empty($receipt)) {
+  if (!empty($receipt)) {
     $deleted = $receipt->deleteOriginalFile();
-    $delete_params = array();
+    $delete_params = [];
     $result = $receipt->delete($delete_params);
-  }else{
-    return civicrm_api3_create_error(sprintf(E::ts("Receipt with id %d does not exist."), $params['rid']));
+  }
+  else {
+    return civicrm_api3_create_error(E::ts('Receipt with id %d does not exist.'));
   }
   // and return the result
   return civicrm_api3_create_success($result);
@@ -121,33 +128,34 @@ function civicrm_api3_donation_receipt_delete($params) {
 /**
  * Adjust Metadata for donation receipt delete
  *
- * @param array $params
+ * @param array<string, array<string, mixed>> $params
  */
-function _civicrm_api3_donation_receipt_delete_spec(&$params) {
-    $params['rid']['api.required'] = 1;
+function _civicrm_api3_donation_receipt_delete_spec(array &$params): void {
+  $params['rid']['api.required'] = 1;
 }
 
 /**
  * View Receipts
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *
- * @return array
+ * @return array<string, mixed>
  */
-function civicrm_api3_donation_receipt_view($params) {
+function civicrm_api3_donation_receipt_view(array $params): array {
   // check for missing receipt id parameter
   if (empty($params['rid'])) {
     return civicrm_api3_create_error(E::ts("No 'rid' parameter given."));
   }
 
-  $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
+  $receipt = CRM_Donrec_Logic_Receipt::get((int) $params['rid']);
 
-  if(empty($receipt)) {
-    return civicrm_api3_create_error(sprintf(E::ts("Receipt with id %d does not exist."), $params['rid']));
+  if (empty($receipt)) {
+    return civicrm_api3_create_error(E::ts('Receipt with id %d does not exist.'));
   }
   if (empty($params['name'])) {
     $name = 'View.pdf';
-  } else {
+  }
+  else {
     $name = $params['name'];
   }
   $values = $receipt->getAllProperties();
@@ -169,43 +177,8 @@ function civicrm_api3_donation_receipt_view($params) {
 /**
  * Adjust Metadata for donation receipt view
  *
- * @param array $params
+ * @param array<string, array<string, mixed>> $params
  */
-function _civicrm_api3_donation_receipt_view_spec(&$params) {
-    $params['rid']['api.required'] = 1;
-}
-
-/**
- * View Receipts
- *
- * @param array $params
- *
- * @return array
- * @deprecated
- */
-// TODO: Thomas: kann das nicht weg?
-function civicrm_api3_donation_receipt_details($params) {
-  // check for missing receipt id parameter
-  if (empty($params['rid'])) {
-    return civicrm_api3_create_error(E::ts("No 'rid' parameter given."));
-  }
-
-  $receipt = CRM_Donrec_Logic_Receipt::get($params['rid']);
-
-  if(!empty($receipt)) {
-    $details = $receipt->getDetails();
-  }else{
-    return civicrm_api3_create_error(sprintf(E::ts("Receipt with id %d does not exist."), $params['rid']));
-  }
-  // and return the result
-  return civicrm_api3_create_success($details);
-}
-
-/**
- * Adjust Metadata for donation receipt view
- *
- * @param array $params
- */
-function _civicrm_api3_donation_receipt_details_spec(&$params) {
-    $params['rid']['api.required'] = 1;
+function _civicrm_api3_donation_receipt_view_spec(array &$params): void {
+  $params['rid']['api.required'] = 1;
 }

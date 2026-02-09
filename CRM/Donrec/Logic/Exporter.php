@@ -8,21 +8,26 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * This is the base class for all exporters
+ *
+ * phpcs:disable Generic.NamingConventions.AbstractClassNamePrefix.Missing
  */
 abstract class CRM_Donrec_Logic_Exporter {
 
-  const LOG_TYPE_DEBUG =   'DEBUG';
-  const LOG_TYPE_INFO  =   'INFO';
-  const LOG_TYPE_ERROR =   'ERROR';
-  const LOG_TYPE_FATAL =   'FATAL';
+  public const LOG_TYPE_DEBUG = 'DEBUG';
+  public const LOG_TYPE_INFO  = 'INFO';
+  public const LOG_TYPE_ERROR = 'ERROR';
+  public const LOG_TYPE_FATAL = 'FATAL';
 
-
-  protected $engine = NULL;
+  protected ?CRM_Donrec_Logic_Engine $engine = NULL;
 
   /**
    * returns the list of implemented exporters
+   *
+   * @return list<string>
    */
   public static function listExporters() {
     $exporters = ['PDF', 'Dummy', 'CSV', 'GroupedPDF', 'MergedPDF', 'EmailPDF'];
@@ -38,22 +43,33 @@ abstract class CRM_Donrec_Logic_Exporter {
   /**
    * get the class name for the given exporter
    *
-   * @param $exporter_id
+   * @param string $exporter_id
    *
-   * @return string
+   * @return class-string<\CRM_Donrec_Logic_Exporter>
    */
   public static function getClassForExporter($exporter_id) {
+    // @phpstan-ignore return.type
     return 'CRM_Donrec_Exporters_' . $exporter_id;
   }
+
+  /**
+   * @return string
+   */
+  abstract public static function name();
+
+  /**
+   * @return string
+   */
+  abstract public static function htmlOptions();
 
   /**
    * init the exporter with the engine object
    * here, all necessary checks for the exporters 'readyness' should be performed
    *
-   * @param $engine
-   * @return NULL if everything is o.k., an error message string if not
-*/
-  function init($engine) {
+   * @param \CRM_Donrec_Logic_Engine $engine
+   * @return string|null NULL if everything is o.k., an error message string if not
+   */
+  public function init($engine) {
     $this->engine = $engine;
 
     // TODO: sanity checks
@@ -61,96 +77,102 @@ abstract class CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * @return int
+   * @return string
    *   the ID of this importer class
    */
-  abstract function getID();
+  abstract public function getID();
 
   /**
    * export an individual receipt
    *
-   * @param $snapshot_receipt
-   * @param $is_test
-   * @return TRUE on success; FALSE on failure
-*/
-  abstract function exportSingle($snapshot_receipt, $is_test);
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   * @return bool TRUE on success; FALSE on failure
+   */
+  abstract public function exportSingle($snapshot_receipt, $is_test);
 
   /**
    * export a bulk-receipt
    *
-   * @param $snapshot_receipt
-   * @param $is_test
-   * @return TRUE on success; FALSE on failure
-*/
-  abstract function exportBulk($snapshot_receipt, $is_test);
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
+   * @param bool $is_test
+   * @return bool TRUE on success; FALSE on failure
+   */
+  abstract public function exportBulk($snapshot_receipt, $is_test);
 
   /**
    * generate the final result
    *
-   * @param $snapshotId
-   * @param $is_test
-   * @param $is_bulk
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
-   *          'download_url: URL to download the result
-   *          'download_name: suggested file name for the download
-*/
-  abstract function wrapUp($snapshotId, $is_test, $is_bulk);
-
+   * @param int $snapshotId
+   * @param bool $is_test
+   * @param bool $is_bulk
+   * @return array{is_error?: bool, log?: string, download_url?: string, download_name?: string}
+   *   'is_error': set if there is a fatal error
+   *   'log': array with keys: 'type', 'level', 'timestamp', 'message'
+   *   'download_url': URL to download the result
+   *   'download_name': suggested file name for the download
+   */
+  abstract public function wrapUp($snapshotId, $is_test, $is_bulk);
 
   /**
    * check whether all requirements are met to run this exporter
    *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @param \CRM_Donrec_Logic_Profile $profile
+   *
+   * @return array{is_error: bool, message?: string}
+   *   'is_error': set if there is a fatal error
+   *   'message': error message
    */
-  abstract function checkRequirements($profile = NULL);
-
+  abstract public function checkRequirements($profile);
 
   // HELPERS
 
   /**
    * get the process information for this exporter type
    *  for the given snapshot item
-   * @param $snapshot_item_id
-   * @return array|mixed
-*/
+   * @param int $snapshot_item_id
+   * @return mixed
+   */
   protected function getProcessInformation($snapshot_item_id) {
     $all_process_information = $this->engine->getSnapshot()->getProcessInformation($snapshot_item_id);
     if (isset($all_process_information[$this->getID()])) {
       return $all_process_information[$this->getID()];
-    } else {
-      return array();
+    }
+    else {
+      return [];
     }
   }
 
   /**
    * set the process information for this exporter type
    *  for the given snapshot item
-   * @param $snapshot_item_id
-   * @param $array
-*/
+   * @param int $snapshot_item_id
+   * @param array<string, mixed> $array
+   *
+   * @return void
+   */
   protected function updateProcessInformation($snapshot_item_id, $array) {
-    $this->engine->getSnapshot()->updateProcessInformation($snapshot_item_id, array($this->getID() => $array));
+    $this->engine->getSnapshot()->updateProcessInformation($snapshot_item_id, [$this->getID() => $array]);
   }
 
   /**
    * create a log entry and add to the give reply
-   * @param $reply
-   * @param $message
+   * @param array<string, mixed> $reply
+   * @param string $message
    * @param string $type
-   * @param null $timestamp
-*/
-  public static function addLogEntry(&$reply, $message, $type=self::LOG_TYPE_INFO, $timestamp = NULL) {
+   * @param string|null $timestamp
+   *
+   * @return void
+   */
+  public static function addLogEntry(&$reply, $message, $type = self::LOG_TYPE_INFO, $timestamp = NULL) {
     if ($timestamp == NULL) {
       $timestamp = date('Y-m-d H:i:s');
     }
-    $reply['log'][] = array(
-        'timestamp'   => $timestamp,
-        'type'        => $type,
-        'message'     => $message
-        );
+    $reply['log'][] = [
+      'timestamp'   => $timestamp,
+      'type'        => $type,
+      'message'     => $message,
+    ];
   }
+
 }

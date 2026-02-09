@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -19,7 +21,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    * @return string
    *   the display name
    */
-  static function name() {
+  public static function name() {
     return E::ts("Don't generate files");
   }
 
@@ -27,7 +29,7 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
    * @return string
    *   a html snippet that defines the options as form elements
    */
-  static function htmlOptions() {
+  public static function htmlOptions() {
     return '';
   }
 
@@ -38,7 +40,6 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   public function getID() {
     return 'Dummy';
   }
-
 
   /**
    * export an individual receipt
@@ -53,10 +54,10 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
 
     // edit the process information
     foreach ($snapshot_receipt->getIDs() as $line_id) {
-      $this->updateProcessInformation($line_id, array('test' => 'Dummy was here!'));
+      $this->updateProcessInformation($line_id, ['test' => 'Dummy was here!']);
     }
 
-    return true;
+    return TRUE;
   }
 
   /**
@@ -75,32 +76,19 @@ class CRM_Donrec_Exporters_Dummy extends CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * generate the final result
-   *
-   * @param $chunk
-   * @param $is_test
-   * @param $is_bulk
-   *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
-   *          'download_url: URL to download the result
-   *          'download_name: suggested file name for the download
+   * @inheritDoc
    */
-  public function wrapUp($chunk, $is_test, $is_bulk) {
-    $reply = array();
+  public function wrapUp($snapshotId, $is_test, $is_bulk) {
+    $reply = [];
     CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Dummy process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
     return $reply;
   }
 
   /**
-   * check whether all requirements are met to run this exporter
-   *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @inheritDoc
    */
-  public function checkRequirements($profile = NULL) {
-    return array('is_error' => FALSE);
+  public function checkRequirements($profile) {
+    return ['is_error' => FALSE];
   }
+
 }

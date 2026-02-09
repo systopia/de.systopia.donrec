@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -18,7 +20,7 @@ use CRM_Donrec_ExtensionUtil as E;
 class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
   /**
-   * @var \CRM_Donrec_Logic_Profile $profile
+   * @var \CRM_Donrec_Logic_Profile
    *  The profile object the form is acting on.
    */
   protected $profile;
@@ -30,7 +32,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
   protected $_op;
 
   /**
-   * @var string
+   * @var string|null
    */
   protected $_ajax_action;
 
@@ -43,20 +45,20 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
   /**
    * Add form elements for variables to the form.
    */
-  protected function addVariablesElements() {
+  protected function addVariablesElements(): void {
     $variable_count = 0;
-    $variable_elements = array();
+    $variable_elements = [];
 
     //Get all current variable fields when adding via Ajax.
     if (
     ($this->_ajax_action = CRM_Utils_Request::retrieve('ajax_action', 'String', $this))
-      && $this->_ajax_action == 'add_variable'
+      && $this->_ajax_action === 'add_variable'
     ) {
-      while(TRUE) {
+      while (TRUE) {
         $variable_count++;
         $current_name = CRM_Utils_Request::retrieve('variables--' . $variable_count . '--name', 'String', $this);
         $current_value = CRM_Utils_Request::retrieve('variables--' . $variable_count . '--value', 'String', $this);
-        if (!is_null($current_name)) {
+        if (NULL !== $current_name) {
           $this->profile->addVariable($current_name, $current_value);
         }
         else {
@@ -82,10 +84,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         'textarea',
         'variables--' . $variable_count . '--value',
         E::ts('Variable value'),
-        array(
+        [
           'rows' => 3,
           'cols' => 80,
-        )
+        ]
       );
       $variable_elements[$variable_count] = 'variables--' . $variable_count;
     }
@@ -94,8 +96,11 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
   /**
    * Build the form object.
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  public function buildQuickForm() {
+  public function buildQuickForm(): void {
+  // phpcs:enable
     parent::buildQuickForm();
 
     // Set redirect destination.
@@ -132,30 +137,32 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
           );
         }
         CRM_Utils_System::setTitle(
-          E::ts('Delete Donation Receipts profile <em>%1</em>', array(
+          E::ts('Delete Donation Receipts profile <em>%1</em>', [
             1 => $this->profile->getName(),
-          ))
+          ])
         );
-        $this->addButtons(array(
-          array(
+        $this->addButtons([
+          [
             'type' => 'submit',
             'name' => E::ts('Delete'),
             'isDefault' => TRUE,
-          ),
-          array(
+          ],
+          [
             'type' => 'cancel',
-            'name' => E::ts('Cancel')
-          ),
-        ));
+            'name' => E::ts('Cancel'),
+          ],
+        ]);
         return;
+
       case 'edit':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
         CRM_Utils_System::setTitle(
-          E::ts('Edit Donation Receipts profile <em>%1</em>', array(
+          E::ts('Edit Donation Receipts profile <em>%1</em>', [
             1 => $this->profile->getName(),
-          ))
+          ])
         );
         break;
+
       case 'copy':
         // This will be a 'create' actually.
         $this->_op = 'create';
@@ -168,77 +175,79 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         $this->profile->set('is_default', 0);
         CRM_Utils_System::setTitle(E::ts('New Donation Receipts profile'));
         break;
+
       case 'create':
         // Load factory default profile values.
         $this->profile = new CRM_Donrec_Logic_Profile();
         CRM_Utils_System::setTitle(E::ts('New Donation Receipts profile'));
         break;
+
       case 'default':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
         CRM_Utils_System::setTitle(
-          E::ts('Set Donation Receipts profile <em>%1</em> as default', array(
+          E::ts('Set Donation Receipts profile <em>%1</em> as default', [
             1 => $this->profile->getName(),
-          ))
+          ])
         );
-        $this->addButtons(array(
-          array(
+        $this->addButtons([
+          [
             'type' => 'submit',
             'name' => E::ts('Set default'),
             'isDefault' => TRUE,
-          ),
-          array(
+          ],
+          [
             'type' => 'cancel',
-            'name' => E::ts('Cancel')
-          ),
-        ));
+            'name' => E::ts('Cancel'),
+          ],
+        ]);
         // Pass profile name to template.
         $this->assign('profile_name', $this->profile->getName());
         return;
+
       case 'activate':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
         CRM_Utils_System::setTitle(
-          E::ts('Activate Donation Receipts profile <em>%1</em>', array(
+          E::ts('Activate Donation Receipts profile <em>%1</em>', [
             1 => $this->profile->getName(),
-          ))
+          ])
         );
-        $this->addButtons(array(
-          array(
+        $this->addButtons([
+          [
             'type' => 'submit',
             'name' => E::ts('Activate'),
             'isDefault' => TRUE,
-          ),
-          array(
+          ],
+          [
             'type' => 'cancel',
-            'name' => E::ts('Cancel')
-          ),
-        ));
+            'name' => E::ts('Cancel'),
+          ],
+        ]);
         // Pass profile name to template.
         $this->assign('profile_name', $this->profile->getName());
         return;
-        break;
+
       case 'deactivate':
         $this->profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
         CRM_Utils_System::setTitle(
-          E::ts('Deactivate Donation Receipts profile <em>%1</em>', array(
+          E::ts('Deactivate Donation Receipts profile <em>%1</em>', [
             1 => $this->profile->getName(),
-          ))
+          ])
         );
-        $this->addButtons(array(
-          array(
+        $this->addButtons([
+          [
             'type' => 'submit',
             'name' => E::ts('Deactivate'),
             'isDefault' => TRUE,
-          ),
-          array(
+          ],
+          [
             'type' => 'cancel',
-            'name' => E::ts('Cancel')
-          ),
-        ));
+            'name' => E::ts('Cancel'),
+          ],
+        ]);
         // Pass profile properties to template.
         $this->assign('profile_name', $this->profile->getName());
         $this->assign('is_default', $this->profile->isDefault());
         return;
-        break;
     }
 
     $this->assign('is_locked', $this->profile->isLocked());
@@ -248,7 +257,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'text',
       'name',
       E::ts('Profile name'),
-      array(),
+      [],
       TRUE
     );
 
@@ -267,24 +276,28 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     /**
      * Contribution settings.
      */
+    $financialTypes = Civi::entity('Contribution')->getOptions('financial_type_id');
+    assert(NULL !== $financialTypes);
+    /** @var array<int, string> $financialTypes */
+    $financialTypes = array_column($financialTypes, 'label', 'id');
     $this->add(
       'select',
       'financial_types',
       E::ts('Contribution Types'),
-      CRM_Contribute_PseudoConstant::financialType(),
+      $financialTypes,
       FALSE,
-      array('multiple' => "multiple", 'class' => 'crm-select2')
+      ['multiple' => 'multiple', 'class' => 'crm-select2']
     );
 
     $this->add(
       'select',
       'contribution_unlock_mode',
       E::ts('Unlock receipted contributions'),
-      array(
+      [
         'unlock_all' => E::ts('All fields'),
         'unlock_none' => E::ts('No fields'),
         'unlock_selected' => E::ts('Selected fields'),
-      )
+      ]
     );
 
     $donrec_contribution_unlock_fields = CRM_Donrec_Logic_Settings::getContributionUnlockableFields();
@@ -309,10 +322,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'textarea',
       'template',
       E::ts('Template'),
-      array(
+      [
         'rows' => 25,
         'cols' => 80,
-      )
+      ]
     );
     $this->add(
       'select',
@@ -320,7 +333,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('PDF format'),
       CRM_Core_BAO_PdfFormat::getList(TRUE),
       TRUE,
-      array('class' => 'crm-select2')
+      ['class' => 'crm-select2']
     );
 
     $this->add(
@@ -356,16 +369,17 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Watermark preset'),
       CRM_Donrec_Logic_Settings::getWatermarkPresets(),
       FALSE,
-      array('class' => 'crm-select2')
+      ['class' => 'crm-select2']
     );
 
     /**
      * Address type settings.
      */
     // add profile location-type-selections
-    $query = "SELECT `id`, `name` FROM `civicrm_location_type`";
+    $query = 'SELECT `id`, `name` FROM `civicrm_location_type`';
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
-    $options = array(0 => E::ts('primary address'));
+    $options = [0 => E::ts('primary address')];
     while ($result->fetch()) {
       $options[$result->id] = E::ts($result->name);
     }
@@ -401,7 +415,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'select',
       'email_template',
       E::ts('E-mail template'),
-      CRM_Donrec_Logic_Settings::getAllTemplates() // TODO: is that correct?
+      // TODO: is that correct?
+      CRM_Donrec_Logic_Settings::getAllTemplates()
     );
     $this->add(
       'select',
@@ -409,13 +424,12 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('From Email'),
       $this->getSenderEmails(),
       FALSE,
-      array('class' => 'crm-select2 huge')
+      ['class' => 'crm-select2 huge']
     );
     $this->add(
       'text',
       'bcc_email',
       E::ts('BCc E-mail address'),
-      $this->profile->getDataAttribute('bcc_email')
     );
     $this->addRule(
       'bcc_email',
@@ -426,7 +440,6 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       'text',
       'return_path_email',
       E::ts('Return path e-mail address'),
-      $this->profile->getDataAttribute('return_path_email')
     );
     $this->addRule(
       'return_path_email',
@@ -464,16 +477,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       E::ts('Withdraw receipt')
     );
 
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE),
-      array('type' => 'cancel', 'name' => E::ts('Cancel')),
-    ));
+    $this->addButtons([
+      ['type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE],
+      ['type' => 'cancel', 'name' => E::ts('Cancel')],
+    ]);
   }
 
   /**
    * Add local and global form rules.
+   *
+   * @return array<string, mixed>
    */
-  public function setDefaultValues() {
+  public function setDefaultValues(): array {
     $defaults = parent::setDefaultValues();
 
     // Set individual properties.
@@ -483,7 +498,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
     // Set variables.
     $variable_count = 0;
-    $variable_elements = array();
+    $variable_elements = [];
     foreach ($this->profile->getVariables() as $variable_name => $variable_value) {
       $variable_count++;
       $defaults['variables--' . $variable_count . '--name'] = (is_numeric($variable_name) ? NULL : $variable_name);
@@ -492,7 +507,7 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
     // Set data properties.
     foreach ($this->profile->getData() as $key => $value) {
-      if ($key == 'contribution_unlock_fields') {
+      if ($key === 'contribution_unlock_fields') {
         foreach ($value as $unlock_field_name => $unlock_field_value) {
           $defaults['contribution_unlock_field_' . $unlock_field_name] = $unlock_field_value;
         }
@@ -509,32 +524,31 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
 
     // Use a sane default for language.
     if (empty($defaults['language'])) {
-      if (method_exists('CRM_Core_I18n', 'getLocale')) {
-        $defaults['language'] = CRM_Core_I18n::getLocale();
-      } else {
-        $defaults['language'] = 'en_US';
-      }
+      $defaults['language'] = CRM_Core_I18n::getLocale();
     }
 
     return $defaults;
   }
 
-  public function cancelAction() {
+  public function cancelAction(): void {
     $session = CRM_Core_Session::singleton();
-    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
+    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', ['reset' => 1]));
   }
 
-  public function validate() {
+  // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+  public function validate(): bool {
+  // phpcs:enable
     $values = $this->exportValues();
-    $session = CRM_Core_Session::singleton();
 
-    if (in_array($this->_op, array('create', 'edit'))) {
+    if (in_array($this->_op, ['create', 'edit'], TRUE)) {
       /**
        * validate receipt ID pattern.
        */
       try {
         $generator = new CRM_Donrec_Logic_IDGenerator($values['id_pattern'], FALSE);
-      } catch (Exception $exception) {
+      }
+      catch (Exception $exception) {
+        // @ignoreException
         $this->_errors['id_pattern'] = E::ts('One of the Receipt ID patterns are invalid! Changes NOT saved!');
       }
       /**
@@ -543,9 +557,9 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       if (!isset($values['template_pdf_format_id'])) {
         $this->_errors['template_pdf_format_id'] = E::ts(
           'Please select a PDF format. If there are none, create one <a href="%1" target="_blank">here</a>',
-          array(
+          [
             1 => CRM_Utils_System::url('civicrm/admin/pdfFormats', 'reset=1'),
-          )
+          ]
         );
       }
       /**
@@ -554,25 +568,29 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       if (isset($values['special_mail_handling']) && $values['special_mail_handling'] == TRUE) {
         // validate that all other custom mailing fields are set!
         if (empty($values['special_mail_header'])) {
-          $this->_errors['special_mail_header'] = E::ts('If custom Mail handling is activated, a custom mail Header must be set');
+          $this->_errors['special_mail_header'] =
+            E::ts('If custom Mail handling is activated, a custom mail Header must be set');
         }
         if (empty($values['special_mail_activity_id'])) {
-          $this->_errors['special_mail_activity_id'] = E::ts('If custom Mail handling is activated, please specify an activity_id');
+          $this->_errors['special_mail_activity_id'] =
+            E::ts('If custom Mail handling is activated, please specify an activity_id');
         }
         if (empty($values['special_mail_activity_subject'])) {
-          $this->_errors['special_mail_activity_subject'] = E::ts('If custom Mail handling is activated, please specify an activity subject');
+          $this->_errors['special_mail_activity_subject'] =
+            E::ts('If custom Mail handling is activated, please specify an activity subject');
         }
         if (empty($values['special_mail_activity_contact_id'])) {
-          $this->_errors['special_mail_activity_contact_id'] = E::ts('If custom Mail handling is activated, please specify an activity contact_id');
+          $this->_errors['special_mail_activity_contact_id'] =
+            E::ts('If custom Mail handling is activated, please specify an activity contact_id');
         }
       }
       /**
        * Validate variables.
        */
-      $matches = array();
+      $matches = [];
       $variables_values = array_filter($values, function($value, $key) use (&$matches) {
-        $match = array();
-        if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match)) {
+        $match = [];
+        if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match) === 1) {
           $matches[$match[1]] = TRUE;
           return TRUE;
         }
@@ -584,9 +602,13 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
         // Validate variable names.
         if (
           !empty($values['variables--' . $variable_no . '--name'])
-          && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $values['variables--' . $variable_no . '--name'])
+          && preg_match(
+            '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/',
+            $values['variables--' . $variable_no . '--name']
+          ) !== 1
         ) {
-          $this->_errors['variables--' . $variable_no . '--name'] = E::ts('Variable names must be valid PHP variable names.');
+          $this->_errors['variables--' . $variable_no . '--name'] =
+            E::ts('Variable names must be valid PHP variable names.');
         }
 
         // Check for empty variable names with non-empty values.
@@ -594,17 +616,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
           empty($values['variables--' . $variable_no . '--name'])
           && !empty($values['variables--' . $variable_no . '--value'])
         ) {
-          $this->_errors['variables--' . $variable_no . '--name'] = E::ts('Variable names must not be empty when they have a value.');
+          $this->_errors['variables--' . $variable_no . '--name'] =
+            E::ts('Variable names must not be empty when they have a value.');
         }
 
         // Check for duplicate variable names.
         foreach (array_keys($matches) as $var_no) {
-          if ($variable_no == $var_no) {
+          if ($variable_no === $var_no) {
             continue;
           }
           if (
             !empty($values['variables--' . $variable_no . '--name'])
-            && $values['variables--' . $variable_no . '--name'] == $values['variables--' . $var_no . '--name']
+            && $values['variables--' . $variable_no . '--name'] === $values['variables--' . $var_no . '--name']
           ) {
             $this->_errors['variables--' . $var_no . '--name'] = E::ts('Duplicate variable name.');
           }
@@ -628,10 +651,12 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     return ['template'];
   }
 
-  public function postProcess() {
+  // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+  public function postProcess(): void {
+  // phpcs:enable
     $session = CRM_Core_Session::singleton();
 
-    if (in_array($this->_op, array('create', 'edit'))) {
+    if (in_array($this->_op, ['create', 'edit'], TRUE)) {
       // Prevent "template" field from being encoded (HTML entities).
       // @see HTML_QuickForm::exportValues() which is doing a check for that class.
       $this->getElement('template')->setAttribute('class', 'crm-form-wysiwyg');
@@ -639,18 +664,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $values = $this->exportValues();
 
       // Set all profile properties.
-      foreach (array(
+      foreach ([
         'name',
         'template',
         'template_pdf_format_id',
-        'variables'
-               ) as $property) {
-        if ($property == 'variables') {
-          $values['variables'] = array();
-          $matches = array();
+        'variables',
+      ] as $property) {
+        if ($property === 'variables') {
+          $values['variables'] = [];
+          $matches = [];
           $variables_values = array_filter($values, function($value, $key) use (&$matches) {
-            $match = array();
-            if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match)) {
+            $match = [];
+            if (preg_match('/^variables--([0-9]+)--(?:name|value)$/', $key, $match) === 1) {
               $matches[$match[1]] = TRUE;
               return TRUE;
             }
@@ -661,7 +686,8 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
           foreach (array_keys($matches) as $variable_no) {
             // Save variables, discarding empty variable names.
             if (!empty($values['variables--' . $variable_no . '--name'])) {
-              $values['variables'][$values['variables--' . $variable_no . '--name']] = $values['variables--' . $variable_no . '--value'];
+              $values['variables'][$values['variables--' . $variable_no . '--name']] =
+                $values['variables--' . $variable_no . '--value'];
             }
           }
         }
@@ -673,10 +699,10 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       // Set data attributes.
       foreach (array_keys(CRM_Donrec_Logic_Profile::defaultProfileData()['data']) as $element_name) {
         // Set unchecked checkbox values.
-        if (in_array($element_name, array(
+        if (in_array($element_name, [
           'store_original_pdf',
           'enable_encryption',
-        )) && !isset($values[$element_name])) {
+        ], TRUE) && !isset($values[$element_name])) {
           $values[$element_name] = 0;
         }
 
@@ -690,16 +716,15 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       $unlock_field_values = [];
       foreach ($donrec_contribution_unlock_fields as $property_name) {
         $field_name                          = 'contribution_unlock_field_' . $property_name;
-        $unlock_field_values[$property_name] = (int)!empty($values[$field_name]);
+        $unlock_field_values[$property_name] = (int) !empty($values[$field_name]);
       }
       $this->profile->setDataAttribute('contribution_unlock_fields', $unlock_field_values);
 
-
       $this->profile->save();
 
-      $session->setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Settings successfully saved'), E::ts('Settings'), 'success');
     }
-    elseif ($this->_op == 'delete') {
+    elseif ($this->_op === 'delete') {
       $values = $this->exportValues();
 
       if (isset($values['new_default_profile'])) {
@@ -707,27 +732,27 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
       }
       CRM_Donrec_Logic_Profile::deleteProfile($this->profile->getId());
     }
-    elseif ($this->_op == 'default') {
+    elseif ($this->_op === 'default') {
       CRM_Donrec_Logic_Profile::changeDefaultProfile($this->profile->getId());
     }
-    elseif ($this->_op == 'activate') {
+    elseif ($this->_op === 'activate') {
       $this->profile->activate();
     }
-    elseif ($this->_op == 'deactivate') {
+    elseif ($this->_op === 'deactivate') {
       $this->profile->activate(FALSE);
     }
 
     parent::postProcess();
 
-    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', array('reset' => 1)));
+    $session->replaceUserContext(CRM_Utils_System::url('civicrm/admin/setting/donrec/profiles', ['reset' => 1]));
   }
 
   /**
    * Get a drop-down list of registered sender email addresses
    */
-  protected function getSenderEmails() {
+  protected function getSenderEmails(): array {
     $sender_email_addresses = [];
-    $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL);
+    $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
     foreach ($fromEmailAddress as $email_id => $email_string) {
       $sender_email_addresses[$email_id] = htmlentities($email_string);
     }

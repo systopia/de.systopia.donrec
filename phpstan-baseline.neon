@@ -1,0 +1,4839 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot call method getTemplateHTML\(\) on CRM_Donrec_Logic_Template\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 13
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Method CRM_Admin_Form_DonrecProfile\:\:getFieldsToExcludeFromPurification\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Method CRM_Admin_Form_DonrecProfile\:\:getSenderEmails\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Only booleans are allowed in &&, mixed given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Parameter \#1 \$attribute of method CRM_Donrec_Logic_Profile\:\:setDataAttribute\(\) expects string, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Parameter \#1 \$name of method CRM_Donrec_Logic_Profile\:\:addVariable\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Property CRM_Admin_Form_DonrecProfile\:\:\$_ajax_action \(string\|null\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Property CRM_Admin_Form_DonrecProfile\:\:\$_op \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 2
+			path: CRM/Admin/Form/Setting/DonrecSettings.php
+
+		-
+			message: '#^Binary operation "\-" between mixed and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 4
+			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Parameter \#1 \$string1 of function strcmp expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Parameter \#2 \$string2 of function strcmp expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 12
+			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Cannot access offset ''count'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 8
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Cannot access offset ''table_name'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$get_params might not exist\.$#'
+			identifier: variable.implicitArray
+			count: 4
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:_getCustomGroupData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createIfNotExists\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createIfNotExists\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createIfNotExists\(\) has parameter \$get_params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createIfNotExists\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createOrUpdateEntity\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createOrUpdateEntity\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createOrUpdateEntity\(\) has parameter \$get_params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:createOrUpdateEntity\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:fixCustomGroupType\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:getCustomFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:translateCustomGroups\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:updateCustomFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:updateCustomGroups\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:updateOptionGroups\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:updateOptionValues\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Method CRM_Donrec_DataStructure\:\:upgrade_1_3\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$_custom_groups type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$customFieldDefaults type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$customFields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$customGroupDefaults type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$customGroups type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$optionGroupDefaults type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$optionGroups type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$optionValueDefaults type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Property CRM_Donrec_DataStructure\:\:\$optionValues type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/DataStructure.php
+
+		-
+			message: '#^Cannot call method generatePDF\(\) on CRM_Donrec_Logic_Template\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/BasePDF.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_CSV\:\:flattenTokenData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_CSV\:\:flattenTokenData\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_CSV\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fputcsv expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Donrec/Exporters/CSV.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_Dummy\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Exporters/Dummy.php
+
+		-
+			message: '#^Binary operation "\." between '' AND value \= '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^BooleanNot\: Use a function e\.g\. `count\(\$foo\) \=\=\= 0` instead of `\!\$foo`\.$#'
+			identifier: voku.BooleanNot
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''contact_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''contribution_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''email'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''email_error'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''profile_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''sent'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''timestamp'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot access offset ''value'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^If_\: Use a function e\.g\. `count\(\$foo\) \=\=\= 0` instead of `\!\$foo`\.$#'
+			identifier: voku.If
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:addDonrecMailCodeHeader\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:addDonrecMailCodeHeader\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:getEmailErrorActivityID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:sendEmail\(\) has parameter \$pdf_file with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:sendEmail\(\) has parameter \$receipt with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:setDonrecMailCode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:setDonrecMailCode\(\) has parameter \$receipt with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:set_custom_mail_header\(\) has parameter \$donrec_header with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:set_custom_mail_header\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:set_custom_mail_header\(\) has parameter \$profile_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EmailPDF\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|null given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|null given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 2
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, array given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Variable \$from_email_address might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Variable \$from_email_name might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
+
+		-
+			message: '#^Binary operation "\.\=" between mixed and non\-falsy\-string results in an error\.$#'
+			identifier: assignOp.invalid
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EncryptedPDF\:\:encrypt_file\(\) has parameter \$file with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EncryptedPDF\:\:encrypt_file\(\) has parameter \$snapshot_receipt with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EncryptedPDF\:\:generate_password\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_EncryptedPDF\:\:generate_password\(\) has parameter \$length with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^NotEqual\: Please do not use double negative integer conditions\. e\.g\. `\(int\)\$foo \!\= 0` is the same as `\(int\)\$foo`\.$#'
+			identifier: voku.NotEqual
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/EncryptedPDF.php
+
+		-
+			message: '#^Binary operation "\." between mixed and '' \-v'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 4
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_GroupedPDF\:\:getPDFPageCount\(\) has CRM_Core_Exception in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_GroupedPDF\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|false given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Parameter \#1 \$arg of function escapeshellarg expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Variable \$matches in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
+			message: '#^Binary operation "\." between mixed and '' '' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Binary operation "\." between mixed and '' \-v'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Foreach overwrites \$file with its value variable\.$#'
+			identifier: foreach.valueOverwrite
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_MergedPDF\:\:wrapUp\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|false given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Return type \(array\) of method CRM_Donrec_Exporters_MergedPDF\:\:wrapUp\(\) should be covariant with return type \(array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\}\) of method CRM_Donrec_Logic_Exporter\:\:wrapUp\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Variable \$matches in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Foreach overwrites \$file with its value variable\.$#'
+			identifier: foreach.valueOverwrite
+			count: 1
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_PDF\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: CRM/Donrec/Exporters/PDF.php
+
+		-
+			message: '#^Cannot access offset ''error_message'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Cannot call method getDocuments\(\) on CRM_Civioffice_DocumentStore\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Cannot call method getIds\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Foreach overwrites \$file with its value variable\.$#'
+			identifier: foreach.valueOverwrite
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Method CRM_Donrec_Exporters_PDFCiviOffice\:\:wrapUp\(\) should return array\{is_error\?\: bool, log\?\: string, download_url\?\: string, download_name\?\: string\} but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Offset ''extension'' might not exist on array\{dirname\?\: string, basename\: string, extension\?\: string, filename\: string\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Parameter \#1 \$document_renderer_uri of method CRM_Civioffice_Configuration\:\:getDocumentRenderer\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Parameter \#1 \$document_uri of method CRM_Civioffice_Configuration\:\:getDocument\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Variable \$civioffice_document_renderer_uri might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/Donrec/Exporters/PDFCiviOffice.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_ProcessReturns\:\:getActivityTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_ProcessReturns\:\:identifyContact\(\) has parameter \$email_address with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_ProcessReturns\:\:identifyContact\(\) has parameter \$email_body with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_ProcessReturns\:\:identifyContact\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_ProcessReturns\:\:identifyContact\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/ProcessReturns.php
+
+		-
+			message: '#^Binary operation "\." between ''sid\='' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Class CRM_Donrec_Form_Task_ContributeTask has an uninitialized property \$availableCurrencies\. Give it default value or assign it in the constructor\.$#'
+			identifier: property.uninitialized
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^In method "CRM_Donrec_Form_Task_ContributeTask\:\:postProcess", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 3
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_ContributeTask\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_ContributeTask\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Property CRM_Donrec_Form_Task_ContributeTask\:\:\$availableCurrencies type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
+			message: '#^Binary operation "\." between ''sid\='' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Class CRM_Donrec_Form_Task_Create has an uninitialized property \$availableCurrencies\. Give it default value or assign it in the constructor\.$#'
+			identifier: property.uninitialized
+			count: 1
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 9
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^In method "CRM_Donrec_Form_Task_Create\:\:postProcess", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 5
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^In method "CRM_Donrec_Form_Task_Create\:\:setDefaultValues", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 2
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Create\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Property CRM_Donrec_Form_Task_Create\:\:\$availableCurrencies type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: CRM/Donrec/Form/Task/DonrecResetTask.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecResetTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_DonrecResetTask\:\:getCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecResetTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_DonrecResetTask\:\:getDuplicateCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecResetTask.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecResetTask.php
+
+		-
+			message: '#^Binary operation "\." between ''sid\='' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Class CRM_Donrec_Form_Task_DonrecTask has an uninitialized property \$availableCurrencies\. Give it default value or assign it in the constructor\.$#'
+			identifier: property.uninitialized
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^In method "CRM_Donrec_Form_Task_DonrecTask\:\:postProcess", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 3
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_DonrecTask\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_DonrecTask\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Property CRM_Donrec_Form_Task_DonrecTask\:\:\$availableCurrencies type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''bic'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''contact_id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''creation_date'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''data_type'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''date'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''iban'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 5
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''reference'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''source'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''type'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''validation_date'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 17
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Dynamic call to static method CRM_Contact_BAO_Contact\:\:getContactType\(\)\.$#'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Equal\: Condition between 1 and bool\|string are falsy, please do not mix types\.$#'
+			identifier: voku.Equal
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^In method "CRM_Donrec_Form_Task_Rebook\:\:preProcess", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 2
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 6
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:checkSameContact\(\) has parameter \$contribution_ids with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:fixOOFFMandate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:fixOOFFMandate\(\) has parameter \$old_contribution with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:rebook\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:rebook\(\) has parameter \$contribution_ids with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:rebookRules\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_Rebook\:\:rebookRules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, array\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Property CRM_Donrec_Form_Task_Rebook\:\:\$contribution_ids type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: CRM/Donrec/Form/Task/Rebook.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Donrec/Form/Task/RebookTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_RebookTask\:\:addRules\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/RebookTask.php
+
+		-
+			message: '#^Method CRM_Donrec_Form_Task_RebookTask\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Form/Task/RebookTask.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Only booleans are allowed in &&, CRM_Donrec_Logic_Profile\|null given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, CRM_Donrec_Lang\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, CRM_Donrec_Lang given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, CRM_Donrec_Lang\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Property CRM_Donrec_Lang\:\:\$locale2language type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang.php
+
+		-
+			message: '#^Concat\: string \(''''\) in combination with non\-string \(string\|false\) is not allowed\.$#'
+			identifier: voku.Concat
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_De\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_De\:\:convert_number_to_words\(\) has parameter \$recursion with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_De\:\:getSingular\(\) has parameter \$unit with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, 99\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, 9\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Parameter \#2 \$quantity of method CRM_Donrec_Lang_De_De\:\:currency2word\(\) expects int, float\|int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:convert_number_to_words\(\) has parameter \$currency with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:convert_number_to_words\(\) has parameter \$number with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:convert_number_to_words\(\) has parameter \$recursion with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, 99\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, 9\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/De/Xx.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_En_Us\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Offset int\<\-99, \-1\>\|int\<1, 19\> might not exist on array\{'''', ''one'', ''two'', ''three'', ''four'', ''five'', ''six'', ''seven'', \.\.\.\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Offset int\<min, \-1\>\|int\<1, max\> might not exist on array\{'''', ''one'', ''two'', ''three'', ''four'', ''five'', ''six'', ''seven'', \.\.\.\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Offset int\<min, \-1\>\|int\<1, max\> might not exist on array\{'''', ''thousand'', ''million'', ''billion'', ''trillion'', ''quadrillion'', ''quintillion'', ''sextillion'', \.\.\.\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, int given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, int\<\-99, 19\> given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/En/Us.php
+
+		-
+			message: '#^Call to function array_filter\(\) requires parameter \#2 to be passed to avoid loose comparison semantics\.$#'
+			identifier: arrayFilter.strict
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 3
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 6
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_Es_Es\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_Es_Es\:\:convertGroup\(\) has parameter \$n with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Parameter \#1 \$separator of function explode expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, float\|int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Property CRM_Donrec_Lang_Es_Es\:\:\$CENTENAS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Property CRM_Donrec_Lang_Es_Es\:\:\$DECENAS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Property CRM_Donrec_Lang_Es_Es\:\:\$MONEDAS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Property CRM_Donrec_Lang_Es_Es\:\:\$UNIDADES type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Es/Es.php
+
+		-
+			message: '#^Binary operation "\*" between non\-empty\-string and 100 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^BooleanAnd\: Condition between '',,'' and false are always false\.$#'
+			identifier: voku.BooleanAnd
+			count: 2
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^BooleanAnd\: Do not compare boolean and string\.$#'
+			identifier: voku.BooleanAnd
+			count: 4
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^BooleanAndNode\: Condition between '',,'' and false are always false\.$#'
+			identifier: voku.BooleanAndNode
+			count: 2
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^BooleanAndNode\: Do not compare boolean and string\.$#'
+			identifier: voku.BooleanAndNode
+			count: 4
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 2
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Equal\: Condition between 0 and non\-empty\-string are falsy, please do not mix types\.$#'
+			identifier: voku.Equal
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_getgr\(\) has parameter \$float with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_grend\(\) has parameter \$floatEnd with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_init\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_licz\(\) has parameter \$liczba with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_licz\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_mnoznikSlownie\(\) has parameter \$i with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_mnoznikSlownie\(\) has parameter \$licz with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_mnoznikSlownie\(\) has parameter \$table with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_roundbc\(\) has parameter \$number with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_rozbij\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_rozbij\(\) has parameter \$kwota with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method Kwota\:\:_zlend\(\) has parameter \$intEnd with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in &&, string given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 4
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, array\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, int\<0, max\> given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, int\|false given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Parameter \#2 \$num2 of function bcadd expects numeric\-string, literal\-string&non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Parameter \#2 \$num2 of function bcsub expects numeric\-string, literal\-string&non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$dziesiatki has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$gr has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$instance has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$jednosciNascie has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$setki has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$table has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$zl has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Property Kwota\:\:\$zlparts has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Kwota.php
+
+		-
+			message: '#^Method CRM_Donrec_Lang_Pl_Pl\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Lang/Pl/Pl.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 2
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:__construct\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:check_or_create_mailbox_folder\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:get_all_mails_from_mailbox\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:get_all_mails_from_mailbox\(\) should return array but returns array\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:get_folder_list\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:get_receipt_id\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:move_message_to_folder\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:parseMessage\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_EmailReturnProcessor\:\:run\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, CRM_Donrec_Logic_Receipt\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, IMAP\\Connection\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_EmailReturnProcessor\:\:\$folder_list \(array\|null\) does not accept array\|false\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_EmailReturnProcessor\:\:\$folder_list type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_EmailReturnProcessor\:\:\$params type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/EmailReturnProcessor.php
+
+		-
+			message: '#^Cannot access offset ''display_name'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot access property \$_timeout on CRM_Utils_DonrecSafeLock\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method generatePDF\(\) on CRM_Donrec_Logic_Template\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getId\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getNextChunk\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getProfile\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getSnapshotReceipt\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method getStates\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method isAcquired\(\) on CRM_Utils_DonrecSafeLock\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method markChunkProcessed\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method release\(\) on CRM_Utils_DonrecSafeLock\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method resetTestRun\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot call method updateProcessInformation\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 8
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 11
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:createStats\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:getExporters\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:getSnapshot\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:getSnapshotStatus\(\) has parameter \$states with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:init\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:isTestRun\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:nextStep\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:resetTestRun\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Engine\:\:setPDF\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, array\<int, list\<array\<string, mixed\>\>\>\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, int\<0, max\> given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$path of function basename expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$path of static method CRM_Donrec_Logic_File\:\:createPermanentFile\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$snapshot_line_ids of method CRM_Donrec_Logic_Engine\:\:getPDF\(\) expects list\<int\>, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Engine\:\:\$_exporters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Engine\:\:\$parameters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Engine.php
+
+		-
+			message: '#^Cannot access an offset on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Exporter.php
+
+		-
+			message: '#^Cannot call method getSnapshot\(\) on CRM_Donrec_Logic_Engine\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: CRM/Donrec/Logic/Exporter.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Exporter.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Cannot access offset ''mime_type'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Cannot access offset ''uri'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_File\:\:createPermanentFile\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_File\:\:createTemporaryFile\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Parameter \#1 \$fid of static method CRM_Donrec_Logic_File\:\:getAbsolutePath\(\) expects int\|string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Parameter \#1 \$path of function basename expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/File.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Hooks\:\:donationReceiptTokenValues\(\) has @param\-out PHPDoc tag for parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Hooks.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Hooks\:\:donationReceiptTokenValues\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Hooks.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Hooks\:\:\$null has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Donrec/Logic/Hooks.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 2
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_IDGenerator\:\:generateID\(\) has parameter \$snapshot_lines with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_IDGenerator\:\:generateID\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 2
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_IDGenerator\:\:getContributionYear\(\) has parameter \$snapshot_lines with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, int\|false given on the right side\.$#'
+			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strlen expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_IDGenerator\:\:\$tokens type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/IDGenerator.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 3
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$location_types does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:activate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:addVariable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:changeDefaultProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:copyProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:copyProfile\(\) has parameter \$profile_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:defaultProfileData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:deleteProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getAllNames\(\) should return array\<int, string\> but returns array\<int, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getContributionTypes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getFirstUsage\(\) should return DateTime\|null but returns DateTime\|false\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getFromEmailAddresses\(\) should return string but returns int\|string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getLastUsage\(\) should return DateTime\|null but returns DateTime\|false\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:getLocationTypes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:lock\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:save\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:set\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:setAllData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:setDataAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:setDefault\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:setName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Profile\:\:update\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$financial_types has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$variables type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Variable property access on \$this\(CRM_Donrec_Logic_Profile\)\.$#'
+			identifier: property.dynamicName
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Call to function is_array\(\) with \(int\|string\) will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Cannot access offset ''is_error'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:_createReceiptFromTokens\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:createFromSnapshotReceipt\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:createFromSnapshotReceipt\(\) has parameter \$parameters with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:createFromSnapshotReceipt\(\) has parameter \$snapshot_receipt with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:delete\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:exists\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getAllProperties\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getAllTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getCopies\(\) should return list\<CRM_Donrec_Logic_Receipt\> but returns list\<CRM_Donrec_Logic_Receipt\|null\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getCustomFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getDisplayProperties\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getDisplayTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getReceiptCountForContact\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getReceiptIDsByContributionID\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getReceiptsForContact\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getReceiptsForContact\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''addressee_display'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''city'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''country'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''currency'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''date_from'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''date_to'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''display_name'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''email_greeting_display'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''exporters'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''financial_type_id'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''issued_by'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''issued_in'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 5
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''issued_on'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 5
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''non_deductible_amount'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''original_file'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''postal_code'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''postal_greeting_display'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''profile_id'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''receipt_id'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''receive_date'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_city'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_country'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_postal_code'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_street_address'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_supplemental_address_1'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''shipping_supplemental_address_2'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''status'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 8
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''street_address'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''supplemental_address_1'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''supplemental_address_2'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''total_amount'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Offset ''type'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Parameter \#2 \$baseTimestamp of function strtotime expects int\|null, int\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Receipt\:\:\$_custom_fields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Cannot access offset ''is_error'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:calculateChecksum\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:create\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:createCopyAll\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:deleteAll\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:getCustomFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:setStatusAll\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''contribution_hash'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''currency'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''financial_type_id'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''issued_by'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''issued_in'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 6
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''issued_on'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''non_deductible_amount'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''receipt_id'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''receive_date'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''status'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 6
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''total_amount'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Offset ''type'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_ReceiptItem\:\:\$_checksum_keys type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_ReceiptItem\:\:\$_custom_fields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptItem.php
+
+		-
+			message: '#^Cannot access offset ''display_name'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Cannot access offset ''financial_type'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Cannot access offset ''financial_type_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 10
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$address does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$query_params does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:_lookupAddress\(\) has parameter \$location_type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:_lookupAddress\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has parameter \$profile with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:getAllTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:getDisplayTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:getFullTokenList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:lookupAddressTokens\(\) has parameter \$fallback_location_type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:lookupAddressTokens\(\) has parameter \$location_type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:lookupAddressTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:missingTokens\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:missingTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Parameter \#2 \$v of method DB_DataObject\:\:get\(\) expects string\|null, int\<min, \-1\>\|int\<1, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_ReceiptTokens\:\:\$DYNAMIC_TOKENS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_ReceiptTokens\:\:\$STORED_TOKENS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Selector\:\:createSnapshot\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Selector\:\:createSnapshot\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Parameter \#2 \$creator_id of static method CRM_Donrec_Logic_Snapshot\:\:create\(\) expects int, int\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: CRM/Donrec/Logic/Selector.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:getAllTemplates\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:getContributionUnlockableFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:getWatermarkPresets\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:set\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:validateContribution\(\) has parameter \$new_values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:validateContribution\(\) has parameter \$old_values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Settings\:\:validateContribution\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Only booleans are allowed in &&, CRM_Donrec_Logic_Receipt\|null given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Only booleans are allowed in &&, CRM_Donrec_Logic_Snapshot\|null given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Only booleans are allowed in &&, bool\|int given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\>\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, bool\|int given on the right side\.$#'
+			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Parameter \#1 \$snapshot_id of static method CRM_Donrec_Logic_Snapshot\:\:get\(\) expects int, int\<min, \-1\>\|int\<1, max\>\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Cannot call method getExporters\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Cannot call method getStates\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$proc_info does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:cleanup\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:create\(\) has parameter \$contributions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:create\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:exists\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getCreator\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getExporters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getIds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getNextChunk\(\) should return array\<int, list\<array\<string, mixed\>\>\>\|null but returns non\-empty\-array\<array\>\.$#'
+			identifier: return.type
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getProcessInformation\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getSnapshotReceipts\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getSnapshotReceipts\(\) has parameter \$chunk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getSnapshotReceipts\(\) has parameter \$is_bulk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getSnapshotReceipts\(\) has parameter \$is_test with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getStates\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getStatistic\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:getUserSnapshots\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:hasIntersections\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:markChunkProcessed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:markChunkProcessed\(\) has parameter \$chunk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:resetChunk\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:resetChunk\(\) has parameter \$chunk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:resetTestRun\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:singleOrBulk\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:singleOrBulk\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:updateProcessInformation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Snapshot\:\:updateProcessInformation\(\) has parameter \$array with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^NotEqual\: Please do not use double negative integer conditions\. e\.g\. `\(int\)\$foo \!\= 0` is the same as `\(int\)\$foo`\.$#'
+			identifier: voku.NotEqual
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Snapshot\:\:\$CHUNK_FIELDS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Snapshot\:\:\$LINE_FIELDS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Snapshot.php
+
+		-
+			message: '#^Dynamic call to static method CRM_Donrec_Logic_ReceiptTokens\:\:lookupAddressTokens\(\)\.$#'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getAddressee\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getAllTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getContributor\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getDisplayTokens\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getIDs\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getLine\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:getLines\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_SnapshotReceipt\:\:isBulk\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Offset ''contact_id'' might not exist on array\{receipt_id\: string, status\: ''DRAFT''\|''ORIGINAL'', issued_on\: non\-falsy\-string, issued_by\: mixed, total_amount\: 0\.0, non_deductible_amount\: 0\.0, date_from\: 9999999999, date_to\: 0, \.\.\.\}\|array\{receipt_id\: string, status\: ''DRAFT''\|''ORIGINAL'', issued_on\: non\-falsy\-string, issued_by\: mixed, total_amount\: float, non_deductible_amount\: float, date_from\: mixed, date_to\: mixed, \.\.\.\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Parameter \#2 \$v of method DB_DataObject\:\:get\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_SnapshotReceipt\:\:\$cached_addressees type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_SnapshotReceipt\:\:\$cached_contributors type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_SnapshotReceipt\:\:\$snapshot_lines type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/SnapshotReceipt.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$workflow_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Binary operation "\." between ''CRM_Donrec_Logic…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Call to an undefined method object\:\:assign\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Call to an undefined method object\:\:clearTemplateVars\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Call to an undefined method object\:\:fetch\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Cannot access offset ''contributor'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Cannot access offset ''count'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 3
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Template\:\:__construct\(\) has parameter \$profile_variables with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_Template\:\:findAllTemplates\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, CRM_Core_DAO_MessageTemplate given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\>\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Part \$values\[''contributor''\]\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Template\:\:\$profile_variables type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Template.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/WatermarkPreset/DompdfTraditional.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional\:\:injectMarkup\(\) has parameter \$paper_size with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/DompdfTraditional.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional\:\:injectStyles\(\) has parameter \$paper_size with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/DompdfTraditional.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossLarge.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossLarge.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossLarge.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossSmall.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossSmall.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossSmall.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgHolohedral.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgHolohedral.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgHolohedral.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgTopCenter.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgTopCenter.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgTopCenter.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgUpperRightCorner.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner\:\:injectMarkup\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgUpperRightCorner.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner\:\:injectStyles\(\) has parameter \$pdf_format with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/SvgUpperRightCorner.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/Donrec/Logic/WatermarkPreset/WkhtmltopdfTraditional.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional\:\:injectMarkup\(\) has parameter \$paper_size with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/WkhtmltopdfTraditional.php
+
+		-
+			message: '#^Method CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional\:\:injectStyles\(\) has parameter \$paper_size with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/WatermarkPreset/WkhtmltopdfTraditional.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''&exporters\='' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^In method "CRM_Donrec_Page_Runner\:\:run", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 7
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Method CRM_Donrec_Page_Runner\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Page/Runner.php
+
+		-
+			message: '#^Cannot access offset 1 on array\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Cannot access offset 2 on array\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Cannot call method getProfile\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 20
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^In method "CRM_Donrec_Page_Staging\:\:run", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 22
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Method CRM_Donrec_Page_Staging\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, array\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Part \$ccount \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 5
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Part \$origin \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 3
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Part \$return_id \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/Donrec/Page/Staging.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^In method "CRM_Donrec_Page_Tab\:\:run", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 4
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Method CRM_Donrec_Page_Tab\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|null given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^In method "CRM_Donrec_Page_Tempfile\:\:run", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 6
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Method CRM_Donrec_Page_Tempfile\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Only numeric types are allowed in \+, int\<0, max\>\|false given on the left side\.$#'
+			identifier: plus.leftNonNumeric
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Binary operation "\." between ''un'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Cannot access offset ''msg_html'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Upgrader.php
+
+		-
+			message: '#^Property CRM_Utils_DonrecCustomisationHooks\:\:\$null has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/Utils/DonrecCustomisationHooks.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:exitWithMessage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:getFieldID\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:getLock\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:getLock\(\) has parameter \$type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$field_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$fields with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$from_label with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$to_label with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:removeFromForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecHelper\:\:removeFromForm\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, DateTime\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Parameter \#3 \$length of function substr expects int\|null, int\<0, max\>\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Utils/DonrecHelper.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 4
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecSafeLock\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecSafeLock\:\:isAcquired\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecSafeLock\:\:release\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecSafeLock\:\:releaseLock\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Method CRM_Utils_DonrecSafeLock\:\:releaseLock\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Utils/DonrecSafeLock.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 4
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 10
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, bool given\.$#'
+			identifier: argument.type
+			count: 2
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Parameter \#2 \$name of static method CRM_Donrec_Logic_File\:\:createTemporaryFile\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Binary operation "\." between ''\[de\.systopia\.donrec…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: api/v3/DonationReceipt/Handlebounce.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 4
+			path: api/v3/DonationReceipt/Handlebounce.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/DonationReceipt/Handlebounce.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of method CRM_Donrec_Logic_EmailReturnProcessor\:\:get_receipt_id\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/DonationReceipt/Handlebounce.php
+
+		-
+			message: '#^Part \$params\[''contribution_id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: api/v3/DonationReceipt/Handlebounce.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: api/v3/DonationReceiptEngine/Next.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: api/v3/DonationReceiptEngine/Next.php
+
+		-
+			message: '#^Function civicrm_api3_donation_receipt_engine_next\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/DonationReceiptEngine/Next.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: api/v3/DonationReceiptEngine/Next.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: api/v3/DonationReceiptEngine/Processreturns.php
+
+		-
+			message: '''
+				#^Access to deprecated property \$_values of class CRM_Contribute_Form_Contribution\:
+				\- try to use getContributionValue\(\) instead as it is strictly a
+				cached lookup on the contribution values, rather than a grab\-bag\.$#
+			'''
+			identifier: property.deprecated
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''Payload'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''contact_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''contribution_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''event'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''profile_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''timestamp'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: donrec.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function _donrec_civicrm_post_callback\(\) has parameter \$objectRef with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_alterAPIPermissions\(\) has parameter \$action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_alterAPIPermissions\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_alterAPIPermissions\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_alterAPIPermissions\(\) has parameter \$permissions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_alterMailParams\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_navigationMenu\(\) has parameter \$menu with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_permission\(\) has parameter \$permissions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_post\(\) has parameter \$objectRef with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_pre\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_pre\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_searchColumns\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_searchColumns\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_searchTasks\(\) has parameter \$tasks with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_tabset\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_tabset\(\) has parameter \$tabs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_validateForm\(\) has parameter \$errors with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_validateForm\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Function donrec_civicrm_validateForm\(\) has parameter \$files with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$field_ids_to_remove does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: donrec.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 13
+			path: donrec.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 11
+			path: donrec.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, bool\|int given on the right side\.$#'
+			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, bool\|string\|null given on the left side\.$#'
+			identifier: booleanOr.leftNotBoolean
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Part \$message\[''event''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
+
+		-
+			message: '#^Method CRM_Donrec_BaseTestCase\:\:generateContributions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
+
+		-
+			message: '#^Method CRM_Donrec_BaseTestCase\:\:quickCleanup\(\) has parameter \$tablesToTruncate with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
+
+		-
+			message: '#^Method CRM_Donrec_EngineTest\:\:testEngineMultiExport\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/EngineTest.php
+
+		-
+			message: '#^Method CRM_Donrec_EngineTest\:\:testEngineSetupWithValidSnapshot\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/EngineTest.php
+
+		-
+			message: '#^Method CRM_Donrec_EngineTest\:\:testEngineSetupWithValidSnapshotSingle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/EngineTest.php
+
+		-
+			message: '#^Method CRM_Donrec_EngineTest\:\:testEngineWithOverlappingEngines\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/EngineTest.php
+
+		-
+			message: '#^Property CRM_Donrec_EngineTest\:\:\$tablesToTruncate type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/EngineTest.php
+
+		-
+			message: '#^Dynamic call to static method PHPUnit\\Framework\\Assert\:\:markTestSkipped\(\)\.$#'
+			identifier: staticMethod.dynamicCall
+			count: 3
+			path: tests/phpunit/CRM/Donrec/PdfcryptTest.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 3
+			path: tests/phpunit/CRM/Donrec/PdfcryptTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotConflict\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotConflictMixed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotCreation\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotDeletion\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotMaintenanceMissing\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotMaintenanceMixed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotMaintenanceNoExpired\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotNoConflict\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotQueryExpired\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotQueryMatch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotQueryMissing\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotQueryNoMatch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Property CRM_Donrec_SnapshotTest\:\:\$tablesToTruncate type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/SnapshotTest.php
+
+		-
+			message: '#^Property CRM_Donrec_TemplateTest\:\:\$tablesToTruncate type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/TemplateTest.php

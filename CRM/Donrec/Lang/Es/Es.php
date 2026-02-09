@@ -8,13 +8,15 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * This class holds Spanish language helper functions
  */
-class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
-  static private $UNIDADES = array(
+class CRM_Donrec_Lang_Es_Es extends CRM_Donrec_Lang {
+  private static array $UNIDADES = [
     '',
     'UN ',
     'DOS ',
@@ -35,10 +37,10 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
     'DIECISIETE ',
     'DIECIOCHO ',
     'DIECINUEVE ',
-    'VEINTE '
-  );
+    'VEINTE ',
+  ];
 
-  static private $DECENAS = array(
+  private static array $DECENAS = [
     'VEINTI',
     'TREINTA ',
     'CUARENTA ',
@@ -47,10 +49,10 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
     'SETENTA ',
     'OCHENTA ',
     'NOVENTA ',
-    'CIEN '
-  );
+    'CIEN ',
+  ];
 
-  static private $CENTENAS = array(
+  private static array $CENTENAS = [
     'CIENTO ',
     'DOSCIENTOS ',
     'TRESCIENTOS ',
@@ -59,23 +61,46 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
     'SEISCIENTOS ',
     'SETECIENTOS ',
     'OCHOCIENTOS ',
-    'NOVECIENTOS '
-  );
+    'NOVECIENTOS ',
+  ];
 
-  static private $MONEDAS = array(
-    array('country' => 'Colombia', 'currency' => 'COP', 'singular' => 'PESO COLOMBIANO', 'plural' => 'PESOS COLOMBIANOS', 'symbol', '$'),
-    array('country' => 'Estados Unidos', 'currency' => 'USD', 'singular' => 'DÓLAR', 'plural' => 'DÓLARES', 'symbol', 'US$'),
-    array('country' => 'Europa', 'currency' => 'EUR', 'singular' => 'EURO', 'plural' => 'EUROS', 'symbol', '€'),
-    array('country' => 'México', 'currency' => 'MXN', 'singular' => 'PESO MEXICANO', 'plural' => 'PESOS MEXICANOS', 'symbol', '$'),
-    array('country' => 'Perú', 'currency' => 'PEN', 'singular' => 'NUEVO SOL', 'plural' => 'NUEVOS SOLES', 'symbol', 'S/'),
-    array('country' => 'Reino Unido', 'currency' => 'GBP', 'singular' => 'LIBRA', 'plural' => 'LIBRAS', 'symbol', '£'),
-    array('country' => 'Argentina', 'currency' => 'ARS', 'singular' => 'PESO', 'plural' => 'PESOS', 'symbol', '$')
-  );
+  private static array $MONEDAS = [
+    [
+      'country' => 'Colombia',
+      'currency' => 'COP',
+      'singular' => 'PESO COLOMBIANO',
+      'plural' => 'PESOS COLOMBIANOS',
+      'symbol' => '$',
+    ],
+    [
+      'country' => 'Estados Unidos',
+      'currency' => 'USD',
+      'singular' => 'DÓLAR',
+      'plural' => 'DÓLARES',
+      'symbol' => 'US$',
+    ],
+    [
+      'country' => 'Europa',
+      'currency' => 'EUR',
+      'singular' => 'EURO',
+      'plural' => 'EUROS',
+      'symbol' => '€',
+    ],
+    [
+      'country' => 'México',
+      'currency' => 'MXN',
+      'singular' => 'PESO MEXICANO',
+      'plural' => 'PESOS MEXICANOS',
+      'symbol' => '$',
+    ],
+    ['country' => 'Perú', 'currency' => 'PEN', 'singular' => 'NUEVO SOL', 'plural' => 'NUEVOS SOLES', 'symbol' => 'S/'],
+    ['country' => 'Reino Unido', 'currency' => 'GBP', 'singular' => 'LIBRA', 'plural' => 'LIBRAS', 'symbol' => '£'],
+    ['country' => 'Argentina', 'currency' => 'ARS', 'singular' => 'PESO', 'plural' => 'PESOS', 'symbol' => '$'],
+  ];
 
-  static private $separator = ',';
-  static private $decimal_mark = '.';
-  static private $glue = ' CON ';
-
+  private static string $separator = ',';
+  private static string $decimal_mark = '.';
+  private static string $glue = ' CON ';
 
   /**
    * Get the (localised) name of the language
@@ -83,35 +108,26 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
    * @return string name of the language
    */
   public function getName() {
-    return E::ts("Spanish (Spain)");
+    return E::ts('Spanish (Spain)');
   }
 
-
   /**
-   * Render a full text expressing the amount in the given currency
-   *
-   * @param $amount   string amount
-   * @param $currency string currency. Leave empty to render without currency
-   * @param $params   array additional parameters
-   * @return string rendered string in the given language
+   * @inheritDoc
    */
   public function amount2words($amount, $currency, $params = []) {
     return self::toWords($amount);
   }
 
   /**
-   * Get a spoken word representation for the given currency
-   *
-   * @param $currency string currency symbol, e.g 'EUR' or 'USD'
-   * @param $quantity int count, e.g. for plural
-   * @return string   spoken word, e.g. 'Euro' or 'Dollar'
+   * @inheritDoc
    */
   public function currency2word($currency, $quantity) {
     foreach (self::$MONEDAS as $moneda) {
       if ($moneda['currency'] == $currency) {
         if ($quantity > 1) {
           return $moneda['singular'];
-        } else {
+        }
+        else {
           return $moneda['plural'];
         }
       }
@@ -121,29 +137,26 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
     return parent::currency2word($currency, $quantity);
   }
 
-
-
-
   /**
    * Evalua si el número contiene separadores o decimales
    * formatea y ejecuta la función conversora
-   * @param $number número a convertir
-   * @param $miMoneda clave de la moneda
+   * @param string|int|float $number número a convertir
+   * @param string|null $miMoneda clave de la moneda
    * @return string completo
    */
-  static public function toWords($number, $miMoneda = NULL) {
-    if (strpos($number, self::$decimal_mark) === FALSE) {
-      $convertedNumber = array(
-        self::convertNumber($number, $miMoneda, 'entero')
-      );
+  public static function toWords($number, $miMoneda = NULL) {
+    if (strpos((string) $number, self::$decimal_mark) === FALSE) {
+      $convertedNumber = [
+        self::convertNumber($number, $miMoneda, 'entero'),
+      ];
     }
     else {
       $number = explode(self::$decimal_mark, str_replace(self::$separator, '', trim($number)));
 
-      $convertedNumber = array(
+      $convertedNumber = [
         self::convertNumber($number[0], $miMoneda, 'entero'),
         self::convertNumber($number[1], $miMoneda, 'decimal'),
-      );
+      ];
     }
     return implode(self::$glue, array_filter($convertedNumber));
   }
@@ -151,13 +164,16 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
   /**
    * Convierte número a letras
    *
-   * @param $number
-   * @param $miMoneda
-   * @param $type tipo de dígito (entero/decimal)
+   * @param string|int|float $number
+   * @param string|null $miMoneda
+   * @param string $type tipo de dígito (entero/decimal)
    *
-   * @return bool|string|void $converted string convertido
+   * @return string|FALSE $converted string convertido
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  static private function convertNumber($number, string $miMoneda = NULL, $type) {
+  private static function convertNumber($number, ?string $miMoneda, $type) {
+  // phpcs:enable
     $converted = '';
     if ($miMoneda !== NULL) {
       try {
@@ -168,14 +184,14 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
         $moneda = array_values($moneda);
 
         if (count($moneda) <= 0) {
-          throw new Exception("Tipo de moneda inválido");
-          return;
+          throw new Exception('Tipo de moneda inválido');
         }
         ($number < 2 ? $moneda = $moneda[0]['singular'] : $moneda = $moneda[0]['plural']);
       }
       catch (Exception $e) {
+        // @ignoreException
         echo $e->getMessage();
-        return;
+        return FALSE;
       }
     }
     else {
@@ -227,14 +243,14 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
   /**
    * Define el tipo de representación decimal (centenas/millares/millones)
    * @param $n
-   * @return mixed|string $output
-*/
+   * @return string $output
+   */
   private static function convertGroup($n) {
 
     $output = '';
 
     if ($n == '100') {
-      $output = "CIEN ";
+      $output = 'CIEN ';
     }
     elseif ($n[0] !== '0') {
       $output = self::$CENTENAS[$n[0] - 1];
@@ -256,4 +272,5 @@ class CRM_Donrec_Lang_Es_Es extends  CRM_Donrec_Lang {
 
     return $output;
   }
+
 }

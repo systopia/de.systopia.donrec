@@ -24,9 +24,18 @@ $bootstrapFiles = $container->getParameter('bootstrapFiles');
 foreach ($bootstrapFiles as $bootstrapFile) {
   if (str_ends_with($bootstrapFile, 'vendor/autoload.php')) {
     $vendorDir = dirname($bootstrapFile);
+    // Installation via composer (e.g. as Drupal module)
     $civiCrmVendorDir = $vendorDir . '/civicrm';
     $civiCrmCoreDir = $civiCrmVendorDir . '/civicrm-core';
     $civiCrmPackagesDir = $civiCrmVendorDir . '/civicrm-packages';
+    // Installation without composer (e.g. as WordPress plugin)
+    if (!is_dir($civiCrmCoreDir) || !is_dir($civiCrmPackagesDir)) {
+      $civiCrmCoreDir = $vendorDir . '/..';
+      $civiCrmPackagesDir = $civiCrmCoreDir . '/packages';
+    }
+    if (!is_dir($civiCrmCoreDir) || !is_dir($civiCrmPackagesDir)) {
+      continue;
+    }
     if (file_exists($civiCrmCoreDir)) {
       set_include_path(get_include_path()
         . PATH_SEPARATOR . $civiCrmCoreDir

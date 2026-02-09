@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 class CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional extends CRM_Donrec_Logic_WatermarkPreset {
@@ -23,13 +25,16 @@ class CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional extends CRM_Donrec
   public function injectMarkup(&$html, $paper_size) {
     $watermark_site = '<div class="watermark watermark-center">{if $watermark}{$watermark}{/if}</div>';
 
-    $matches = array();
+    $matches = [];
     preg_match('/<body[^>]*>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $body_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_site, $body_offset + strlen($matches[0][0]), 0);
-    }else if (count($matches) < 1) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.');
+    }
+    elseif (count($matches) < 1) {
+      Civi::log()->debug(
+        'de.systopia.donrec: watermark could not be created for site one (<body> not found). pdf rendering cancelled.'
+      );
       return FALSE;
     }
 
@@ -58,20 +63,24 @@ class CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional extends CRM_Donrec
                         </style>
                         ';
 
-    $matches = array();
+    $matches = [];
     preg_match('/<\/style>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $head_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_css, $head_offset + strlen($matches[0][0]), 0);
-    }else if (count($matches) < 1) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
-      $matches = array();
+    }
+    elseif (count($matches) < 1) {
+      Civi::log()->debug(
+        'de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.'
+      );
+      $matches = [];
       preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
       if (count($matches) == 1) {
         $head_offset = $matches[0][1];
         $html = substr_replace($html, $watermark_css, $head_offset, 0);
-      }else{
-        CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
+      }
+      else {
+        Civi::log()->debug('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
         return FALSE;
       }
     }

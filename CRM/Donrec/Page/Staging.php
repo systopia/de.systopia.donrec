@@ -8,29 +8,31 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
-* This class handles form input for the contribution creation task
-*/
+ * This class handles form input for the contribution creation task
+ */
 class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
-  function run() {
+  // phpcs:disable Generic.Metrics.CyclomaticComplexity.MaxExceeded
+  public function run() {
+  // phpcs:enable
     CRM_Utils_System::setTitle(E::ts('Issue Donation Receipts'));
 
     // Since 4.6 the css-class crm-summary-row lives in contactSummary.css
     // instead of civicrm.css
-    if (version_compare(CRM_Utils_System::version(), '4.6', '>=')) {
-      CRM_Core_Resources::singleton()->addStyleFile('civicrm', 'css/contactSummary.css');
-    }
+    CRM_Core_Resources::singleton()->addStyleFile('civicrm', 'css/contactSummary.css');
 
-    $id = empty($_REQUEST['sid'])?NULL:$_REQUEST['sid'];
-    $ccount = empty($_REQUEST['ccount'])?NULL:$_REQUEST['ccount'];
-    $selected_exporter = empty($_REQUEST['exporters'])?NULL:$_REQUEST['exporters'];
-    $origin = empty($_REQUEST['origin'])?NULL:$_REQUEST['origin'];
+    $id = empty($_REQUEST['sid']) ? NULL : (int) $_REQUEST['sid'];
+    $ccount = empty($_REQUEST['ccount']) ? NULL : $_REQUEST['ccount'];
+    $selected_exporter = empty($_REQUEST['exporters']) ? NULL : $_REQUEST['exporters'];
+    $origin = empty($_REQUEST['origin']) ? NULL : $_REQUEST['origin'];
 
     // working on a test-snapshot
-    $from_test = empty($_REQUEST['from_test'])?NULL:$_REQUEST['from_test'];
+    $from_test = empty($_REQUEST['from_test']) ? NULL : $_REQUEST['from_test'];
     $this->assign('from_test', $from_test);
 
     // add statistic
@@ -46,86 +48,138 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
 
     // check which button was clicked
     // called when the 'abort' button was selected
-    if(!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
+    if (!empty($_REQUEST['donrec_abort']) || !empty($_REQUEST['donrec_abort_by_admin'])) {
       $by_admin = !empty($_REQUEST['donrec_abort_by_admin']);
 
       // we need a (valid) snapshot id here
       if (empty($id)) {
         $this->assign('error', E::ts('No snapshot id has been provided!'));
-        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
-      }else{
+        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', forceBackend: TRUE));
+      }
+      else {
         $snapshot = CRM_Donrec_Logic_Snapshot::get($id);
         if (empty($snapshot)) {
           $this->assign('error', E::ts('Invalid snapshot id!'));
-          $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
-        }else{
+          $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', forceBackend: TRUE));
+        }
+        else {
           // delete the snapshot and redirect to search form
           $snapshot->delete();
           if ($by_admin) {
             $return_id = $_REQUEST['return_to'];
-            CRM_Core_Session::setStatus(E::ts('The older snapshot has been deleted. You can now proceed.'), E::ts('Warning'), 'warning');
-            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$return_id&ccount=$ccount", FALSE, NULL, TRUE, FALSE, TRUE));
-          }else{
-            CRM_Core_Session::setStatus(E::ts('The previously created snapshot has been deleted.'), E::ts('Warning'), 'warning');
+            CRM_Core_Session::setStatus(
+              E::ts('The older snapshot has been deleted. You can now proceed.'),
+              E::ts('Warning'),
+              'warning'
+            );
+            CRM_Utils_System::redirect(CRM_Utils_System::url(
+              'civicrm/donrec/task',
+              "sid=$return_id&ccount=$ccount",
+              forceBackend: TRUE
+            ));
+          }
+          else {
+            CRM_Core_Session::setStatus(
+              E::ts('The previously created snapshot has been deleted.'),
+              E::ts('Warning'),
+              'warning'
+            );
             if (!empty($_REQUEST['origin'])) {
-              CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid=$origin&selectedChild=donation_receipts", FALSE, NULL, TRUE, FALSE, TRUE));
-             }else{
-               CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
-             }
+              CRM_Utils_System::redirect(CRM_Utils_System::url(
+                'civicrm/contact/view',
+                "reset=1&cid=$origin&selectedChild=donation_receipts",
+                forceBackend: TRUE
+              ));
+            }
+            else {
+              CRM_Utils_System::redirect(CRM_Utils_System::url(
+                'civicrm/contact/search',
+                forceBackend: TRUE
+              ));
+            }
           }
         }
       }
-    }elseif (!empty($_REQUEST['donrec_testrun'])) {
+    }
+    elseif (!empty($_REQUEST['donrec_testrun'])) {
       // called when the 'test run' button was selected
-      $bulk = (int)($_REQUEST['donrec_type'] == "2");
+      $bulk = (int) ($_REQUEST['donrec_type'] == '2');
       $exporters = $_REQUEST['result_type'];
       // at least one exporter has to be selected
       if (empty($exporters)) {
         $this->assign('error', E::ts('Missing exporter!'));
-        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
-      }else{
-        //on testrun we want to return to the stats-page instead of the contact-search-page
-        //but we must not overwrite the url_back-var
+        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', forceBackend: TRUE));
+      }
+      else {
+        // on test run we want to return to the stats-page instead of the contact-search-page,
+        // but we must not overwrite the url_back-var
         $session = CRM_Core_Session::singleton();
-        $session->set('url_back_test', CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount&from_test=1&origin=$origin", FALSE, NULL, TRUE, FALSE, TRUE));
+        $session->set(
+          'url_back_test',
+          CRM_Utils_System::url(
+            'civicrm/donrec/task',
+            "sid=$id&ccount=$ccount&from_test=1&origin=$origin",
+            forceBackend: TRUE
+          )
+        );
 
-        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&exporters=$exporters", FALSE, NULL, TRUE, FALSE, TRUE));
+        CRM_Utils_System::redirect(CRM_Utils_System::url(
+          'civicrm/donrec/runner',
+          "sid=$id&bulk=$bulk&exporters=$exporters",
+          forceBackend: TRUE
+        ));
       }
-    }elseif (!empty($_REQUEST['donrec_run'])) {
+    }
+    elseif (!empty($_REQUEST['donrec_run'])) {
       // issue donation receipts case
-      $bulk = (int)($_REQUEST['donrec_type'] == "2");
+      $bulk = (int) ($_REQUEST['donrec_type'] == '2');
       $exporters = $_REQUEST['result_type'];
       // at least one exporter has to be selected
       if (empty($exporters)) {
         $this->assign('error', E::ts('Missing exporter!'));
-        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
-      }else{
-        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/runner', "sid=$id&bulk=$bulk&final=1&exporters=$exporters", FALSE, NULL, TRUE, FALSE, TRUE));
+        $this->assign('url_back', CRM_Utils_System::url('civicrm/donrec/task', forceBackend: TRUE));
       }
-    }elseif (!empty($_REQUEST['conflict'])) {
+      else {
+        CRM_Utils_System::redirect(CRM_Utils_System::url(
+          'civicrm/donrec/runner',
+          "sid=$id&bulk=$bulk&final=1&exporters=$exporters",
+          forceBackend: TRUE
+        ));
+      }
+    }
+    elseif (!empty($_REQUEST['conflict'])) {
       // called when a snapshot conflict has been detected
       $conflict = CRM_Donrec_Logic_Snapshot::hasIntersections();
       if (!$conflict) {
-        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/donrec/task', "sid=$id&ccount=$ccount", FALSE, NULL, TRUE, FALSE, TRUE));
+        CRM_Utils_System::redirect(CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          "sid=$id&ccount=$ccount",
+          forceBackend: TRUE
+        ));
       }
 
       $this->assign('conflict_error', $conflict[1]);
-      $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search', NULL, FALSE, NULL, TRUE, FALSE, TRUE));
+      $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search', forceBackend: TRUE));
 
-      if(CRM_Core_Permission::check('delete receipts')) {
+      if (CRM_Core_Permission::check('delete receipts')) {
         $this->assign('is_admin', 1);
         $this->assign('return_to', $conflict[2][0]);
-        $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
-                                "sid=" . $conflict[1][0] . "&ccount=$ccount",
-                                false, null, false, FALSE, TRUE ));
+        $this->assign('formAction', CRM_Utils_System::url(
+          'civicrm/donrec/task',
+        'sid=' . $conflict[1][0] . "&ccount=$ccount",
+          htmlize: FALSE,
+          forceBackend: TRUE)
+        );
       }
-    }else{
+    }
+    else {
       if (empty($id)) {
         $this->assign('error', E::ts('No snapshot id has been provided!'));
         $this->assign('url_back', CRM_Utils_System::url('civicrm/contact/search', '', FALSE, NULL, TRUE, FALSE, TRUE));
-      }else{
+      }
+      else {
         // get supported exporters
-        $exp_array = array();
+        $exp_array = [];
         $exporters = CRM_Donrec_Logic_Exporter::listExporters();
         foreach ($exporters as $exporter) {
           $classname = CRM_Donrec_Logic_Exporter::getClassForExporter($exporter);
@@ -134,26 +188,31 @@ class CRM_Donrec_Page_Staging extends CRM_Core_Page {
           $instance = new $classname();
           $result = $instance->checkRequirements(CRM_Donrec_Logic_Snapshot::get($id)->getProfile());
           $is_usable = TRUE;
-          $error_msg = "";
-          $info_msg = "";
+          $error_msg = '';
+          $info_msg = '';
 
           if ($result['is_error']) {
             $is_usable = FALSE;
-            $error_msg = $result['message'];
-          }else if(!empty($result['message'])){
+            $error_msg = $result['message'] ?? NULL;
+          }
+          elseif (!empty($result['message'])) {
             $info_msg = $result['message'];
           }
 
-          $exp_array[] = array($exporter, $classname::name(), $classname::htmlOptions(), $is_usable, $error_msg, $info_msg);
+          $exp_array[] = [$exporter, $classname::name(), $classname::htmlOptions(), $is_usable, $error_msg, $info_msg];
         }
 
         $this->assign('exporters', $exp_array);
-        $this->assign('formAction', CRM_Utils_System::url( 'civicrm/donrec/task',
-                                "sid=$id&ccount=$ccount&origin=$origin",
-                                false, null, false, FALSE, TRUE ));
+        $this->assign('formAction', CRM_Utils_System::url(
+          'civicrm/donrec/task',
+          "sid=$id&ccount=$ccount&origin=$origin",
+          htmlize: FALSE,
+          forceBackend: TRUE
+        ));
       }
     }
 
     parent::run();
   }
+
 }

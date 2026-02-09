@@ -20,6 +20,9 @@
     <url desc="Support">https://github.com/systopia/de.systopia.donrec/issues</url>
   </urls>
   <comments>Developed by SYSTOPIA. Thanks to Niko Bochan, Thomas Leichtfu&#xDF; and Bj&#xF6;rn Endres.</comments>
+  <requires>
+    <ext>civi_contribute</ext>
+  </requires>
   <civix>
     <namespace>CRM/Donrec</namespace>
     <format>23.02.1</format>

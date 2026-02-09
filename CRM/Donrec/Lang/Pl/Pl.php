@@ -8,9 +8,13 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
-require_once 'Kwota.php';
+// phpcs:disable PSR1.Files.SideEffects
+require_once __DIR__ . '/Kwota.php';
+// phpcs:enable
 
 /**
  * This class holds Polish language helper functions
@@ -23,40 +27,35 @@ class CRM_Donrec_Lang_Pl_Pl extends CRM_Donrec_Lang {
    * @return string name of the language
    */
   public function getName() {
-    return E::ts("Polish");
+    return E::ts('Polish');
   }
 
   /**
-   * Render a full text expressing the amount in the given currency
-   *
-   * @param $amount   string amount
-   * @param $currency string currency. Leave empty to render without currency
-   * @param $params   array additional parameters
-   * @return string rendered string in the given language
+   * @inheritDoc
    */
   public function amount2words($amount, $currency, $params = []) {
     try {
       if (function_exists('bcadd')) {
         $kwota = Kwota::getInstance();
         return $kwota->slownie($amount);
-      } else {
-        CRM_Core_Error::debug_log_message("Donrec: you need to install Bcmath module to use the polish language");
+      }
+      else {
+        Civi::log()->debug('Donrec: you need to install Bcmath module to use the polish language');
         return 'ERROR';
       }
-    } catch(Exception $ex) {
-      CRM_Core_Error::debug_log_message("Donrec: couldn't render text representation ({$amount}|pl_PL): " . $ex->getMessage());
+    }
+    catch (Exception $ex) {
+      // @ignoreException
+      Civi::log()->debug("Donrec: couldn't render text representation ({$amount}|pl_PL): " . $ex->getMessage());
       return 'ERROR';
     }
   }
 
   /**
-   * Get a spoken word representation for the given currency
-   *
-   * @param $currency string currency symbol, e.g 'EUR' or 'USD'
-   * @param $quantity int count, e.g. for plural
-   * @return string   spoken word, e.g. 'Euro' or 'Dollar'
+   * @inheritDoc
    */
   public function currency2word($currency, $quantity) {
     return parent::currency2word($currency, $quantity);
   }
+
 }

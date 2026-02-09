@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * This class represents the general contribution selector
  */
@@ -26,7 +28,7 @@ class CRM_Donrec_Logic_Selector {
     // Process date picker values.
     [
       $values['donrec_contribution_horizon_from'],
-      $values['donrec_contribution_horizon_to']
+      $values['donrec_contribution_horizon_to'],
     ] = CRM_Utils_Date::getFromTo(
       $values['donrec_contribution_horizon_relative'],
       $values['donrec_contribution_horizon_from'],
@@ -43,7 +45,7 @@ class CRM_Donrec_Logic_Selector {
     $formatted_date_from = date('Y-m-d H:i:s', $date_from);
     $formatted_date_to = date('Y-m-d H:i:s', $date_to);
 
-    $query_date_limit = "";
+    $query_date_limit = '';
     if ($date_from) {
       $query_date_limit .= "AND `receive_date` >= '$formatted_date_from'";
     }
@@ -61,6 +63,7 @@ class CRM_Donrec_Logic_Selector {
                     WHERE `cg`.`name` = 'zwb_donation_receipt_item'
                       AND `cf`.`custom_group_id` = `cg`.`id`
                       AND `cf`.`name` = 'status'";
+    /** @var \CRM_Core_DAO $results */
     $results = CRM_Core_DAO::executeQuery($table_query);
 
     $custom_group_table = NULL;
@@ -72,23 +75,26 @@ class CRM_Donrec_Logic_Selector {
 
     if ($custom_group_table == NULL || $status_column == NULL) {
       // something went wrong here
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: error: custom_group_table or status_column is empty!");
-      return array();
+      Civi::log()->debug('de.systopia.donrec: error: custom_group_table or status_column is empty!');
+      return [];
     }
 
     // calculate main selector clause
     if (!empty($values['contact_id'])) {
       $contact_id = (int) $values['contact_id'];
       $main_selector = "`contact_id` = $contact_id";
-    } elseif (!empty($values['contact_ids'])) {
+    }
+    elseif (!empty($values['contact_ids'])) {
       $contact_ids = implode(',', $values['contact_ids']);
       $main_selector = "`contact_id` IN ($contact_ids)";
-    } elseif (!empty($values['contribution_ids'])) {
+    }
+    elseif (!empty($values['contribution_ids'])) {
       $contribution_ids = implode(',', $values['contribution_ids']);
       $main_selector = "`civicrm_contribution`.`id` IN ($contribution_ids)";
-    } else {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: error: no selector data found in params!");
-      $main_selector = "FALSE";
+    }
+    else {
+      Civi::log()->debug('de.systopia.donrec: error: no selector data found in params!');
+      $main_selector = 'FALSE';
     }
 
     // get financial type selector clause
@@ -96,7 +102,6 @@ class CRM_Donrec_Logic_Selector {
     $financialTypeClause = $profile->getContributionTypesClause();
 
     $enable_line_item = CRM_Donrec_Logic_Settings::get('donrec_enable_line_item');
-
 
     // run the main query
     if ($enable_line_item) {
@@ -111,7 +116,8 @@ class CRM_Donrec_Logic_Selector {
               WHERE
                   ($main_selector)
                   $query_date_limit
-                  AND ((`civicrm_contribution`.$financialTypeClause AND `civicrm_line_item`.`id` IS NULL) OR `civicrm_line_item`.`id` IS NOT NULL)
+                  AND ((`civicrm_contribution`.$financialTypeClause AND `civicrm_line_item`.`id` IS NULL)
+                    OR `civicrm_line_item`.`id` IS NOT NULL)
                   AND (
                     `civicrm_contribution`.`non_deductible_amount` = 0
                     OR `civicrm_contribution`.`non_deductible_amount` IS NULL
@@ -123,7 +129,8 @@ class CRM_Donrec_Logic_Selector {
                   AND `currency` = '$currency'
                   AND existing_receipt.`entity_id` IS NULL
               GROUP BY `civicrm_contribution`.`id`;";
-    } else {
+    }
+    else {
       $query = "SELECT `civicrm_contribution`.`id`
               FROM `civicrm_contribution`
               LEFT JOIN `$custom_group_table` AS existing_receipt
@@ -141,19 +148,21 @@ class CRM_Donrec_Logic_Selector {
     }
 
     // execute the query
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
 
     // build array
-    $contributionIds = array();
+    $contributionIds = [];
     while ($result->fetch()) {
       $contributionIds[] = $result->id;
     }
 
     // finally, build the snapshot with it
-    return CRM_Donrec_Logic_Snapshot::create( $contributionIds,
+    return CRM_Donrec_Logic_Snapshot::create($contributionIds,
                                               CRM_Donrec_Logic_Settings::getLoggedInContactID(),
                                               $formatted_date_from,
                                               $formatted_date_to,
                                               $values['profile']);
   }
+
 }

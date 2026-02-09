@@ -23,6 +23,9 @@
         "civicrm/civicrm-core": ">=5.76",
         "civicrm/civicrm-packages": ">=5.76"
     },
+    "suggest": {
+      "systopia/de.systopia.civioffice": "Create PDFs with CiviOffice"
+    },
     "autoload": {
         "classmap": ["ComposerHelper.php"]
     },
@@ -61,5 +64,8 @@
             "@phpstan",
             "@phpunit"
         ]
+    },
+    "conflict": {
+        "pear/mail_mime": "<1.10.2"
     }
 }

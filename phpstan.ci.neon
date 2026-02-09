@@ -3,13 +3,19 @@ includes:
 
 parameters:
 	scanDirectories:
+		- vendor/civicrm/civicrm-core/api
 		- vendor/civicrm/civicrm-core/CRM
+		- vendor/civicrm/civicrm-packages/DB
+		- vendor/civicrm/civicrm-packages/HTML
 	bootstrapFiles:
 		- vendor/autoload.php
 	# Because we test with different versions in CI we may have unmatched errors.
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		# Errors we get when using "prefer-lowest"
+
+		# Required with civicrm/civicrm-core <6.1.0
+		- '#^Call to an undefined static method Civi::rebuild\(\).$#'
 
 		# Required with symfony/event-dispatcher <4.4.27
 		- '#::getSubscribedEvents\(\) return type has no value type specified in iterable type array.$#'

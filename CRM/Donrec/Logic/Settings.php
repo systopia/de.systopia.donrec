@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -16,29 +18,26 @@ use CRM_Donrec_ExtensionUtil as E;
 class CRM_Donrec_Logic_Settings {
 
   // FIXME:: remove
-  public static $SETTINGS_GROUP = "Donation Receipt Settings";
-
+  public static string $SETTINGS_GROUP = 'Donation Receipt Settings';
 
   /**
    * generic set setting
    *
    * @param string $name
    *
-   * @return array|string
-   * @throws \CRM_Core_Exception
+   * @return mixed
    */
   public static function get($name) {
-    return civicrm_api3('Setting', 'getvalue', array('name' => $name));
+    return \Civi::settings()->get($name);
   }
 
   /**
    * generic set setting
    * @param string $name
    * @param mixed $value
-   * @throws \CRM_Core_Exception
-*/
+   */
   public static function set($name, $value) {
-    civicrm_api3('Setting', 'create', array($name => $value));
+    \Civi::settings()->set($name, $value);
   }
 
   /**
@@ -47,10 +46,11 @@ class CRM_Donrec_Logic_Settings {
    * @return array
    */
   public static function getAllTemplates() {
-    $relevant_templates = array();
-    $all_templates = civicrm_api3('MessageTemplate', 'get', array(
+    $relevant_templates = [];
+    $all_templates = civicrm_api3('MessageTemplate', 'get', [
       'is_active'    => 1,
-      'option.limit' => 0));
+      'option.limit' => 0,
+    ]);
     foreach ($all_templates['values'] as $template) {
       // TODO: filter?
       $relevant_templates[$template['id']] = $template['msg_title'];
@@ -59,16 +59,23 @@ class CRM_Donrec_Logic_Settings {
     return $relevant_templates;
   }
 
-  public static function getWatermarkPresets() {
-    return array(
-      CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getName() => CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getName() => CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter::getLabel(),
-      CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getName() => CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getLabel(),
-    );
+  public static function getWatermarkPresets(): array {
+    return [
+      CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossLarge::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_SvgAcrossSmall::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_SvgUpperRightCorner::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter::getLabel(),
+      CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getName()
+      => CRM_Donrec_Logic_WatermarkPreset_SvgHolohedral::getLabel(),
+    ];
   }
 
   /**
@@ -77,10 +84,11 @@ class CRM_Donrec_Logic_Settings {
    * @return int
    */
   public static function getChunkSize() {
-    $packet_size = (int) civicrm_api3('Setting', 'getvalue', array('name' => 'donrec_packet_size'));
+    $packet_size = (int) civicrm_api3('Setting', 'getvalue', ['name' => 'donrec_packet_size']);
     if ($packet_size >= 1) {
       return $packet_size;
-    } else {
+    }
+    else {
       return 1;
     }
   }
@@ -89,12 +97,8 @@ class CRM_Donrec_Logic_Settings {
    * Retrieve contact id of the logged in user
    * @return integer | NULL contact ID of logged in user
    */
-  static function getLoggedInContactID() {
-    $session = CRM_Core_Session::singleton();
-    if (!is_numeric($session->get('userID'))) {
-      return NULL;
-    }
-    return $session->get('userID');
+  public static function getLoggedInContactID() {
+    return CRM_Core_Session::getLoggedInContactID();
   }
 
   /**
@@ -102,13 +106,14 @@ class CRM_Donrec_Logic_Settings {
    *
    * @param \CRM_Donrec_Logic_Profile $profile
    *
-   * @return int
+   * @return int|null
    */
   public static function getEmailTemplateID($profile) {
     $template_id = $profile->getDataAttribute('email_template');
     if ($template_id >= 1) {
-      return $template_id;
-    } else {
+      return (int) $template_id;
+    }
+    else {
       return NULL;
     }
   }
@@ -119,7 +124,7 @@ class CRM_Donrec_Logic_Settings {
    * @return array
    */
   public static function getContributionUnlockableFields() {
-    return array(
+    return [
       'financial_type_id' => E::ts('Financial type'),
       'campaign_id' => E::ts('Campaign'),
       'payment_instrument_id' => E::ts('Payment method'),
@@ -130,7 +135,7 @@ class CRM_Donrec_Logic_Settings {
       'currency' => E::ts('Currency'),
       'note' => E::ts('Note'),
       'custom_fields' => E::ts('Custom fields'),
-    );
+    ];
   }
 
   /**
@@ -147,13 +152,15 @@ class CRM_Donrec_Logic_Settings {
    *   Error messages, keyed by contribution property name.
    * @throws \Exception
    *   When $throw_exception was passed TRUE in case of failed validation.
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.NestingLevel.TooHigh
    */
   public static function validateContribution($contribution_id, $old_values, $new_values, $throw_exception = FALSE) {
-    $errors = array();
+    $errors = [];
 
     if (!empty($receipt_id = CRM_Donrec_Logic_Receipt::getReceiptIDsByContributionID(
         $contribution_id,
-        0,
+        NULL,
         60,
         'ORIGINAL'
     ))) {
@@ -175,6 +182,10 @@ class CRM_Donrec_Logic_Settings {
       $unlockable_fields = array_merge($unlockable_fields, $custom_fields);
       unset($unlockable_fields[array_search('custom_fields', $unlockable_fields)]);
 
+      $allowed = [];
+      $unlock_mode = NULL;
+      $unlock_fields = NULL;
+
       // Retrieve unlock settings from profile.
       if ($snapshot_id && $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id)) {
         $unlock_mode = $snapshot->getProfile()->getDataAttribute('contribution_unlock_mode');
@@ -188,9 +199,11 @@ class CRM_Donrec_Logic_Settings {
         case 'unlock_all':
           $allowed = $unlockable_fields;
           break;
+
         case 'unlock_none':
-          $allowed = array();
+          $allowed = [];
           break;
+
         case 'unlock_selected':
           $allowed = array_keys(array_filter(
             $unlock_fields,
@@ -216,9 +229,12 @@ class CRM_Donrec_Logic_Settings {
 
             // we need a special check for dates
             if (strpos($col, 'date')) {
-              // this approach does not considers seconds!
+              // this approach does not consider seconds!
               // (some input-formats does not allow the input of seconds at all)
-              $new_date = date('d/m/Y H:i', strtotime($new_values['receive_date'] . ' ' . $new_values['receive_date_time']));
+              $new_date = date(
+                'd/m/Y H:i',
+                strtotime($new_values['receive_date'] . ' ' . $new_values['receive_date_time'])
+              );
               $old_date = date('d/m/Y H:i', strtotime($old_values['receive_date']));
               if ($new_date == $old_date) {
                 continue;
@@ -238,7 +254,12 @@ class CRM_Donrec_Logic_Settings {
               }
             }
 
-            $errors[$col] = sprintf(E::ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."), ts($col));
+            $errors[$col] = sprintf(
+              // phpcs:disable Generic.Files.LineLength.TooLong
+              E::ts("A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."),
+              // phpcs:enable
+              ts($col)
+            );
             if ($throw_exception) {
               throw new Exception($errors[$col]);
             }
@@ -249,4 +270,5 @@ class CRM_Donrec_Logic_Settings {
 
     return $errors;
   }
+
 }

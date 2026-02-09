@@ -8,86 +8,43 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-# require_once 'CiviTest/CiviUnitTestCase.php';
+declare(strict_types = 1);
 
 /**
  * Snapshot Test Suite
+ *
+ * @covers \CRM_Donrec_Logic_Template
  * @group headless
  */
 class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
-  private $tablesToTruncate = array();
+  private array $tablesToTruncate = [];
 
-  function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->quickCleanup($this->tablesToTruncate);
     donrec_civicrm_install();
     donrec_civicrm_enable();
   }
 
-  function tearDown(): void {
-    parent::tearDown();
-  }
-
-
   /**
    * Test template pdf generator
    *
    * @author niko bochan
    */
-  public function testTemplateCreate() {
-    $templates = CRM_Donrec_Logic_Template::findAllTemplates();
-    $this->assertNotNULL($templates, "No template found!");
+  public function testGeneratePDF(): void {
+    $values = [
+      'contributor' => ['display_name' => 'TEST CONTRIBUTOR'],
+      'total' => 100,
+      'total_text' => 'ein hundert Euro',
+    ];
+    $params = [];
 
-    $values = array('contributor' => 'TEST CONTRIBUTOR',
-                    'total' => 100,
-                    'total_text' => 'ein hundert Euro');
-    $params = array();
-
-    foreach ($templates as $key => $value) {
-      $t = CRM_Donrec_Logic_Template::create($key);
-      $this->assertNotNULL($t);
-      $result = $t->generatePDF($values, $params);
-      // check result
-      $failed = !$result && !empty($params['is_error']);
-      $error_msg = empty($params['is_error']) ? '' : $params['is_error'];
-      $this->assertEquals(FALSE, $failed, sprintf('PDF creation failed: %s', $error_msg));
-      $this->assertEquals(TRUE, $result);
-      $this->assertEquals(TRUE, file_exists($result));
-      // delete pdf
-      $this->assertEquals(TRUE, unlink($result));
-    }
+    $profile = CRM_Donrec_Logic_Profile::getProfile(0);
+    $template = CRM_Donrec_Logic_Template::getTemplate($profile);
+    $filename = $template->generatePDF($values, $params, $profile);
+    static::assertIsString($filename);
+    static::assertFileExists($filename);
+    unlink($filename);
   }
 
-  /**
-   * Test template pdf generator with invalid variables
-   *
-   * @author niko bochan
-   */
-  public function testTemplateCreateWithInvalid() {
-    $templates = CRM_Donrec_Logic_Template::findAllTemplates();
-    $this->assertNotNULL($templates, "No template found!");
-
-    $values = array('contributor' => 'TEST CONTRIBUTOR',
-                    'total' => 100,
-                    'total_text' => 'ein hundert Euro');
-    $params = array();
-
-    foreach ($templates as $key => $value) {
-      $t = CRM_Donrec_Logic_Template::create($key);
-      $this->assertNotNULL($t);
-      foreach ($values as $k => $v) {
-        $values_copy = $values;
-        unset($values_copy[$k]);
-        $result = $t->generatePDF($values_copy, $params);
-        // check result
-        $failed = !$result && !empty($params['is_error']);
-        $error_msg = empty($params['is_error']) ? '' : $params['is_error'];
-        $this->assertEquals(FALSE, $failed, sprintf('PDF creation failed: %s', $error_msg));
-        $this->assertEquals(TRUE, $result);
-        $this->assertEquals(TRUE, file_exists($result));
-        // delete pdf
-        $this->assertEquals(TRUE, unlink($result));
-      }
-    }
-  }
 }

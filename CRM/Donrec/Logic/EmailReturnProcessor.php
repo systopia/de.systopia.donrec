@@ -9,36 +9,36 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * Class CRM_Donrec_Logic_EmailReturnProcessor
  */
 class CRM_Donrec_Logic_EmailReturnProcessor {
 
-  public static $ZWB_HEADER_PATTERN = "DONREC#{contact_id}#{contribution_id}#{timestamp}#{profile_id}#";
-  public static $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
-  public static $PROCESSED_FOLDER   = 'INBOX.CiviMail.processed';
-  public static $IGNORED_FOLDER     = 'INBOX.CiviMail.ignored';
-  public static $FAILED_FOLDER      = 'INBOX.CiviMail.failed';
+  public static string $ZWB_HEADER_PATTERN = 'DONREC#{contact_id}#{contribution_id}#{timestamp}#{profile_id}#';
+  public static string $ZWB_HEADER_FIELD   = 'X400-Content-Identifier';
+  public static string $PROCESSED_FOLDER   = 'INBOX.CiviMail.processed';
+  public static string $IGNORED_FOLDER     = 'INBOX.CiviMail.ignored';
+  public static string $FAILED_FOLDER      = 'INBOX.CiviMail.failed';
 
-  protected $params = NULL;
+  protected array $params;
 
-  private $mailbox = NULL;
-  private $folder_list = NULL;
-
-  private $result_contact_ids;
-  private $matched_message_ids;
-  private $unmatched_message_ids;
-
+  /**
+   * @var IMAP\Connection
+   */
+  private $mailbox;
+  private ?array $folder_list = NULL;
 
   /**
    * CRM_Donrec_Logic_EmailReturnProcessor constructor.
    *
-   * @param $params array see civicrm_api3_donation_receipt_engine_processreturns
-   * @param null $from_api bool
+   * @param array $params see civicrm_api3_donation_receipt_engine_processreturns
+   * @param bool $from_api
    *
    * @throws \Exception
    */
-  public function __construct($params, $from_api = NULL) {
+  public function __construct(array $params, bool $from_api = FALSE) {
 
     $this->params = $params;
     if ($from_api) {
@@ -54,7 +54,6 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     $this->check_or_create_mailbox_folder(self::$FAILED_FOLDER);
   }
 
-
   /**
    * Run Email Processor:
    *   search for Mails with given ZWB string
@@ -64,28 +63,36 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    */
   public function run() {
     $stats = [
-        'limit'     => $this->params['limit'],
-        'count'     => 0,
-        'processed' => 0,
-        'ignored'   => 0,
-        'failed'    => 0];
+      'limit'     => $this->params['limit'],
+      'count'     => 0,
+      'processed' => 0,
+      'ignored'   => 0,
+      'failed'    => 0,
+    ];
 
     // prepare the pattern
     if (empty($this->params['pattern'])) {
       $this->params['pattern'] = str_replace('{contact_id}', '(?P<contact_id>[0-9]+)', self::$ZWB_HEADER_PATTERN);
-      $this->params['pattern'] = str_replace('{contribution_id}', '(?P<contribution_id>[0-9]+)', $this->params['pattern']);
+      $this->params['pattern'] = str_replace(
+        '{contribution_id}',
+        '(?P<contribution_id>[0-9]+)',
+        $this->params['pattern']
+      );
       $this->params['pattern'] = str_replace('{timestamp}', '(?P<timestamp>[0-9]{14})', $this->params['pattern']);
     }
     $this->params['pattern'] = "|{$this->params['pattern']}|";
 
     // get all emails
     $all_messages = $this->get_all_mails_from_mailbox();
-    if (empty($all_messages)) $all_messages = [];
+    if (empty($all_messages)) {
+      $all_messages = [];
+    }
 
     foreach ($all_messages as $key => $message_id) {
       if ($stats['count'] >= $this->params['limit']) {
         break;
-      } else {
+      }
+      else {
         $stats['count'] += 1;
       }
 
@@ -96,17 +103,21 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
           if ($success) {
             $stats['processed'] += 1;
             $this->move_message_to_folder($message_id, self::$PROCESSED_FOLDER);
-          } else {
+          }
+          else {
             $stats['failed'] += 1;
             $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
           }
 
-        } else {
+        }
+        else {
           $stats['ignored'] += 1;
           $this->move_message_to_folder($message_id, self::$IGNORED_FOLDER);
         }
-      } catch (Exception $ex) {
-        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor failed on message '{$message_id}': " . $ex->getMessage());
+      }
+      catch (Exception $ex) {
+        // @ignoreException
+        Civi::log()->debug("Donrec.ReturnsProcessor failed on message '{$message_id}': " . $ex->getMessage());
         $stats['failed'] += 1;
         $this->move_message_to_folder($message_id, self::$FAILED_FOLDER);
       }
@@ -121,23 +132,30 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
 
   /**
    * Extract contact_id and receipt_id from the given message
-   * @param $message_id string IMAP message ID
-   * @param $pattern    string scanner pattern
+   * @param int|string $message_id IMAP message ID
+   * @param string $pattern    scanner pattern
    * @return array
    */
   protected function parseMessage($message_id, $pattern) {
     // first try to find it in the HEADER
-    $message_header = imap_fetchheader($this->mailbox, $message_id, FT_UID);
-    preg_match($pattern, $message_header, $match);
-    if (!$match) {
+    $message_header = imap_fetchheader($this->mailbox, (int) $message_id, FT_UID);
+    $match = [];
+    if (is_string($message_header)) {
+      preg_match($pattern, $message_header, $match);
+    }
+    if ([] !== $match) {
       // not found? try BODY instead
-      $message_body = imap_body($this->mailbox, $message_id, FT_UID);
-      preg_match($pattern, $message_body, $match);
+      $message_body = imap_body($this->mailbox, (int) $message_id, FT_UID);
+      $match = [];
+      if (is_string($message_body)) {
+        preg_match($pattern, $message_body, $match);
+      }
     }
 
-    if ($match) {
-      return $this->get_receipt_id($match['contribution_id'], $match['timstamp'], $match['contact_id']);
-    } else {
+    if ([] !== $match) {
+      return $this->get_receipt_id((int) $match['contribution_id'], $match['timstamp'], (int) $match['contact_id']);
+    }
+    else {
       return [NULL, NULL];
     }
   }
@@ -146,9 +164,9 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * Gets a receipt_id for given contribution_id
    * Returns0 if none, or more than one receipts are found
    *
-   * @param $contribution_id
-   * @param $timestamp
-   * @param $contact_id
+   * @param int $contribution_id
+   * @param string $timestamp
+   * @param int $contact_id
    * @return array
    */
   public function get_receipt_id($contribution_id, $timestamp, $contact_id) {
@@ -157,7 +175,8 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     if (count($receipt_ids) == 1) {
       $receipt_id = reset($receipt_ids);
       return [$contact_id, $receipt_id];
-    } else {
+    }
+    else {
       return [$contact_id, NULL];
     }
   }
@@ -167,38 +186,47 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    *  - create an activity if requested
    *  - withdraw receipt if requested
    *
-   * @param $contact_id int contact ID
-   * @param $receipt_id int receipt (internal) ID
+   * @param int $contact_id contact ID
+   * @param int $receipt_id receipt (internal) ID
    *
-   * @param null $activity_source_id
+   * @param int|null $activity_source_id
    *
    * @return bool did the processing work?
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   public function processBounce($contact_id, $receipt_id, $activity_source_id = NULL) {
+  // phpcs:enable
     try {
       // load and verify receipt
       $receipt = CRM_Donrec_Logic_Receipt::get($receipt_id);
       if (!$receipt) {
-        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: Receipt doesn't exist");
+        Civi::log()->debug(
+          "Donrec.ReturnsProcessor ERROR while processing Contact [$contact_id] / Receipt [$receipt_id]: "
+          . "Receipt doesn't exist"
+        );
         return FALSE;
       }
 
       $tokens = $receipt->getAllTokens();
       if ($tokens['contributor']['id'] != $contact_id) {
-        CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: Receipt doesn't belong to the contact");
+        Civi::log()->debug(
+          "Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: "
+        . "Receipt doesn't belong to the contact");
         return FALSE;
       }
 
       // create activity
       if (!empty($this->params['activity_type_id'])) {
         civicrm_api3('Activity', 'create', [
-            'activity_type_id'   => $this->params['activity_type_id'],
-            'subject'            => str_replace('{receipt_id}', $tokens['receipt_id'], $this->params['activity_subject']),
-            'activity_date_time' => date('YmdHis'), // TODO: use email time?
-            'target_id'          => $contact_id,
-            'status_id'          => empty($this->params['withdraw']) ? 'Scheduled' : 'Completed',
-            'source_contact_id'  => empty($activity_source_id) ? CRM_Donrec_Logic_Settings::getLoggedInContactID() : $activity_source_id,
-            //'assignee_id'        => $assignee_id,
+          'activity_type_id'   => $this->params['activity_type_id'],
+          'subject'            => str_replace('{receipt_id}', $tokens['receipt_id'], $this->params['activity_subject']),
+        // TODO: use email time?
+          'activity_date_time' => date('YmdHis'),
+          'target_id'          => $contact_id,
+          'status_id'          => empty($this->params['withdraw']) ? 'Scheduled' : 'Completed',
+          'source_contact_id'  => empty($activity_source_id)
+          ? CRM_Donrec_Logic_Settings::getLoggedInContactID() : $activity_source_id,
         ]);
       }
 
@@ -210,15 +238,22 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
             break;
 
           case 'WITHDRAWN':
-            CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor Receipt [{$receipt_id}] already withdrawn");
+            Civi::log()->debug("Donrec.ReturnsProcessor Receipt [{$receipt_id}] already withdrawn");
             break;
 
           default:
-            CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor Receipt [{$receipt_id}] cannot be withdrawn, status is {$tokens['status']}");
+            Civi::log()->debug(
+              "Donrec.ReturnsProcessor Receipt [{$receipt_id}] cannot be withdrawn, status is {$tokens['status']}"
+            );
         }
       }
-    } catch (Exception $ex) {
-      CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: " . $ex->getMessage());
+    }
+    catch (Exception $ex) {
+      // @ignoreException
+      Civi::log()->debug(
+        "Donrec.ReturnsProcessor ERROR while processing Contact [{$contact_id}] / Receipt [{$receipt_id}]: "
+        . $ex->getMessage()
+      );
       return FALSE;
     }
 
@@ -226,15 +261,16 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
   }
 
   /**
-   * @param $message_id int    message ID (FT_UID)
-   * @param $folder     string folder name (not full path)
+   * @param int $message_id message ID (FT_UID)
+   * @param string $folder folder name (not full path)
    */
   protected function move_message_to_folder($message_id, $folder) {
-    $success = imap_mail_move($this->mailbox, $message_id, $folder, CP_UID);
+    $success = imap_mail_move($this->mailbox, (string) $message_id, $folder, CP_UID);
     if ($success) {
       imap_expunge($this->mailbox);
-    } else {
-      CRM_Core_Error::debug_log_message("Donrec.ReturnsProcessor MOVE of [{$message_id}] to '{$folder}' FAILED");
+    }
+    else {
+      Civi::log()->debug("Donrec.ReturnsProcessor MOVE of [{$message_id}] to '{$folder}' FAILED");
     }
   }
 
@@ -245,16 +281,15 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    * @return array
    */
   protected function get_all_mails_from_mailbox() {
-    imap_reopen($this->mailbox, $this->get_hostname("INBOX"));
-    $imap_messages = imap_search ( $this->mailbox, 'ALL', SE_UID);
+    imap_reopen($this->mailbox, $this->get_hostname('INBOX'));
+    $imap_messages = imap_search($this->mailbox, 'ALL', SE_UID);
     return $imap_messages;
   }
-
 
   /**
    * Verify that the mailbox folders are present
    *
-   * @param $folder
+   * @param string $folder
    *
    * @throws \Exception
    */
@@ -264,11 +299,13 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
       $mailbox_name = $this->get_hostname(imap_utf7_encode($folder));
       if (!in_array($mailbox_name, $list)) {
         // create folder
-        $this->folder_list = NULL; // reset folder list
+        // reset folder list
+        $this->folder_list = NULL;
         @imap_createmailbox($this->mailbox, $this->get_hostname(imap_utf7_encode($folder)));
       }
-    } else {
-      throw new Exception("Failed to list/create IMAP folders.");
+    }
+    else {
+      throw new Exception('Failed to list/create IMAP folders.');
     }
   }
 
@@ -279,16 +316,15 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    */
   protected function get_folder_list() {
     if ($this->folder_list === NULL) {
-      $this->folder_list = imap_list($this->mailbox, $this->get_hostname(), "*");
+      $this->folder_list = imap_list($this->mailbox, $this->get_hostname(), '*');
     }
     return $this->folder_list;
   }
 
-
   /**
    * Open the IMAP connection
    *
-   * @return resource
+   * @return IMAP\Connection
    * @throws \Exception
    */
   private function create_imap_connection() {
@@ -299,7 +335,6 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
     return $mbox;
   }
 
-
   /**
    * Get the get an IMAP reference
    *
@@ -308,9 +343,10 @@ class CRM_Donrec_Logic_EmailReturnProcessor {
    *
    * @return string
    */
-  private function get_hostname($mailfolder = "") {
+  private function get_hostname($mailfolder = '') {
     // TODO: Verify hostname? Needs to be host:port
-    $host = "{" . $this->params['hostname'] . "/tls/novalidate-cert}{$mailfolder}";
+    $host = '{' . $this->params['hostname'] . "/tls/novalidate-cert}{$mailfolder}";
     return $host;
   }
+
 }

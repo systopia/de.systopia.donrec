@@ -1,7 +1,11 @@
+includes:
+	- phpstan-baseline.neon
+
 parameters:
 	paths:
 		- api
 		- CRM
+		- settings
 		- tests
 		- donrec.php
 	excludePaths:
@@ -12,6 +16,8 @@ parameters:
 		- donrec.civix.php
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
+		- ../de.systopia.civioffice/Civi
+		- ../de.systopia.civioffice/CRM
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
 	bootstrapFiles:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
