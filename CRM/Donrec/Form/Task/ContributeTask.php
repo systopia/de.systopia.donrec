@@ -8,28 +8,26 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-require_once 'CRM/Core/Form.php';
+declare(strict_types = 1);
 
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * Form controller class
- *
- * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
-  private $availableCurrencies;
+  private array $availableCurrencies;
 
-  function buildQuickForm() {
+  public function buildQuickForm(): void {
     CRM_Utils_System::setTitle(E::ts('Issue Donation Receipts'));
 
     $this->addElement('hidden', 'rsid');
-    $options = array(
-       'current_year'      => E::ts('This Year'),
-       'last_year'         => E::ts('last year'),
-       'customized_period' => E::ts('Choose Date Range')
-    );
+    $options = [
+      'current_year'      => E::ts('This Year'),
+      'last_year'         => E::ts('last year'),
+      'customized_period' => E::ts('Choose Date Range'),
+    ];
     $this->addDatePickerRange(
       'donrec_contribution_horizon',
       E::ts('Time period'),
@@ -47,7 +45,7 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
                       'profile',
                       E::ts('Profile'),
                       CRM_Donrec_Logic_Profile::getAllActiveNames('is_default', 'DESC'),
-                      array('class' => 'crm-select2'));
+                      ['class' => 'crm-select2']);
 
     // add currency selector
     $this->availableCurrencies = array_keys(CRM_Core_OptionGroup::values('currencies_enabled'));
@@ -57,11 +55,12 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
     CRM_Core_Form::addDefaultButtons(E::ts('Continue'));
   }
 
-  function setDefaultValues() {
+  public function setDefaultValues(): array {
     // do a cleanup here (ticket #1616)
     CRM_Donrec_Logic_Snapshot::cleanup();
 
     $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
+    assert(NULL !== $uid);
     $remaining_snapshots = CRM_Donrec_Logic_Snapshot::getUserSnapshots($uid);
     if (!empty($remaining_snapshots)) {
       $remaining_snapshot = array_pop($remaining_snapshots);
@@ -69,6 +68,8 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
       $this->assign('statistic', CRM_Donrec_Logic_Snapshot::getStatistic($remaining_snapshot));
       $this->assign('remaining_snapshot', TRUE);
     }
+
+    return [];
   }
 
   /**
@@ -78,14 +79,14 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
     // Do not require "from" and "to" fields for time period with relative date
     // selected. Custom time period has value "0".
     $selectedPeriod = $this->getElement('donrec_contribution_horizon_relative')->getValue();
-    if (reset($selectedPeriod) !== "0") {
+    if (!is_array($selectedPeriod) || reset($selectedPeriod) !== '0') {
       unset($this->_required[array_search('donrec_contribution_horizon_from', $this->_required)]);
       unset($this->_required[array_search('donrec_contribution_horizon_to', $this->_required)]);
     }
     return parent::validate();
   }
 
-  function postProcess() {
+  public function postProcess() {
     // CAUTION: changes to this function should also be done in CRM_Donrec_Form_Task_Create:postProcess()
 
     // process remaining snapshots if exsisting
@@ -100,9 +101,11 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
         );
         return;
 
-      // or delete all remaining snapshots of this user
-      } else {
+        // or delete all remaining snapshots of this user
+      }
+      else {
         $uid = CRM_Donrec_Logic_Settings::getLoggedInContactID();
+        assert(NULL !== $uid);
         CRM_Donrec_Logic_Snapshot::deleteUserSnapshots($uid);
       }
     }
@@ -115,15 +118,15 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
 
     // get the currency ISO code
     $currencyId = $values['donrec_contribution_currency'];
-    $values['donrec_contribution_currency'] = $this->availableCurrencies[ $currencyId ];
+    $values['donrec_contribution_currency'] = $this->availableCurrencies[$currencyId];
 
     //set url_back as session-variable
     $session = CRM_Core_Session::singleton();
-    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', "reset=1"));
+    $session->set('url_back', CRM_Utils_System::url('civicrm/contact/search', 'reset=1'));
 
     // generate the snapshot
     $result = CRM_Donrec_Logic_Selector::createSnapshot($values);
-    $sid = empty($result['snapshot'])?NULL:$result['snapshot']->getId();
+    $sid = empty($result['snapshot']) ? NULL : $result['snapshot']->getId();
 
     if (!empty($result['intersection_error'])) {
       CRM_Core_Session::singleton()->pushUserContext(
@@ -136,9 +139,16 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
       );
     }
     elseif (empty($result['snapshot'])) {
-      CRM_Core_Session::setStatus(E::ts('There are no selectable contributions for these contacts in the selected time period.'), E::ts('Warning'), 'warning');
+      CRM_Core_Session::setStatus(
+        E::ts('There are no selectable contributions for these contacts in the selected time period.'),
+        E::ts('Warning'),
+        'warning'
+      );
       $qfKey = $values['qfKey'];
-      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/contact/search', "_qf_DonrecTask_display=true&qfKey=$qfKey"));
+      CRM_Utils_System::redirect(CRM_Utils_System::url(
+        'civicrm/contact/search',
+        "_qf_DonrecTask_display=true&qfKey=$qfKey"
+      ));
     }
     else {
       CRM_Core_Session::singleton()->pushUserContext(
@@ -150,4 +160,5 @@ class CRM_Donrec_Form_Task_ContributeTask extends CRM_Contribute_Form_Task {
       );
     }
   }
+
 }

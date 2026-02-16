@@ -10,6 +10,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -21,7 +23,7 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
    * @return string
    *   the display name
    */
-  static function name() {
+  public static function name() {
     return E::ts('Individual PDFs with cover letter (CiviOffice)');
   }
 
@@ -29,17 +31,18 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
    * @return string
    *   a html snippet that defines the options as form elements
    */
-  static function htmlOptions() {
+  public static function htmlOptions() {
     return '';
   }
 
-  public function checkRequirements($profile = NULL): array {
+  public function checkRequirements($profile): array {
     $result = [];
 
     if (
       $result['is_error'] =
         !($civioffice_document_uri = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_uri'))
-        || !($civioffice_document_renderer_uri = CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri'))
+        || !($civioffice_document_renderer_uri =
+          CRM_Donrec_Logic_Settings::get('donrec_civioffice_document_renderer_uri'))
     ) {
       $result['message'] = E::ts('CiviOffice integration is not configured');
     }
@@ -48,8 +51,8 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
       $civioffice_document = $civioffice_config->getDocument($civioffice_document_uri);
       $civioffice_document_renderer = $civioffice_config->getDocumentRenderer($civioffice_document_renderer_uri);
       $result = parent::checkRequirements($profile);
-      if(!$result['is_error'] == TRUE) {
-        if ($civioffice_document && $civioffice_document_renderer) {
+      if (!$result['is_error'] == TRUE) {
+        if (NULL !== $civioffice_document && NULL !== $civioffice_document_renderer) {
           $result['message'] = E::ts(
             'using document <em>%1</em> and document renderer <em>%2</em>',
             [
@@ -65,6 +68,7 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
       }
     }
 
+    $result['message'] ??= '';
     $result['message'] .= ' &ndash; ' . E::ts(
       'Configure CiviOffice integration in the <a href="%1">Donation Receipts configuration</a>',
         [1 => CRM_Utils_System::url('civicrm/admin/setting/donrec', ['reset' => 1])]
@@ -87,7 +91,7 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
 
     // encrypt PDF if configured in profile. Coverletter will not be encrypted
     $this->encrypt_file($file, $snapshot_receipt);
-    
+
     $files = [$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('donation-receipt') => $file];
 
     // Generate cover letter PDF using CiviOffice and add to pdf_files array.
@@ -109,47 +113,38 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
       $result_store_uri = $civioffice_result['values'][0];
       $result_store = CRM_Civioffice_Configuration::getDocumentStore($result_store_uri);
       foreach ($result_store->getDocuments() as $document) {
-        /* @var CRM_Civioffice_Document $document */
-        $files[$snapshot_line_id . '-' . $snapshot_receipt->getContactID() . '-' . E::ts('cover-letter')] = $document->getLocalTempCopy();
+        /** @var CRM_Civioffice_Document $document */
+        $files[$snapshot_line_id . '-' . $snapshot_receipt->getContactID()
+          . '-' . E::ts('cover-letter')] = $document->getLocalTempCopy();
       }
-      $this->updateProcessInformation($snapshot_line_id, array('pdf_files' => $files));
+      $this->updateProcessInformation($snapshot_line_id, ['pdf_files' => $files]);
       return TRUE;
     }
     catch (Exception $exception) {
+      // @ignoreException
       return FALSE;
     }
   }
 
-
   /**
-   * generate the final result
-   *
-   * @param int $snapshot_id
-   * @param bool $is_test
-   * @param bool $is_bulk
-   *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
-   *          'download_url: URL to download the result
-   *          'download_name: suggested file name for the download
+   * @inheritDoc
    */
-  public function wrapUp($snapshot_id, $is_test, $is_bulk) {
-    $reply = array();
+  public function wrapUp($snapshot_id, $is_test, $is_bulk): array {
+    $reply = [];
 
     // create the zip file
     $config = CRM_Core_Config::singleton();
 
     $pdf_count = 0;
     $last_pdf_file = NULL;
-    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(E::ts("donation_receipts"), ".zip");
+    $archiveFileName = CRM_Donrec_Logic_File::makeFileName(E::ts('donation_receipts'), '.zip');
     $zip = new ZipArchive();
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
-    $toRemove = array();
+    $toRemove = [];
 
-    if ($zip->open($archiveFileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) === TRUE) {
-      foreach($ids as $id) {
+    if ($zip->open($archiveFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+      foreach ($ids as $id) {
         $proc_info = $snapshot->getProcessInformation($id);
         if (!empty($proc_info['PDF']['pdf_files'])) {
           foreach ($proc_info['PDF']['pdf_files'] as $key => $filename) {
@@ -158,29 +153,44 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
             $toRemove[$id] = $filename;
             $pathinfo = pathinfo($filename);
             $opResult = $zip->addFile($filename, $key . '.' . $pathinfo['extension']);
-            CRM_Donrec_Logic_Exporter::addLogEntry($reply, "adding <span title='$filename'>created PDF file</span> to <span title='$archiveFileName'>ZIP archive</span> ($opResult)", CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
+            CRM_Donrec_Logic_Exporter::addLogEntry(
+              $reply,
+              "adding <span title='$filename'>created PDF file</span> "
+                . "to <span title='$archiveFileName'>ZIP archive</span> ($opResult)",
+              CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG
+            );
           }
         }
       }
-      if(!$zip->close()) {
-        CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'zip->close() returned false!', CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR);
+      if (!$zip->close()) {
+        CRM_Donrec_Logic_Exporter::addLogEntry(
+          $reply,
+          'zip->close() returned false!',
+          CRM_Donrec_Logic_Exporter::LOG_TYPE_ERROR
+        );
       }
-    }else{
-      CRM_Donrec_Logic_Exporter::addLogEntry($reply, sprintf('PDF processing failed: Could not open zip file '), CRM_Donrec_Logic_Exporter::LOG_TYPE_FATAL);
+    }
+    else {
+      CRM_Donrec_Logic_Exporter::addLogEntry(
+        $reply,
+        sprintf('PDF processing failed: Could not open zip file '),
+        CRM_Donrec_Logic_Exporter::LOG_TYPE_FATAL
+      );
       return $reply;
     }
 
     if ($pdf_count == 1) {
       $file = CRM_Donrec_Logic_File::createTemporaryFile($last_pdf_file, basename($last_pdf_file));
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting PDF file URL is '$file'.");
+      Civi::log()->debug("de.systopia.donrec: resulting PDF file URL is '$file'.");
       if (!empty($file)) {
         $reply['download_name'] = basename($last_pdf_file);
         $reply['download_url']  = $file;
       }
-    } else {
-      $preferredFileName = E::ts("donation_receipts.zip");
+    }
+    else {
+      $preferredFileName = E::ts('donation_receipts.zip');
       $file = CRM_Donrec_Logic_File::createTemporaryFile($archiveFileName, $preferredFileName);
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: resulting ZIP file URL is '$file'.");
+      Civi::log()->debug("de.systopia.donrec: resulting ZIP file URL is '$file'.");
       if (!empty($file)) {
         $reply['download_name'] = $preferredFileName;
         $reply['download_url']  = $file;
@@ -188,12 +198,21 @@ class CRM_Donrec_Exporters_PDFCiviOffice extends CRM_Donrec_Exporters_EncryptedP
     }
 
     // remove loose pdf files or store them
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'Removing temporary PDF files.', CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG);
-    foreach($toRemove as $file) {
+    CRM_Donrec_Logic_Exporter::addLogEntry(
+      $reply,
+      'Removing temporary PDF files.',
+      CRM_Donrec_Logic_Exporter::LOG_TYPE_DEBUG
+    );
+    foreach ($toRemove as $file) {
       unlink($file);
     }
 
-    CRM_Donrec_Logic_Exporter::addLogEntry($reply, 'PDF generation process ended.', CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
+    CRM_Donrec_Logic_Exporter::addLogEntry(
+      $reply,
+      'PDF generation process ended.',
+      CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO
+    );
     return $reply;
-  }  
+  }
+
 }

@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -22,24 +24,36 @@ class CRM_Utils_DonrecHelper {
    *            set to 00:00 of the given date. If it is greater than 1, it will
    *            return a value clamped to 23:59:59 of the same day.
    * @param string $format
-   * @return string timestamp
+   * @return int|FALSE timestamp
    */
-  public static function convertDate($raw_date, $clamp=0, $format = 'm/d/Y') {
+  public static function convertDate($raw_date, $clamp = 0, $format = 'm/d/Y') {
     $date = FALSE;
     if (!empty($raw_date)) {
       $date_object = DateTime::createFromFormat($format, $raw_date, new DateTimeZone('Europe/Berlin'));
       if ($date_object) {
-        if($clamp < 0) {
+        if ($clamp < 0) {
           // set to [date format] 00:00:00
-          $date = strtotime(sprintf("%s-%s-%s 00:00:00", $date_object->format('Y'), $date_object->format('m'), $date_object->format('d')));
-        }else if($clamp > 0) {
+          $date = strtotime(sprintf(
+            '%s-%s-%s 00:00:00',
+            $date_object->format('Y'),
+            $date_object->format('m'),
+            $date_object->format('d')
+          ));
+        }
+        elseif ($clamp > 0) {
           // set to [date format] 23:59:59
-          $date = strtotime(sprintf("%s-%s-%s 23:59:59", $date_object->format('Y'), $date_object->format('m'), $date_object->format('d')));
+          $date = strtotime(sprintf(
+            '%s-%s-%s 23:59:59',
+            $date_object->format('Y'),
+            $date_object->format('m'),
+            $date_object->format('d')
+          ));
         }
       }
     }
     return $date;
   }
+
   /**
    * Calls die() with a pretty template (WIP)
    *
@@ -74,24 +88,26 @@ class CRM_Utils_DonrecHelper {
    *   lock object. check if it ->isAcquired() before use
    */
   public static function getLock($type, $id) {
-    if ($type=='') {
+    if ($type == '') {
       // for the 'next' lock, we calculate the lock timeout as follows
-      $max_lock_timeout = ini_get('max_execution_time');
-      if (empty($max_lock_timeout)) {
-        $max_lock_timeout = 30 * 60; // 30 minutes
+      $max_lock_timeout = (int) ini_get('max_execution_time');
+      if (0 === $max_lock_timeout) {
+        // 30 minutes
+        $max_lock_timeout = 30 * 60;
       }
 
       // calculate based on chunk size (max 1min/item)
       $calculation_time = CRM_Donrec_Logic_Settings::getChunkSize() * 60;
       $timeout = min($calculation_time, $max_lock_timeout);
 
-    } else {
+    }
+    else {
       // default timeout for other locks
-      $timeout = 600.0; // 10mins, TODO: do we need a setting here?
+      // 10mins, TODO: do we need a setting here?
+      $timeout = 600;
     }
 
-    //CRM_Core_Error::debug_log_message("de.systopia.donrec.$type".'-'.$id." timeout $timeout created.");
-    return CRM_Utils_DonrecSafeLock::acquireLock("de.systopia.donrec.$type".'-'.$id, $timeout);
+    return CRM_Utils_DonrecSafeLock::acquireLock("de.systopia.donrec.$type" . '-' . $id, $timeout);
   }
 
   /**
@@ -111,7 +127,8 @@ class CRM_Utils_DonrecHelper {
       $inv_column = strrev($fields[$field_name]);
       $inv_id = substr($inv_column, 0, strpos($inv_column, '_'));
       return (int) strrev($inv_id);
-    } else {
+    }
+    else {
       return 0;
     }
   }
@@ -177,7 +194,9 @@ class CRM_Utils_DonrecHelper {
           return mysql_escape_string($string);
         }
         else {
-          throw new CRM_Core_Exception("Cannot generate SQL. \"mysql_{real_}escape_string\" is missing. Have you installed PHP \"mysql\" extension?");
+          throw new CRM_Core_Exception(
+            'Cannot generate SQL. "mysql_{real_}escape_string" is missing. Have you installed PHP "mysql" extension?'
+          );
         }
       }
 
@@ -186,4 +205,5 @@ class CRM_Utils_DonrecHelper {
 
     return $_dao->escape($string);
   }
+
 }

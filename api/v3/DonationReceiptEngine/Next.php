@@ -8,17 +8,18 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * Execute the next chunk/step of the donation receipt run
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *
- * @return array
  * @throws \CRM_Core_Exception
  */
-function civicrm_api3_donation_receipt_engine_next($params) {
+function civicrm_api3_donation_receipt_engine_next(array $params): array {
   // first, check if the snapshot ID is there
   if (empty($params['sid'])) {
     return civicrm_api3_create_error(E::ts("No 'sid' parameter given."));
@@ -42,8 +43,8 @@ function civicrm_api3_donation_receipt_engine_next($params) {
 /**
  * Adjust Metadata for donation receipt run
  *
- * @param array $params
+ * @param array<string, array<string, mixed>> $params
  */
-function _civicrm_api3_donation_receipt_engine_next_spec(&$params) {
-    $params['sid']['api.required'] = 1;
+function _civicrm_api3_donation_receipt_engine_next_spec(array &$params): void {
+  $params['sid']['api.required'] = 1;
 }

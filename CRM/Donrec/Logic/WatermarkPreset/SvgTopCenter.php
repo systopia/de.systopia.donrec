@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 class CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter extends CRM_Donrec_Logic_WatermarkPreset {
@@ -26,13 +28,22 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter extends CRM_Donrec_Logic_Wat
 
   public function injectStyles(&$html, $pdf_format) {
     $paper_size = CRM_Core_BAO_PaperSize::getByName($pdf_format['paper_size']);
-    $paper_width = CRM_Utils_PDF_Utils::convertMetric($paper_size['width'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_width = CRM_Utils_PDF_Utils::convertMetric(
+      $paper_size['width'],
+      $paper_size['metric'],
+      $pdf_format['metric']
+    );
     $paper_width -= $pdf_format['margin_left'];
     $paper_width -= $pdf_format['margin_right'];
-    $paper_height = CRM_Utils_PDF_Utils::convertMetric($paper_size['height'], $paper_size['metric'], $pdf_format['metric']);
+    $paper_height = CRM_Utils_PDF_Utils::convertMetric(
+      $paper_size['height'],
+      $paper_size['metric'],
+      $pdf_format['metric']
+    );
     $paper_height -= $pdf_format['margin_top'];
     $paper_height -= $pdf_format['margin_bottom'];
     // TODO: Adjust SVG
+    // phpcs:disable Generic.Files.LineLength.TooLong
     $watermark_css = '<style>
                         {if $watermark}
                           {literal}
@@ -57,21 +68,26 @@ class CRM_Donrec_Logic_WatermarkPreset_SvgTopCenter extends CRM_Donrec_Logic_Wat
                         {/if}
                         </style>
                         ';
+    // phpcs:enable
 
-    $matches = array();
+    $matches = [];
     preg_match('/<\/style>/', $html, $matches, PREG_OFFSET_CAPTURE);
     if (count($matches) == 1) {
       $head_offset = $matches[0][1];
       $html = substr_replace($html, $watermark_css, $head_offset + strlen($matches[0][0]), 0);
-    }else if (count($matches) < 1) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.');
-      $matches = array();
+    }
+    elseif (count($matches) < 1) {
+      Civi::log()->debug(
+        'de.systopia.donrec: watermark css could not be created (</style> not found). falling back to <body>.'
+      );
+      $matches = [];
       preg_match('/<body>/', $html, $matches, PREG_OFFSET_CAPTURE);
       if (count($matches) == 1) {
         $head_offset = $matches[0][1];
         $html = substr_replace($html, $watermark_css, $head_offset, 0);
-      }else{
-        CRM_Core_Error::debug_log_message('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
+      }
+      else {
+        Civi::log()->debug('de.systopia.donrec: watermark could not be created. pdf rendering cancelled.');
         return FALSE;
       }
     }

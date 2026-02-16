@@ -1,13 +1,18 @@
 <?php
-/*-------------------------------------------------------+
-| SYSTOPIA Donation Receipts Extension                   |
-| Copyright (C) 2013-2019 SYSTOPIA                       |
-| Author: J. Schuppe (schuppe@systopia.de                |
-| http://www.systopia.de/                                |
-+--------------------------------------------------------+
-| License: AGPLv3, see LICENSE file                      |
-+--------------------------------------------------------*/
+/**
+ * -------------------------------------------------------+
+ * | SYSTOPIA Donation Receipts Extension                   |
+ * | Copyright (C) 2013-2019 SYSTOPIA                       |
+ * | Author: J. Schuppe (schuppe@systopia.de                |
+ * | http://www.systopia.de/                                |
+ * +--------------------------------------------------------+
+ * | License: AGPLv3, see LICENSE file                      |
+ * +--------------------------------------------------------
+ */
 
+declare(strict_types = 1);
+
+// phpcs:disable Generic.NamingConventions.AbstractClassNamePrefix.Missing
 abstract class CRM_Donrec_Logic_WatermarkPreset {
 
   /**
@@ -23,7 +28,7 @@ abstract class CRM_Donrec_Logic_WatermarkPreset {
   /**
    * @param string $html
    *
-   * @param int $pdf_format
+   * @param array $pdf_format
    *
    * @return bool
    */

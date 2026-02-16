@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 //FIXME: implement own getID-method
@@ -16,16 +18,17 @@ use CRM_Donrec_ExtensionUtil as E;
  */
 class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
-  protected static $_sending_to_contact_id   = NULL;
-  protected static $_sending_contribution_id = NULL;
-  protected static $_sending_with_profile_id = NULL;
-  protected $_activity_type_id = NULL;
+  protected static ?int $_sending_to_contact_id   = NULL;
+  protected static ?int $_sending_contribution_id = NULL;
+  protected static ?int $_sending_with_profile_id = NULL;
+
+  private ?int $activity_type_id = NULL;
 
   /**
    * @return string
    *   the display name
    */
-  static function name() {
+  public static function name() {
     return E::ts('Send PDFs via Email');
   }
 
@@ -33,7 +36,7 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * @return string
    *   a html snippet that defines the options as form elements
    */
-  static function htmlOptions() {
+  public static function htmlOptions() {
     return '';
   }
 
@@ -46,26 +49,19 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
   }
 
   /**
-   * check whether all requirements are met to run this exporter
-   *
-   * @param \CRM_Donrec_Logic_Profile $profile
-   *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @inheritDoc
    */
-  public function checkRequirements($profile = NULL): array {
+  public function checkRequirements($profile): array {
     // Check if email template is set up
     $template_id = CRM_Donrec_Logic_Settings::getEmailTemplateID($profile);
-    if (! $template_id) {
-      return array(
+    if (!$template_id) {
+      return [
         'is_error' => TRUE,
-        'message' => E::ts("Please select email template in the Donrec settings."),
-        );
+        'message' => E::ts('Please select email template in the Donrec settings.'),
+      ];
     }
     return parent::checkRequirements($profile);
   }
-
 
   /**
    * allows the subclasses to process the newly created PDF file
@@ -104,26 +100,28 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
     if ($error) {
       // create error activity
       if (!$is_test) {
-        civicrm_api3('Activity', 'create', array(
+        civicrm_api3('Activity', 'create', [
           'activity_type_id'   => $this->getEmailErrorActivityID(),
-          'subject'            => E::ts("Donation receipt not delivered"),
+          'subject'            => E::ts('Donation receipt not delivered'),
           'status_id'          => CRM_Donrec_CustomData::getOptionValue('activity_status', 'Scheduled', 'name'),
           'activity_date_time' => date('YmdHis'),
           'source_contact_id'  => $receipt['created_by'],
           'target_id'          => $receipt['contact_id'],
+          // phpcs:disable Squiz.PHP.CommentedOutCode.Found
           // 'assignee_contact_id'=> (int) $this->config->getAdminContactID(),
+          // phpcs:enable
           'details'            => $this->getErrorMessage($error),
-          ));
+        ]);
       }
 
       // store the error in the process information (to be processed in wrap-up)
       $snapshot_line_id = $snapshot_receipt->getID();
-      $this->updateProcessInformation($snapshot_line_id, array('email_error' => $error));
+      $this->updateProcessInformation($snapshot_line_id, ['email_error' => $error]);
 
-    } // END if $error
+    }
+
     return $error == NULL;
   }
-
 
   /**
    * Will try to send the PDF to the given email
@@ -133,12 +131,12 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * @param bool $is_test
    * @param int $snapshot_line_id
    *
-   * @return NULL if all good, an error message string if it FAILED
+   * @return string|null NULL if all good, an error message string if it FAILED
    */
   protected function sendEmail($receipt, $pdf_file, $is_test, $snapshot_line_id) {
     try {
       // load contact data
-      $contact = civicrm_api3('Contact', 'getsingle', array('id' => $receipt['contact_id']));
+      $contact = civicrm_api3('Contact', 'getsingle', ['id' => $receipt['contact_id']]);
 
       $emailLocationTypeId = CRM_Donrec_Logic_Settings::get('email_location_type_id');
       if (isset($emailLocationTypeId)) {
@@ -161,8 +159,12 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
       }
 
       // Get from e-mail from profile or load domain default.
-      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])->getDataAttribute('from_email')) {
-        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, ' AND value = ' . $from_email_id);
+      if ($from_email_id = CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])
+        ->getDataAttribute('from_email')) {
+        $fromEmailAddress = CRM_Core_OptionGroup::values(
+          'from_email_address',
+          condition: ' AND value = ' . $from_email_id
+        );
         foreach ($fromEmailAddress as $key => $value) {
           $from_email_address = CRM_Utils_Mail::pluckEmailFromHeader($value);
           $fromArray = explode('"', $value);
@@ -175,40 +177,48 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
         list($from_email_name, $from_email_address) = CRM_Core_BAO_Domain::getNameAndEmail();
       }
 
-
       // compile the attachment
-      $attachment   = array('fullPath'  => $pdf_file,
-                            'mime_type' => 'application/pdf',
-                            'cleanName' => E::ts("Donation Receipt.pdf"));
+      $attachment = [
+        'fullPath'  => $pdf_file,
+        'mime_type' => 'application/pdf',
+        'cleanName' => E::ts('Donation Receipt.pdf'),
+      ];
 
       // register some variables
-      $smarty_variables = array(
+      $smarty_variables = [
         'receipt' => $receipt,
-        'contact' => $contact);
+        'contact' => $contact,
+      ];
 
       if ($is_test) {
         // in test mode: create message
-        $this->updateProcessInformation($snapshot_line_id, array('sent' => $contact['email']));
-      } else {
+        $this->updateProcessInformation($snapshot_line_id, ['sent' => $contact['email']]);
+      }
+      else {
         // set the code for the header hook
         $this->setDonrecMailCode($receipt);
 
         // send the email
-        civicrm_api3('MessageTemplate', 'send', array(
-          'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])),
+        civicrm_api3('MessageTemplate', 'send', [
+          'id'              => CRM_Donrec_Logic_Settings::getEmailTemplateID(
+            CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])
+          ),
           'contact_id'      => $contact['id'],
           'to_name'         => $contact['display_name'],
           'to_email'        => $contact['email'],
           'from'            => "\"{$from_email_name}\" <{$from_email_address}>",
           'template_params' => $smarty_variables,
-          'attachments'     => array($attachment),
-          'bcc'             => CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])->getDataAttribute('bcc_email'),
-          ));
+          'attachments'     => [$attachment],
+          'bcc'             => CRM_Donrec_Logic_Profile::getProfile($receipt['profile_id'])
+            ->getDataAttribute('bcc_email'),
+        ]);
 
         // unset the code
         $this->unsetDonrecMailCode();
       }
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
+      // @ignoreException
       $this->unsetDonrecMailCode();
       return $e->getMessage();
     }
@@ -216,36 +226,28 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
   }
 
   /**
-   * generate the final result
-   *
-   * @param int $snapshot_id
-   * @param bool $is_test
-   * @param bool $is_bulk
-   *
-   * @return array:
-   *          'is_error': set if there is a fatal error
-   *          'log': array with keys: 'type', 'level', 'timestamp', 'message'
-   *          'download_url: URL to download the result
-   *          'download_name: suggested file name for the download
+   * @inheritDoc
    */
   public function wrapUp($snapshot_id, $is_test, $is_bulk) {
-    $reply = array();
-    $error_counters = array();
+    $reply = [];
+    $error_counters = [];
 
     $snapshot = CRM_Donrec_Logic_Snapshot::get($snapshot_id);
     $ids = $snapshot->getIds();
-    foreach($ids as $id) {
+    foreach ($ids as $id) {
       $proc_info = $this->getProcessInformation($id);
-      if(!empty($proc_info['email_error'])) {
+      if (!empty($proc_info['email_error'])) {
         if (!isset($error_counters[$proc_info['email_error']])) {
           $error_counters[$proc_info['email_error']] = 1;
-        } else {
+        }
+        else {
           $error_counters[$proc_info['email_error']] += 1;
         }
       }
-      if(!empty($proc_info['sent'])) {
-        $message = E::ts("Email <i>would</i> be sent to '%1' (test mode).", array(
-          1 => $proc_info['sent'],));
+      if (!empty($proc_info['sent'])) {
+        $message = E::ts("Email <i>would</i> be sent to '%1' (test mode).", [
+          1 => $proc_info['sent'],
+        ]);
         CRM_Donrec_Logic_Exporter::addLogEntry($reply, $message, CRM_Donrec_Logic_Exporter::LOG_TYPE_INFO);
       }
     }
@@ -265,16 +267,20 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    */
   public function getEmailErrorActivityID() {
     if ($this->activity_type_id === NULL) {
-      $this->activity_type_id = (int) CRM_Donrec_CustomData::getOptionValue('activity_type', 'donrec_email_failed', 'name');
+      $this->activity_type_id = (int) CRM_Donrec_CustomData::getOptionValue(
+        'activity_type',
+        'donrec_email_failed',
+        'name'
+      );
       if (!$this->activity_type_id) {
         // create new activity type
-        $option_group = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'activity_type'));
-        $activity_type = civicrm_api3('OptionValue', 'create', array(
+        $option_group = civicrm_api3('OptionGroup', 'getsingle', ['name' => 'activity_type']);
+        $activity_type = civicrm_api3('OptionValue', 'create', [
           'option_group_id' => $option_group['id'],
           'name'            => 'donrec_email_failed',
-          'label'           => E::ts("DonationReceipt Failure"),
-          ));
-        $activity_type = civicrm_api3('OptionValue', 'getsingle', array('id' => $activity_type['id']));
+          'label'           => E::ts('DonationReceipt Failure'),
+        ]);
+        $activity_type = civicrm_api3('OptionValue', 'getsingle', ['id' => $activity_type['id']]);
         $this->activity_type_id = $activity_type['value'];
       }
     }
@@ -294,13 +300,14 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
 
       case 'snapshot error':
         // no translation, as this shouldn't happen :)
-        return 'Internal error, problems with the snapshot. Please file a bug at https://github.com/systopia/de.systopia.donrec/issues';
+        return 'Internal error, problems with the snapshot. Please file a bug at '
+          . 'https://github.com/systopia/de.systopia.donrec/issues';
 
       case 'no email':
-        return E::ts("No valid email address found for this contact.");
+        return E::ts('No valid email address found for this contact.');
 
       default:
-        $error_msg = E::ts("Error was: ");
+        $error_msg = E::ts('Error was: ');
         $error_msg .= $error;
         return $error_msg;
     }
@@ -310,24 +317,26 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * Add headers to sent donation receipts
    *
    * @param array $params
-   * @param $context
+   * @param string $context
    */
   public static function addDonrecMailCodeHeader(&$params, $context) {
     if (self::$_sending_to_contact_id && self::$_sending_contribution_id && self::$_sending_with_profile_id) {
       $donrec_header = CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_PATTERN;
-      $donrec_header = str_replace('{contact_id}', self::$_sending_to_contact_id, $donrec_header);
-      $donrec_header = str_replace('{contribution_id}', self::$_sending_contribution_id, $donrec_header);
+      $donrec_header = str_replace('{contact_id}', (string) self::$_sending_to_contact_id, $donrec_header);
+      $donrec_header = str_replace('{contribution_id}', (string) self::$_sending_contribution_id, $donrec_header);
       $donrec_header = str_replace('{timestamp}', date('YmdHis'), $donrec_header);
-      $donrec_header = str_replace('{profile_id}', self::$_sending_with_profile_id, $donrec_header);
+      $donrec_header = str_replace('{profile_id}', (string) self::$_sending_with_profile_id, $donrec_header);
 
-      if(CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('special_mail_handling')) {
-        if (self::set_custom_mail_header($params, $donrec_header,self::$_sending_with_profile_id)) {
+      if (CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)
+        ->getDataAttribute('special_mail_handling')) {
+        if (self::set_custom_mail_header($params, $donrec_header, self::$_sending_with_profile_id)) {
           // we set header, no custom return path or the 'default' additions needed
           return;
         }
       }
       $params['headers'][CRM_Donrec_Logic_EmailReturnProcessor::$ZWB_HEADER_FIELD] = $donrec_header;
-      $params['returnPath'] = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)->getDataAttribute('return_path_email');
+      $params['returnPath'] = CRM_Donrec_Logic_Profile::getProfile(self::$_sending_with_profile_id)
+        ->getDataAttribute('return_path_email');
     }
   }
 
@@ -364,17 +373,18 @@ class CRM_Donrec_Exporters_EmailPDF extends CRM_Donrec_Exporters_EncryptedPDF {
    * @param array $receipt
    */
   protected function setDonrecMailCode($receipt) {
-    self::$_sending_contribution_id = $receipt['contribution_id'];
-    self::$_sending_to_contact_id   = $receipt['contact_id'];
-    self::$_sending_with_profile_id = $receipt['profile_id'];
+    self::$_sending_contribution_id = (int) $receipt['contribution_id'];
+    self::$_sending_to_contact_id   = (int) $receipt['contact_id'];
+    self::$_sending_with_profile_id = (int) $receipt['profile_id'];
   }
 
   /**
    * Remove the mailing code to be included in the next outgoing email
    */
-  protected function unsetDonrecMailCode() {
+  protected function unsetDonrecMailCode(): void {
     self::$_sending_to_contact_id   = NULL;
     self::$_sending_contribution_id = NULL;
     self::$_sending_with_profile_id = NULL;
   }
+
 }

@@ -8,38 +8,40 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-require_once 'CRM/Core/Page.php';
+declare(strict_types = 1);
 
 /**
  * This page will do nothing else but show a previously stored temp file
  */
 class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
 
-  const PREFIX = 'donrec-tmp-';
+  private const PREFIX = 'donrec-tmp-';
 
   /**
    * page expects three parameters
-   * 
-   * @param path  - file path of file in temp folder
-   * @param name  - file name
-   * @param mime  - mime type. Autodetect if not given
+   *
+   * param path  - file path of file in temp folder
+   * param name  - file name
+   * param mime  - mime type. Autodetect if not given
    */
-  function run() {
+  public function run() {
     if (!empty($_REQUEST['path'])) {
       $filename = sys_get_temp_dir() . '/' . self::PREFIX . $_REQUEST['path'];
       if (file_exists($filename)) {
 
         // set file name
         if (empty($_REQUEST['name'])) {
-          header("Content-Disposition: attachment; filename=File");
-        } else {
-          header("Content-Disposition: attachment; filename=" . $_REQUEST['name']);
+          header('Content-Disposition: attachment; filename=File');
+        }
+        else {
+          header('Content-Disposition: attachment; filename=' . $_REQUEST['name']);
         }
 
         // set content type
         if (empty($_REQUEST['type'])) {
           header('Content-Type: ' . mime_content_type($filename));
-        } else {
+        }
+        else {
           header('Content-Type: ' . $_REQUEST['type']);
         }
 
@@ -52,35 +54,36 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
     parent::run();
   }
 
-
   /**
    * This function will take any file and make it temporarily available
    * for download
    *
    * @param string $path
-   * @param null $name
+   * @param string|null $name
    * @param bool $deleteSource
-   * @param null $mimetype
+   * @param string|null $mimetype
    *
-   * @return string | NULL
-   *   a string with an URL where to download the file
+   * @return string|null
+   *   a string with a URL where to download the file
    */
-  public static function createFromFile($path, $name = null, $deleteSource = true, $mimetype = null) {
+  public static function createFromFile($path, $name = NULL, $deleteSource = TRUE, $mimetype = NULL) {
     $tempfile = tempnam(sys_get_temp_dir(), self::PREFIX);
     if (file_exists($path)) {
       // create the temp file
       if ($deleteSource) {
         rename($path, $tempfile);
-      } else {
+      }
+      else {
         copy($path, $tempfile);
       }
 
-      // create an URL to download
+      // create a URL to download
       $file_id = substr($tempfile, (strpos($tempfile, self::PREFIX) + strlen(self::PREFIX)));
       $urlparams = 'path=' . urlencode($file_id);
       if ($name) {
         $urlparams .= '&name=' . urlencode($name);
-      } else {
+      }
+      else {
         $urlparams .= '&name=' . urlencode(basename($path));
       }
       if (!empty($mimetype)) {
@@ -89,8 +92,10 @@ class CRM_Donrec_Page_Tempfile extends CRM_Core_Page {
 
       $url = CRM_Utils_System::url('civicrm/donrec/showfile', $urlparams);
       return $url;
-    } else {
-      return null;
+    }
+    else {
+      return NULL;
     }
   }
+
 }

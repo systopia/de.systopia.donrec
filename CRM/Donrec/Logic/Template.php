@@ -8,39 +8,40 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
  * This class holds all template related functions,
  *  including PDF generation
  */
-class CRM_Donrec_Logic_Template
-{
-  private $template_html;
+class CRM_Donrec_Logic_Template {
+  private string $template_html;
 
-  private $pdf_format_id;
+  private int $pdf_format_id;
 
-  private $profile_variables = array();
+  private array $profile_variables;
 
-  private function __construct($template_html, $pdf_format_id, $profile_variables = array()) {
+  private function __construct(string $template_html, int $pdf_format_id, array $profile_variables = []) {
     $this->template_html = $template_html;
     $this->pdf_format_id = $pdf_format_id;
     $this->profile_variables = $profile_variables;
   }
 
   /**
-  * Returns an array of all templates that can be used
-  * to create donation receipts
-  * @return array of template objects
-  */
+   * Returns an array of all templates that can be used
+   * to create donation receipts
+   * @return array|null of template objects
+   */
   public static function findAllTemplates() {
     $messageTemplate = new CRM_Core_BAO_MessageTemplate();
     $messageTemplate->orderBy('msg_title' . ' asc');
     $messageTemplate->find();
-    $results = array();
+    $results = [];
     $workflowId = CRM_Donrec_DataStructure::getFirstUsedOptionValueId();
     while ($messageTemplate->fetch()) {
-      if($messageTemplate->workflow_id == $workflowId) {
+      if ($messageTemplate->workflow_id == $workflowId) {
         CRM_Core_DAO::storeValues($messageTemplate, $results[$messageTemplate->id]);
       }
     }
@@ -48,21 +49,21 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-  * Returns a CRM_Donrec_Logic_Template object that uses
-  * the specified CRM_Core_BAO_MessageTemplate
-  * @param int template id
-  * @return CRM_Donrec_Logic_Template object or NULL
+   * Returns a CRM_Donrec_Logic_Template object that uses
+   * the specified CRM_Core_BAO_MessageTemplate
+   * @param int $template_id
+   * @return self|null object or NULL
    *
    * @deprecated Since 2.0
-  */
+   */
   public static function create($template_id) {
-    $params = array('id' => $template_id);
-    $defaults = array();
+    $params = ['id' => $template_id];
+    $defaults = [];
     $result = CRM_Core_BAO_MessageTemplate::retrieve($params, $defaults);
-    if (is_null($result)) {
+    if (NULL === $result) {
       return NULL;
     }
-    return new self($result->msg_html, $result->pdf_format_id);
+    return new self((string) $result->msg_html, (int) $result->pdf_format_id);
   }
 
   /**
@@ -71,10 +72,10 @@ class CRM_Donrec_Logic_Template
    *
    * @param \CRM_Donrec_Logic_Profile $profile
    *
-   * @return self | NULL
+   * @return self
    */
   public static function getTemplate($profile) {
-    return new self($profile->getTemplateHTML(), $profile->getTemplatePDFFormatId(), $profile->getVariables());
+    return new self($profile->getTemplateHTML(), (int) $profile->getTemplatePDFFormatId(), $profile->getVariables());
   }
 
   /**
@@ -88,7 +89,7 @@ class CRM_Donrec_Logic_Template
   }
 
   /**
-   * Returns default template ID. 
+   * Returns default template ID.
    * If default template doesn't exist, it will install it
    *
    * @return int template ID
@@ -97,10 +98,11 @@ class CRM_Donrec_Logic_Template
    * @deprecated Since 2.0.
    */
   public static function getDefaultTemplateID() {
-    $default_template_title = sprintf("%s - %s", E::ts('Donation Receipts'), E::ts('Default template'));
-    $result = civicrm_api3('MessageTemplate', 'get', array(
+    $default_template_title = sprintf('%s - %s', E::ts('Donation Receipts'), E::ts('Default template'));
+    $result = civicrm_api3('MessageTemplate', 'get', [
       'msg_title'  => $default_template_title,
-      'return'     => 'id'));
+      'return'     => 'id',
+    ]);
     if (!empty($result['id'])) {
       // we found it!
       return $result['id'];
@@ -108,7 +110,7 @@ class CRM_Donrec_Logic_Template
 
     if ($result['count'] > 1) {
       // oops, there's more of them...
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: getDefaultTemplate '{$default_template_title}' is ambiguous.");
+      Civi::log()->debug("de.systopia.donrec: getDefaultTemplate '{$default_template_title}' is ambiguous.");
       $first_result = reset($result['values']);
       return $first_result['id'];
     }
@@ -116,27 +118,29 @@ class CRM_Donrec_Logic_Template
     // default template is not installed yet, so do it
     $default_template_file = dirname(__DIR__) . '/../../templates/Export/default_template.tpl';
     $default_template_html = file_get_contents($default_template_file);
-    if($default_template_html === FALSE) {
+    if ($default_template_html === FALSE) {
       throw new Exception("Cannot load default template from '{$default_template_file}'.");
     }
 
     // TODO: what is this...?
     $workflowId = CRM_Donrec_DataStructure::getFirstUsedOptionValueId();
 
-    $params = array(
+    $params = [
       'msg_title'   => $default_template_title,
       'msg_html'    => $default_template_html,
       'is_active'   => 1,
       'workflow_id' => $workflowId,
       'is_default'  => 0,
       'is_reserved' => 0,
-    );
+    ];
 
+    /** @var \CRM_Core_DAO_MessageTemplate $result */
     $result = CRM_Core_BAO_MessageTemplate::add($params);
     if ($result) {
-      return $result->id;
-    } else {
-      throw new Exception("Cannot create default template.");
+      return (int) $result->id;
+    }
+    else {
+      throw new Exception('Cannot create default template.');
     }
   }
 
@@ -149,7 +153,7 @@ class CRM_Donrec_Logic_Template
   public static function getDefaultTemplateHTML() {
     $default_template_file = E::path('templates/Export/default_template.tpl');
     $default_template_html = file_get_contents($default_template_file);
-    if($default_template_html === FALSE) {
+    if ($default_template_html === FALSE) {
       throw new Exception("Cannot load default template from '{$default_template_file}'.");
     }
 
@@ -159,19 +163,19 @@ class CRM_Donrec_Logic_Template
   /**
    * Creates a PDF file from the specified values
    *
-   * @param $values
-   * @param $parameters
+   * @param array<string, mixed> $values
+   * @param array<string, mixed> $parameters
    * @param \CRM_Donrec_Logic_Profile $profile
-   * @return string | bool
+   * @return string|FALSE
    *   The filename or FALSE if an error occurred.
-*/
+   */
   public function generatePDF($values, &$parameters, $profile) {
     $smarty = CRM_Core_Smarty::singleton();
     $config = CRM_Core_Config::singleton();
 
     // assign all values
     foreach ($values as $token => $value) {
-       $smarty->assign($token, $value);
+      $smarty->assign($token, $value);
     }
 
     // Assign profile variables.
@@ -189,17 +193,18 @@ class CRM_Donrec_Logic_Template
     $pdf_format = CRM_Core_BAO_PdfFormat::getById($this->pdf_format_id);
 
     // --- watermark injection ---
-    $watermark_class = "CRM_Donrec_Logic_WatermarkPreset_" . $profile->getDataAttribute('watermark_preset');
+    $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_' . $profile->getDataAttribute('watermark_preset');
     if (!class_exists($watermark_class)) {
-      CRM_Core_Error::debug_log_message("Donrec: Invalid Watermark preset '{$watermark_class}'");
+      Civi::log()->debug("Donrec: Invalid Watermark preset '{$watermark_class}'");
       if (empty(CRM_Core_Config::singleton()->wkhtmltopdfPath)) {
         $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_DompdfTraditional';
-      } else {
+      }
+      else {
         $watermark_class = 'CRM_Donrec_Logic_WatermarkPreset_WkhtmltopdfTraditional';
       }
-      CRM_Core_Error::debug_log_message("Donrec: Defaulting to watermark '{$watermark_class}'");
+      Civi::log()->debug("Donrec: Defaulting to watermark '{$watermark_class}'");
     }
-    /* @var \CRM_Donrec_Logic_WatermarkPreset $watermark */
+    /** @var \CRM_Donrec_Logic_WatermarkPreset $watermark */
     $watermark = new $watermark_class();
     $watermark->injectMarkup($html, $pdf_format);
     $watermark->injectStyles($html, $pdf_format);
@@ -215,13 +220,22 @@ class CRM_Donrec_Logic_Template
     $smarty->clearTemplateVars();
 
     // set up file names
-    $filename_export = CRM_Donrec_Logic_File::makeFileName(E::ts("donationreceipt-")."{$values['contributor']['id']}-".date('YmdHis'), ".pdf");
+    $filename_export = CRM_Donrec_Logic_File::makeFileName(
+      E::ts('donationreceipt-') . "{$values['contributor']['id']}-" . date('YmdHis'),
+      '.pdf'
+    );
 
     // render PDF receipt
-    $result = file_put_contents($filename_export , CRM_Utils_PDF_Utils::html2pdf($html, null, true, $this->pdf_format_id));
-    if($result) {
+    $result = file_put_contents($filename_export, CRM_Utils_PDF_Utils::html2pdf(
+      $html,
+      '',
+      TRUE,
+      $this->pdf_format_id
+    ));
+    if ($result) {
       return $filename_export;
-    }else{
+    }
+    else {
       $parameters['error'] = "Could not write file $filename_export";
       return FALSE;
     }

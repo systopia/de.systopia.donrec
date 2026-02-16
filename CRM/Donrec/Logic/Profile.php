@@ -8,6 +8,8 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -21,34 +23,34 @@ class CRM_Donrec_Logic_Profile {
    * @var int
    *   The profile ID.
    */
-  protected $id = NULL;
+  protected int $id;
 
   /**
    * @var string
    *   The profile name.
    */
-  protected $name = NULL;
+  protected string $name;
 
   /**
    * @var array
    *   The settings.
    */
-  protected $data = array();
+  protected array $data;
 
   /**
    * @var array
    *   The additional Smarty variables passed to the receipt template.
    */
-  protected $variables = array();
+  protected array $variables;
 
   /**
    * @var string
    *   The Smarty template used for rendering donation receipts.
    */
-  protected $template = NULL;
+  protected string $template;
 
   /**
-   * @var null
+   * @var int|null
    *  The ID of the PDF format to use for rendering the Smarty template.
    */
   protected $template_pdf_format_id = NULL;
@@ -57,20 +59,20 @@ class CRM_Donrec_Logic_Profile {
    * @var bool
    *   Whether the profile is the default profile.
    */
-  protected $is_default = 0;
+  protected $is_default;
 
   /**
    * @var bool
    *   Whether the profile is active for creating receipts.
    */
-  protected $is_active = 1;
+  protected $is_active;
 
   /**
    * @var bool
    *   Whether the profile is locked (has already been used for issueing
    *   receipts).
    */
-  protected $is_locked = 0;
+  protected $is_locked;
 
   /**
    * load setting entity with given ID
@@ -87,18 +89,20 @@ class CRM_Donrec_Logic_Profile {
     }
 
     $this->name = $profile_data['name'];
-    $this->id = $profile_data['id'];
-    $this->data = $profile_data['data'];
-    $this->variables = $profile_data['variables'];
-    $this->template = $profile_data['template'];
-    $this->template_pdf_format_id = $profile_data['template_pdf_format_id'];
-    $this->is_default = $profile_data['is_default'];
-    $this->is_active = $profile_data['is_active'];
-    $this->is_locked = $profile_data['is_locked'];
+    $this->id = (int) $profile_data['id'];
+    $this->data = $profile_data['data'] ?? [];
+    $this->variables = $profile_data['variables'] ?? [];
+    $this->template = $profile_data['template'] ?? '';
+    if (isset($profile_data['template_pdf_format_id'])) {
+      $this->template_pdf_format_id = (int) $profile_data['template_pdf_format_id'];
+    }
+    $this->is_default = (bool) $profile_data['is_default'];
+    $this->is_active = (bool) $profile_data['is_active'];
+    $this->is_locked = (bool) $profile_data['is_locked'];
   }
 
   /**
-   * @param $profile_id
+   * @param int $profile_id
    *
    * @return \CRM_Donrec_Logic_Profile
    */
@@ -117,16 +121,15 @@ class CRM_Donrec_Logic_Profile {
    */
   public static function getProfileByName($profile_name) {
     $profile_names = self::getAllNames();
-    if (in_array($profile_name, $profile_names)) {
-      return new self(array_search($profile_name, $profile_names));
+    $profile_id = array_search($profile_name, $profile_names);
+    if (FALSE !== $profile_id) {
+      return new self($profile_id);
     }
     else {
-      throw new Exception(E::ts('Profile with name %1 does not exist.', array(
+      throw new Exception(E::ts('Profile with name %1 does not exist.', [
         1 => $profile_name,
-      )));
+      ]));
     }
-
-    return new self($profile_name);
   }
 
   /**
@@ -150,21 +153,25 @@ class CRM_Donrec_Logic_Profile {
   public static function copyProfile($profile_id) {
     $profile = self::getProfile($profile_id);
     $profile->name .= '_copy';
-    unset($profile->id);
+    $profile->id = 0;
 
     return $profile;
   }
 
   /**
    * update the internal data with the given set
-   * @param $data array(key => value)
+   * @param array $data array(key => value)
    *
    * @deprecated Since 2.0
    */
   public function update($data) {
     // verify that copy_text and draft_text are set
-    if (empty($data['copy_text'])) $data['copy_text']   = E::ts('COPY');
-    if (empty($data['draft_text'])) $data['draft_text'] = E::ts('DRAFT');
+    if (empty($data['copy_text'])) {
+      $data['copy_text'] = E::ts('COPY');
+    }
+    if (empty($data['draft_text'])) {
+      $data['draft_text'] = E::ts('DRAFT');
+    }
 
     $this->data = $data;
   }
@@ -173,7 +180,7 @@ class CRM_Donrec_Logic_Profile {
    * stores the setting as the unterlying settings entity
    */
   public function save() {
-    $values_query = "
+    $values_query = '
         SET
           `name` = %1,
           `data` = %2,
@@ -182,23 +189,23 @@ class CRM_Donrec_Logic_Profile {
           `is_default` = %5,
           `is_active` = %6,
           `is_locked` = %7
-      ";
+      ';
 
-    $query_params = array(
-      1 => array($this->name, 'String'),
-      2 => array(serialize($this->data), 'String'),
-      3 => array(serialize($this->variables), 'String'),
-      4 => array($this->template, 'String'),
-      5 => array((int) $this->is_default, 'Int'),
-      6 => array((int) $this->is_active, 'Int'),
-      7 => array((int) $this->is_locked, 'Int'),
-    );
+    $query_params = [
+      1 => [$this->name, 'String'],
+      2 => [serialize($this->data), 'String'],
+      3 => [serialize($this->variables), 'String'],
+      4 => [$this->template, 'String'],
+      5 => [(int) $this->is_default, 'Int'],
+      6 => [(int) $this->is_active, 'Int'],
+      7 => [(int) $this->is_locked, 'Int'],
+    ];
 
     if (!empty(($this->template_pdf_format_id))) {
-      $values_query .= "
+      $values_query .= '
         ,`template_pdf_format_id` = %8
-        ";
-      $query_params[8] = array($this->template_pdf_format_id, 'Int');
+        ';
+      $query_params[8] = [$this->template_pdf_format_id, 'Int'];
     }
 
     if ($this->id) {
@@ -218,7 +225,12 @@ class CRM_Donrec_Logic_Profile {
         ;";
     }
 
-    CRM_Core_DAO::executeQuery($query, $query_params);
+    /** @var \CRM_Core_DAO $result */
+    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+
+    if (!$this->id) {
+      $this->id = (int) CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
+    }
   }
 
   /**
@@ -273,7 +285,7 @@ class CRM_Donrec_Logic_Profile {
     ;";
     $max_date = CRM_Core_DAO::singleValueQuery($query);
 
-    if (!is_null($max_date)) {
+    if (NULL !== $max_date) {
       $max_date = date_create_from_format('Y-m-d H:i:s', $max_date);
     }
 
@@ -301,7 +313,7 @@ class CRM_Donrec_Logic_Profile {
     ;";
     $min_date = CRM_Core_DAO::singleValueQuery($query);
 
-    if (!is_null($min_date)) {
+    if (NULL !== $min_date) {
       $min_date = date_create_from_format('Y-m-d H:i:s', $min_date);
     }
 
@@ -349,16 +361,6 @@ class CRM_Donrec_Logic_Profile {
     return $this->name;
   }
 
-//  /**
-//   * Retrieves the profile's template.
-//   *
-//   * @return string
-//   *   The template stored within the profile.
-//   */
-//  public function getTemplate() {
-//    return $this->template;
-//  }
-
   /**
    * Retrieves the given profile data property.
    *
@@ -385,24 +387,30 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Retrieves all profile variables.
    *
-   * @return array
+   * @return array<string, mixed>
    *   The variables for this profile.
    */
   public function getVariables() {
-    return $this->variables ? $this->variables : array();
+    return $this->variables;
   }
 
+  /**
+   * @return string
+   */
   public function getTemplateHTML() {
     return $this->template;
   }
 
+  /**
+   * @return int|null
+   */
   public function getTemplatePDFFormatId() {
     return $this->template_pdf_format_id;
   }
 
   /**
    * check if a profile of the given name exists
-   * @param $profile_name
+   * @param string $profile_name
    * @return bool
    */
   public static function exists($profile_name) {
@@ -413,11 +421,11 @@ class CRM_Donrec_Logic_Profile {
   /**
    * return all existing profiles
    *
-   * @return string[]
+   * @return array<int, string>
    *   An array of names of Donation Receipts profiles, keyed by their IDs.
    */
-  public static function getAllNames($sort = 'id', $sort_order = 'ASC') {
-    $allNames = array();
+  public static function getAllNames(string $sort = 'id', string $sort_order = 'ASC') {
+    $allNames = [];
     $allProfiles = self::getAllData($sort, $sort_order);
     foreach ($allProfiles as $profile_id => $profile) {
       $allNames[$profile_id] = $profile['name'];
@@ -429,12 +437,12 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Retrieves the names of all active profiles, keyed by their IDs.
    *
-   * @return array
+   * @return array<int, string>
    *   The names of all active profiles, keyed by their IDs.
    */
-  public static function getAllActiveNames($sort = 'id', $sort_order = 'ASC') {
+  public static function getAllActiveNames(string $sort = 'id', string $sort_order = 'ASC') {
     return array_filter(self::getAllNames($sort, $sort_order), function($profile_name, $profile_id) {
-      return (bool) self::getProfile($profile_id)->isActive();
+      return self::getProfile($profile_id)->isActive();
     }, ARRAY_FILTER_USE_BOTH);
   }
 
@@ -444,8 +452,8 @@ class CRM_Donrec_Logic_Profile {
    * @return \CRM_Donrec_Logic_Profile[]
    *   An array with Donation Receipts profiles, keyed by their IDs.
    */
-  public static function getAll($sort = 'id', $sort_order = 'ASC') {
-    $profiles = array();
+  public static function getAll(string $sort = 'id', string $sort_order = 'ASC') {
+    $profiles = [];
 
     foreach (self::getAllData($sort, $sort_order) as $profile_id => $profile_data) {
       $profiles[$profile_id] = self::getProfile($profile_id);
@@ -457,11 +465,12 @@ class CRM_Donrec_Logic_Profile {
   /**
    * return all existing data sets
    *
-   * @return array
+   * @return array<int, array<string, mixed>>
    */
-  public static function getAllData($sort = 'id', $sort_order = 'ASC') {
-    $profiles = array();
+  public static function getAllData(string $sort = 'id', string $sort_order = 'ASC') {
+    $profiles = [];
     $query = "SELECT * FROM `donrec_profile` ORDER BY `{$sort}` {$sort_order}";
+    /** @var \CRM_Core_DAO $dao */
     $dao = CRM_Core_DAO::executeQuery($query);
     while ($dao->fetch()) {
       $profiles[$dao->id] = $dao->toArray();
@@ -472,20 +481,33 @@ class CRM_Donrec_Logic_Profile {
     return $profiles;
   }
 
+  /**
+   * @param string $profile_name
+   */
   public function setName($profile_name) {
     $this->name = $profile_name;
   }
 
+  /**
+   * @param bool $status
+   */
   public function setDefault($status = TRUE) {
-    $this->is_default = (int) $status;
+    $this->is_default = (bool) $status;
     $this->save();
   }
 
+  /**
+   * @param bool $status
+   */
   public function activate($status = TRUE) {
-    $this->is_active = (int) $status;
+    $this->is_active = (bool) $status;
     $this->save();
   }
 
+  /**
+   * @param string $name
+   * @param mixed $value
+   */
   public function addVariable($name = NULL, $value = NULL) {
     if ($name) {
       $this->variables[$name] = $value;
@@ -496,7 +518,7 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-   * @param $new_default_profile_id
+   * @param int $new_default_profile_id
    *
    * @throws \Exception
    */
@@ -505,6 +527,7 @@ class CRM_Donrec_Logic_Profile {
       self::getDefaultProfile()->setDefault(FALSE);
     }
     catch (Exception $exception) {
+      // @ignoreException
       // There is no profile currently set as default, nothing to do.
     }
     self::getProfile($new_default_profile_id)->setDefault();
@@ -513,9 +536,9 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Sets the data property or one of its attributes.
    *
-   * @param $attribute
+   * @param string $attribute
    *   The name of the data attribute to set.
-   * @param $value
+   * @param mixed $value
    *   The value to set the data attribute to.
    */
   public function setDataAttribute($attribute, $value) {
@@ -525,18 +548,18 @@ class CRM_Donrec_Logic_Profile {
   /**
    * Set a property on the profile object.
    *
-   * @param $property
-   * @param $value
+   * @param string $property
+   * @param mixed $value
    */
   public function set($property, $value) {
     if (property_exists(self::class, $property)) {
       $this->$property = $value;
     }
     else {
-      throw new Exception(E::ts('Property %1 does not exist in class %2', array(
+      throw new Exception(E::ts('Property %1 does not exist in class %2', [
         1 => $property,
         2 => self::class,
-      )));
+      ]));
     }
   }
 
@@ -547,11 +570,11 @@ class CRM_Donrec_Logic_Profile {
    */
   public function lock($status = TRUE) {
     if ($status && !$this->isLocked()) {
-      $this->set('is_locked', (int) $status);
+      $this->set('is_locked', (bool) $status);
       $this->save();
     }
     elseif (!$status && $this->isLocked()) {
-      $this->set('is_locked', (int) $status);
+      $this->set('is_locked', (bool) $status);
       $this->save();
     }
   }
@@ -560,14 +583,13 @@ class CRM_Donrec_Logic_Profile {
    * set/overwrite profiles
    * caution: no type check
    *
-   * @param $profile_data array(name => profile)
+   * @param array<string, array<string, mixed>> $profile_data array(name => profile)
    *
    * @deprecated Since 2.0
    */
   public static function setAllData($profile_data) {
-    civicrm_api3('Setting', 'create', array('donrec_profiles' => $profile_data));
+    civicrm_api3('Setting', 'create', ['donrec_profiles' => $profile_data]);
   }
-
 
   /**
    * Returns all financial type ids that should be used by the donation receipt generation engine.
@@ -576,10 +598,11 @@ class CRM_Donrec_Logic_Profile {
    */
   public function getContributionTypes() {
     // get settings
+    /** @var array|null $financial_types */
     $financial_types = $this->getDataAttribute('financial_types');
 
     if (empty($financial_types)) {
-      // empty means 'all deductible'
+      // empty means 'all deductible'.
       return self::getAllDeductibleFinancialTypes();
     }
 
@@ -588,15 +611,18 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * get a list of all deductible financial types
+   *
+   * @return list<int>
    */
   protected static function getAllDeductibleFinancialTypes() {
-    $financial_types = array();
+    $financial_types = [];
 
-    $query = "SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;";
+    $query = 'SELECT `id`, `name`, `is_deductible` FROM `civicrm_financial_type` WHERE `is_active` = 1;';
+    /** @var \CRM_Core_DAO $results */
     $results = CRM_Core_DAO::executeQuery($query);
     while ($results->fetch()) {
       if ($results->is_deductible) {
-        $financial_types[] = $results->id;
+        $financial_types[] = (int) $results->id;
       }
     }
 
@@ -622,7 +648,8 @@ class CRM_Donrec_Logic_Profile {
     if (empty($financialTypeIds)) {
       // no contribution types allowed
       return 'FALSE';
-    } else {
+    }
+    else {
       // otherwise the clause consists of the financial type IDs
       $financialTypeIdsString = implode(',', $financialTypeIds);
       return "`financial_type_id` IN ($financialTypeIdsString)";
@@ -630,9 +657,9 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-  * Returns location_types used for the legal- and postal-address and their fallbacks.
-  * @return array
-  */
+   * Returns location_types used for the legal- and postal-address and their fallbacks.
+   * @return array
+   */
   public function getLocationTypes() {
     $location_types['legal']['address'] = $this->getDataAttribute('legal_address');
     $location_types['legal']['fallback'] = $this->getDataAttribute('legal_address_fallback');
@@ -656,7 +683,7 @@ class CRM_Donrec_Logic_Profile {
     else {
       $condition = NULL;
     }
-    return key(CRM_Core_OptionGroup::values('from_email_address', NULL, NULL, NULL, $condition));
+    return key(CRM_Core_OptionGroup::values('from_email_address', FALSE, FALSE, FALSE, $condition));
   }
 
   /**
@@ -676,7 +703,6 @@ class CRM_Donrec_Logic_Profile {
   public function getTemplate() {
     return CRM_Donrec_Logic_Template::getTemplate($this);
   }
-
 
   /**
    * Deletes the given profile
@@ -699,19 +725,21 @@ class CRM_Donrec_Logic_Profile {
    *   An array with profile defaults.
    */
   public static function defaultProfileData() {
-    return array(
-      'id' => 0, // 0 = new profile.
+    return [
+    // 0 = new profile.
+      'id' => 0,
       'name' => 'Default',
-      'data' => array(
+      'data' => [
         'financial_types'            => self::getAllDeductibleFinancialTypes(),
         'store_original_pdf'         => FALSE,
         'draft_text'                 => E::ts('DRAFT'),
         'copy_text'                  => E::ts('COPY'),
         'id_pattern'                 => '{issue_year}-{serial}',
-        'legal_address'              => array('0'),  // '0' is the primary address
-        'postal_address'             => array('0'),
-        'legal_address_fallback'     => array('0'),
-        'postal_address_fallback'    => array('0'),
+    // '0' is the primary address
+        'legal_address'              => ['0'],
+        'postal_address'             => ['0'],
+        'legal_address_fallback'     => ['0'],
+        'postal_address_fallback'    => ['0'],
         'from_email'                 => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
         // TODO: Set correct defaults for formerly global settings here.
         'email_template'             => NULL,
@@ -724,17 +752,18 @@ class CRM_Donrec_Logic_Profile {
         'special_mail_withdraw_receipt'           => NULL,
         'special_mail_activity_contact_id'        => NULL,
         'watermark_preset'           => CRM_Donrec_Logic_WatermarkPreset::getDefaultWatermarkPresetName(),
-        'language'                   => (method_exists('CRM_Core_I18n', 'getLocale') ? CRM_Core_I18n::getLocale() : 'en_US'),
+        'language'                   => CRM_Core_I18n::getLocale(),
         'contribution_unlock_mode'   => 'unlock_none',
-        'contribution_unlock_fields' => array(),
+        'contribution_unlock_fields' => [],
         'enable_encryption' => FALSE,
-      ),
-      'variables' => array(),
+      ],
+      'variables' => [],
       'template' => CRM_Donrec_Logic_Template::getDefaultTemplateHTML(),
       'template_pdf_format_id' => CRM_Core_BAO_PdfFormat::getPdfFormat('is_default', 1)['id'],
       'is_default' => 0,
       'is_locked' => 0,
       'is_active' => 1,
-    );
+    ];
   }
+
 }

@@ -8,8 +8,12 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * This is the PDF exporter base class
+ *
+ * phpcs:disable Generic.NamingConventions.AbstractClassNamePrefix.Missing
  */
 abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
 
@@ -22,21 +26,16 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   }
 
   /**
-   * check whether all requirements are met to run this exporter
-   *
-   * @return array:
-   *         'is_error': set if there is a fatal error
-   *         'message': error message
+   * @inheritDoc
    */
-  public function checkRequirements($profile = NULL) {
-    $result = array();
+  public function checkRequirements($profile) {
+    $result = [];
 
     $result['is_error'] = FALSE;
     $result['message'] = '';
 
     return $result;
   }
-
 
   /**
    * export an individual receipt
@@ -45,7 +44,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
    *
    * @param bool $is_test
    *
-   * @return TRUE on success; FALSE on failure
+   * @return bool TRUE on success; FALSE on failure
    */
   public function exportSingle($snapshot_receipt, $is_test) {
     // get template of profile in use
@@ -53,12 +52,13 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
     $template = $profile->getTemplate();
 
     // get tokens and generate PDF
-    $tpl_param = array();
+    $tpl_param = [];
     $values = $snapshot_receipt->getAllTokens();
     $result = $template->generatePDF($values, $tpl_param, $profile);
     if ($result === FALSE) {
       return FALSE;
-    } else {
+    }
+    else {
       // save file names for wrapup()
       return $this->postprocessPDF($result, $snapshot_receipt, $is_test);
     }
@@ -83,7 +83,7 @@ abstract class CRM_Donrec_Exporters_BasePDF extends CRM_Donrec_Logic_Exporter {
   /**
    * allows the subclasses to process the newly created PDF file
    *
-   * @param $file
+   * @param string $file
    * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt
    * @param bool $is_test
    *

@@ -8,70 +8,75 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 require_once 'donrec.civix.php';
-require_once 'CRM/Donrec/DataStructure.php';
-require_once 'CRM/Donrec/Logic/Template.php';
-require_once 'CRM/Donrec/Logic/Settings.php';
+// phpcs:enable
 
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
- * Implementation of hook_civicrm_config
+ * Implements hook_civicrm_config().
  */
-function donrec_civicrm_config(&$config) {
+function donrec_civicrm_config(\CRM_Core_Config $config): void {
   _donrec_civix_civicrm_config($config);
 }
 
 /**
- * Implementation of hook_civicrm_install
+ * Implements hook_civicrm_install().
  */
-function donrec_civicrm_install() {
-  return _donrec_civix_civicrm_install();
+function donrec_civicrm_install(): void {
+  _donrec_civix_civicrm_install();
 }
 
 /**
- * Implementation of hook_civicrm_enable
+ * Implements hook_civicrm_enable().
  */
-function donrec_civicrm_enable() {
-  return _donrec_civix_civicrm_enable();
+function donrec_civicrm_enable(): void {
+  _donrec_civix_civicrm_enable();
 }
 
 /**
-* Add an action for creating donation receipts after doing a search
-*
-* @param string $objectType specifies the component
-* @param array $tasks the list of actions
-*
-* @access public
-*/
-function donrec_civicrm_searchTasks($objectType, &$tasks) {
+ * Add an action for creating donation receipts after doing a search
+ *
+ * @param string $objectType specifies the component
+ * @param array $tasks the list of actions
+ *
+ * @access public
+ */
+function donrec_civicrm_searchTasks(string $objectType, array &$tasks): void {
   // add DONATION RECEIPT task to contact list
   if ($objectType == 'contact') {
     if (CRM_Core_Permission::check('create and withdraw receipts')) {
-      $tasks[] = array(
-          'title' => E::ts('Issue donation receipt(s)'),
-          'class' => 'CRM_Donrec_Form_Task_DonrecTask',
-          'result' => false);
-      $tasks[] = array(
-          'title' => E::ts('Withdraw donation receipt(s)'),
-          'class' => 'CRM_Donrec_Form_Task_DonrecResetTask',
-          'result' => false);
+      $tasks[] = [
+        'title' => E::ts('Issue donation receipt(s)'),
+        'class' => 'CRM_Donrec_Form_Task_DonrecTask',
+        'result' => FALSE,
+      ];
+      $tasks[] = [
+        'title' => E::ts('Withdraw donation receipt(s)'),
+        'class' => 'CRM_Donrec_Form_Task_DonrecResetTask',
+        'result' => FALSE,
+      ];
     }
   }
 
   // add REBOOK task to contribution list
   if ($objectType == 'contribution') {
     if (CRM_Core_Permission::check('create and withdraw receipts')) {
-      $tasks[] = array(
-          'title' => E::ts('Issue donation receipt(s)'),
-          'class' => 'CRM_Donrec_Form_Task_ContributeTask',
-          'result' => false);
+      $tasks[] = [
+        'title' => E::ts('Issue donation receipt(s)'),
+        'class' => 'CRM_Donrec_Form_Task_ContributeTask',
+        'result' => FALSE,
+      ];
     }
     if (CRM_Core_Permission::check('edit contributions')) {
-      $tasks[] = array(
-          'title'  => E::ts('Rebook to contact'),
-          'class'  => 'CRM_Donrec_Form_Task_RebookTask',
-          'result' => false);
+      $tasks[] = [
+        'title'  => E::ts('Rebook to contact'),
+        'class'  => 'CRM_Donrec_Form_Task_RebookTask',
+        'result' => FALSE,
+      ];
     }
   }
 }
@@ -79,8 +84,11 @@ function donrec_civicrm_searchTasks($objectType, &$tasks) {
 /**
  *  1) add an extra search column 'receipted'
  *  2) modify actions for rebook
+ *
+ * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
  */
-function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selector) {
+function donrec_civicrm_searchColumns(string $objectName, array &$headers, array &$values, object &$selector): void {
+// phpcs:enable
   if ($objectName == 'contribution') {
     // ************************************
     // **      ADD CONTRIBUTED COLUMN    **
@@ -89,22 +97,24 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // save last element (action list)
     $actionList = array_pop($headers);
     // insert new column
-    $headers[] = array(
+    $headers[] = [
       'name' => E::ts('Receipted'),
       // Provide a weight lower than the "actions" column.
       'weight' => $actionList['weight'] - 1,
       'field_name' => 'is_receipted',
-    );
+    ];
 
-    $receipted_contribution_ids = array();
+    $receipted_contribution_ids = [];
 
     // insert new values
-    foreach ($values as $id => $value ) {
+    foreach ($values as $id => $value) {
       $item_id = CRM_Donrec_Logic_ReceiptItem::hasValidReceiptItem($value['contribution_id'], TRUE);
-      if($item_id === FALSE) {
+      if ($item_id === FALSE) {
         $values[$id]['is_receipted'] = E::ts('No');
-      }else{
-        $receipted_contribution_ids[] = $value['contribution_id'];    // save as receipted for rebook (see below)
+      }
+      else {
+        // save as receipted for rebook (see below)
+        $receipted_contribution_ids[] = $value['contribution_id'];
         $values[$id]['is_receipted'] = sprintf('<a href="%s">%s</a>', CRM_Utils_System::url(
         'civicrm/contact/view',
         "reset=1&cid={$value['contact_id']}&rid=$item_id&selectedChild=donation_receipts",
@@ -115,32 +125,38 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
     // restore last element
     $headers[] = $actionList;
 
-
     // ************************************
     // **       ADD REBOOK ACTION        **
     // ************************************
     // only offer rebook only if the user has the correct permissions
     if (CRM_Core_Permission::check('edit contributions')) {
-      $contribution_status_complete = (int) CRM_Donrec_CustomData::getOptionValue('contribution_status', 'Completed', 'name');
+      $contribution_status_complete = (int) CRM_Donrec_CustomData::getOptionValue(
+        'contribution_status',
+        'Completed',
+        'name'
+      );
       $title = E::ts('Rebook');
-      $url = CRM_Utils_System::url('civicrm/donrec/rebook', "contributionIds=__CONTRIBUTION_ID__");
+      $url = CRM_Utils_System::url('civicrm/donrec/rebook', 'contributionIds=__CONTRIBUTION_ID__');
       $action = "<a title=\"$title\" class=\"action-item action-item\" href=\"$url\">$title</a>";
 
       // add 'rebook' action link to each row
       foreach ($values as $rownr => $row) {
         $contribution_status_id = $row['contribution_status_id'];
         // ... but only for completed contributions
-        if ($contribution_status_id==$contribution_status_complete) {
+        if ($contribution_status_id == $contribution_status_complete) {
           // receipted contributions cannot be rebooked either...
           if (!in_array($row['contribution_id'], $receipted_contribution_ids)) {
             // this contribution is o.k. => add the rebook action
             $contribution_id = $row['contribution_id'];
             $this_action = str_replace('__CONTRIBUTION_ID__', $contribution_id, $action);
             if (strpos($row['action'], '</ul>') !== FALSE) {
-              $values[$rownr]['action'] = str_replace('</ul></span>', '<li>'.$this_action.'</li></ul></span>', $row['action']);
+              $values[$rownr]['action'] = str_replace(
+                '</ul></span>', '<li>' . $this_action . '</li></ul></span>',
+                $row['action']
+              );
             }
             else {
-              $values[$rownr]['action'] = str_replace('</span>', $this_action.'</span>', $row['action']);
+              $values[$rownr]['action'] = str_replace('</span>', $this_action . '</span>', $row['action']);
             }
           }
         }
@@ -150,47 +166,21 @@ function donrec_civicrm_searchColumns($objectName, &$headers,  &$values, &$selec
 }
 
 /**
- * The extra search column (see above) does not alter the template,
- * so we inject javascript into the template-content.
- */
-function donrec_civicrm_alterContent(&$content, $context, $tplName, &$object) {
-  // The contribution search results template has changed in 4.7.20, allowing
-  // to add columns and values in hook_civicrm_searchColumns() implementations.
-  // Prior to 4.7.20, this has to be done using the following approach.
-  // @link https://lab.civicrm.org/dev/core/commit/4fb5fcf3b17af6c9f5bf49ecc69902c5b0b78c24
-  // Commit that introduced the new behavior.
-  if (version_compare(CRM_Utils_System::version(), '4.7.20', '<')) {
-    // get page- resp. form-class of the object
-    $class_name = get_class($object);
-    if ($class_name == 'CRM_Contribute_Page_Tab' ||
-      $class_name == 'CRM_Contribute_Form_Search' ||
-      $class_name == 'CRM_Contribute_Page_DashBoard') {
-      // parse the template with smarty
-      $smarty = CRM_Core_Smarty::singleton();
-      $path = __DIR__ . '/templates/CRM/Contribute/ReceiptedColumn.tpl';
-      $html = $smarty->fetch($path);
-      // append the html to the content
-      $content .= $html;
-    }
-  }
-}
-
-/**
  * Set permissions for runner/engine API call
  */
-function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+function donrec_civicrm_alterAPIPermissions($entity, $action, &$params, array &$permissions): void {
   // TODO: adjust to correct permission
-  $permissions['donation_receipt_engine']['next'] = array('create and withdraw receipts');
-  $permissions['donation_receipt']['view'] = array('view and copy receipts');
-  $permissions['donation_receipt']['delete'] = array('delete receipts');
-  $permissions['donation_receipt']['copy'] = array('view and copy receipts');
-  $permissions['donation_receipt']['withdraw'] = array('create and withdraw receipts');
+  $permissions['donation_receipt_engine']['next'] = ['create and withdraw receipts'];
+  $permissions['donation_receipt']['view'] = ['view and copy receipts'];
+  $permissions['donation_receipt']['delete'] = ['delete receipts'];
+  $permissions['donation_receipt']['copy'] = ['view and copy receipts'];
+  $permissions['donation_receipt']['withdraw'] = ['create and withdraw receipts'];
 }
 
 /**
  * Implements hook_civicrm_permission().
  */
-function donrec_civicrm_permission(&$permissions) {
+function donrec_civicrm_permission(array &$permissions): void {
   $prefix = E::ts('DonationReceipts') . ': ';
   $permissions['view and copy receipts'] = [
     'label' => $prefix . E::ts('view and create copies of receipts'),
@@ -209,25 +199,27 @@ function donrec_civicrm_permission(&$permissions) {
 /**
  * Add headers to sent donation receipts
  */
-function donrec_civicrm_alterMailParams(&$params, $context) {
+function donrec_civicrm_alterMailParams(array &$params, string $context): void {
   CRM_Donrec_Exporters_EmailPDF::addDonrecMailCodeHeader($params, $context);
 }
 
 /**
  * Custom mailjet transactional bounce hook
- * @param $bounce_message
- *
  */
-function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
+function donrec_civicrm_mailjet_transactional_bounce(string $bounce_message): void {
   $message = json_decode($bounce_message, TRUE);
   if (isset($message['Payload'])) {
     if ($message['event'] != 'bounce') {
-      CRM_Core_Error::debug_log_message("Event isn't a bounce Event, but {$message['event']}. We can't handle this event here. Message: {$bounce_message}");
+      // phpcs:disable Generic.Files.LineLength.TooLong
+      Civi::log()->debug("Event isn't a bounce Event, but {$message['event']}. We can't handle this event here. Message: {$bounce_message}");
+      // phpcs:enable
       return;
     }
     $payload = json_decode($message['Payload'], TRUE);
-    if (!isset($payload['contact_id']) || !isset($payload['contribution_id']) || !isset($payload['timestamp']) || !isset($payload['profile_id'])) {
-      CRM_Core_Error::debug_log_message("Couldn't parse Bounce information for Event {$bounce_message}");
+    if (!isset($payload['contact_id']) || !isset($payload['contribution_id'])
+      || !isset($payload['timestamp']) || !isset($payload['profile_id'])
+    ) {
+      Civi::log()->debug("Couldn't parse Bounce information for Event {$bounce_message}");
       return;
     }
     //    parse bounce parameters here
@@ -241,36 +233,24 @@ function donrec_civicrm_mailjet_transactional_bounce($bounce_message) {
 }
 
 /**
- * Custom mailjet mailing bounce hook
- * @param $bounce_message
- * Currently not needed here - ZWBs will always be sent in a transactional mail
- */
-//function donrec_civicrm_mailjet_mailing_bounce($bounce_message) {
-//  CRM_Core_Error::debug_log_message("[com.proveg.mods - mailing bounce hook] " . json_encode($bounce_message));
-//  $tmp = json_decode($bounce_message, TRUE);
-//  if (isset($tmp['Payload'])) {
-//    CRM_Core_Error::debug_log_message("Payload: " . json_encode($tmp['Payload']));
-//  }
-//}
-
-
-
-/**
- * Implements hook_civicrm_tabset()
+ * Implements hook_civicrm_tabset().
  *
  * Will inject the FastActivity tab
  */
-function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
+function donrec_civicrm_tabset(string $tabsetName, array &$tabs, array $context): void {
   if ($tabsetName == 'civicrm/contact/view') {
-    if (CRM_Core_Permission::check('view and copy receipts') || CRM_Core_Permission::check('create and withdraw receipts')) {
+    if (CRM_Core_Permission::check('view and copy receipts')
+      || CRM_Core_Permission::check('create and withdraw receipts')
+    ) {
       $context['contact_id'] ??= NULL;
       $tabs[] = [
         'id' => 'donation_receipts',
-        'url' => CRM_Utils_System::url( 'civicrm/donrec/tab',
-          "reset=1&snippet=1&force=1&cid={$context['contact_id']}" ),
+        'url' => CRM_Utils_System::url('civicrm/donrec/tab',
+          "reset=1&snippet=1&force=1&cid={$context['contact_id']}"),
         'title' => E::ts('Donation receipts'),
         // If contact_id is not provided, this is being called from the ContactLayout extension to retrieve tab info
-        'count' => !empty($context['contact_id']) ? CRM_Donrec_Logic_Receipt::getReceiptCountForContact($context['contact_id']) : NULL,
+        'count' => !empty($context['contact_id'])
+        ? CRM_Donrec_Logic_Receipt::getReceiptCountForContact($context['contact_id']) : NULL,
         'icon' => 'crm-i fa-paperclip',
         'weight' => 300,
       ];
@@ -283,7 +263,7 @@ function donrec_civicrm_tabset($tabsetName, &$tabs, $context) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-function donrec_civicrm_navigationMenu(&$menu) {
+function donrec_civicrm_navigationMenu(array &$menu): void {
   _donrec_civix_insert_navigation_menu(
     $menu,
     'Administer/CiviContribute',
@@ -296,7 +276,7 @@ function donrec_civicrm_navigationMenu(&$menu) {
       'icon' => 'crm-i fa-balance-scale',
     ]
   );
-  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', [
     'label' => E::ts('Donation Receipts Settings'),
     'name' => 'donrec_settings',
     'url' => 'civicrm/admin/setting/donrec',
@@ -305,8 +285,8 @@ function donrec_civicrm_navigationMenu(&$menu) {
     'operator' => 'OR',
     'separator' => 0,
     'icon' => 'crm-i fa-cog',
-  ));
-  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', array(
+  ]);
+  _donrec_civix_insert_navigation_menu($menu, 'Administer/CiviContribute/donrec', [
     'label' => E::ts('Donation Receipts Profiles'),
     'name' => 'donrec_profiles',
     'url' => 'civicrm/admin/setting/donrec/profiles',
@@ -314,27 +294,38 @@ function donrec_civicrm_navigationMenu(&$menu) {
     'operator' => 'OR',
     'separator' => 0,
     'icon' => 'crm-i fa-cogs',
-  ));
+  ]);
 }
 
 /*
  * return errors if a receipted contribution is going to be changed
  */
- //TODO: the pre-hook need the same informations than this one and is called
- // afterwards. Is it possible to make these informations available for it?
-function donrec_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
+//TODO: the pre-hook need the same information than this one and is called
+
+/**
+ * afterwards. Is it possible to make these information available for it?
+ */
+function donrec_civicrm_validateForm(
+  string $formName,
+  array &$fields,
+  array &$files,
+  CRM_Core_Form $form,
+  array &$errors
+): void {
   // Validate contribution_form for already existing contributions.
-  // Therefore we need a contribution-id.
-  if ($formName == 'CRM_Contribute_Form_Contribution' && !empty($form->_id)) {
+  // Therefore, we need a contribution-id.
+  if ($form instanceof CRM_Contribute_Form_Contribution && !empty($form->_id)) {
     // Validate the contribution values to be set.
     $errors += CRM_Donrec_Logic_Settings::validateContribution($form->_id, $form->_values, $fields);
   }
 }
 
-/*
+/**
+ *
  * Implements hook_civicrm_pre().
+ *
  */
-function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
+function donrec_civicrm_pre(string $op, string $objectName, $id, array &$params): void {
   // Check for forbidden changes on receipted contributions.
   if ($objectName == 'Contribution' && ($op == 'edit' || $op == 'delete')) {
 
@@ -348,13 +339,18 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
           SELECT *
           FROM civicrm_contribution
           WHERE id = $id";
+        /** @var \CRM_Core_DAO $result */
         $result = CRM_Core_DAO::executeQuery($query);
         $result->fetch();
 
         // Validate the contribution values to be set.
-        CRM_Donrec_Logic_Settings::validateContribution($id, (array)$result, $params, TRUE);
-      } elseif ($op == 'delete') {
-        $message = sprintf(E::ts("This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"), $id);
+        CRM_Donrec_Logic_Settings::validateContribution($id, (array) $result, $params, TRUE);
+      }
+      elseif ($op == 'delete') {
+        $message = sprintf(
+          E::ts('This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!'),
+          $id
+        );
         throw new Exception($message);
       }
     }
@@ -365,7 +361,7 @@ function donrec_civicrm_pre( $op, $objectName, $id, &$params ) {
 /**
  * Implements hook_civicrm_post().
  */
-function donrec_civicrm_post($op, $objectName, $objectId, &$objectRef) {
+function donrec_civicrm_post(string $op, string $objectName, int $objectId, $objectRef): void {
   // Care for transaction-wrapped calls by deferring to a callback.
   if (CRM_Core_Transaction::isActive()) {
     CRM_Core_Transaction::addCallback(
@@ -388,14 +384,9 @@ function donrec_civicrm_post($op, $objectName, $objectId, &$objectRef) {
  * Actual implementation of hook_civicrm_post(), used as a callback in the hook
  * implementation itself to care for transaction-wrapped calls.
  *
- * @see donrec_civicrm_post().
- *
- * @param $op
- * @param $objectName
- * @param $objectId
- * @param $objectRef
+ * @see donrec_civicrm_post()
  */
-function _donrec_civicrm_post_callback($op, $objectName, $objectId, $objectRef) {
+function _donrec_civicrm_post_callback(string $op, string $objectName, int $objectId, $objectRef): void {
   if ($objectName == 'Contribution') {
     switch ($op) {
       case 'create':
@@ -426,10 +417,14 @@ function _donrec_civicrm_post_callback($op, $objectName, $objectId, $objectRef) 
 /**
  * Prune the "find contributions" and "advanced contact search" forms
  * by removing the fields that don't make sense or don't work
+ *
+ * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
  */
-function donrec_civicrm_buildForm($formName, &$form) {
-  if ($formName=='CRM_Contribute_Form_Search') {
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+function donrec_civicrm_buildForm(string $formName, object $form): void {
+// phpcs:enable
+  if ($formName == 'CRM_Contribute_Form_Search') {
+    /** @var CRM_Contribute_Form_Search $form */
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields() ?? [];
 
     // remove unwanted fields
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'financial_type_id');
@@ -441,45 +436,49 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'receive_date');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
-    CRM_Core_Region::instance('page-body')->add(array(
-      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
-    ));
-
-    // DISABLED: date field search doesn't work
-    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', E::E::ts("Issed On - From"), ts("Issed On - To"));
-    // CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'receive_date', E::E::ts("Received - From"), ts("Received - To"));
+    CRM_Core_Region::instance('page-body')->add([
+      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl',
+    ]);
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
         E::ts('Status'),
         // TODO: use future status definitions
-        array(  ''                => E::ts('- any -'),
-                'original'        => E::ts('original'),
-                'copy'            => E::ts('copy'),
-                'withdrawn'       => E::ts('withdrawn'),
-                'withdrawn_copy'  => E::ts('withdrawn_copy'),
-                ));
+        [
+          ''                => E::ts('- any -'),
+          'original'        => E::ts('original'),
+          'copy'            => E::ts('copy'),
+          'withdrawn'       => E::ts('withdrawn'),
+          'withdrawn_copy'  => E::ts('withdrawn_copy'),
+        ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
         E::ts('Type'),
         // TODO: use future status definitions
-        array(  ''        => E::ts('- any -'),
-                'single'  => E::ts('single receipt'),
-                'bulk'    => E::ts('bulk receipt'),
-                ));
+        [
+          ''        => E::ts('- any -'),
+          'single'  => E::ts('single receipt'),
+          'bulk'    => E::ts('bulk receipt'),
+        ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
-    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
+    if ($status_id) {
+      $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
+    if ($status_id) {
+      $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
+    }
 
-
-
-
-  } elseif ($formName=='CRM_Contact_Form_Search_Advanced') {
-
+  }
+  elseif ($formName == 'CRM_Contact_Form_Search_Advanced') {
+    /** @var CRM_Contact_Form_Search_Advanced $form */
     // remove unwanted fields
-    $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields();
+    $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields() ?? [];
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'original_file');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contact_type');
@@ -508,7 +507,7 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_to');
 
     // remove unwanted fields from receipt items (in contribution tab)
-    $item_fields_receipt = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $item_fields_receipt = CRM_Donrec_Logic_ReceiptItem::getCustomFields() ?? [];
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'financial_type_id');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'total_amount');
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'non_deductible_amount');
@@ -518,67 +517,72 @@ function donrec_civicrm_buildForm($formName, &$form) {
     $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'receive_date');
 
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
-    CRM_Core_Region::instance('page-body')->add(array(
-      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl'
-    ));
-
-    // DISABLED: date field search doesn't work
-    //CRM_Utils_DonrecHelper::relabelDateField($form, $item_fields, 'issued_on', E::E::ts("Issed On - From"), ts("Issed On - To"));
+    CRM_Core_Region::instance('page-body')->add([
+      'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl',
+    ]);
 
     // override the standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
-        E::ts('Status'),
-        // TODO: use future status definitions
-        array(  ''                => E::ts('- any -'),
-                'original'        => E::ts('original'),
-                'copy'            => E::ts('copy'),
-                'withdrawn'       => E::ts('withdrawn'),
-                'withdrawn_copy'  => E::ts('withdrawn_copy'),
-                ));
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
+      E::ts('Status'),
+      // TODO: use future status definitions
+      [
+        ''                => E::ts('- any -'),
+        'original'        => E::ts('original'),
+        'copy'            => E::ts('copy'),
+        'withdrawn'       => E::ts('withdrawn'),
+        'withdrawn_copy'  => E::ts('withdrawn_copy'),
+      ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
-        E::ts('Type'),
-        // TODO: use future status definitions
-        array(  ''        => E::ts('- any -'),
-                'single'  => E::ts('single receipt'),
-                'bulk'    => E::ts('bulk receipt'),
-                ));
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
+      E::ts('Type'),
+      // TODO: use future status definitions
+      [
+        ''        => E::ts('- any -'),
+        'single'  => E::ts('single receipt'),
+        'bulk'    => E::ts('bulk receipt'),
+      ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
-
+    if ($status_id) {
+      $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
+    }
 
     // override the receipt_item standard fields
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'status');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
-        E::ts('Status'),
-        // TODO: use future status definitions
-        array(  ''                => E::ts('- any -'),
-                'original'        => E::ts('original'),
-                'copy'            => E::ts('copy'),
-                'withdrawn'       => E::ts('withdrawn'),
-                'withdrawn_copy'  => E::ts('withdrawn_copy'),
-                ));
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
+      E::ts('Status'),
+      // TODO: use future status definitions
+      [
+        ''                => E::ts('- any -'),
+        'original'        => E::ts('original'),
+        'copy'            => E::ts('copy'),
+        'withdrawn'       => E::ts('withdrawn'),
+        'withdrawn_copy'  => E::ts('withdrawn_copy'),
+      ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'type');
-    if ($status_id) $form->add('select', "custom_{$status_id}",
-        E::ts('Type'),
-        // TODO: use future status definitions
-        array(  ''        => E::ts('- any -'),
-                'single'  => E::ts('single receipt'),
-                'bulk'    => E::ts('bulk receipt'),
-                ));
+    if ($status_id) {
+      $form->add('select', "custom_{$status_id}",
+      E::ts('Type'),
+      // TODO: use future status definitions
+      [
+        ''        => E::ts('- any -'),
+        'single'  => E::ts('single receipt'),
+        'bulk'    => E::ts('bulk receipt'),
+      ]);
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_in');
-    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
+    if ($status_id) {
+      $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
+    }
     $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_by');
-    if ($status_id) $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
+    if ($status_id) {
+      $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
+    }
   }
 }
-
-// /**
-//  * Implements hook_civicrm_entityTypes().
-//  *
-//  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
-//  */
-// function donrec_civicrm_entityTypes(&$entityTypes) {
-//   _donrec_civix_civicrm_entityTypes($entityTypes);
-// }

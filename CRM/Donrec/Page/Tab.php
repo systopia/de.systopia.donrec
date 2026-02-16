@@ -8,17 +8,18 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
-require_once 'CRM/Core/Page.php';
+declare(strict_types = 1);
 
 class CRM_Donrec_Page_Tab extends CRM_Core_Page {
-  function run() {
-    $contact_id = empty($_REQUEST['cid']) ? NULL : $_REQUEST['cid'];
+
+  public function run() {
+    $contact_id = empty($_REQUEST['cid']) ? NULL : (int) $_REQUEST['cid'];
     $scroll_to_receipt = empty($_REQUEST['rid']) ? NULL : $_REQUEST['rid'];
 
-    if($contact_id && CRM_Core_Permission::check('view and copy receipts')) {
-      $params = array();
+    if ($contact_id && CRM_Core_Permission::check('view and copy receipts')) {
+      $params = [];
       $receipts = CRM_Donrec_Logic_Receipt::getReceiptsForContact($contact_id, $params);
-      $display_receipts = array();
+      $display_receipts = [];
       foreach ($receipts as $rec) {
         $display_receipts[$rec->getId()] = $rec->getAllTokens();
       }
@@ -36,4 +37,5 @@ class CRM_Donrec_Page_Tab extends CRM_Core_Page {
 
     parent::run();
   }
+
 }

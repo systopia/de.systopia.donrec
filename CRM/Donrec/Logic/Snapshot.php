@@ -8,24 +8,62 @@
 | License: AGPLv3, see LICENSE file                      |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * This class represents a single snapshot
  */
 class CRM_Donrec_Logic_Snapshot {
   // unique snapshot id
-  private $Id;
+  private int $Id;
 
-  /** cache value for the snapshot's profile */
-  private $_profile = NULL;
+  /**
+   * cache value for the snapshot's profile */
+  private ?CRM_Donrec_Logic_Profile $_profile = NULL;
 
   // these fields of the table get copied into the chunk
-  private static $CHUNK_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'contact_id', 'date_from', 'date_to', 'profile_id');
-  private static $CONTACT_FIELDS = array('contact_id','display_name', 'street_address', 'supplemental_address_1', 'supplemental_address_2', 'supplemental_address_3', 'postal_code', 'city', 'country');
-  private static $LINE_FIELDS = array('id', 'contribution_id', 'contact_id', 'financial_type_id', 'status', 'created_by', 'created_timestamp', 'total_amount', 'non_deductible_amount', 'currency', 'receive_date', 'date_from', 'date_to', 'profile_id');
+  private static array $CHUNK_FIELDS = [
+    'id',
+    'contribution_id',
+    'contact_id',
+    'financial_type_id',
+    'status',
+    'created_by',
+    'total_amount',
+    'non_deductible_amount',
+    'currency',
+    'receive_date',
+    'contact_id',
+    'date_from',
+    'date_to',
+    'profile_id',
+  ];
+
+  private static array $LINE_FIELDS = [
+    'id',
+    'contribution_id',
+    'contact_id',
+    'financial_type_id',
+    'status',
+    'created_by',
+    'created_timestamp',
+    'total_amount',
+    'non_deductible_amount',
+    'currency',
+    'receive_date',
+    'date_from',
+    'date_to',
+    'profile_id',
+  ];
   // private constructor to prevent
-  // external instantiation
+
+  /**
+   * external instantiation
+   *
+   * @param int $id
+   */
   private function __construct($id) {
-    $this->Id = $id;
+    $this->Id = (int) $id;
   }
 
   /**
@@ -39,7 +77,8 @@ class CRM_Donrec_Logic_Snapshot {
     $snapshot = new CRM_Donrec_Logic_Snapshot($snapshot_id);
     if ($snapshot->exists()) {
       return $snapshot;
-    } else {
+    }
+    else {
       return NULL;
     }
   }
@@ -48,18 +87,18 @@ class CRM_Donrec_Logic_Snapshot {
    * get the snapshot of a given line_id
    * @param int $snapshot_line_id
    * @return \CRM_Donrec_Logic_Snapshot|null
-*/
+   */
   public static function getSnapshotForLineID($snapshot_line_id) {
-    $snapshot_id = CRM_Core_DAO::singleValueQuery("SELECT `snapshot_id` FROM `donrec_snapshot` WHERE `id` = %1;",
-      array(1 => array($snapshot_line_id, 'Integer')));
+    $snapshot_id = (int) CRM_Core_DAO::singleValueQuery('SELECT `snapshot_id` FROM `donrec_snapshot` WHERE `id` = %1;',
+      [1 => [$snapshot_line_id, 'Integer']]);
     if ($snapshot_id) {
       // no need to check if it exists, b/c if not the query would be empty
       return new CRM_Donrec_Logic_Snapshot($snapshot_id);
-    } else {
+    }
+    else {
       return NULL;
     }
   }
-
 
   /**
    * creates and returns a new snapshot object from the
@@ -69,24 +108,24 @@ class CRM_Donrec_Logic_Snapshot {
    *                              be part of the snapshot
    * @param int $creator_id           civicrm id of the contact which creates
    *                              the snapshot
-   * @param $date_from
-   * @param $date_to
-   * @param $profile_id
+   * @param string $date_from
+   * @param string $date_to
+   * @param int $profile_id
    * @param int $expired just for debugging purposes: creates an
    *                              expired snapshot if less/greater than
    *                zero (-1/1: one day expired, -2/2: two
    *                days etc.)
-   * @return array(
-   *      'snapshot' => snapshot-object or NULL,
+   * @return array (
+   *   'snapshot' => snapshot-object or NULL,
    *      'intersection_error' => intersection-error-object or NULL
    *      )
-*/
+   */
   public static function create(&$contributions, $creator_id, $date_from, $date_to, $profile_id, $expired = 0) {
 
-    $return = array(
+    $return = [
       'snapshot' => NULL,
       'intersection_error' => NULL,
-    );
+    ];
 
     //TODO: special handling for this case?
     $error = self::hasIntersections();
@@ -103,7 +142,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // get next snapshot id
     // FIXME: this might cause race conditions
-    $new_snapshot_id = (int)CRM_Core_DAO::singleValueQuery("SELECT max(`snapshot_id`) FROM `donrec_snapshot`;");
+    $new_snapshot_id = (int) CRM_Core_DAO::singleValueQuery('SELECT max(`snapshot_id`) FROM `donrec_snapshot`;');
     $new_snapshot_id++;
     $profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
 
@@ -113,9 +152,9 @@ class CRM_Donrec_Logic_Snapshot {
     $financialTypeClause = $profile->getContributionTypesClause();
 
     // debugging/testing
-    $operator = "+ INTERVAL 1 DAY";
+    $operator = '+ INTERVAL 1 DAY';
     if ($expired != 0) {
-      $operator = "- INTERVAL " . abs($expired) . " DAY";
+      $operator = '- INTERVAL ' . abs($expired) . ' DAY';
     }
 
     // assemble the query
@@ -147,13 +186,16 @@ class CRM_Donrec_Logic_Snapshot {
               `civicrm_contribution`.`id` as `contribution_id`,
               `civicrm_line_item`.`id` as `line_item_id`,
               `contact_id`,
-              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`financial_type_id`, `civicrm_contribution`.`financial_type_id`),
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`financial_type_id`,
+                `civicrm_contribution`.`financial_type_id`),
               NOW() as `created_timestamp`,
               NOW() $operator as `expires_timestamp`,
               NULL,
               %3,
-              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`line_total`, `civicrm_contribution`.`total_amount`),
-              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`non_deductible_amount`, `civicrm_contribution`.`non_deductible_amount`),
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`line_total`,
+                `civicrm_contribution`.`total_amount`),
+              IF (`civicrm_line_item`.`id` IS NOT NULL, `civicrm_line_item`.`non_deductible_amount`,
+                `civicrm_contribution`.`non_deductible_amount`),
               `currency`,
               `receive_date`,
               '$date_from' as `date_from`,
@@ -166,7 +208,8 @@ class CRM_Donrec_Logic_Snapshot {
           WHERE
               `civicrm_contribution`.`id` IN ($id_string)
           ;";
-    } else {
+    }
+    else {
       $insert_query =
         "INSERT INTO `donrec_snapshot` (
               `id`,
@@ -211,14 +254,14 @@ class CRM_Donrec_Logic_Snapshot {
     // FIXME: do not include contributions with valued issued don. rec.
 
     // prepare parameters
-    $params = array(
-      1 => array($new_snapshot_id, 'Integer'),
-      2 => array(
+    $params = [
+      1 => [$new_snapshot_id, 'Integer'],
+      2 => [
         $profile->getId(),
         'Int',
-      ),
-      3 => array($creator_id, 'Integer'),
-    );
+      ],
+      3 => [$creator_id, 'Integer'],
+    ];
 
     // execute the query
     $result = CRM_Core_DAO::executeQuery($insert_query, $params);
@@ -233,27 +276,28 @@ class CRM_Donrec_Logic_Snapshot {
       //$snapshot->delete();
       //return NULL;
       return $return;
-    } else {
+    }
+    else {
       return $return;
     }
   }
 
   /**
-  * deletes the snapshot (permanently on database level!)
-  */
+   * deletes the snapshot (permanently on database level!)
+   */
   public function delete() {
-    return (bool)CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `donrec_snapshot`
-       WHERE `snapshot_id` = %1;", array(1 => array($this->Id, 'Integer')));
+    return (bool) CRM_Core_DAO::singleValueQuery(
+      'DELETE FROM `donrec_snapshot`
+       WHERE `snapshot_id` = %1;', [1 => [$this->Id, 'Integer']]);
   }
 
   /**
    * checks if the snapshot exists, i.e. if there is at least one item
    */
   private function exists() {
-    return (bool)CRM_Core_DAO::singleValueQuery(
-      "SELECT EXISTS(SELECT 1 FROM `donrec_snapshot`
-       WHERE `snapshot_id` = %1);", array(1 => array($this->Id, 'Integer')));
+    return (bool) CRM_Core_DAO::singleValueQuery(
+      'SELECT EXISTS(SELECT 1 FROM `donrec_snapshot`
+       WHERE `snapshot_id` = %1);', [1 => [$this->Id, 'Integer']]);
   }
 
   /**
@@ -261,8 +305,8 @@ class CRM_Donrec_Logic_Snapshot {
    */
   public function getCreator() {
     return (int) CRM_Core_DAO::singleValueQuery(
-      "SELECT `created_by` FROM `donrec_snapshot`
-       WHERE `snapshot_id` = %1 LIMIT 1;", array(1 => array($this->Id, 'Integer')));
+      'SELECT `created_by` FROM `donrec_snapshot`
+       WHERE `snapshot_id` = %1 LIMIT 1;', [1 => [$this->Id, 'Integer']]);
   }
 
   /**
@@ -270,31 +314,35 @@ class CRM_Donrec_Logic_Snapshot {
    *
    * @param bool $is_bulk
    * @param bool $is_test
-   * @return array: <id> => array with values
-*/
+   * @return array<int, list<array<string, mixed>>>|null id => array with values
+   */
   public function getNextChunk($is_bulk, $is_test) {
     $chunk_size = CRM_Donrec_Logic_Settings::getChunkSize();
     $snapshot_id = $this->getId();
-    $chunk = array();
+    $chunk = [];
     if ($is_test) {
-      $status_clause = "`status` IS NULL";
-    } else {
+      $status_clause = '`status` IS NULL';
+    }
+    else {
       $status_clause = "(`status` IS NULL OR `status`='TEST')";
     }
 
     // here, we need a different algorithm for bulk than for single:
     if (empty($is_bulk)) {
       // SINGLE case: just grab $chunk_size items
-      $query = "SELECT * FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND $status_clause LIMIT $chunk_size;";
+      $query = "SELECT * FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id
+                  AND $status_clause LIMIT $chunk_size;";
+      /** @var \CRM_Core_DAO $result */
       $result = CRM_Core_DAO::executeQuery($query);
       while ($result->fetch()) {
-        $chunk_line = array();
+        $chunk_line = [];
         foreach (self::$CHUNK_FIELDS as $field) {
           $chunk_line[$field] = $result->$field;
         }
         $chunk[$chunk_line['id']] = $chunk_line;
       }
-    } else {
+    }
+    else {
       // BULK case: get items grouped by contact ID until it exceeds $chunk_size
 
       // get all lines
@@ -310,6 +358,7 @@ class CRM_Donrec_Logic_Snapshot {
                 AND snapshot.`snapshot_id` = $snapshot_id
                 AND $status_clause
                 ORDER BY snapshot.`contact_id` ASC;";
+      /** @var \CRM_Core_DAO $query */
       $query = CRM_Core_DAO::executeQuery($query);
 
       $last_added_contact_id = NULL;
@@ -317,19 +366,19 @@ class CRM_Donrec_Logic_Snapshot {
       while ($query->fetch()) {
         if ($last_added_contact_id != $query->contact_id) {
           // this is a new contact ID
-          if ( (count($chunk) >= $chunk_size) || ($contribution_count > 5 * $chunk_size ) ) {
+          if ((count($chunk) >= $chunk_size) || ($contribution_count > 5 * $chunk_size)) {
             // we already have $chunk_size contacts, or 5x $chunk_size contributions
             //  => that's enough for this chunk!
             break;
           }
 
           // ok, we're still under the limit => create a section for the contact
-          $chunk[$query->contact_id] = array();
+          $chunk[$query->contact_id] = [];
           $last_added_contact_id = $query->contact_id;
         }
 
         // add contribution
-        $contribution = array();
+        $contribution = [];
         foreach (self::$CHUNK_FIELDS as $field) {
           $contribution[$field] = $query->$field;
         }
@@ -341,9 +390,10 @@ class CRM_Donrec_Logic_Snapshot {
     // reset the process information for the given chunk
     $this->resetChunk($chunk, $is_bulk);
 
-    if (count($chunk)==0) {
+    if (count($chunk) == 0) {
       return NULL;
-    } else {
+    }
+    else {
       return $chunk;
     }
   }
@@ -352,25 +402,29 @@ class CRM_Donrec_Logic_Snapshot {
    * reset the process information for the given chunk
    * @param $chunk
    * @param bool $is_bulk
-*/
+   */
   public function resetChunk($chunk, $is_bulk) {
-    if ($chunk==NULL) return;
+    if ($chunk == NULL) {
+      return;
+    }
 
     if ($is_bulk) {
       // get all second level ids
-      $ids = array();
-      foreach($chunk as $ck => $cv) {
+      $ids = [];
+      foreach ($chunk as $ck => $cv) {
         foreach ($cv as $lk => $lv) {
           array_push($ids, $lv['id']);
         }
       }
-    } else {
+    }
+    else {
       $ids = array_keys($chunk);
     }
 
     if (empty($ids)) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: invalid chunk detected!');
-    } else {
+      Civi::log()->debug('de.systopia.donrec: invalid chunk detected!');
+    }
+    else {
       $ids_str = implode(',', $ids);
 
       // reset process information for all IDs
@@ -384,26 +438,30 @@ class CRM_Donrec_Logic_Snapshot {
    * @param $chunk
    * @param bool $is_test
    * @param bool $is_bulk
-*/
-  public function markChunkProcessed($chunk, $is_test, $is_bulk=FALSE) {
-    if ($chunk==NULL) return;
+   */
+  public function markChunkProcessed($chunk, $is_test, $is_bulk = FALSE) {
+    if ($chunk == NULL) {
+      return;
+    }
 
-    $new_status = $is_test?'TEST':'DONE';
+    $new_status = $is_test ? 'TEST' : 'DONE';
     if (!$is_bulk) {
       $ids = array_keys($chunk);
-    }else{
+    }
+    else {
       // get all second level ids
-      $ids = array();
-      foreach($chunk as $ck => $cv) {
-          foreach ($cv as $lk => $lv) {
-            array_push($ids, $lv['id']);
-          }
+      $ids = [];
+      foreach ($chunk as $ck => $cv) {
+        foreach ($cv as $lk => $lv) {
+          array_push($ids, $lv['id']);
+        }
       }
     }
 
     if (empty($ids)) {
-      CRM_Core_Error::debug_log_message('de.systopia.donrec: invalid chunk detected!');
-    } else {
+      Civi::log()->debug('de.systopia.donrec: invalid chunk detected!');
+    }
+    else {
       $ids_str = implode(',', $ids);
 
       // update process-info-field
@@ -415,29 +473,29 @@ class CRM_Donrec_Logic_Snapshot {
       // update status-field
       $query = "UPDATE `donrec_snapshot` SET `status`='$new_status' WHERE `id` IN ($ids_str);";
       CRM_Core_DAO::executeQuery($query);
-      // CRM_Core_Error::debug_log_message("de.systopia.donrec: lines $ids are now processed ($query)");
     }
   }
-
 
   /**
    * get the snapshot's state distribution
    *
    * @return array
    *   array <state> => <count>
-*/
+   */
   public function getStates() {
-    $states = array('NULL' => 0, 'TEST' => 0, 'DONE' => 0);
+    $states = ['NULL' => 0, 'TEST' => 0, 'DONE' => 0];
     $id = $this->Id;
     $query = "
       SELECT COUNT(`id`) AS count, `status` AS status
       FROM `donrec_snapshot`
       WHERE `snapshot_id` = $id GROUP BY `status`";
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
     while ($result->fetch()) {
-      if ($result->status==NULL) {
+      if ($result->status == NULL) {
         $states['NULL'] = $result->count;
-      } else {
+      }
+      else {
         $states[$result->status] = $result->count;
       }
     }
@@ -445,8 +503,8 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Will reset a test run
-  */
+   * Will reset a test run
+   */
   public function resetTestRun() {
     CRM_Core_DAO::executeQuery(
       "UPDATE `donrec_snapshot`
@@ -455,25 +513,25 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * deletes expired snapshots (permanently on database level!)
-  */
+   * deletes expired snapshots (permanently on database level!)
+   */
   public static function cleanup() {
     CRM_Core_DAO::singleValueQuery(
-      "DELETE FROM `donrec_snapshot`
-       WHERE `expires_timestamp` < NOW();");
+      'DELETE FROM `donrec_snapshot`
+       WHERE `expires_timestamp` < NOW();');
   }
 
   /**
    * checks whether there are intersections in snapshots
    * @param int $snapshot_id
-   * @return array|bool when no error occured,
-*/
+   * @return array|FALSE
+   */
   public static function hasIntersections($snapshot_id = 0) {
     // TODO: speed up by looking at one particular snapshot ?
     // We do not check snapshots with status DONE: If we delete a receipt but
     // the snapshot still exists, we get an intersection-error on trying to
     // produce the receipt again.
-    $query =   "
+    $query = "
       SELECT original.`snapshot_id`, contact.`display_name`, original.`expires_timestamp`
       FROM `donrec_snapshot` AS original
       INNER JOIN `donrec_snapshot` AS copy ON original.`contribution_id` = copy.`contribution_id`
@@ -484,23 +542,26 @@ class CRM_Donrec_Logic_Snapshot {
       GROUP BY `snapshot_id`;";
 
     CRM_Core_DAO::disableFullGroupByMode();
+    /** @var \CRM_Core_DAO $results */
     $results = CRM_Core_DAO::executeQuery($query);
     CRM_Core_DAO::reenableFullGroupByMode();
-    $intersections = array($snapshot_id);
+    $intersections = [$snapshot_id];
 
     while ($results->fetch()) {
-      $intersections[] = array($results->snapshot_id, $results->display_name, $results->expires_timestamp);
+      $intersections[] = [(int) $results->snapshot_id, $results->display_name, $results->expires_timestamp];
     }
 
     if (count($intersections) > 1) {
       return $intersections;
-    }else{
+    }
+    else {
       return FALSE;
     }
   }
 
-  // --- HELPER/GETTER/SETTER METHODS ---
-
+  /**
+   * --- HELPER/GETTER/SETTER METHODS ---
+   */
   public function getId() {
     return $this->Id;
   }
@@ -508,8 +569,9 @@ class CRM_Donrec_Logic_Snapshot {
   public function getIds() {
     $snapshot_id = $this->Id;
     $query = "SELECT `id` FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id;";
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
-    $ids = array();
+    $ids = [];
     while ($result->fetch()) {
       $ids[] = $result->id;
     }
@@ -519,22 +581,27 @@ class CRM_Donrec_Logic_Snapshot {
   /**
    * reads and parses the JSON process information field
    * @param int $snapshot_item_id
-   * @return array|mixed
-*/
+   * @return array
+   */
   public function getProcessInformation($snapshot_item_id) {
     $item_id = (int) $snapshot_item_id;
-    if (!$item_id) return array();
+    if (!$item_id) {
+      return [];
+    }
 
     // read value
     $raw_value = CRM_Core_DAO::singleValueQuery(
       "SELECT `process_data` FROM `donrec_snapshot` WHERE `id` = $item_id;");
-    if (empty($raw_value)) return array();
+    if (empty($raw_value)) {
+      return [];
+    }
 
     $value = json_decode($raw_value, TRUE);
-    if ($value==NULL) {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot decode process_data of ID $item_id!");
-      return array();
-    } else {
+    if (!is_array($value)) {
+      Civi::log()->debug("de.systopia.donrec: warning, cannot decode process_data of ID $item_id!");
+      return [];
+    }
+    else {
       return $value;
     }
   }
@@ -543,24 +610,27 @@ class CRM_Donrec_Logic_Snapshot {
    * sets the JSON process information field
    * @param int $snapshot_item_id
    * @param mixed $value
-   * @return bool|void
-*/
+   * @return bool|null
+   */
   public function setProcessInformation($snapshot_item_id, $value) {
     $item_id = (int) $snapshot_item_id;
     if (!$item_id) {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: invalid snapshot id detected! ($item_id)");
-      return;
+      Civi::log()->debug("de.systopia.donrec: invalid snapshot id detected! ($item_id)");
+      return NULL;
     }
 
     $raw_value = json_encode($value);
-    if ($raw_value==FALSE) {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
-    } else {
+    if ($raw_value == FALSE) {
+      Civi::log()->debug("de.systopia.donrec: warning, cannot encode process_data for ID $item_id!");
+
+      return NULL;
+    }
+    else {
       return (bool) CRM_Core_DAO::singleValueQuery(
-        "UPDATE `donrec_snapshot`
+        'UPDATE `donrec_snapshot`
          SET `process_data` = %1
-         WHERE `id` = %2;",
-        array(1 => array($raw_value, 'String'), 2 => array($item_id, 'Integer')));
+         WHERE `id` = %2;',
+        [1 => [$raw_value, 'String'], 2 => [$item_id, 'Integer']]);
     }
   }
 
@@ -568,7 +638,7 @@ class CRM_Donrec_Logic_Snapshot {
    * updates the JSON process information field
    * @param int $snapshot_item_id
    * @param array $array
-*/
+   */
   public function updateProcessInformation($snapshot_item_id, $array) {
     $infos = $this->getProcessInformation($snapshot_item_id);
     $merged_infos = array_merge($infos, $array);
@@ -576,17 +646,18 @@ class CRM_Donrec_Logic_Snapshot {
   }
 
   /**
-  * Returns a line of this snapshot
-  * @param int line id
-  * @return array or empty array
-  */
+   * Returns a line of this snapshot
+   * @param int $line_id
+   * @return array<string, scalar|null> or empty array
+   */
   public function getLine($line_id) {
     $snapshot_id = $this->Id;
     $query = "SELECT * FROM `donrec_snapshot` WHERE `snapshot_id` = $snapshot_id AND id = %1 LIMIT 1;";
-    $params = array(1 => array($line_id, 'Integer'));
+    $params = [1 => [$line_id, 'Integer']];
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query, $params);
     $result->fetch();
-    $line = array();
+    $line = [];
     foreach (self::$LINE_FIELDS as $field) {
       $line[$field] = $result->$field;
     }
@@ -596,10 +667,13 @@ class CRM_Donrec_Logic_Snapshot {
   /**
    * Checks if a snapshot is marked as bulk or single
    * @param int $id
-   * @return string bulk|single or null
-*/
+   * @return string|null bulk|single or null
+   */
   // TODO: refactor this. Process-infos are already accessed in getExporters.
-  // Use a common method to not fetch process-infos twice.
+
+  /**
+   * Use a common method to not fetch process-infos twice.
+   */
   public static function singleOrBulk($id) {
     $query = "
       SELECT `process_data`
@@ -611,31 +685,33 @@ class CRM_Donrec_Logic_Snapshot {
 
     // no process_data set: abort
     if (!$raw_value) {
-      return;
+      return NULL;
     }
     // decode process-data
     $info = json_decode($raw_value, TRUE);
 
     // if it could not be decoded: abort
-    if ($info==NULL) {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec: warning, cannot decode process_data!");
-      return;
+    if (!is_array($info)) {
+      Civi::log()->debug('de.systopia.donrec: warning, cannot decode process_data!');
+      return NULL;
     }
 
     // is_bulk was not set: abort
     if (!array_key_exists('is_bulk', $info)) {
-      return;
-    } elseif ($info['is_bulk']) {
+      return NULL;
+    }
+    elseif ($info['is_bulk']) {
       return 'bulk';
-    } else {
+    }
+    else {
       return 'single';
     }
   }
 
   /**
-  * Returns an array all exporters used to process the snapshot
-  * @return array
-  */
+   * Returns an array all exporters used to process the snapshot
+   * @return array
+   */
   public function getExporters() {
     // get snapshot id
     $id = $this->getId();
@@ -647,10 +723,11 @@ class CRM_Donrec_Logic_Snapshot {
       WHERE snapshot_id = $id
       AND status = 'DONE'
     ";
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
 
     // merge process-data of all items into array
-    $merged_process_data = array();
+    $merged_process_data = [];
     $count = 0;
     while ($result->fetch()) {
       $process_data = $this->getProcessInformation($result->id);
@@ -664,7 +741,7 @@ class CRM_Donrec_Logic_Snapshot {
 
     // if we have processed lines but no exporter, we use the Dummy
     if (!empty($count) && empty($exporters)) {
-      $exporters = array('Dummy');
+      $exporters = ['Dummy'];
     }
     return $exporters;
   }
@@ -673,7 +750,7 @@ class CRM_Donrec_Logic_Snapshot {
    * Returns an array with statistic values of the snapshot
    * @param int $id
    * @return array
-*/
+   */
   public static function getStatistic($id) {
     $query1 = "SELECT
       COUNT(*) AS contribution_count,
@@ -693,6 +770,7 @@ class CRM_Donrec_Logic_Snapshot {
         GROUP BY contact_id
       ) A";
     CRM_Core_DAO::disableFullGroupByMode();
+    /** @var \CRM_Core_DAO $result1 */
     $result1 = CRM_Core_DAO::executeQuery($query1);
     CRM_Core_DAO::reenableFullGroupByMode();
     $result1->fetch();
@@ -705,17 +783,21 @@ class CRM_Donrec_Logic_Snapshot {
     $states = $snapshot->getStates();
     // if we have TEST- and DONE-states we have a problem
     if ($states['TEST'] && $states['DONE']) {
-      CRM_Core_Error::debug_log_message("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
+      Civi::log()->debug("de.systopia.donrec - snapshot with id $id has entries with both TEST and DONE states!");
       // TODO : raise an error
-    } elseif ($states['TEST']) {
+      $status = NULL;
+    }
+    elseif ($states['TEST']) {
       $status = 'TEST';
-    } elseif ($states['DONE']) {
+    }
+    elseif ($states['DONE']) {
       $status = 'DONE';
-    } else {
-      $status = null;
+    }
+    else {
+      $status = NULL;
     }
 
-    $statistic = array(
+    $statistic = [
       'id' => $id,
       'contact_count' => (int) CRM_Core_DAO::singleValueQuery($query2),
       'contribution_count' => $result1->contribution_count,
@@ -726,8 +808,8 @@ class CRM_Donrec_Logic_Snapshot {
       'status' => $status,
       'singleOrBulk' => self::singleOrBulk($id),
       'exporters' => $snapshot->getExporters($id),
-      'currency' => $result1->currency
-    );
+      'currency' => $result1->currency,
+    ];
     return $statistic;
   }
 
@@ -736,9 +818,9 @@ class CRM_Donrec_Logic_Snapshot {
    * user.
    * @param int $creator_id
    * @return array
-*/
+   */
   public static function getUserSnapshots($creator_id) {
-    $remaining_snapshots = array();
+    $remaining_snapshots = [];
 
     $query = "
       SELECT snapshot_id
@@ -747,6 +829,7 @@ class CRM_Donrec_Logic_Snapshot {
       AND created_by = $creator_id
       GROUP BY snapshot_id";
 
+    /** @var \CRM_Core_DAO $result */
     $result = CRM_Core_DAO::executeQuery($query);
     while ($result->fetch()) {
       array_push($remaining_snapshots, $result->snapshot_id);
@@ -758,9 +841,9 @@ class CRM_Donrec_Logic_Snapshot {
    * Deletes all not processed snapshots of a given user.
    * @param int $creator_id
    * @return \CRM_Core_DAO|object return-value from CRM_Core_DAO::executeQuery()
-*/
+   */
   public static function deleteUserSnapshots($creator_id) {
-    $remaining_snapshots = array();
+    $remaining_snapshots = [];
 
     $query = "
       DELETE
@@ -777,8 +860,8 @@ class CRM_Donrec_Logic_Snapshot {
    * a given contribution.
    * @param int $contribution_id
    * @param bool $return_id
-   * @return boolean
-*/
+   * @return bool|int
+   */
   public static function isInOpenSnapshot($contribution_id, $return_id = FALSE) {
     // do a cleanup here (ticket #1616)
     self::cleanup();
@@ -791,35 +874,39 @@ class CRM_Donrec_Logic_Snapshot {
       AND (status IS NULL OR status != 'DONE')
     ";
     $result = CRM_Core_DAO::singleValueQuery($query);
-    if ($return_id && !is_null($result)) {
-      return $result;
+    if ($return_id && NULL !== $result) {
+      return (int) $result;
     }
     else {
-      return !is_null($result);
+      return NULL !== $result;
     }
   }
 
   /**
    * create a set of CRM_Donrec_Logic_SnapshotReceipt objects with a given chunk
    *
-   * @param $chunk
+   * @param array $chunk
    * @param bool $is_bulk
    * @param bool $is_test
    * @return array
    *   array of CRM_Donrec_Logic_SnapshotReceipts
-*/
-   // FIXME: This function seems to be superfluous. Now where used anymore
+   */
+
+  /**
+   * FIXME: This function seems to be superfluous. Now where used anymore
+   */
   public function getSnapshotReceipts($chunk, $is_bulk, $is_test) {
-    $temp_receipts = array();
+    $temp_receipts = [];
     if ($is_bulk) {
       // then create the temporary receipts
       foreach ($chunk as $contact_id => $snapshot_lines) {
         $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, $snapshot_lines, $is_test);
       }
-    } else {
+    }
+    else {
       // create individual receipts
       foreach ($chunk as $snapshot_line) {
-        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, array($snapshot_line), $is_test);
+        $temp_receipts[] = new CRM_Donrec_Logic_SnapshotReceipt($this, [$snapshot_line], $is_test);
       }
     }
     return $temp_receipts;
@@ -827,12 +914,13 @@ class CRM_Donrec_Logic_Snapshot {
 
   /**
    * Get a CRM_Donrec_Logic_SnapshotReceipt object
-   * @param list of snapshot-line-ids
-   * @param boolean is_test
+   * @param list<int> $snapshot_line_ids
+   * @param bool $is_test
    * @return CRM_Donrec_Logic_SnapshotReceipt
    */
   public function getSnapshotReceipt($snapshot_line_ids, $is_test) {
-    foreach($snapshot_line_ids as $id) {
+    $lines = [];
+    foreach ($snapshot_line_ids as $id) {
       $lines[] = $this->getLine($id);
     }
     return new CRM_Donrec_Logic_SnapshotReceipt($this, $lines, $is_test);
@@ -844,12 +932,13 @@ class CRM_Donrec_Logic_Snapshot {
    * @return \CRM_Donrec_Logic_Profile
    */
   public function getProfile() {
-    if ($this->_profile == NULL) {
-      $profile_id = CRM_Core_DAO::singleValueQuery(
-        "SELECT profile_id FROM donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;",
-        array(1 => array($this->Id, 'Integer')));
+    if ($this->_profile === NULL) {
+      $profile_id = (int) CRM_Core_DAO::singleValueQuery(
+        'SELECT profile_id FROM donrec_snapshot WHERE snapshot_id = %1 LIMIT 1;',
+        [1 => [$this->Id, 'Integer']]);
       $this->_profile = CRM_Donrec_Logic_Profile::getProfile($profile_id);
     }
     return $this->_profile;
   }
+
 }
