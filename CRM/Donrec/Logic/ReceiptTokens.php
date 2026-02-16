@@ -141,7 +141,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
   public static function getFullTokenList() {
     $tokens = self::$STORED_TOKENS;
     foreach (self::$DYNAMIC_TOKENS as $key => $value) {
-      if (is_array($value)) {
+      if (is_array($value) && is_array($tokens[$key] ?? NULL)) {
         $tokens[$key] = array_merge($tokens[$key], $value);
       }
       else {
