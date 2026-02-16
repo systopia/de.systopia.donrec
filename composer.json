@@ -42,7 +42,15 @@
         "composer-phpunit": [
             "@composer --working-dir=tools/phpunit"
         ],
+        "composer-rector": [
+            "@composer --working-dir=tools/rector"
+        ],
+        "composer-cs-fixer": [
+            "@composer --working-dir=tools/php-cs-fixer"
+        ],
         "composer-tools": [
+            "@composer-cs-fixer",
+            "@composer-rector",
             "@composer-phpcs",
             "@composer-phpstan",
             "@composer-phpunit"
@@ -59,7 +67,26 @@
         "phpunit": [
             "@php tools/phpunit/vendor/bin/simple-phpunit --coverage-text"
         ],
+        "rector": [
+            "@php tools/rector/vendor/bin/rector process"
+        ],
+        "rector:test": [
+            "@php tools/rector/vendor/bin/rector process --dry-run"
+        ],
+        "cs-fixer": [
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=php-cs-fixer.php"
+        ],
+        "cs-fixer:test": [
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff --config=php-cs-fixer.php"
+        ],
+        "fix": [
+            "@rector",
+            "@cs-fixer",
+            "@phpcbf"
+        ],
         "test": [
+            "@rector:test",
+            "@cs-fixer:test",
             "@phpcs",
             "@phpstan",
             "@phpunit"
@@ -67,5 +94,10 @@
     },
     "conflict": {
         "pear/mail_mime": "<1.10.2"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4.x-dev"
+        }
     }
 }
