@@ -156,8 +156,7 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    * Takes a full list of token -> values and
    * adds the dynamic tokens
    *
-   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
-   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
    */
   public static function addDynamicTokens(&$values, $profile) {
   // phpcs:enable
@@ -190,10 +189,18 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add financial type name and initialize $sorted_lines
-    $financialTypes = Civi::entity('Contribution')->getOptions('financial_type_id');
-    assert(NULL !== $financialTypes);
-    /** @var array<int, string> $financialTypes */
-    $financialTypes = array_column($financialTypes, 'label', 'id');
+    if (version_compare(CRM_Utils_System::version(), '5.79', '<')) {
+      /** @var array<int, string> $financialTypes */
+      // @phpstan-ignore staticMethod.deprecated
+      $financialTypes = CRM_Contribute_PseudoConstant::financialType();
+    }
+    else {
+      // Before CiviCRM 5.79 this fails with a TypeError.
+      $financialTypes = Civi::entity('Contribution')->getOptions('financial_type_id');
+      assert(NULL !== $financialTypes);
+      /** @var array<int, string> $financialTypes */
+      $financialTypes = array_column($financialTypes, 'label', 'id');
+    }
     if (!empty($values['lines']) && is_array($values['lines'])) {
       foreach ($values['lines'] as $key => $line) {
         if (!empty($line['financial_type_id'])) {

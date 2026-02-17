@@ -276,10 +276,18 @@ class CRM_Admin_Form_DonrecProfile extends CRM_Core_Form {
     /**
      * Contribution settings.
      */
-    $financialTypes = Civi::entity('Contribution')->getOptions('financial_type_id');
-    assert(NULL !== $financialTypes);
-    /** @var array<int, string> $financialTypes */
-    $financialTypes = array_column($financialTypes, 'label', 'id');
+    if (version_compare(CRM_Utils_System::version(), '5.79', '<')) {
+      /** @var array<int, string> $financialTypes */
+      // @phpstan-ignore staticMethod.deprecated
+      $financialTypes = CRM_Contribute_PseudoConstant::financialType();
+    }
+    else {
+      // Before CiviCRM 5.79 this fails with a TypeError.
+      $financialTypes = Civi::entity('Contribution')->getOptions('financial_type_id');
+      assert(NULL !== $financialTypes);
+      /** @var array<int, string> $financialTypes */
+      $financialTypes = array_column($financialTypes, 'label', 'id');
+    }
     $this->add(
       'select',
       'financial_types',
