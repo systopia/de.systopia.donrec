@@ -1,0 +1,1841 @@
+# Copyright CiviCRM LLC (c) 2004-2015
+# This file is distributed under the same license as the CiviCRM package.
+# If you contribute heavily to a translation and deem your work copyrightable,
+# make sure you license it to CiviCRM LLC under Academic Free License 3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: de.systopia.donrec\n"
+"POT-Creation-Date: 2026-03-25 16:25+0100\n"
+"Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-03-25 16:25+0100\n"
+"X-Generator: Poedit 3.9\n"
+"Last-Translator: IXIAM <info@ixiam.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ca_ES\n"
+
+#: CRM/Admin/Form/DonrecProfile.php
+#: templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
+msgid "Variable name"
+msgstr "Nom de variable"
+
+#: CRM/Admin/Form/DonrecProfile.php
+#: templates/CRM/Admin/Form/DonrecProfile/Variables.tpl
+msgid "Variable value"
+msgstr "Valor de la variable"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Set new default profile"
+msgstr "Establir un nou perfil predeterminat"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Delete Donation Receipts profile <em>%1</em>"
+msgstr "Eliminar el perfil de certificats fiscals <em>%1</em>"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Page/DonrecProfiles.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Delete"
+msgstr "Eliminar"
+
+#: CRM/Admin/Form/DonrecProfile.php CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Cancel"
+msgstr "Cancel·lar"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Edit Donation Receipts profile <em>%1</em>"
+msgstr "Editar el perfil de certificats fiscals <em>%1</em>"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "New Donation Receipts profile"
+msgstr "Nou perfil de certificats fiscals"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Set Donation Receipts profile <em>%1</em> as default"
+msgstr "Establir el perfil de certificats fiscals <em>%1</em> com a predeterminat"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Set default"
+msgstr "Establir com a predeterminat"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Activate Donation Receipts profile <em>%1</em>"
+msgstr "Activar el perfil de certificats fiscals <em>%1</em>"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Activate"
+msgstr "Activar"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Deactivate Donation Receipts profile <em>%1</em>"
+msgstr "Desactivar el perfil de certificats fiscals <em>%1</em>"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Profile name"
+msgstr "Nom del perfil"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Language"
+msgstr "Idioma"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Enable \"encryption\""
+msgstr "Activar \"xifrat\""
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Contribution Types"
+msgstr "Tipus de contribució"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Unlock receipted contributions"
+msgstr "Desbloquejar contribucions amb certificat emès"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "All fields"
+msgstr "Tots els camps"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "No fields"
+msgstr "Cap camp"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Selected fields"
+msgstr "Camps seleccionats"
+
+#: CRM/Admin/Form/DonrecProfile.php donrec.php
+#: templates/CRM/Admin/Form/DonrecProfile.tpl templates/CRM/Donrec/Page/Tab.tpl
+msgid "Receipt ID"
+msgstr "ID del certificat"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Template"
+msgstr "Plantilla"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "PDF format"
+msgstr "Format PDF"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Store original *.pdf files"
+msgstr "Desar fitxers *.pdf originals"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Add variable"
+msgstr "Afegir variable"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Draft text"
+msgstr "Text d'esborrany"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Copy text"
+msgstr "Text de còpia"
+
+#: CRM/Admin/Form/DonrecProfile.php templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Watermark preset"
+msgstr "Preajust de marca d'aigua"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "primary address"
+msgstr "adreça principal"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Legal Address-Type:"
+msgstr "Tipus d'adreça legal:"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Postal Address-Type:"
+msgstr "Tipus d'adreça postal:"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Fallback:"
+msgstr "Alternativa:"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "E-mail template"
+msgstr "Plantilla de correu electrònic"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "From Email"
+msgstr "Correu electrònic del remitent"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "BCc E-mail address"
+msgstr "Adreça de correu electrònic BCC"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Has to be a valid email address"
+msgstr "Ha de ser una adreça de correu electrònic vàlida"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Return path e-mail address"
+msgstr "Adreça de correu electrònic de retorn"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Custom Mail Handling:"
+msgstr "Gestió personalitzada del correu:"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Custom Mail Header:"
+msgstr "Capçalera personalitzada del correu:"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Activity ID"
+msgstr "ID de l'activitat"
+
+#: CRM/Admin/Form/DonrecProfile.php CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Subject"
+msgstr "Assumpte de l'activitat"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Activity Contact ID"
+msgstr "ID del contacte de l'activitat"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Withdraw receipt"
+msgstr "Anul·lar certificat"
+
+#: CRM/Admin/Form/DonrecProfile.php CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Save"
+msgstr "Desar"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "One of the Receipt ID patterns are invalid! Changes NOT saved!"
+msgstr "Un dels patrons de l'ID del certificat no és vàlid. Els canvis NO s'han desat!"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Please select a PDF format. If there are none, create one <a href=\"%1\" target=\"_blank\">here</a>"
+msgstr "Seleccioneu un format PDF. Si no n'hi ha cap, creeu-ne un <a href=\\\"%1\\\" target=\\\"_blank\\\">aquí</a>"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "If custom Mail handling is activated, a custom mail Header must be set"
+msgstr "Si la gestió personalitzada del correu està activada, cal definir una capçalera personalitzada"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "If custom Mail handling is activated, please specify an activity_id"
+msgstr "Si la gestió personalitzada del correu està activada, indiqueu un activity_id"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "If custom Mail handling is activated, please specify an activity subject"
+msgstr "Si la gestió personalitzada del correu està activada, indiqueu un assumpte d'activitat"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "If custom Mail handling is activated, please specify an activity contact_id"
+msgstr "Si la gestió personalitzada del correu està activada, indiqueu un activity contact_id"
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Variable names must be valid PHP variable names."
+msgstr "Els noms de variable han de ser noms de variable PHP vàlids."
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Variable names must not be empty when they have a value."
+msgstr "Els noms de variable no han d'estar buits quan tenen un valor."
+
+#: CRM/Admin/Form/DonrecProfile.php
+msgid "Duplicate variable name."
+msgstr "Nom de variable duplicat."
+
+#: CRM/Admin/Form/DonrecProfile.php CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Settings successfully saved"
+msgstr "Configuració desada correctament"
+
+#: CRM/Admin/Form/DonrecProfile.php CRM/Admin/Form/Setting/DonrecSettings.php
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Settings"
+msgstr "Configuració"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Donation Receipts - Settings"
+msgstr "Certificats fiscals - Configuració"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Enable Line Item"
+msgstr "Activar línia de detall"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfinfo</code>"
+msgstr "Eina externa: ruta a <code>pdfinfo</code>"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "External Tool: path to <code>pdfunite</code>"
+msgstr "Eina externa: ruta a <code>pdfunite</code>"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size"
+msgstr "Mida del paquet"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Command line for \"encryption\""
+msgstr "Línia d'ordres per al \"xifrat\""
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "- None -"
+msgstr "- Cap -"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Email Location Type"
+msgstr "Tipus d'ubicació del correu electrònic"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Document Renderer"
+msgstr "Renderitzador de documents"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Document"
+msgstr "Document"
+
+#: CRM/Admin/Form/Setting/DonrecSettings.php
+msgid "Packet size can only contain positive integers"
+msgstr "La mida del paquet només pot contenir enters positius"
+
+#: CRM/Admin/Page/DonrecProfiles.php
+msgid "Never"
+msgstr "Mai"
+
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt"
+msgstr "Certificat fiscal"
+
+#: CRM/Donrec/DataStructure.php
+msgid "Donation Receipt Item"
+msgstr "Element de certificat fiscal"
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid "CSV File"
+msgstr "Fitxer CSV"
+
+#: CRM/Donrec/Exporters/CSV.php CRM/Donrec/Exporters/GroupedPDF.php
+#: CRM/Donrec/Exporters/MergedPDF.php CRM/Donrec/Exporters/PDF.php
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "donation_receipts"
+msgstr "certificats_fiscals"
+
+#: CRM/Donrec/Exporters/CSV.php
+msgid ".csv"
+msgstr ".csv"
+
+#: CRM/Donrec/Exporters/Dummy.php
+msgid "Don't generate files"
+msgstr "No generis fitxers"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Send PDFs via Email"
+msgstr "Enviar PDF per correu electrònic"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Please select email template in the Donrec settings."
+msgstr "Seleccioneu una plantilla de correu electrònic a la configuració de Donrec."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation receipt not delivered"
+msgstr "Certificat fiscal no lliurat"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Donation Receipt.pdf"
+msgstr "certificat_fiscal.pdf"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Email <i>would</i> be sent to '%1' (test mode)."
+msgstr "El correu electrònic <i>s'enviaria</i> a '%1' (mode de prova)."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "DonationReceipt Failure"
+msgstr "Error de DonationReceipt"
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "No valid email address found for this contact."
+msgstr "No s'ha trobat cap adreça de correu electrònic vàlida per a aquest contacte."
+
+#: CRM/Donrec/Exporters/EmailPDF.php
+msgid "Error was: "
+msgstr "L'error ha estat: "
+
+#: CRM/Donrec/Exporters/EncryptedPDF.php
+msgid "no path to encryption tool given. please check the donrec settings"
+msgstr "no s'ha indicat cap ruta a l'eina de xifrat. Reviseu la configuració de donrec"
+
+#: CRM/Donrec/Exporters/EncryptedPDF.php
+msgid "execution of"
+msgstr "execució de"
+
+#: CRM/Donrec/Exporters/EncryptedPDF.php
+msgid "failed"
+msgstr "ha fallat"
+
+#: CRM/Donrec/Exporters/EncryptedPDF.php
+msgid "Encryption of DonRec PDF failed. Output was: %1"
+msgstr "Ha fallat el xifrat del PDF de DonRec. La sortida ha estat: %1"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "Individual PDFs sorted by page count"
+msgstr "PDF individuals ordenats per nombre de pàgines"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "using pdfinfo %s"
+msgstr "fent servir pdfinfo %s"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo %s is not supported"
+msgstr "pdfinfo %s no és compatible"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "unknown pdfinfo version"
+msgstr "versió de pdfinfo desconeguda"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo is not executable. check permissions"
+msgstr "pdfinfo no és executable. Reviseu els permisos"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo not found"
+msgstr "pdfinfo no trobat"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "pdfinfo path is not set"
+msgstr "la ruta de pdfinfo no està definida"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid ".zip"
+msgstr ".zip"
+
+#: CRM/Donrec/Exporters/GroupedPDF.php
+msgid "%d-page"
+msgstr "%d-page"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "PDFs merged into one PDF file"
+msgstr "PDF fusionats en un únic fitxer PDF"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "using pdfunite %s"
+msgstr "fent servir pdfunite %s"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "unknown pdfunite version"
+msgstr "versió de pdfunite desconeguda"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite is not executable. check permissions"
+msgstr "pdfunite no és executable. Reviseu els permisos"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite not found"
+msgstr "pdfunite no trobat"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid "pdfunite path is not set"
+msgstr "la ruta de pdfunite no està definida"
+
+#: CRM/Donrec/Exporters/MergedPDF.php
+msgid ".pdf"
+msgstr ".pdf"
+
+#: CRM/Donrec/Exporters/PDF.php
+msgid "Individual PDFs"
+msgstr "PDFs individuals"
+
+#: CRM/Donrec/Exporters/PDF.php CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "donation_receipts.zip"
+msgstr "certificats_fiscals.zip"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "Individual PDFs with cover letter (CiviOffice)"
+msgstr "PDF individuals amb carta de presentació (CiviOffice)"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "CiviOffice integration is not configured"
+msgstr "La integració amb CiviOffice no està configurada"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "using document <em>%1</em> and document renderer <em>%2</em>"
+msgstr "fent servir el document <em>%1</em> i el renderitzador de documents <em>%2</em>"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "Missing document or renderer configuration."
+msgstr "Falta la configuració del document o del renderitzador."
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "Configure CiviOffice integration in the <a href=\"%1\">Donation Receipts configuration</a>"
+msgstr "Configura la integració amb CiviOffice a la <a href=\"%1\">configuració de certificats fiscals</a>"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "donation-receipt"
+msgstr "certificat-fiscal"
+
+#: CRM/Donrec/Exporters/PDFCiviOffice.php
+msgid "cover-letter"
+msgstr "carta-de-presentació"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Activity Type"
+msgstr "Tipus d'activitat"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit"
+msgstr "Límit"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Withdraw Receipts"
+msgstr "Anul·lar certificats"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Server"
+msgstr "Servidor"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "User Name"
+msgstr "Nom d'usuari"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Password"
+msgstr "Contrasenya"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Run Now"
+msgstr "Executa ara"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Limit needs to be greater than zero."
+msgstr "El límit ha de ser superior a zero."
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Investigated %1 emails in the bounce folder. %2 of them have been processed, %3 seem to unrelated, and %4 have failed."
+msgstr "S'han revisat %1 correus electrònics a la carpeta de rebots. %2 s'han processat, %3 semblen no estar relacionats i %4 han fallat."
+
+#: CRM/Donrec/Form/ProcessReturns.php templates/CRM/Donrec/Page/Runner.tpl
+msgid "Done"
+msgstr "Fet"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "If you want to find out, why processing of %1 of the emails failed, please check the CiviCRM log."
+msgstr "Si voleu esbrinar per què ha fallat el processament de %1 dels correus electrònics, consulteu el registre de CiviCRM."
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "Errors"
+msgstr "Errors"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "It looks like there are more emails to be processed."
+msgstr "Sembla que hi ha més correus electrònics per processar."
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "There's more"
+msgstr "N'hi ha més"
+
+#: CRM/Donrec/Form/ProcessReturns.php CRM/Donrec/Form/Task/DonrecResetTask.php
+#: CRM/Donrec/Form/Task/Rebook.php CRM/Utils/DonrecHelper.php
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Error"
+msgstr "Error"
+
+#: CRM/Donrec/Form/ProcessReturns.php
+msgid "No Activity"
+msgstr "Cap activitat"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
+msgid "Issue Donation Receipts"
+msgstr "Emetre certificats fiscals"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "This Year"
+msgstr "Aquest any"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "last year"
+msgstr "any passat"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Choose Date Range"
+msgstr "Escollir interval de dates"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+msgid "Time period"
+msgstr "Període de temps"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "From:"
+msgstr "Des de:"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "To:"
+msgstr "Fins a:"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Profile"
+msgstr "Perfil"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Logic/Settings.php
+msgid "Currency"
+msgstr "Moneda"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Continue"
+msgstr "Continuar"
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
+msgid "There are no selectable contributions for these contacts in the selected time period."
+msgstr "No hi ha contribucions seleccionables per a aquests contactes en el període de temps seleccionat."
+
+#: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/Create.php
+#: CRM/Donrec/Form/Task/DonrecTask.php CRM/Donrec/Page/Staging.php
+msgid "Warning"
+msgstr "Avís"
+
+#: CRM/Donrec/Form/Task/Create.php
+msgid "This contact has no selectable contributions in the selected time period."
+msgstr "Aquest contacte no té contribucions seleccionables en el període de temps seleccionat."
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw Donation Receipts"
+msgstr "Anul·lar certificats fiscals"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "From Date"
+msgstr "Data inicial"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "To Date"
+msgstr "Data final"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Caution: %1 contact(s) will have more than one donation receipt withdrawn!"
+msgstr "Atenció: a %1 contacte(s) se li anul·larà més d'un certificat fiscal!"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Find"
+msgstr "Cercar"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Withdraw %1 Receipts"
+msgstr "Anul·lar %1 certificats"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have been withdrawn."
+msgstr "S'han anul·lat %1 certificats fiscals."
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "Receipts Withdrawn"
+msgstr "Certificats anul·lats"
+
+#: CRM/Donrec/Form/Task/DonrecResetTask.php
+msgid "%1 donation receipts have not been withdrawn and encountered an error."
+msgstr "No s'han pogut anul·lar %1 certificats fiscals i s'ha produït un error."
+
+#: CRM/Donrec/Form/Task/DonrecTask.php
+msgid "Time Period"
+msgstr "Període de temps"
+
+#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
+#: donrec.php
+msgid "Rebook"
+msgstr "Reassignar"
+
+#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
+msgid "You do not have the permissions required to access this page."
+msgstr "No disposeu dels permisos necessaris per accedir a aquesta pàgina."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "You need to specifiy a contribution to rebook."
+msgstr "Cal especificar una contribució per reassignar."
+
+#: CRM/Donrec/Form/Task/Rebook.php CRM/Donrec/Form/Task/RebookTask.php
+msgid "CiviCRM ID"
+msgstr "ID de CiviCRM"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "At least one of the given contributions doesn't exist!"
+msgstr "Almenys una de les contribucions indicades no existeix!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooking of multiple contributions from different contacts is not allowed!"
+msgstr "No es permet la reassignació de múltiples contribucions de contactes diferents!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooking not allowed!"
+msgstr "Reassignació no permesa!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "DonRec - Error getting SEPA OOFF payment instrument ID: %1"
+msgstr "DonRec - Error en obtenir l'ID de l'instrument de pagament SEPA OOFF: %1"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked to CiviCRM ID %1"
+msgstr "Reassignat a l'ID de CiviCRM %1"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "DonRec - Error getting payment instrument"
+msgstr "DonRec - Error en obtenir l'instrument de pagament"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Rebooked from CiviCRM ID %1"
+msgstr "Reassignat des de l'ID de CiviCRM %1"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "%1 contribution(s) successfully rebooked!"
+msgstr "%1 contribució(ns) reassignada(es) correctament!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Successfully rebooked!"
+msgstr "Reassignació completada correctament!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Please check your data and try again"
+msgstr "Reviseu les dades i torneu-ho a provar"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Nothing rebooked!"
+msgstr "No s'ha reassignat res!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Please enter a CiviCRM ID!"
+msgstr "Introduïu un ID de CiviCRM!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "A contact with CiviCRM ID %1 doesn't exist!"
+msgstr "No existeix cap contacte amb l'ID de CiviCRM %1!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be a household!"
+msgstr "El contacte de destinació no pot ser una llar!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "The target contact can not be in trash!"
+msgstr "El contacte de destinació no pot estar a la paperera!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "The contribution with ID %1 is not completed!"
+msgstr "La contribució amb ID %1 no està completada!"
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "The contribution with ID %1 cannot be rebooked, because it has a valid contribution receipt."
+msgstr "La contribució amb ID %1 no es pot reassignar perquè té associat un certificat fiscal vàlid."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference, exceeds 35 characters."
+msgstr "No es pot trobar una nova referència de mandat; supera els 35 caràcters."
+
+#: CRM/Donrec/Form/Task/Rebook.php
+msgid "Cannot find a new mandate reference"
+msgstr "No es pot trobar una nova referència de mandat"
+
+#: CRM/Donrec/Lang/De/De.php
+msgid "German"
+msgstr "Alemany"
+
+#: CRM/Donrec/Lang/De/Xx.php
+msgid "German (with spaces)"
+msgstr "Alemany (amb espais)"
+
+#: CRM/Donrec/Lang/En/Us.php
+msgid "English (U.S.)"
+msgstr "Anglès (EUA)"
+
+#: CRM/Donrec/Lang/Es/Es.php
+msgid "Spanish (Spain)"
+msgstr "Català"
+
+#: CRM/Donrec/Lang/Pl/Pl.php
+msgid "Polish"
+msgstr "Polonès"
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] does not exist (any more)!"
+msgstr "La instantània [%d] ja no existeix!"
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] belongs to user '%s'[%s]!"
+msgstr "La instantània [%d] pertany a l'usuari '%s'[%s]!"
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] is already processing!"
+msgstr "La instantània [%d] ja s'està processant!"
+
+#: CRM/Donrec/Logic/Engine.php
+msgid "Snapshot [%d] is already completed!"
+msgstr "La instantània [%d] ja està completada!"
+
+#: CRM/Donrec/Logic/File.php
+msgid "Download failed: "
+msgstr "La baixada ha fallat: "
+
+#: CRM/Donrec/Logic/Profile.php
+msgid "Profile with name %1 does not exist."
+msgstr "No existeix cap perfil amb el nom %1."
+
+#: CRM/Donrec/Logic/Profile.php
+msgid "Could not find a default profile."
+msgstr "No s'ha pogut trobar un perfil predeterminat."
+
+#: CRM/Donrec/Logic/Profile.php
+msgid "COPY"
+msgstr "CÒPIA"
+
+#: CRM/Donrec/Logic/Profile.php
+msgid "DRAFT"
+msgstr "ESBORRANY"
+
+#: CRM/Donrec/Logic/Profile.php
+msgid "Property %1 does not exist in class %2"
+msgstr "La propietat %1 no existeix a la classe %2"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Financial type"
+msgstr "Tipus financer"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Campaign"
+msgstr "Campanya"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Payment method"
+msgstr "Mètode de pagament"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Contribution status"
+msgstr "Estat de la contribució"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Source"
+msgstr "Origen"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Receive date"
+msgstr "Data de recepció"
+
+#: CRM/Donrec/Logic/Settings.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "Total amount"
+msgstr "Import total"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Note"
+msgstr "Nota"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "Custom fields"
+msgstr "Camps personalitzats"
+
+#: CRM/Donrec/Logic/Settings.php
+msgid "A donation receipt has been issued for this contribution, or is being processed for a receipt right now. You are not allowed to change the value for '%s'."
+msgstr "Ja s'ha emès un certificat fiscal per a aquesta contribució, o s'està processant en aquest moment. No està permès canviar el valor de '%s'."
+
+#: CRM/Donrec/Logic/Template.php donrec.php
+msgid "Donation Receipts"
+msgstr "Certificats fiscals"
+
+#: CRM/Donrec/Logic/Template.php
+msgid "Default template"
+msgstr "Plantilla predeterminada"
+
+#: CRM/Donrec/Logic/Template.php
+msgid "donationreceipt-"
+msgstr "certificatfiscal-"
+
+#: CRM/Donrec/Logic/WatermarkPreset/DompdfTraditional.php
+msgid "Markup traditional (dompdf)"
+msgstr "Markup tradicional (dompdf)"
+
+#: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossLarge.php
+msgid "SVG across large"
+msgstr "SVG transversal gran"
+
+#: CRM/Donrec/Logic/WatermarkPreset/SvgAcrossSmall.php
+msgid "SVG across small"
+msgstr "SVG transversal petit"
+
+#: CRM/Donrec/Logic/WatermarkPreset/SvgHolohedral.php
+msgid "SVG holohedral"
+msgstr "SVG holoedral"
+
+#: CRM/Donrec/Logic/WatermarkPreset/SvgTopCenter.php
+msgid "SVG top center"
+msgstr "SVG superior centrat"
+
+#: CRM/Donrec/Logic/WatermarkPreset/SvgUpperRightCorner.php
+msgid "SVG upper right corner"
+msgstr "SVG cantonada superior dreta"
+
+#: CRM/Donrec/Logic/WatermarkPreset/WkhtmltopdfTraditional.php
+msgid "Markup traditional (wkhtmltopdf)"
+msgstr "Markup tradicional (wkhtmltopdf)"
+
+#: CRM/Donrec/Page/Runner.php
+msgid "Creating Donation Receipts"
+msgstr "Creant certificats fiscals"
+
+#: CRM/Donrec/Page/Runner.php
+msgid "No snapshot ID given. Please call this page from a proper selection."
+msgstr "No s'ha indicat cap ID d'instantània. Truqueu a aquesta pàgina des d'una selecció vàlida."
+
+#: CRM/Donrec/Page/Staging.php
+msgid "No snapshot id has been provided!"
+msgstr "No s'ha proporcionat cap ID d'instantània!"
+
+#: CRM/Donrec/Page/Staging.php
+msgid "Invalid snapshot id!"
+msgstr "ID d'instantània no vàlid!"
+
+#: CRM/Donrec/Page/Staging.php
+msgid "The older snapshot has been deleted. You can now proceed."
+msgstr "La instantània anterior s'ha eliminat. Ja podeu continuar."
+
+#: CRM/Donrec/Page/Staging.php
+msgid "The previously created snapshot has been deleted."
+msgstr "La instantània creada anteriorment s'ha eliminat."
+
+#: CRM/Donrec/Page/Staging.php
+msgid "Missing exporter!"
+msgstr "Falta l'exportador!"
+
+#: api/v3/DonationReceipt.php
+msgid "No 'rid' parameter given."
+msgstr "No s'ha proporcionat el paràmetre 'rid'."
+
+#: api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be withdrawn."
+msgstr "Només es poden anul·lar els certificats fiscals originals."
+
+#: api/v3/DonationReceipt.php
+msgid "Receipt with id %d does not exist."
+msgstr "No existeix el certificat amb id %d."
+
+#: api/v3/DonationReceipt.php
+msgid "Only original donation receipts can be copied."
+msgstr "Només es poden copiar els certificats fiscals originals."
+
+#: api/v3/DonationReceiptEngine/Next.php
+msgid "No 'sid' parameter given."
+msgstr "No s'ha proporcionat el paràmetre 'sid'."
+
+#: api/v3/DonationReceiptEngine/Processreturns.php
+msgid "E-Mail delivery of donation receipt {receipt_id} failed."
+msgstr "Ha fallat l'enviament per correu electrònic del certificat fiscal {receipt_id}."
+
+#: donrec.php templates/CRM/Donrec/Page/Staging.tpl
+msgid "Issue donation receipt(s)"
+msgstr "Emetre certificat(s) fiscal(s)"
+
+#: donrec.php
+msgid "Withdraw donation receipt(s)"
+msgstr "Anul·lar certificat(s) fiscal(s)"
+
+#: donrec.php
+msgid "Rebook to contact"
+msgstr "Reassignar al contacte"
+
+#: donrec.php
+msgid "Receipted"
+msgstr "Amb certificat emès"
+
+#: donrec.php
+msgid "No"
+msgstr "No"
+
+#: donrec.php
+msgid "Yes"
+msgstr "Sí"
+
+#: donrec.php
+msgid "DonationReceipts"
+msgstr "CertificatsFiscals"
+
+#: donrec.php
+msgid "view and create copies of receipts"
+msgstr "veure i crear còpies de certificats"
+
+#: donrec.php
+msgid "Allows viewing and creating copies of donation receipts."
+msgstr "Permet veure i crear còpies de certificats fiscals."
+
+#: donrec.php
+msgid "create and withdraw receipts"
+msgstr "crear i anul·lar certificats"
+
+#: donrec.php
+msgid "Allows creating and withdrawing donation receipts."
+msgstr "Permet crear i anul·lar certificats fiscals."
+
+#: donrec.php
+msgid "delete receipts"
+msgstr "eliminar certificats"
+
+#: donrec.php
+msgid "Allows deleting donation receipts."
+msgstr "Permet eliminar certificats fiscals."
+
+#: donrec.php
+msgid "Donation receipts"
+msgstr "Certificats fiscals"
+
+#: donrec.php
+msgid "Donation Receipts Settings"
+msgstr "Configuració de certificats fiscals"
+
+#: donrec.php
+msgid "Donation Receipts Profiles"
+msgstr "Perfils de certificats fiscals"
+
+#: donrec.php
+msgid "This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"
+msgstr "Aquesta contribució [%d] no s'ha d'eliminar perquè té un certificat o serà certificada!"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "Status"
+msgstr "Estat"
+
+#: donrec.php
+msgid "- any -"
+msgstr "- qualsevol -"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "original"
+msgstr "original"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "copy"
+msgstr "còpia"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn"
+msgstr "anul·lat"
+
+#: donrec.php
+msgid "withdrawn_copy"
+msgstr "còpia_anul·lada"
+
+#: donrec.php templates/CRM/Donrec/Page/Runner.tpl
+msgid "Type"
+msgstr "Tipus"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "single receipt"
+msgstr "certificat individual"
+
+#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "bulk receipt"
+msgstr "certificat massiu"
+
+#: donrec.php
+msgid "Issued by contact"
+msgstr "Emès pel contacte"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "You can select the financial types that are eligable for donation receipts.<br/>The default is, that all financial types marked as tax deductible are included,but you can adjust this selection to your organisation's needs."
+msgstr "Podeu seleccionar els tipus financers aptes per als certificats fiscals.<br/>Per defecte, s'inclouen tots els tipus financers marcats com a deduïbles fiscalment, però podeu ajustar aquesta selecció a les necessitats de la vostra organització."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Select a pre-configured way of displaying watermarks on copies and drafts."
+msgstr "Seleccioneu una manera preconfigurada de mostrar marques d'aigua en còpies i esborranys."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "This watermark text is included in all invalid or test donation receipts.<br/>It cannot be left empty for legal reasons."
+msgstr "Aquest text de marca d'aigua s'inclou en tots els certificats fiscals no vàlids o de prova.<br/>No es pot deixar buit per motius legals."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "This watermark text is included in all donation receipt copies.<br/>It cannot be left empty for legal reasons."
+msgstr "Aquest text de marca d'aigua s'inclou en totes les còpies de certificats fiscals.<br/>No es pot deixar buit per motius legals."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "When this option is activated, the originally generated PDF file will be stored with the donation receipt data set.This approach has the advantage, that you can always see and download the exact PDF you sent to your donors.On the other hand, activating this option gives you free access to the original PDF file,which you can then print out without any further restrictions. This might cause legal issues.<br/>If you don't activate this option, a new PDF will be generated for you.As long as you don't change the template, this should be the same as the original, except that it's marked invalid.<br/>Discuss the best setting here with your legal team."
+msgstr "Quan aquesta opció està activada, el fitxer PDF generat originalment s'emmagatzema amb el conjunt de dades del certificat fiscal. Aquest enfocament té l'avantatge que sempre podeu veure i descarregar el PDF exacte que heu enviat als vostres donants. D'altra banda, activar aquesta opció us dona accés lliure al fitxer PDF original, que després podeu imprimir sense cap altra restricció. Això pot comportar implicacions legals.<br/>Si no activeu aquesta opció, es generarà un PDF nou. Mentre no canvieu la plantilla, hauria de ser igual que l'original, excepte pel fet que estarà marcat com a no vàlid.<br/>Consulteu amb el vostre equip legal quina és la millor configuració."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "Defines the runner packed size.<br/>When creating large amounts of donation receipts, the runner will not process all of them at once.It will break the lot down into little packets and process them individually.<br/>If you're having trouble with timeouts, try decreasing this value.If you want more performance, try increasing it carefully - but don't tweak it to the limit.<br/>You should always test your settings in a test run."
+msgstr "Defineix la mida del paquet del processador.<br/>Quan es creen grans quantitats de certificats fiscals, el processador no els tramitarà tots alhora. Dividirà el lot en petits paquets i els processarà individualment.<br/>Si teniu problemes de temps d'espera, proveu de reduir aquest valor. Si voleu més rendiment, intenteu augmentar-lo amb cura, però sense portar-lo al límit.<br/>Cal provar sempre aquesta configuració en una execució de prova."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The language setting is especially important to the textual representation of the amount."
+msgstr "La configuració de l'idioma és especialment important per a la representació textual de l'import."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Not all languages that can be selected here have been implemented. If not implemented, the text defaults to English."
+msgstr "No tots els idiomes que es poden seleccionar aquí estan implementats. Si no ho estan, el text es mostrarà per defecte en anglès."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "If you choose this, donrec will \"encrypt\" the generated PDFs in such a way, that they can only be seen on screen and printed. This works only for PDF-Viewers, which implement this feature correctly."
+msgstr "Si trieu aquesta opció, donrec \"xifrarà\" els PDF generats de manera que només es puguin veure a la pantalla i imprimir. Això només funciona per a visualitzadors de PDF, que implementen aquesta funció correctament."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The <code>pdfinfo</code> tool is need for the grouped PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet."
+msgstr "L'eina <code>pdfinfo</code> és necessària per a l'exportador de PDF agrupats.<br/>Demaneu al vostre administrador de sistemes que configuri correctament aquest ajust i que instal·li l'eina si encara no està disponible."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Some fields of receipted contributions are locked for editing to prevent accidentally causing inconsistencies between contribution records and already issued donation receipts."
+msgstr "Alguns camps de contribucions amb certificat emès estan bloquejats per a l'edició per evitar incoherències accidentals entre els registres de contribució i els certificats fiscals ja emesos."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Select which fields of receipted contributions should be unlocked for editing."
+msgstr "Seleccioneu quins camps de les contribucions amb certificat emès s'han de desbloquejar per a l'edició."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Unlock all fields for editing."
+msgstr "Desbloquejar tots els camps per a l'edició."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Do not unlock any field for editing."
+msgstr "No desbloquejar cap camp per a l'edició."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Unlock only the selected fields for editing"
+msgstr "Desbloquejar només els camps seleccionats per a l'edició"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Note that editing fields that appear on issued receipts may be considered fraudulent behavior by tax authorities! Only unlock contribution fields for editing when you know what you are doing!"
+msgstr "Tingueu en compte que editar camps que apareixen en certificats emesos pot considerar-se un comportament fraudulent per part de les autoritats fiscals. Desbloquegeu camps de contribució per a l'edició només quan sapigueu exactament què feu!"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Select the address type where the legal address (wrt IRS) of the donor can be found."
+msgstr "Seleccioneu el tipus d'adreça on es troba l'adreça legal del donant."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Select the postal address type where the donation receipt should be mailed to."
+msgstr "Seleccioneu el tipus d'adreça postal al qual s'ha d'enviar el certificat fiscal."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "In case the first address is empty, this is the fallback address to be used insted."
+msgstr "En cas que la primera adreça estigui buida, aquesta serà l'adreça alternativa que s'utilitzarà."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+#: templates/CRM/Admin/Page/DonrecProfiles.hlp
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Profiles allow you to have different settings for different scenarios. But if you only have one, just work with the default profile."
+msgstr "Els perfils us permeten tenir configuracions diferents per a diferents escenaris. Però si només en teniu un, treballeu simplement amb el perfil predeterminat."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Configure the template to be used for creating donation receipt PDFs with the current profile."
+msgstr "Configureu la plantilla que s'utilitzarà per crear els PDF de certificats fiscals amb el perfil actual."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Configure the PDF page format to be used for creating donation receipt PDFs with the current profile."
+msgstr "Configureu el format de pàgina PDF que s'utilitzarà per crear els PDF de certificats fiscals amb el perfil actual."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Variables allow you to inject extra dynamic values into the template, saving you from having to edit the template when there are only small changes, such as tax bill dates or tax exemption purposes. Note that you should not just edit the profile's variables once there are changes, but create a copy of the profile and adjust variable values within that copy, so that already issued receipts will still use the old values."
+msgstr "Les variables us permeten injectar valors dinàmics addicionals a la plantilla, evitant haver-la d'editar quan només hi ha petits canvis, com ara dates de normativa fiscal o finalitats d'exempció tributària. Tingueu en compte que no us hauríeu de limitar a editar les variables del perfil quan hi hagi canvis, sinó que hauríeu de crear una còpia del perfil i ajustar-hi els valors de les variables, perquè els certificats ja emesos continuïn utilitzant els valors anteriors."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "You may add as many variables as you like by clicking <em>Add variable</em>. To delete a variable, empty its name and value."
+msgstr "Podeu afegir tantes variables com vulgueu fent clic a <em>Afegir variable</em>. Per eliminar una variable, deixeu buit el seu nom i el seu valor."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "In case you select the 'send via email' exporter, this template will be used for the email body."
+msgstr "Si seleccioneu l'exportador 'enviar per correu electrònic', aquesta plantilla s'utilitzarà com a cos del missatge."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "You can set an email address that will receive every email sent as a blind copy."
+msgstr "Podeu definir una adreça de correu electrònic que rebrà tots els correus enviats com a còpia oculta."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "<strong>Caution</strong>: Activating this setting might violate the HMRC/IRS requirements about the handling of the original receipt."
+msgstr "<strong>Atenció</strong>: Activar aquesta opció podria incomplir els requisits sobre el tractament del certificat original."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "It might be important to you to receive bounces from donation receipts sent out via email. However if the default bounce system is used this information will be processed without you noticing."
+msgstr "Pot ser important per a vós rebre els rebots dels certificats fiscals enviats per correu electrònic. Tanmateix, si s'utilitza el sistema de rebots predeterminat, aquesta informació es processarà sense que us n'adoneu."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "By providing an email address here, the following happens during live generation:"
+msgstr "Si proporcioneu aquí una adreça de correu electrònic, durant la generació real passarà el següent:"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The email is set as your default bounce address"
+msgstr "El correu electrònic s'establirà com a adreça predeterminada per als rebots"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The task to send out newsletters will be disabled."
+msgstr "La tasca d'enviament de butlletins quedarà desactivada."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "<strong>Caution</strong>: All of these changes will be rolled back when the generation process has completed, however in rare cases (like crashes), this rollback might fail."
+msgstr "<strong>Atenció</strong>: Tots aquests canvis es revertiran quan el procés de generació hagi finalitzat; tanmateix, en casos poc freqüents (com ara errors del sistema), aquesta reversió pot fallar."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "If this is checked, alternative mail handling is used. This means Contribution Mail Handling for bounces will be done via webhook."
+msgstr "Si aquesta opció està marcada, s'utilitzarà una gestió alternativa del correu. Això significa que la gestió dels rebots de contribucions es farà mitjançant webhook."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The contribution values can be injected to a custom field, and will be parsed once a bounce event occurs. An Activity will be written and the Contribution will be reset."
+msgstr "Els valors de la contribució es poden injectar en un camp personalitzat i s'analitzaran quan es produeixi un esdeveniment de rebot. Es registrarà una activitat i la contribució es reinicialitzarà."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Enter a custom header field here, if Special Mail handling is activated."
+msgstr "Introduïu aquí un camp de capçalera personalitzat si la gestió especial del correu està activada."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Enter an activity id here, that shall be used in case of a donrec bounce event"
+msgstr "Introduïu aquí un id d'activitat que s'utilitzarà en cas d'un esdeveniment de rebot de donrec"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Enter an activity subject here, that shall be used in case of a donrec bounce event"
+msgstr "Introduïu aquí un assumpte d'activitat que s'utilitzarà en cas d'un esdeveniment de rebot de donrec"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Contact id used to create activities"
+msgstr "ID de contacte utilitzat per crear activitats"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "If this option is checked, the receipt will be withdrawn if a bounce message occurs"
+msgstr "Si aquesta opció està marcada, el certificat s'anul·larà si es produeix un missatge de rebot"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "This setting allows you to define the format for the donation receipt's serial number. You can use text and tokens to customize it."
+msgstr "Aquesta opció us permet definir el format del número de sèrie del certificat fiscal. Podeu utilitzar text i tokens per personalitzar-lo."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The following tokens are available:"
+msgstr "Hi ha disponibles els tokens següents:"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Serial number. The system will make sure this is unique and continuous"
+msgstr "Número de sèrie. El sistema garantirà que sigui únic i continu"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Year in which the donation receipt was generated"
+msgstr "Any en què es va generar el certificat fiscal"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "Year in which contribution(s) was received. If there is multiple years, the maximum is used."
+msgstr "Any en què es va rebre la contribució o contribucions. Si hi ha diversos anys, s'utilitza el més alt."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The CiviCRM ID of the donor"
+msgstr "L'ID de CiviCRM del donant"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "The following restrictions exist for the pattern:"
+msgstr "Existeixen les restriccions següents per al patró:"
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "There has to be exactly one <code>&#123;serial&#125;</code> token."
+msgstr "Hi ha d'haver exactament un token <code>&#123;serial&#125;</code>."
+
+#: templates/CRM/Admin/Form/DonrecProfile.hlp
+msgid "All tokens cannot be used adjacent to digits or other tokens. Use other characters like dashes or spaces to separate them."
+msgstr "Els tokens no es poden utilitzar al costat de dígits ni d'altres tokens. Utilitzeu altres caràcters, com ara guions o espais, per separar-los."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "WARNING: Deleting this option will result in the loss of Donation Receipts profile data."
+msgstr "ADVERTÈNCIA: Eliminar aquesta opció provocarà la pèrdua de les dades del perfil de certificats fiscals."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Do you want to continue?"
+msgstr "Voleu continuar?"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "You are about to delete the default profile. Please select which of the other profiles should be set as default instead."
+msgstr "Esteu a punt d'eliminar el perfil predeterminat. Seleccioneu quin dels altres perfils s'ha d'establir com a predeterminat en el seu lloc."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will set the profile <em>%1</em> as default."
+msgstr "Això establirà el perfil <em>%1</em> com a predeterminat."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will activate the profile <em>%1</em>."
+msgstr "Això activarà el perfil <em>%1</em>."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This will deactivate the profile <em>%1</em>."
+msgstr "Això desactivarà el perfil <em>%1</em>."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "You are about to deactive the default profile, causing it not be selectable anymore for issueing donation receipts. Is this what you really intend to do?"
+msgstr "Esteu a punt de desactivar el perfil predeterminat, de manera que deixarà de poder-se seleccionar per emetre certificats fiscals. És realment això el que voleu fer?"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "This profile has already been used for issueing receipts and is locked. You may still edit the profile, but be aware that this will cause copies of already issued receipts not be identical to their original anymore, which may be considered fraudulent behavior by tax authorities."
+msgstr "Aquest perfil ja s'ha utilitzat per emetre certificats i està bloquejat. Encara el podeu editar, però tingueu en compte que això farà que les còpies dels certificats ja emesos deixin de ser idèntiques a l'original, fet que podria considerar-se un comportament fraudulent per part de les autoritats fiscals."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "General Settings"
+msgstr "Configuració general"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Languages"
+msgstr "Idiomes"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Help"
+msgstr "Ajuda"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Enable encryption"
+msgstr "Activar xifrat"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Address Types"
+msgstr "Tipus d'adreça"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Legal Address"
+msgstr "Adreça legal"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Legal Address Fallback"
+msgstr "Adreça legal alternativa"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Postal Address"
+msgstr "Adreça postal"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Postal Address Fallback"
+msgstr "Adreça postal alternativa"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Receipts"
+msgstr "Certificats"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Variables"
+msgstr "Variables"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Store original PDF"
+msgstr "Desar PDF original"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Watermarks"
+msgstr "Marques d'aigua"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Draft Text"
+msgstr "Text d'esborrany"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Copy Text"
+msgstr "Text de còpia"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "E-Mails"
+msgstr "Correus electrònics"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Sending donation receipts by email can be tricky, make sure you know how you want to detect and handle bounces or returns."
+msgstr "Enviar certificats fiscals per correu electrònic pot ser complex. Assegureu-vos de tenir clar com voleu detectar i gestionar els rebots o les devolucions."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "You should also have a look at the <a href=\"%1\">return processing feature</a>."
+msgstr "També hauries de fer una ullada a la <a href=\"%1\">funció de processament de retorns</a>."
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Email-Template"
+msgstr "Plantilla de correu electrònic"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "From Email Address"
+msgstr "Adreça de correu electrònic del remitent"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "BCC Email Address"
+msgstr "Adreça de correu electrònic BCC"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Return Path Email Address"
+msgstr "Adreça de correu electrònic de retorn"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Custom Mail handling"
+msgstr "Gestió personalitzada del correu"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Custom Mail Header"
+msgstr "Capçalera personalitzada del correu"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Activity Contact Id"
+msgstr "ID del contacte de l'activitat"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl
+msgid "Withdraw Receipt"
+msgstr "Anul·lar certificat"
+
+#: templates/CRM/Admin/Form/DonrecProfile.tpl templates/CRM/Donrec/Page/Tab.tpl
+msgid "Contributions"
+msgstr "Contribucions"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid ""
+"Creates the donation receipts based on the line items attached to a contribution. It will create one receipt for each line item. If enabled you can create a donation receipt for a contribution with multiple line items but only create the receipt for line items with a specific financial type.<br /><br />\n"
+"    For example you want donation receipts for financial type Donation but not Event Fee. You organized an event where people had to pay the event fee and could give an additional donation. This ended up as one contribution with two line items, one for with financial type Event Fee the other line item has the financial type Donation. So only the last line items will have a donation receipt.<br /> <br />\n"
+"    Switching this on or off is not without a risk and therefor it is advisable to test extensively before using this in production."
+msgstr ""
+"Crea els certificats fiscals basats en les partides adjuntes a una contribució. Crearà un certificat per a cada partida. Si està habilitat, podeu crear un certificat fiscal per a una contribució amb diverses partides, però només crear el certificat per a les partides amb un tipus financer específic.<br /><br />\n"
+"    Per exemple, voleu certificats fiscals per al tipus financer Donació però no per a la quota de l'esdeveniment. Vau organitzar un esdeveniment on la gent havia de pagar la quota de l'esdeveniment i podia fer una donació addicional. Això va acabar sent una contribució amb dues partides, una amb el tipus financer Quota d'esdeveniment i l'altra partida té el tipus financer Donació. Per tant, només les últimes partides tindran un certificat fiscal.<br /> <br />\n"
+"    Activar o desactivar això no està exempt de risc i, per tant, és recomanable provar-ho exhaustivament abans d'utilitzar-ho en producció."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "The <code>pdfunite</code> tool is need for the merged PDF exporter.<br/>Ask your system administrator to set the correct setting, and install the tool if it's not there yet."
+msgstr "L'eina <code>pdfunite</code> és necessària per a l'exportador de PDF combinats.<br/>Demaneu al vostre administrador de sistemes que configuri correctament aquest ajust i que instal·li l'eina si encara no està disponible."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "You can give the path to pdftk here. This will be used to \"encrypt\" the generated PDFs in such a way, that they can only be seen on screen and printed. This works only for PDF-Viewers, which implement this feature correctly."
+msgstr "Podeu indicar la ruta a pdftk aquí. Això s'utilitzarà per \"xifrar\" els PDF generats de manera que només es puguin veure a la pantalla i imprimir. Això només funciona per a visualitzadors de PDF, que implementen aquesta funció correctament."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.hlp
+msgid "Select the location type from which the recipient's email address will be used when sending donation receipts. If not set, the primary email address will be used by default. This is useful if you want to use a specific email (e.g., work, home) for sending receipts."
+msgstr "Seleccioneu el tipus d'ubicació del qual es prendrà l'adreça de correu electrònic del destinatari en enviar certificats fiscals. Si no es defineix, s'utilitzarà per defecte l'adreça de correu electrònic principal. Això és útil si voleu fer servir un correu específic (per exemple, feina o casa) per enviar certificats."
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Enable line item"
+msgstr "Activar línia de detall"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "Generator Packet Size"
+msgstr "Mida del paquet del generador"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "The <code>pdfinfo</code> Tool"
+msgstr "Eina <code>pdfinfo</code>"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "The <code>pdfunite</code> Tool"
+msgstr "Eina <code>pdfunite</code>"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "External Tool: command line for encryption"
+msgstr "Eina externa: línia d'ordres per al xifrat"
+
+#: templates/CRM/Admin/Form/Setting/DonrecSettings.tpl
+msgid "CiviOffice Integration"
+msgstr "Integració amb CiviOffice"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "New profile"
+msgstr "Nou perfil"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Manage general extension settings"
+msgstr "Gestionar la configuració general de l'extensió"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "General settings"
+msgstr "Configuració general"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Profile ID"
+msgstr "ID del perfil"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Sort descending"
+msgstr "Ordena de manera descendent"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Sort ascending"
+msgstr "Ordena de manera ascendent"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Default"
+msgstr "Predeterminat"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Active"
+msgstr "Actiu"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Locked"
+msgstr "Bloquejat"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Usage count"
+msgstr "Nombre d'usos"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "First usage"
+msgstr "Primer ús"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Last usage"
+msgstr "Darrer ús"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Operations"
+msgstr "Operacions"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Inactive"
+msgstr "Inactiu"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Unlocked"
+msgstr "Desbloquejat"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Edit profile %1"
+msgstr "Editar perfil %1"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Copy profile %1"
+msgstr "Copiar perfil %1"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Copy"
+msgstr "Copiar"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Activate profile %1"
+msgstr "Activar perfil %1"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Deactivate profile %1"
+msgstr "Desactivar perfil %1"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Set profile %1 as default"
+msgstr "Establir el perfil %1 com a predeterminat"
+
+#: templates/CRM/Admin/Page/DonrecProfiles.tpl
+msgid "Delete profile %1"
+msgstr "Eliminar perfil %1"
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Process Email Returns"
+msgstr "Processar devolucions de correu electrònic"
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid "This tool allows you to process bounced or returned (emailed) donation receipts into activities."
+msgstr "Aquesta eina permet processar com a activitats els certificats fiscals enviats per correu electrònic que hagin estat rebotats o retornats."
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid "You should create a new, exclusive email account, and set the return path to that account while sending."
+msgstr "Hauríeu de crear un compte de correu electrònic nou i exclusiu, i establir la ruta de retorn cap a aquest compte durant l'enviament."
+
+#: templates/CRM/Donrec/Form/ProcessReturns.tpl
+msgid "Account Access"
+msgstr "Accés al compte"
+
+#: templates/CRM/Donrec/Form/Task/DonrecResetTask.tpl
+msgid "To uniquely identify the contact the receipt had been sent to, you can add a code containing the contact ID to the the email template, and provide a pattern below to recognise it."
+msgstr "Per identificar de manera única el contacte a qui s'ha enviat el certificat, podeu afegir a la plantilla de correu un codi que contingui l'ID del contacte i proporcionar a continuació un patró per reconèixer-lo."
+
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the selected contributions?"
+msgstr "Esteu segur que voleu reassignar les contribucions seleccionades?"
+
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Number of selected contributions:"
+msgstr "Nombre de contribucions seleccionades:"
+
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Are you sure you want to rebook the contribution?"
+msgstr "Esteu segur que voleu reassignar la contribució?"
+
+#: templates/CRM/Donrec/Form/Task/Rebook.tpl
+msgid "Please enter the target CiviCRM ID?"
+msgstr "Introduïu l'ID de CiviCRM de destinació."
+
+#: templates/CRM/Donrec/Form/Task/creation_parameters.tpl
+msgid "Filter contributions by receive date"
+msgstr "Filtrar contribucions per data de recepció"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Unfinished run detected"
+msgstr "S'ha detectat una execució sense finalitzar"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "You have an unfinished run, do you want to continue with it?"
+msgstr "Teniu una execució sense finalitzar. Voleu continuar-la?"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise it <b>will be deleted</b>!"
+msgstr "En cas contrari, <b>s'eliminarà</b>!"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "An interrupted run has been detected. Do you want to continue with it?"
+msgstr "S'ha detectat una execució interrompuda. Voleu continuar-la?"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Otherwise the selection <b>will be deleted</b>!"
+msgstr "En cas contrari, la selecció <b>s'eliminarà</b>!"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "<b>Caution!</b> Some receipts have already been created. If you do not continue with this run, you should probably delete them manually."
+msgstr "<b>Atenció!</b> Ja s'han creat alguns certificats. Si no continueu amb aquesta execució, probablement els haureu d'eliminar manualment."
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Statistics"
+msgstr "Estadístiques"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "contact count"
+msgstr "nombre de contactes"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "contribution count"
+msgstr "nombre de contribucions"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "total amount"
+msgstr "import total"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "created on"
+msgstr "creat el"
+
+#: templates/CRM/Donrec/Form/Task/remaining_snapshot.tpl
+msgid "Use remaining snapshot"
+msgstr "Utilitzar la instantània restant"
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "creation in progress, please wait..."
+msgstr "creació en curs, espereu..."
+
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+msgid "PLEASE DO NOT CLOSE OR REFRESH THIS PAGE!"
+msgstr "NO TANQUEU NI ACTUALITZEU AQUESTA PÀGINA!"
+
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Staging.tpl
+msgid "Back"
+msgstr "Enrere"
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Progress Log"
+msgstr "Registre de progrés"
+
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
+msgid "Date"
+msgstr "Data"
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "Message"
+msgstr "Missatge"
+
+#: templates/CRM/Donrec/Page/Runner.tpl templates/CRM/Donrec/Page/Tab.tpl
+msgid "Download"
+msgstr "Descarregar"
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "The donation receipts have been generated. You can now download the results."
+msgstr "Els certificats fiscals s'han generat. Ara podeu descarregar-ne els resultats."
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "There was a problem. Please check the log below for more information."
+msgstr "S'ha produït un problema. Reviseu el registre inferior per obtenir més informació."
+
+#: templates/CRM/Donrec/Page/Runner.tpl
+msgid "You haven't downloaded the resulting file yet. Are you sure you want to leave this page? The file would be lost."
+msgstr "Encara no heu descarregat el fitxer resultant. Segur que voleu sortir d'aquesta pàgina? El fitxer es perdria."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "A number of contributions without (valid) receipt have been found for the selected time span. These will be marked as receipted once you hit the \"Issue donation receipt(s)\" button below."
+msgstr "S'han trobat diverses contribucions sense rebut (vàlid) per al període de temps seleccionat. Aquestes es marcaran com a rebutades un cop hàgiu premut el botó \"Emetre certificat(s) fiscal(s)\" a continuació."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "You can choose from a variety of result formats, depending on your needs. You can also choose \"Don't generate files\" if you only want to mark them as receipted."
+msgstr "Podeu triar entre diversos formats de resultat, segons les vostres necessitats. També podeu triar \"No generar fitxers\" si només voleu marcar-los com a certificat(s)."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "The \"Test run\" button will do all the same things except no contributions will be marked as receipted. We strongly recommend testing the creation of any larger batch of donation receipts."
+msgstr "El botó \"Prova d'execució\" farà totes les mateixes coses, excepte que cap contribució es marcarà com a rebutjada. Us recomanem fermament que proveu la creació de qualsevol lot més gran de certificats fiscals."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Please navigate this page using the buttons below and do not leave the page via the browser's back button."
+msgstr "Navegueu per aquesta pàgina fent servir els botons inferiors i no en sortiu mitjançant el botó Enrere del navegador."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "<b>Caution:</b> this is a resumed non-test run. If you press the abort button, the run will be deleted for good."
+msgstr "<b>Atenció:</b> aquesta és una execució real represa, no pas de prova. Si premeu el botó de cancel·lació, l'execució s'eliminarà definitivament."
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "selected contacts"
+msgstr "contactes seleccionats"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Period from"
+msgstr "Període des de"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Period to"
+msgstr "Període fins a"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Sorry, but at least one of the selected contributions is already being processed for a donation receipt:"
+msgstr "Ho sentim, però almenys una de les contribucions seleccionades ja s'està processant per generar un certificat fiscal:"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "The conflicting other donation receipt process was created by"
+msgstr "L'altre procés de certificat fiscal en conflicte ha estat creat per"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "It will automatically expire on"
+msgstr "Caducarà automàticament el"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Delete other process and restart"
+msgstr "Eliminar l'altre procés i reiniciar"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Donation receipt type"
+msgstr "Tipus de certificat fiscal"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "single receipts"
+msgstr "certificats individuals"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "bulk receipts"
+msgstr "certificats massius"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Result formats"
+msgstr "Formats de resultat"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Test run"
+msgstr "Execució de prova"
+
+#: templates/CRM/Donrec/Page/Staging.tpl
+msgid "Abort"
+msgstr "Cancel·lar"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Create new donation receipt"
+msgstr "Crear un certificat fiscal nou"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "withdrawn copy"
+msgstr "còpia anul·lada"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Exporters"
+msgstr "Exportadors"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Creation date"
+msgstr "Data de creació"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued by"
+msgstr "Emès per"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Details"
+msgstr "Detalls"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "View"
+msgstr "Veure"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Create copy"
+msgstr "Crear còpia"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Withdraw"
+msgstr "Anul·lar"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Issued To"
+msgstr "Emès a"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Name"
+msgstr "Nom"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 1"
+msgstr "Adreça complementària 1"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Supplemental Address 2"
+msgstr "Adreça complementària 2"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Postal Code"
+msgstr "Codi postal"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Street"
+msgstr "Carrer"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "City"
+msgstr "Ciutat"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Country"
+msgstr "País"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Sent To"
+msgstr "Enviat a"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Total Amount"
+msgstr "Import total"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Received Date"
+msgstr "Data de recepció"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Financial Type"
+msgstr "Tipus financer"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "DonationReceipt"
+msgstr "CertificatFiscal"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully withdrawn"
+msgstr "El certificat fiscal s'ha anul·lat correctament"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Success"
+msgstr "Correcte"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Are you sure you want to withdraw this donation receipt?"
+msgstr "Esteu segur que voleu anul·lar aquest certificat fiscal?"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully copied"
+msgstr "El certificat fiscal s'ha copiat correctament"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Any existing copies of this receipt will have to be deleted manually."
+msgstr "Qualsevol còpia existent d'aquest certificat s'haurà d'eliminar manualment."
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "You could also just withdraw it."
+msgstr "També el podeu anul·lar directament."
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "The donation receipt has been successfully deleted"
+msgstr "El certificat fiscal s'ha eliminat correctament"
+
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Are you sure you want to delete this donation receipt?"
+msgstr "Esteu segur que voleu eliminar aquest certificat fiscal?"
+
+#: templates/CRM/Donrec/Page/Tempfile.tpl
+msgid "Temporary file dowload failed."
+msgstr "Ha fallat la baixada del fitxer temporal."
