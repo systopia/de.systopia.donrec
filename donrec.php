@@ -85,10 +85,22 @@ function donrec_civicrm_searchTasks(string $objectType, array &$tasks): void {
  *  1) add an extra search column 'receipted'
  *  2) modify actions for rebook
  *
- * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
+ * @param list<array<string, mixed>> $headers
+ * @param array<array<string, mixed>> $values
+ * @param array<mixed>|object|null $selector
+ *   CiviCRM passes objects and NULL as $selector. Though the phpdoc type hint
+ *   says "array" while the description says "the selector object". (The
+ *   expenses extension passes an array.)
+ *
+ * @see https://github.com/civicrm/civicrm-core/blob/53cde4d4b0d10a7c820d5a8e7bda5fa4f80d177b/CRM/Utils/Hook.php#L1809
  */
-function donrec_civicrm_searchColumns(string $objectName, array &$headers, array &$values, object &$selector): void {
-// phpcs:enable
+// phpcs:ignore Generic.Metrics.NestingLevel.TooHigh
+function donrec_civicrm_searchColumns(
+  string $objectName,
+  array &$headers,
+  array &$values,
+  array|object|null &$selector
+): void {
   if ($objectName == 'contribution') {
     // ************************************
     // **      ADD CONTRIBUTED COLUMN    **

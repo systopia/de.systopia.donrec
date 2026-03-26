@@ -1,7 +1,12 @@
 name: PHPStan
 
 on:
-  workflow_dispatch: ~
+  workflow_dispatch:
+    inputs:
+      civicrm-version:
+        description: 'CiviCRM version constraint'
+        required: false
+        type: string
   pull_request:
     paths:
       - '**.php'
@@ -11,10 +16,15 @@ on:
       - phpstan.neon.dist
       - .github/workflows/phpstan.yml
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.civicrm-version }}
+  cancel-in-progress: true
+
 jobs:
   phpstan:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-versions: ['8.1', '8.4']
         prefer: ['prefer-stable', 'prefer-lowest']
@@ -56,17 +66,21 @@ jobs:
         composer config --no-plugins allow-plugins.composer/installers true
         composer config --no-plugins allow-plugins.cweagans/composer-patches true
 
-        # Required if this extension requires other extensions.
         composer config --json "extra.installer-paths.$(dirname $PWD)/{\$name}" '["type:civicrm-ext"]'
-        composer require --ignore-platform-reqs composer/installers
+        composer require --ignore-platform-reqs --no-progress composer/installers
+
+        if [ -n "${{ inputs.civicrm-version }}" ]; then
+          composer require --no-update "civicrm/civicrm-core:${{ inputs.civicrm-version }}" \
+            "civicrm/civicrm-packages:${{ inputs.civicrm-version }}"
+        fi
 
         composer suggests --list | xargs -r composer require --no-update --${{ matrix.prefer }} --ignore-platform-reqs
 
         # Run with --no-scripts so ComposerHelper doesn't prevent installation
         # of civicrm packages.
-        composer update --no-scripts --no-progress --prefer-dist --${{ matrix.prefer }} --optimize-autoloader --ignore-platform-reqs
-        composer composer-phpunit -- update --no-progress --prefer-dist --optimize-autoloader
-        composer composer-phpstan -- update --no-progress --prefer-dist --optimize-autoloader
+        composer update --no-scripts --no-progress --${{ matrix.prefer }} --optimize-autoloader --ignore-platform-reqs
+        composer composer-phpunit -- update --no-progress --optimize-autoloader
+        composer composer-phpstan -- update --no-progress --optimize-autoloader
 
     - name: Run PHPStan
       run: composer phpstan -- analyse -c phpstan.ci.neon

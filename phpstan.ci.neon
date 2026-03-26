@@ -17,5 +17,8 @@ parameters:
 		# Required with civicrm/civicrm-core <6.1.0
 		- '#^Call to an undefined static method Civi::rebuild\(\).$#'
 
+		# Required with civicrm/civicrm-core <6.12.0
+		- '#^Method CRM_Donrec_Logic_Profile::getFromEmailAddresses\(\) should return string but returns int\|string\|null.$#'
+
 		# Required with symfony/event-dispatcher <4.4.27
 		- '#::getSubscribedEvents\(\) return type has no value type specified in iterable type array.$#'
