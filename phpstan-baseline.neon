@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Argument of an invalid type array\|null supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: CRM/Admin/Form/DonrecProfile.php
+
+		-
 			message: '#^Cannot call method getTemplateHTML\(\) on CRM_Donrec_Logic_Template\|null\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -113,6 +119,30 @@ parameters:
 			identifier: offsetAccess.invalidOffset
 			count: 12
 			path: CRM/Admin/Page/DonrecProfiles.php
+
+		-
+			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:createEntity\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/CustomData.php
+
+		-
+			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:identifyEntity\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/CustomData.php
+
+		-
+			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:updateEntity\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/CustomData.php
+
+		-
+			message: '#^Part \$data\[''entity''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/Donrec/CustomData.php
 
 		-
 			message: '#^Cannot access offset ''count'' on array\|int\.$#'
@@ -377,6 +407,12 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: CRM/Donrec/Exporters/Dummy.php
+
+		-
+			message: '#^Argument of an invalid type array\|null supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: CRM/Donrec/Exporters/EmailPDF.php
 
 		-
 			message: '#^Binary operation "\." between '' AND value \= '' and mixed results in an error\.$#'
@@ -1001,6 +1037,12 @@ parameters:
 			path: CRM/Donrec/Form/Task/ContributeTask.php
 
 		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, array\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Form/Task/ContributeTask.php
+
+		-
 			message: '#^Property CRM_Donrec_Form_Task_ContributeTask\:\:\$availableCurrencies type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1043,6 +1085,12 @@ parameters:
 		-
 			message: '#^Method CRM_Donrec_Form_Task_Create\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/Create.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, array\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: CRM/Donrec/Form/Task/Create.php
 
@@ -1120,6 +1168,12 @@ parameters:
 		-
 			message: '#^Method CRM_Donrec_Form_Task_DonrecTask\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Form/Task/DonrecTask.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, array\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: CRM/Donrec/Form/Task/DonrecTask.php
 
@@ -2450,12 +2504,6 @@ parameters:
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
-			message: '#^Method CRM_Donrec_Logic_Profile\:\:getFromEmailAddresses\(\) should return string but returns int\|string\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: CRM/Donrec/Logic/Profile.php
-
-		-
 			message: '#^Method CRM_Donrec_Logic_Profile\:\:getLastUsage\(\) should return DateTime\|null but returns DateTime\|false\|null\.$#'
 			identifier: return.type
 			count: 1
@@ -2542,6 +2590,12 @@ parameters:
 		-
 			message: '#^PHPDoc tag @var for variable \$financial_types has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Parameter \#1 \$array of function key expects array\|object, array\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: CRM/Donrec/Logic/Profile.php
 
@@ -4102,6 +4156,12 @@ parameters:
 			path: CRM/Donrec/Page/Staging.php
 
 		-
+			message: '#^Part \$exporters \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: CRM/Donrec/Page/Staging.php
+
+		-
 			message: '#^Part \$origin \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 3
@@ -4147,6 +4207,18 @@ parameters:
 			identifier: if.condNotBoolean
 			count: 1
 			path: CRM/Donrec/Page/Tab.php
+
+		-
+			message: '#^Binary operation "\." between ''Content\-Disposition…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
+
+		-
+			message: '#^Binary operation "\." between ''Content\-Type\: '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: CRM/Donrec/Page/Tempfile.php
 
 		-
 			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
@@ -4480,6 +4552,12 @@ parameters:
 			path: donrec.php
 
 		-
+			message: '#^Binary operation "\-" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: donrec.php
+
+		-
 			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
 			identifier: function.strict
 			count: 1
@@ -4599,18 +4677,6 @@ parameters:
 			path: donrec.php
 
 		-
-			message: '#^Function donrec_civicrm_searchColumns\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: donrec.php
-
-		-
-			message: '#^Function donrec_civicrm_searchColumns\(\) has parameter \$values with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: donrec.php
-
-		-
 			message: '#^Function donrec_civicrm_searchTasks\(\) has parameter \$tasks with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4665,6 +4731,12 @@ parameters:
 			path: donrec.php
 
 		-
+			message: '#^Offset ''weight'' might not exist on array\<string, mixed\>\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: donrec.php
+
+		-
 			message: '#^Only booleans are allowed in an if condition, int given\.$#'
 			identifier: if.condNotBoolean
 			count: 11
@@ -4683,13 +4755,49 @@ parameters:
 			path: donrec.php
 
 		-
+			message: '#^Parameter \#1 \$contribution_id of static method CRM_Donrec_Logic_ReceiptItem\:\:hasValidReceiptItem\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function strpos expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: donrec.php
+
+		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: donrec.php
 
 		-
+			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: donrec.php
+
+		-
+			message: '#^Parameter &\$headers by\-ref type of function donrec_civicrm_searchColumns\(\) expects list\<array\<string, mixed\>\>, non\-empty\-list\<array\<string, mixed\>\|null\> given\.$#'
+			identifier: parameterByRef.type
+			count: 1
+			path: donrec.php
+
+		-
 			message: '#^Part \$message\[''event''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: donrec.php
+
+		-
+			message: '#^Part \$value\[''contact_id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 1
 			path: donrec.php
