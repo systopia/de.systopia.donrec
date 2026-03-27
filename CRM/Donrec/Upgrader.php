@@ -40,19 +40,6 @@ class CRM_Donrec_Upgrader extends CRM_Extension_Upgrader_Base {
   }
 
   /**
-   * Make sure all the data structures are there when the module is enabled
-   */
-  public function enable(): void {
-    // create/update custom groups
-    CRM_Donrec_DataStructure::update();
-
-    // rename the custom fields according to l10.
-    // FIXME: this is a workaround: if you do this before, the table name change,
-    //         BUT we should not be working with static table names
-    CRM_Donrec_DataStructure::translateCustomGroups();
-  }
-
-  /**
    * Example: Run a simple query when a module is disabled.
    */
   public function disable(): void {
@@ -206,8 +193,6 @@ class CRM_Donrec_Upgrader extends CRM_Extension_Upgrader_Base {
     ;';
       CRM_Core_DAO::executeQuery($query);
 
-      // Add "profile_id" column to custom data table.
-      CRM_Donrec_DataStructure::update();
       $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
       $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
 
