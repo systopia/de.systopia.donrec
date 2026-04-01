@@ -48,7 +48,7 @@ class CRM_Donrec_DataStructure {
    * @param string $group_name
    */
   protected static function _getCustomGroupData($group_name) {
-    if (!self::$_custom_groups[$group_name]['id']) {
+    if (!isset(self::$_custom_groups[$group_name])) {
       $params = [
         'name' => $group_name,
       ];
