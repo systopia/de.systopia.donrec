@@ -994,11 +994,11 @@ msgstr ""
 msgid "type"
 msgstr ""
 
-#: managed/1_OptionGroup_donrec_type.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php
+#: managed/1_OptionGroup_donrec_type.mgd.php
 msgid "single"
 msgstr ""
 
-#: managed/1_OptionGroup_donrec_type.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php
+#: managed/1_OptionGroup_donrec_type.mgd.php
 msgid "bulk"
 msgstr ""
 
