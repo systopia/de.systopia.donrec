@@ -11,7 +11,6 @@ return [
       'version' => 4,
       'values' => [
         'name' => 'zwb_donation_receipt',
-        'table_name' => 'civicrm_value_zwb_donation_receipt',
         'title' => E::ts('Donation Receipt'),
         // '0' to prevent from being shown in the contact dashboard (#2541).
         'style' => '0',
