@@ -38,7 +38,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'contribution_hash',
       ],
       'match' => [
         'name',
@@ -60,7 +59,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'exporters',
       ],
       'match' => [
         'name',
@@ -82,7 +80,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'currency',
       ],
       'match' => [
         'name',
@@ -106,7 +103,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'date_format' => 'mm/dd/yy',
-        'column_name' => 'receive_date',
       ],
       'match' => [
         'name',
@@ -129,7 +125,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'financial_type_id',
       ],
       'match' => [
         'name',
@@ -152,7 +147,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'non_deductible_amount',
       ],
       'match' => [
         'name',
@@ -175,7 +169,6 @@ return [
         'html_type' => 'Autocomplete-Select',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'issued_by',
       ],
       'match' => [
         'name',
@@ -198,7 +191,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'total_amount',
       ],
       'match' => [
         'name',
@@ -222,7 +214,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'date_format' => 'mm/dd/yy',
-        'column_name' => 'issued_on',
       ],
       'match' => [
         'name',
@@ -244,7 +235,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'receipt_id',
       ],
       'match' => [
         'name',
@@ -267,7 +257,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'issued_in',
       ],
       'match' => [
         'name',
@@ -289,7 +278,6 @@ return [
         'html_type' => 'Select',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'type',
         'option_group_id.name' => 'donrec_type',
       ],
       'match' => [
@@ -312,7 +300,6 @@ return [
         'html_type' => 'Select',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'status',
         'option_group_id.name' => 'donrec_status',
       ],
       'match' => [

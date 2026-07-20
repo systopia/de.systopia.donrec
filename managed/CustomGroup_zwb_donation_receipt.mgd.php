@@ -38,7 +38,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'text_length' => 12,
-        'column_name' => 'shipping_postal_code',
       ],
       'match' => [
         'name',
@@ -60,7 +59,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_country',
       ],
       'match' => [
         'name',
@@ -82,7 +80,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_addressee_display',
       ],
       'match' => [
         'name',
@@ -104,7 +101,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_supplemental_address_1',
       ],
       'match' => [
         'name',
@@ -126,7 +122,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'supplemental_address_2',
       ],
       'match' => [
         'name',
@@ -148,7 +143,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'city',
       ],
       'match' => [
         'name',
@@ -171,7 +165,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'original_file',
       ],
       'match' => [
         'name',
@@ -193,7 +186,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'street_address',
       ],
       'match' => [
         'name',
@@ -217,7 +209,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'date_format' => 'mm/dd/yy',
-        'column_name' => 'issued_on',
       ],
       'match' => [
         'name',
@@ -240,7 +231,6 @@ return [
         'html_type' => 'Autocomplete-Select',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'issued_by',
       ],
       'match' => [
         'name',
@@ -265,7 +255,6 @@ return [
         'text_length' => 255,
         'note_columns' => 60,
         'note_rows' => 4,
-        'column_name' => 'status',
         'option_group_id.name' => 'donrec_status',
       ],
       'match' => [
@@ -289,7 +278,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'profile_id',
       ],
       'match' => [
         'name',
@@ -311,7 +299,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'profile',
       ],
       'match' => [
         'name',
@@ -335,7 +322,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'date_format' => 'mm/dd/yy',
-        'column_name' => 'date_from',
       ],
       'match' => [
         'name',
@@ -357,7 +343,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'addressee_display',
       ],
       'match' => [
         'name',
@@ -381,7 +366,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'date_format' => 'mm/dd/yy',
-        'column_name' => 'date_to',
       ],
       'match' => [
         'name',
@@ -403,7 +387,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'supplemental_address_1',
       ],
       'match' => [
         'name',
@@ -425,7 +408,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'display_name',
       ],
       'match' => [
         'name',
@@ -448,7 +430,6 @@ return [
         'is_searchable' => TRUE,
         'is_view' => TRUE,
         'text_length' => 12,
-        'column_name' => 'postal_code',
       ],
       'match' => [
         'name',
@@ -470,7 +451,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'contact_type',
       ],
       'match' => [
         'name',
@@ -492,7 +472,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'country',
       ],
       'match' => [
         'name',
@@ -514,7 +493,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'gender',
       ],
       'match' => [
         'name',
@@ -536,7 +514,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_street_address',
       ],
       'match' => [
         'name',
@@ -558,7 +535,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'prefix',
       ],
       'match' => [
         'name',
@@ -580,7 +556,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_supplemental_address_2',
       ],
       'match' => [
         'name',
@@ -602,7 +577,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'postal_greeting_display',
       ],
       'match' => [
         'name',
@@ -624,7 +598,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'shipping_city',
       ],
       'match' => [
         'name',
@@ -646,7 +619,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'email_greeting_display',
       ],
       'match' => [
         'name',
@@ -668,7 +640,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'exporters',
       ],
       'match' => [
         'name',
@@ -690,7 +661,6 @@ return [
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
-        'column_name' => 'receipt_id',
       ],
       'match' => [
         'name',
