@@ -65,7 +65,11 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
       'name' => $groupName,
     ]);
   }
-  catch (CiviCRM_API3_Exception $exception) {
+  catch (Exception $exception) {
+    return;
+  }
+
+  if (!is_array($customGroup) || !isset($customGroup['id'], $customGroup['table_name'])) {
     return;
   }
 
@@ -74,7 +78,12 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
     return;
   }
 
-  $expectedTableName = $tableNamePrefix . '_' . (int) $customGroup['id'];
+  $customGroupId = (int) $customGroup['id'];
+  if ($customGroupId <= 0) {
+    return;
+  }
+
+  $expectedTableName = $tableNamePrefix . '_' . $customGroupId;
   if ($currentTableName === $expectedTableName) {
     return;
   }
@@ -85,15 +94,15 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
     throw new CRM_Core_Exception("Unsafe Donrec custom table name for {$groupName}.");
   }
 
-  $currentTableExists = CRM_Core_DAO::checkTableExists($currentTableName);
-  $expectedTableExists = CRM_Core_DAO::checkTableExists($expectedTableName);
+  $currentTableExists = CRM_Core_DAO::checkTableExists($currentTableName) !== FALSE;
+  $expectedTableExists = CRM_Core_DAO::checkTableExists($expectedTableName) !== FALSE;
 
   if (!$currentTableExists && $expectedTableExists) {
     CRM_Core_DAO::executeQuery(
       'UPDATE `civicrm_custom_group` SET `table_name` = %1 WHERE `id` = %2',
       [
         1 => [$expectedTableName, 'String'],
-        2 => [(int) $customGroup['id'], 'Integer'],
+        2 => [$customGroupId, 'Integer'],
       ]
     );
     return;
@@ -105,7 +114,7 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
       'UPDATE `civicrm_custom_group` SET `table_name` = %1 WHERE `id` = %2',
       [
         1 => [$expectedTableName, 'String'],
-        2 => [(int) $customGroup['id'], 'Integer'],
+        2 => [$customGroupId, 'Integer'],
       ]
     );
     return;
