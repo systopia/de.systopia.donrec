@@ -70,7 +70,7 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
     return;
   }
 
-  $customGroupId = (int) $customGroup['id'];
+  $customGroupId = $customGroup['id'];
   if ($customGroupId <= 0) {
     return;
   }
@@ -80,8 +80,8 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
     return;
   }
 
-  if (!preg_match('/^[A-Za-z0-9_]+$/', $currentTableName)
-    || !preg_match('/^[A-Za-z0-9_]+$/', $expectedTableName)
+  if (preg_match('/^[A-Za-z0-9_]+$/', $currentTableName) !== 1
+    || preg_match('/^[A-Za-z0-9_]+$/', $expectedTableName) !== 1
   ) {
     throw new CRM_Core_Exception("Unsafe Donrec custom table name for {$groupName}.");
   }
@@ -102,7 +102,7 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
 /**
  * Look up a custom group that may need install-time table normalization.
  *
- * @return array<string, mixed>|null
+ * @return array{id: int, table_name: string}|null
  */
 function _donrec_civicrm_get_custom_group_for_normalization(string $groupName): ?array {
   try {
@@ -119,15 +119,21 @@ function _donrec_civicrm_get_custom_group_for_normalization(string $groupName): 
     return NULL;
   }
 
-  return $customGroup;
+  if (!is_numeric($customGroup['id']) || (int) $customGroup['id'] <= 0 || !is_string($customGroup['table_name'])) {
+    return NULL;
+  }
+
+  return [
+    'id' => (int) $customGroup['id'],
+    'table_name' => $customGroup['table_name'],
+  ];
 }
 
 /**
  * Check whether the given table exists.
  */
 function _donrec_civicrm_table_exists(string $tableName): bool {
-  $tableExists = CRM_Core_DAO::checkTableExists($tableName);
-  return $tableExists !== FALSE && $tableExists > 0;
+  return CRM_Core_DAO::checkTableExists($tableName) !== FALSE;
 }
 
 /**
