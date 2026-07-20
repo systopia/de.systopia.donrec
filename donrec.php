@@ -60,16 +60,8 @@ function _donrec_civicrm_normalize_custom_group_table_names(): void {
  * Rename the managed custom group table to the expected deterministic name.
  */
 function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, string $tableNamePrefix): void {
-  try {
-    $customGroup = civicrm_api3('CustomGroup', 'getsingle', [
-      'name' => $groupName,
-    ]);
-  }
-  catch (Exception $exception) {
-    return;
-  }
-
-  if (!is_array($customGroup) || !isset($customGroup['id'], $customGroup['table_name'])) {
+  $customGroup = _donrec_civicrm_get_custom_group_for_normalization($groupName);
+  if ($customGroup === NULL) {
     return;
   }
 
@@ -94,9 +86,61 @@ function _donrec_civicrm_normalize_custom_group_table_name(string $groupName, st
     throw new CRM_Core_Exception("Unsafe Donrec custom table name for {$groupName}.");
   }
 
-  $currentTableExists = CRM_Core_DAO::checkTableExists($currentTableName) !== FALSE;
-  $expectedTableExists = CRM_Core_DAO::checkTableExists($expectedTableName) !== FALSE;
+  $currentTableExists = _donrec_civicrm_table_exists($currentTableName);
+  $expectedTableExists = _donrec_civicrm_table_exists($expectedTableName);
 
+  _donrec_civicrm_apply_custom_group_table_name(
+    $groupName,
+    $customGroupId,
+    $currentTableName,
+    $expectedTableName,
+    $currentTableExists,
+    $expectedTableExists
+  );
+}
+
+/**
+ * Look up a custom group that may need install-time table normalization.
+ *
+ * @return array<string, mixed>|null
+ */
+function _donrec_civicrm_get_custom_group_for_normalization(string $groupName): ?array {
+  try {
+    $customGroup = civicrm_api3('CustomGroup', 'getsingle', [
+      'name' => $groupName,
+    ]);
+  }
+  catch (Exception $exception) {
+    // @ignoreException
+    return NULL;
+  }
+
+  if (!is_array($customGroup) || !isset($customGroup['id'], $customGroup['table_name'])) {
+    return NULL;
+  }
+
+  return $customGroup;
+}
+
+/**
+ * Check whether the given table exists.
+ */
+function _donrec_civicrm_table_exists(string $tableName): bool {
+  $tableExists = CRM_Core_DAO::checkTableExists($tableName);
+  return $tableExists !== FALSE && $tableExists > 0;
+}
+
+/**
+ * Apply the table rename or metadata update based on the detected table state.
+ */
+function _donrec_civicrm_apply_custom_group_table_name(
+  string $groupName,
+  int $customGroupId,
+  string $currentTableName,
+  string $expectedTableName,
+  bool $currentTableExists,
+  bool $expectedTableExists
+): void {
   if (!$currentTableExists && $expectedTableExists) {
     CRM_Core_DAO::executeQuery(
       'UPDATE `civicrm_custom_group` SET `table_name` = %1 WHERE `id` = %2',
