@@ -19,7 +19,7 @@
 declare(strict_types = 1);
 
 class CRM_Donrec_CustomData {
-  public const CUSTOM_DATA_HELPER_VERSION   = '0.13.0';
+  public const CUSTOM_DATA_HELPER_VERSION   = '0.13.1';
   public const CUSTOM_DATA_HELPER_LOG_LEVEL = 0;
   public const CUSTOM_DATA_HELPER_LOG_DEBUG = 1;
   public const CUSTOM_DATA_HELPER_LOG_INFO  = 3;
@@ -80,6 +80,8 @@ class CRM_Donrec_CustomData {
     if (!is_array($data['_entities'])) {
       throw new InvalidArgumentException('syncOptionGroup::syncOptionGroup: Invalid specs');
     }
+
+    assert(is_string($data['entity']));
 
     /** @var array<string, mixed> $entity_data */
     foreach ($data['_entities'] as $entity_data) {
@@ -811,6 +813,7 @@ class CRM_Donrec_CustomData {
     // look for all group names in all variables
     foreach ($group_names as $group_name) {
       foreach (array_keys($params) as $key) {
+        /** @var string $new_key */
         $new_key = preg_replace("#^{$group_name}_#", "{$group_name}.", $key);
         if ($new_key !== $key) {
           $params[$new_key] = $params[$key];

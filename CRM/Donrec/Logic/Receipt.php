@@ -233,8 +233,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   public function getCopies() {
     $receipt_id = $this->Id;
     $receipt_fields = self::$_custom_fields;
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $item_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $query = "
@@ -482,11 +481,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   // phpcs:enable
     $values = [];
 
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $expected_fields = CRM_Donrec_Logic_ReceiptTokens::$STORED_TOKENS;
     $receipt_id = $this->Id;
     $receipt_fields = self::$_custom_fields;
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::$_custom_fields;
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $item_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
 
@@ -656,7 +654,6 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * get the profile object that was used to create this receipt
    */
   public function getProfile() {
-    CRM_Donrec_Logic_ReceiptItem::getCustomFields();
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile_id'];
     $profile_id = (int) CRM_Core_DAO::singleValueQuery(

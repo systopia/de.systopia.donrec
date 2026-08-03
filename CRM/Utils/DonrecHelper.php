@@ -10,6 +10,7 @@
 
 declare(strict_types = 1);
 
+use Civi\Api4\Contribution;
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -111,65 +112,27 @@ class CRM_Utils_DonrecHelper {
   }
 
   /**
-   * extracts the field ID from the field set provided in the format:
-   * <field_name> => <column_name>
-   *
-   * @param array $fields
-   *
    * @param string $field_name
+   *   APIv4 field name of a custom Contribution field. If the group name is
+   *   omitted, "zwb_donation_receipt_item" will be used.
    *
-   * @return int
-   *   field_id  or 0 if not found
+   * @return int|null
+   *   Custom field ID or NULL if not found.
    */
-  public static function getFieldID($fields, $field_name) {
-    if (!empty($fields[$field_name])) {
-      // TODO: more efficient way?
-      $inv_column = strrev($fields[$field_name]);
-      $inv_id = substr($inv_column, 0, strpos($inv_column, '_'));
-      return (int) strrev($inv_id);
-    }
-    else {
-      return 0;
-    }
-  }
+  public static function getCustomFieldId(string $field_name): ?int {
+    static $customFieldIds;
+    $customFieldIds ??= Contribution::getFields(FALSE)
+      ->addSelect('name', 'custom_field_id')
+      ->addWhere('custom_field_id', 'IS NOT NULL')
+      ->execute()
+      ->indexBy('name')
+      ->column('custom_field_id');
 
-  /**
-   * removes a field from a form - if it exists
-   *
-   * @param \CRM_Core_Form $form
-   *
-   * @param array $fields
-   *
-   * @param string $field_name
-   */
-  public static function removeFromForm(&$form, $fields, $field_name) {
-    $field_id = self::getFieldID($fields, $field_name);
-    if ($field_id) {
-      if ($form->elementExists("custom_{$field_id}")) {
-        $form->removeElement("custom_{$field_id}");
-      }
+    if (!str_contains($field_name, '.')) {
+      $field_name = 'zwb_donation_receipt_item.' . $field_name;
     }
-  }
 
-  /**
-   * updates a date field's labels - if it exists
-   *
-   * @param $form
-   * @param $fields
-   * @param $field_name
-   * @param $from_label
-   * @param $to_label
-   */
-  public static function relabelDateField(&$form, $fields, $field_name, $from_label, $to_label) {
-    $field_id = self::getFieldID($fields, $field_name);
-    if ($field_id) {
-      if ($form->elementExists("custom_{$field_id}_from")) {
-        $form->getElement("custom_{$field_id}_from")->setLabel($from_label);
-      }
-      if ($form->elementExists("custom_{$field_id}_to")) {
-        $form->getElement("custom_{$field_id}_to")->setLabel($to_label);
-      }
-    }
+    return $customFieldIds['zwb_donation_receipt_item.' . $field_name] ?? NULL;
   }
 
   /**

@@ -76,12 +76,10 @@ class CRM_Donrec_Logic_Profile {
 
   /**
    * load setting entity with given ID
-   *
-   * @param int $profile_id
    */
-  public function __construct($profile_id = NULL) {
+  public function __construct(?int $profile_id = NULL) {
     $all_profiles = self::getAllData();
-    if (isset($all_profiles[$profile_id])) {
+    if (NULL !== $profile_id && isset($all_profiles[$profile_id])) {
       $profile_data = $all_profiles[$profile_id];
     }
     else {
@@ -683,7 +681,10 @@ class CRM_Donrec_Logic_Profile {
     else {
       $condition = NULL;
     }
-    return key(CRM_Core_OptionGroup::values('from_email_address', FALSE, FALSE, FALSE, $condition));
+
+    /** @var non-empty-array<string, string> $fromEmailAddresses */
+    $fromEmailAddresses = CRM_Core_OptionGroup::values('from_email_address', FALSE, FALSE, FALSE, $condition);
+    return key($fromEmailAddresses);
   }
 
   /**

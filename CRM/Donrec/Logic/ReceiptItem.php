@@ -10,6 +10,8 @@
 
 declare(strict_types = 1);
 
+use Civi\Api4\CustomField;
+
 /**
  * This class represents a single donation receipt item
  */
@@ -19,7 +21,7 @@ class CRM_Donrec_Logic_ReceiptItem {
    * i.e. self::$_custom_field['total_amount'] == 10
    */
   // TODO: set private, but add getters
-  public static ?array $_custom_fields = NULL;
+  private static ?array $_custom_fields = NULL;
   public static ?int $_custom_group_id = NULL;
   public static array $_checksum_keys = [
     'contribution_id',
@@ -45,8 +47,7 @@ class CRM_Donrec_Logic_ReceiptItem {
    * @throws \CRM_Core_Exception
    */
   public static function create($params) {
-    self::getCustomFields();
-    $fields = self::$_custom_fields ?? [];
+    $fields = self::getCustomFields();
     $table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $params['contribution_hash'] = self::calculateChecksum($params);
 
@@ -88,22 +89,22 @@ class CRM_Donrec_Logic_ReceiptItem {
    */
   public static function createCopyAll($donation_receipt_id, $donation_receipt_copy_id) {
     // TODO: make a generic version of this, using the fields defined in CRM_Donrec_DataStructure
-    self::getCustomFields();
+    $custom_fields = self::getCustomFields();
     $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     // phpcs:disable Generic.Files.LineLength.TooLong
     $sha1_string = "SHA1(CONCAT(`entity_id`, 'COPY', `%s`, $donation_receipt_copy_id, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`))";
     // phpcs:enable
     $sha1_string = sprintf($sha1_string,
-                          self::$_custom_fields['type'],
-                          self::$_custom_fields['issued_in'],
-                          self::$_custom_fields['receipt_id'],
-                          self::$_custom_fields['issued_by'],
-                          self::$_custom_fields['total_amount'],
-                          self::$_custom_fields['non_deductible_amount'],
-                          self::$_custom_fields['financial_type_id'],
-                          self::$_custom_fields['currency'],
-                          self::$_custom_fields['issued_on'],
-                          self::$_custom_fields['receive_date'],
+                          $custom_fields['type'],
+                          $custom_fields['issued_in'],
+                          $custom_fields['receipt_id'],
+                          $custom_fields['issued_by'],
+                          $custom_fields['total_amount'],
+                          $custom_fields['non_deductible_amount'],
+                          $custom_fields['financial_type_id'],
+                          $custom_fields['currency'],
+                          $custom_fields['issued_on'],
+                          $custom_fields['receive_date'],
                           self::$_custom_group_id);
 
     $query = "INSERT INTO `$receipt_item_table`
@@ -139,35 +140,35 @@ class CRM_Donrec_Logic_ReceiptItem {
     WHERE `%s` = %d AND `%s` = 'ORIGINAL';";
     $query = sprintf($query,
       // for spec part
-      self::$_custom_fields['status'],
-      self::$_custom_fields['type'],
-      self::$_custom_fields['issued_in'],
-      self::$_custom_fields['receipt_id'],
-      self::$_custom_fields['issued_on'],
-      self::$_custom_fields['issued_by'],
-      self::$_custom_fields['total_amount'],
-      self::$_custom_fields['non_deductible_amount'],
-      self::$_custom_fields['currency'],
-      self::$_custom_fields['financial_type_id'],
-      self::$_custom_fields['receive_date'],
-      self::$_custom_fields['contribution_hash'],
+      $custom_fields['status'],
+      $custom_fields['type'],
+      $custom_fields['issued_in'],
+      $custom_fields['receipt_id'],
+      $custom_fields['issued_on'],
+      $custom_fields['issued_by'],
+      $custom_fields['total_amount'],
+      $custom_fields['non_deductible_amount'],
+      $custom_fields['currency'],
+      $custom_fields['financial_type_id'],
+      $custom_fields['receive_date'],
+      $custom_fields['contribution_hash'],
       // for VALUES part
-      self::$_custom_fields['status'],
-      self::$_custom_fields['type'],
-      self::$_custom_fields['issued_in'],
-      self::$_custom_fields['receipt_id'],
-      self::$_custom_fields['issued_on'],
-      self::$_custom_fields['issued_by'],
-      self::$_custom_fields['total_amount'],
-      self::$_custom_fields['non_deductible_amount'],
-      self::$_custom_fields['currency'],
-      self::$_custom_fields['financial_type_id'],
-      self::$_custom_fields['receive_date'],
+      $custom_fields['status'],
+      $custom_fields['type'],
+      $custom_fields['issued_in'],
+      $custom_fields['receipt_id'],
+      $custom_fields['issued_on'],
+      $custom_fields['issued_by'],
+      $custom_fields['total_amount'],
+      $custom_fields['non_deductible_amount'],
+      $custom_fields['currency'],
+      $custom_fields['financial_type_id'],
+      $custom_fields['receive_date'],
       $sha1_string,
-      self::$_custom_fields['contribution_hash'],
-      self::$_custom_fields['issued_in'],
+      $custom_fields['contribution_hash'],
+      $custom_fields['issued_in'],
       $donation_receipt_id,
-      self::$_custom_fields['status']
+      $custom_fields['status']
       );
     $result = CRM_Core_DAO::executeQuery($query);
   }
@@ -178,10 +179,10 @@ class CRM_Donrec_Logic_ReceiptItem {
    * @param string|null $status filter by status (deletes all including copies if not specified)
    */
   public static function deleteAll($donation_receipt_id, $status = NULL) {
-    self::getCustomFields();
+    $custom_fields = self::getCustomFields();
     $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     if (!empty($status)) {
-      $statusString = sprintf(" AND `%s` = '%s'", self::$_custom_fields['status'], $status);
+      $statusString = sprintf(" AND `%s` = '%s'", $custom_fields['status'], $status);
     }
     else {
       $statusString = '';
@@ -189,7 +190,7 @@ class CRM_Donrec_Logic_ReceiptItem {
 
     $query = "DELETE FROM `$receipt_item_table` WHERE `%s` = %d%s;";
     $query = sprintf($query,
-                    self::$_custom_fields['issued_in'],
+                    $custom_fields['issued_in'],
                     $donation_receipt_id,
                     $statusString);
     $result = CRM_Core_DAO::executeQuery($query);
@@ -201,12 +202,12 @@ class CRM_Donrec_Logic_ReceiptItem {
    * @param string $status
    */
   public static function setStatusAll($donation_receipt_id, $status = 'WITHDRAWN') {
-    self::getCustomFields();
+    $custom_fields = self::getCustomFields();
     $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
     $query = "UPDATE `$receipt_item_table` SET `%s` = %%1 WHERE `%s` = %d;";
     $query = sprintf($query,
-                    self::$_custom_fields['status'],
-                    self::$_custom_fields['issued_in'],
+                    $custom_fields['status'],
+                    $custom_fields['issued_in'],
                     $donation_receipt_id
                     );
     $params = [1 => [$status, 'String']];
@@ -214,41 +215,19 @@ class CRM_Donrec_Logic_ReceiptItem {
   }
 
   /**
-   * Updates the class attribute to contain all custom fields of the
-   * donation receipt database table.
+   * @return array<string, string>
+   *   Mapping of field name in CustomGroup zwb_donation_receipt_item to column
+   *   name.
    *
-   * @return array|null
+   * @throws \CRM_Core_Exception
    */
-  public static function getCustomFields() {
-    if (self::$_custom_fields === NULL) {
-      // get the ids of all relevant custom fields
-      $params = [
-        'name'       => 'zwb_donation_receipt_item',
-      ];
-      $custom_group = civicrm_api3('CustomGroup', 'getsingle', $params);
-      if (isset($custom_group['is_error'])) {
-        Civi::log()->debug(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_group['error_message']));
-        return NULL;
-      }
-
-      self::$_custom_group_id = (int) $custom_group['id'];
-
-      $params = [
-        'option.limit'    => 999,
-        'custom_group_id' => $custom_group['id'],
-      ];
-      $custom_fields = civicrm_api3('CustomField', 'get', $params);
-      if ($custom_fields['is_error'] != 0) {
-        Civi::log()->debug(sprintf('de.systopia.donrec: getCustomFields: error: %s', $custom_fields['error_message']));
-        return NULL;
-      }
-
-      self::$_custom_fields = [];
-      foreach ($custom_fields['values'] as $field) {
-        self::$_custom_fields[$field['name']] = $field['column_name'];
-      }
-    }
-    return self::$_custom_fields;
+  public static function getCustomFields(): array {
+    return self::$_custom_fields ??= CustomField::get(FALSE)
+      ->addSelect('name', 'column_name')
+      ->addWhere('custom_group_id.name', '=', 'zwb_donation_receipt_item')
+      ->execute()
+      ->indexBy('name')
+      ->column('column_name');
   }
 
   /**
@@ -266,9 +245,8 @@ class CRM_Donrec_Logic_ReceiptItem {
       return FALSE;
     }
 
-    self::getCustomFields();
     $receipt_item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
-    $status_field = self::$_custom_fields['status'];
+    $status_field = self::getCustomFields()['status'];
 
     $query = "
       SELECT `id`
