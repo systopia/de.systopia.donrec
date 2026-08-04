@@ -67,7 +67,7 @@ parameters:
 			path: CRM/Admin/Form/DonrecProfile.php
 
 		-
-			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int, mixed given\.$#'
+			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int\|numeric\-string, mixed given\.$#'
 			identifier: argument.type
 			count: 5
 			path: CRM/Admin/Form/DonrecProfile.php

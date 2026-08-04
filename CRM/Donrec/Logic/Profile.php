@@ -100,12 +100,12 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-   * @param int $profile_id
+   * @param int|numeric-string|null $profile_id
    *
    * @return \CRM_Donrec_Logic_Profile
    */
-  public static function getProfile($profile_id) {
-    return new self($profile_id);
+  public static function getProfile(int|string|null $profile_id): self {
+    return new self(NULL === $profile_id ? NULL : (int) $profile_id);
   }
 
   /**
