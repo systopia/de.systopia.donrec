@@ -682,8 +682,9 @@ class CRM_Donrec_Logic_Profile {
         ->addWhere('domain_id', '=', 'current_domain')
         ->addWhere('is_active', '=', TRUE)
         ->addWhere('is_default', '=', TRUE)
+        ->setLimit(1)
         ->execute()
-        ->first()['id'];
+        ->single()['id'];
     }
 
     return (int) OptionValue::get(FALSE)
@@ -691,8 +692,9 @@ class CRM_Donrec_Logic_Profile {
       ->addWhere('option_group_id:name', '=', 'from_email_address')
       ->addWhere('is_active', '=', TRUE)
       ->addWhere('is_default', '=', TRUE)
+      ->setLimit(1)
       ->execute()
-      ->first()['value'];
+      ->single()['value'];
   }
 
   /**
