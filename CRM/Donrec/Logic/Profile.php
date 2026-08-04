@@ -10,6 +10,8 @@
 
 declare(strict_types = 1);
 
+use Civi\Api4\OptionValue;
+use Civi\Api4\SiteEmailAddress;
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -100,12 +102,12 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-   * @param int|numeric-string|null $profile_id
+   * @param int|numeric-string $profile_id
    *
    * @return \CRM_Donrec_Logic_Profile
    */
-  public static function getProfile(int|string|null $profile_id): self {
-    return new self(NULL === $profile_id ? NULL : (int) $profile_id);
+  public static function getProfile(int|string $profile_id): self {
+    return new self((int) $profile_id);
   }
 
   /**
@@ -667,24 +669,30 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-   * Returns "From" e-mail addresses configured within CiviCRM.
+   * @return int
+   *   The ID of the default "From" email address configured within CiviCRM.
    *
-   * @param bool $default
-   *   Whether to return only default addresses.
-   *
-   * @return string
+   * @throws \CRM_Core_Exception
    */
-  public static function getFromEmailAddresses($default = FALSE) {
-    if ($default) {
-      $condition = ' AND is_default = 1';
-    }
-    else {
-      $condition = NULL;
+  public static function getDefaultSiteEmailAddressId(): int {
+    // TODO: Remove check when minimum core version requirement is >= 6.0.0.
+    if (class_exists(SiteEmailAddress::class)) {
+      return SiteEmailAddress::get(FALSE)
+        ->addSelect('id')
+        ->addWhere('domain_id', '=', 'current_domain')
+        ->addWhere('is_active', '=', TRUE)
+        ->addWhere('is_default', '=', TRUE)
+        ->execute()
+        ->single()['id'];
     }
 
-    /** @var non-empty-array<string, string> $fromEmailAddresses */
-    $fromEmailAddresses = CRM_Core_OptionGroup::values('from_email_address', FALSE, FALSE, FALSE, $condition);
-    return key($fromEmailAddresses);
+    return (int) OptionValue::get(FALSE)
+      ->addSelect('value')
+      ->addWhere('option_group_id:name', '=', 'from_email_address')
+      ->addWhere('is_active', '=', TRUE)
+      ->addWhere('is_default', '=', TRUE)
+      ->execute()
+      ->single()['value'];
   }
 
   /**
@@ -741,7 +749,7 @@ class CRM_Donrec_Logic_Profile {
         'postal_address'             => ['0'],
         'legal_address_fallback'     => ['0'],
         'postal_address_fallback'    => ['0'],
-        'from_email'                 => CRM_Donrec_Logic_Profile::getFromEmailAddresses(TRUE),
+        'from_email'                 => CRM_Donrec_Logic_Profile::getDefaultSiteEmailAddressId(),
         // TODO: Set correct defaults for formerly global settings here.
         'email_template'             => NULL,
         'bcc_email'                  => NULL,
