@@ -683,7 +683,7 @@ class CRM_Donrec_Logic_Profile {
         ->addWhere('is_active', '=', TRUE)
         ->addWhere('is_default', '=', TRUE)
         ->execute()
-        ->single()['id'];
+        ->first()['id'];
     }
 
     return (int) OptionValue::get(FALSE)
@@ -692,7 +692,7 @@ class CRM_Donrec_Logic_Profile {
       ->addWhere('is_active', '=', TRUE)
       ->addWhere('is_default', '=', TRUE)
       ->execute()
-      ->single()['value'];
+      ->first()['value'];
   }
 
   /**
