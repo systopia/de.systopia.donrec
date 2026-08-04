@@ -101,7 +101,6 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
           'error'
         );
         CRM_Utils_System::redirect($redirect_url);
-        return NULL;
       }
     }
 
@@ -113,7 +112,6 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         'error'
       );
       CRM_Utils_System::redirect($redirect_url);
-      return NULL;
     }
     else {
       // @phpstan-ignore return.type

@@ -25,6 +25,8 @@ require_once __DIR__ . '/../../donrec.civix.php';
 
 // Add test classes to class loader.
 addExtensionDirToClassLoader(__DIR__);
+
+// Add classes for tests without booted CiviCRM environment, i.e. simple PHPUnit tests.
 addExtensionToClassLoader('de.systopia.donrec');
 
 if (!function_exists('ts')) {
@@ -40,7 +42,26 @@ function _donrec_test_civicrm_container(ContainerBuilder $container): void {
 }
 
 function addExtensionToClassLoader(string $extension): void {
-  addExtensionDirToClassLoader(__DIR__ . '/../../../' . $extension);
+  // Support symlinks. Current working dir should be the extensions' directory
+  // relative to the "ext" directory.
+  // Note: getcwd() is not used because it returns the real path.
+  /** @var string $currentWorkingDir */
+  $currentWorkingDir = getenv('PWD');
+  $candidates = [
+    dirname($currentWorkingDir) . '/' . $extension,
+    __DIR__ . '/../../../' . $extension,
+  ];
+
+  foreach ($candidates as $candidate) {
+    $real = realpath($candidate);
+    if ($real !== FALSE && is_dir($real)) {
+      addExtensionDirToClassLoader($real);
+
+      return;
+    }
+  }
+
+  throw new RuntimeException("Extension path not found for: $extension");
 }
 
 function addExtensionDirToClassLoader(string $extensionDir): void {
@@ -63,6 +84,7 @@ function addExtensionDirToClassLoader(string $extensionDir): void {
  *   The rest of the command to send.
  * @param string $decode
  *   Ex: 'json' or 'phpcode'.
+ *
  * @return mixed
  *   Response output (if the command executed normally).
  *   For 'raw' or 'phpcode', this will be a string. For 'json', it could be any JSON value.
@@ -96,6 +118,7 @@ function cv(string $cmd, string $decode = 'json') {
       if (substr(trim($result), 0, 12) !== '/*BEGINPHP*/' || substr(trim($result), -10) !== '/*ENDPHP*/') {
         throw new \RuntimeException("Command failed ($cmd):\n$result");
       }
+
       return $result;
 
     case 'json':

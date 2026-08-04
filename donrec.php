@@ -358,7 +358,7 @@ function donrec_civicrm_pre(string $op, string $objectName, $id, array &$params)
         // Validate the contribution values to be set.
         CRM_Donrec_Logic_Settings::validateContribution($id, (array) $result, $params, TRUE);
       }
-      elseif ($op == 'delete') {
+      else {
         $message = sprintf(
           E::ts('This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!'),
           $id
@@ -436,24 +436,23 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
 // phpcs:enable
   if ($formName == 'CRM_Contribute_Form_Search') {
     /** @var CRM_Contribute_Form_Search $form */
-    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields() ?? [];
 
     // remove unwanted fields
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'financial_type_id');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'total_amount');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'non_deductible_amount');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'currency');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contribution_hash');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'receive_date');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('financial_type_id');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('total_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('non_deductible_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('currency');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('contribution_hash');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('receive_date');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('issued_in');
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
     CRM_Core_Region::instance('page-body')->add([
       'template' => 'CRM/Donrec/Form/Search/RemoveFields.snippet.tpl',
     ]);
 
     // override the standard fields
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('status');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
         E::ts('Status'),
@@ -466,7 +465,7 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
           'withdrawn_copy'  => E::ts('withdrawn_copy'),
         ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('type');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
         E::ts('Type'),
@@ -477,11 +476,11 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
           'bulk'    => E::ts('bulk receipt'),
         ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_in');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('issued_in');
     if ($status_id) {
       $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('issued_by');
     if ($status_id) {
       $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
     }
@@ -491,42 +490,41 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
     /** @var CRM_Contact_Form_Search_Advanced $form */
     // remove unwanted fields
     $item_fields = CRM_Donrec_Logic_Receipt::getCustomFields() ?? [];
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_on');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'original_file');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'contact_type');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'gender');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'prefix');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'display_name');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'postal_greeting_display');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'email_greeting_display');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'addressee_display');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'street_address');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_1');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_2');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'supplemental_address_3');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'postal_code');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'city');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'country');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_addressee_display');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_street_address');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_1');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_2');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_supplemental_address_3');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_postal_code');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_city');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'shipping_country');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_from');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'date_to');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('original_file');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('contact_type');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('gender');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('prefix');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('display_name');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('postal_greeting_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('email_greeting_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('addressee_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('street_address');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('supplemental_address_1');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('supplemental_address_2');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('supplemental_address_3');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('postal_code');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('city');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('country');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_addressee_display');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_street_address');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_supplemental_address_1');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_supplemental_address_2');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_supplemental_address_3');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_postal_code');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_city');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('shipping_country');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('date_from');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('date_to');
 
     // remove unwanted fields from receipt items (in contribution tab)
-    $item_fields_receipt = CRM_Donrec_Logic_ReceiptItem::getCustomFields() ?? [];
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'financial_type_id');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'total_amount');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'non_deductible_amount');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'currency');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'contribution_hash');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_on');
-    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'receive_date');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('financial_type_id');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('total_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('non_deductible_amount');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('currency');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('contribution_hash');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('issued_on');
+    $field_ids_to_remove[] = CRM_Utils_DonrecHelper::getCustomFieldId('receive_date');
 
     $form->assign('field_ids_to_remove', implode(',', $field_ids_to_remove));
     CRM_Core_Region::instance('page-body')->add([
@@ -534,7 +532,7 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
     ]);
 
     // override the standard fields
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'status');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('status');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
       E::ts('Status'),
@@ -547,7 +545,7 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
         'withdrawn_copy'  => E::ts('withdrawn_copy'),
       ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'type');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('type');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
       E::ts('Type'),
@@ -558,13 +556,13 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
         'bulk'    => E::ts('bulk receipt'),
       ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields, 'issued_by');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('issued_by');
     if ($status_id) {
       $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
     }
 
     // override the receipt_item standard fields
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'status');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('status');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
       E::ts('Status'),
@@ -577,7 +575,7 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
         'withdrawn_copy'  => E::ts('withdrawn_copy'),
       ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'type');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('type');
     if ($status_id) {
       $form->add('select', "custom_{$status_id}",
       E::ts('Type'),
@@ -588,11 +586,11 @@ function donrec_civicrm_buildForm(string $formName, object $form): void {
         'bulk'    => E::ts('bulk receipt'),
       ]);
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_in');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('issued_in');
     if ($status_id) {
       $form->add('text', "custom_{$status_id}", E::ts('Receipt ID'));
     }
-    $status_id = CRM_Utils_DonrecHelper::getFieldID($item_fields_receipt, 'issued_by');
+    $status_id = CRM_Utils_DonrecHelper::getCustomFieldId('issued_by');
     if ($status_id) {
       $form->add('text', "custom_{$status_id}", E::ts('Issued by contact'));
     }

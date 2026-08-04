@@ -215,20 +215,18 @@ class Kwota {
   }
 
   /**
-   * @param $licz
-   * @param $i
    * @param array|null $table
    *
    * @return string
    */
-  protected function _mnoznikSlownie($licz, $i, $table = NULL) {
-    $table = $table ? $table : $this->table[$i];
-    if ($licz == 1) {
+  protected function _mnoznikSlownie(string $licz, ?int $i, ?array $table = NULL) {
+    $table ??= $this->table[$i];
+    if ($licz === '1') {
       return $table[0];
     }
     $licz = str_pad($licz, 3, '0', STR_PAD_LEFT);
-    $last   = $licz[strlen($licz) - 1];
-    $second = (isset($licz[1]) && $licz[1] < 2 && $licz[1] > 0) ? TRUE : FALSE;
+    $last = (int) $licz[strlen($licz) - 1];
+    $second = isset($licz[1]) && (int) $licz[1] < 2 && (int) $licz[1] > 0;
     if (($second) || ($last < 2 || $last > 4)) {
       return $table[2];
     }
@@ -249,7 +247,7 @@ class Kwota {
     }
     if (strlen($liczba) > 2) {
       $r[] = $this->setki[$liczba[0]];
-      $liczba = ($liczba - $liczba[0] * 100) . '';
+      $liczba = (string) ((int) $liczba - (int) $liczba[0] * 100);
     }
     if ((int) $liczba < 20) {
       $r[] = $this->jednosciNascie[$liczba];

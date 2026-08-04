@@ -67,7 +67,7 @@ parameters:
 			path: CRM/Admin/Form/DonrecProfile.php
 
 		-
-			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int, mixed given\.$#'
+			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int\|numeric\-string, mixed given\.$#'
 			identifier: argument.type
 			count: 5
 			path: CRM/Admin/Form/DonrecProfile.php
@@ -119,30 +119,6 @@ parameters:
 			identifier: offsetAccess.invalidOffset
 			count: 12
 			path: CRM/Admin/Page/DonrecProfiles.php
-
-		-
-			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:createEntity\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Donrec/CustomData.php
-
-		-
-			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:identifyEntity\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Donrec/CustomData.php
-
-		-
-			message: '#^Parameter \#1 \$entity_type of method CRM_Donrec_CustomData\:\:updateEntity\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Donrec/CustomData.php
-
-		-
-			message: '#^Part \$data\[''entity''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: CRM/Donrec/CustomData.php
 
 		-
 			message: '#^Cannot access offset ''count'' on array\|int\.$#'
@@ -553,6 +529,12 @@ parameters:
 			path: CRM/Donrec/Exporters/GroupedPDF.php
 
 		-
+			message: '#^Equal\: Insane comparison between 2 and 2\.$#'
+			identifier: voku.Equal
+			count: 1
+			path: CRM/Donrec/Exporters/GroupedPDF.php
+
+		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
@@ -622,6 +604,12 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 5
+			path: CRM/Donrec/Exporters/MergedPDF.php
+
+		-
+			message: '#^Equal\: Insane comparison between 2 and 2\.$#'
+			identifier: voku.Equal
+			count: 1
 			path: CRM/Donrec/Exporters/MergedPDF.php
 
 		-
@@ -1261,12 +1249,6 @@ parameters:
 			path: CRM/Donrec/Lang.php
 
 		-
-			message: '#^Method CRM_Donrec_Lang\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang.php
-
-		-
 			message: '#^Only booleans are allowed in &&, CRM_Donrec_Logic_Profile\|null given on the right side\.$#'
 			identifier: booleanAnd.rightNotBoolean
 			count: 1
@@ -1312,12 +1294,6 @@ parameters:
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 2
-			path: CRM/Donrec/Lang/De/De.php
-
-		-
-			message: '#^Method CRM_Donrec_Lang_De_De\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: CRM/Donrec/Lang/De/De.php
 
 		-
@@ -1369,12 +1345,6 @@ parameters:
 			path: CRM/Donrec/Lang/De/Xx.php
 
 		-
-			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang/De/Xx.php
-
-		-
 			message: '#^Method CRM_Donrec_Lang_De_Xx\:\:convert_number_to_words\(\) has parameter \$currency with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -1415,12 +1385,6 @@ parameters:
 			identifier: if.condNotBoolean
 			count: 1
 			path: CRM/Donrec/Lang/De/Xx.php
-
-		-
-			message: '#^Method CRM_Donrec_Lang_En_Us\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang/En/Us.php
 
 		-
 			message: '#^Offset int\<\-99, \-1\>\|int\<1, 19\> might not exist on array\{'''', ''one'', ''two'', ''three'', ''four'', ''five'', ''six'', ''seven'', \.\.\.\}\.$#'
@@ -1494,12 +1458,6 @@ parameters:
 			path: CRM/Donrec/Lang/Es/Es.php
 
 		-
-			message: '#^Method CRM_Donrec_Lang_Es_Es\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang/Es/Es.php
-
-		-
 			message: '#^Method CRM_Donrec_Lang_Es_Es\:\:convertGroup\(\) has parameter \$n with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -1540,12 +1498,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: CRM/Donrec/Lang/Es/Es.php
-
-		-
-			message: '#^Binary operation "\*" between non\-empty\-string and 100 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: CRM/Donrec/Lang/Pl/Kwota.php
 
 		-
 			message: '#^BooleanAnd\: Condition between '',,'' and false are always false\.$#'
@@ -1591,7 +1543,7 @@ parameters:
 		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
-			count: 2
+			count: 1
 			path: CRM/Donrec/Lang/Pl/Kwota.php
 
 		-
@@ -1621,18 +1573,6 @@ parameters:
 		-
 			message: '#^Method Kwota\:\:_licz\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang/Pl/Kwota.php
-
-		-
-			message: '#^Method Kwota\:\:_mnoznikSlownie\(\) has parameter \$i with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Donrec/Lang/Pl/Kwota.php
-
-		-
-			message: '#^Method Kwota\:\:_mnoznikSlownie\(\) has parameter \$licz with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Donrec/Lang/Pl/Kwota.php
 
@@ -1676,12 +1616,6 @@ parameters:
 			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
 			identifier: booleanNot.exprNotBoolean
 			count: 2
-			path: CRM/Donrec/Lang/Pl/Kwota.php
-
-		-
-			message: '#^Only booleans are allowed in a ternary operator condition, array\|null given\.$#'
-			identifier: ternary.condNotBoolean
-			count: 1
 			path: CRM/Donrec/Lang/Pl/Kwota.php
 
 		-
@@ -1767,12 +1701,6 @@ parameters:
 			identifier: missingType.property
 			count: 1
 			path: CRM/Donrec/Lang/Pl/Kwota.php
-
-		-
-			message: '#^Method CRM_Donrec_Lang_Pl_Pl\:\:amount2words\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Lang/Pl/Pl.php
 
 		-
 			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
@@ -2438,12 +2366,6 @@ parameters:
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
-			message: '#^Parameter \#1 \$array of function key expects array\|object, array\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Donrec/Logic/Profile.php
-
-		-
 			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$data type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2624,12 +2546,6 @@ parameters:
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
-			message: '#^Offset ''currency'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
 			message: '#^Offset ''date_from'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
@@ -2660,33 +2576,15 @@ parameters:
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
-			message: '#^Offset ''financial_type_id'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
 			message: '#^Offset ''issued_by'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
-			message: '#^Offset ''issued_in'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 5
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
 			message: '#^Offset ''issued_on'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
-			count: 5
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
-			message: '#^Offset ''non_deductible_amount'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 2
+			count: 4
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
@@ -2715,12 +2613,6 @@ parameters:
 
 		-
 			message: '#^Offset ''receipt_id'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
-			message: '#^Offset ''receive_date'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
 			path: CRM/Donrec/Logic/Receipt.php
@@ -2764,7 +2656,7 @@ parameters:
 		-
 			message: '#^Offset ''status'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
-			count: 8
+			count: 7
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
@@ -2783,12 +2675,6 @@ parameters:
 			message: '#^Offset ''supplemental_address_2'' might not exist on array\|null\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
-			message: '#^Offset ''total_amount'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 2
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
@@ -2828,27 +2714,9 @@ parameters:
 			path: CRM/Donrec/Logic/Receipt.php
 
 		-
-			message: '#^Cannot access offset ''id'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Cannot access offset ''is_error'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
-			identifier: notEqual.notAllowed
-			count: 1
 			path: CRM/Donrec/Logic/ReceiptItem.php
 
 		-
@@ -2876,87 +2744,9 @@ parameters:
 			path: CRM/Donrec/Logic/ReceiptItem.php
 
 		-
-			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:getCustomFields\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
 			message: '#^Method CRM_Donrec_Logic_ReceiptItem\:\:setStatusAll\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''contribution_hash'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 2
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''currency'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''financial_type_id'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''issued_by'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''issued_in'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 6
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''issued_on'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''non_deductible_amount'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''receipt_id'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''receive_date'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''status'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 6
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''total_amount'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
-			path: CRM/Donrec/Logic/ReceiptItem.php
-
-		-
-			message: '#^Offset ''type'' might not exist on array\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 3
 			path: CRM/Donrec/Logic/ReceiptItem.php
 
 		-
@@ -2985,6 +2775,18 @@ parameters:
 
 		-
 			message: '#^Cannot access offset ''financial_type_id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Cannot access offset ''receive_date'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: CRM/Donrec/Logic/ReceiptTokens.php
@@ -3100,7 +2902,7 @@ parameters:
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
-			count: 1
+			count: 2
 			path: CRM/Donrec/Logic/ReceiptTokens.php
 
 		-
@@ -3941,18 +3743,6 @@ parameters:
 			path: CRM/Donrec/Page/Runner.php
 
 		-
-			message: '#^Cannot access offset 1 on array\|false\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: CRM/Donrec/Page/Staging.php
-
-		-
-			message: '#^Cannot access offset 2 on array\|false\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: CRM/Donrec/Page/Staging.php
-
-		-
 			message: '#^Cannot call method getProfile\(\) on CRM_Donrec_Logic_Snapshot\|null\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -4150,7 +3940,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 2
+			count: 1
 			path: CRM/Utils/DonrecHelper.php
 
 		-
@@ -4162,12 +3952,6 @@ parameters:
 		-
 			message: '#^Method CRM_Utils_DonrecHelper\:\:exitWithMessage\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:getFieldID\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: CRM/Utils/DonrecHelper.php
 
@@ -4184,68 +3968,8 @@ parameters:
 			path: CRM/Utils/DonrecHelper.php
 
 		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$field_name with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$fields with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$form with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$from_label with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:relabelDateField\(\) has parameter \$to_label with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:removeFromForm\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Method CRM_Utils_DonrecHelper\:\:removeFromForm\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, DateTime\|false given\.$#'
 			identifier: if.condNotBoolean
-			count: 1
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, int given\.$#'
-			identifier: if.condNotBoolean
-			count: 2
-			path: CRM/Utils/DonrecHelper.php
-
-		-
-			message: '#^Parameter \#3 \$length of function substr expects int\|null, int\<0, max\>\|false given\.$#'
-			identifier: argument.type
 			count: 1
 			path: CRM/Utils/DonrecHelper.php
 
@@ -4571,7 +4295,7 @@ parameters:
 		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
-			count: 13
+			count: 12
 			path: donrec.php
 
 		-
@@ -4581,7 +4305,7 @@ parameters:
 			path: donrec.php
 
 		-
-			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			message: '#^Only booleans are allowed in an if condition, int\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 11
 			path: donrec.php
