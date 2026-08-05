@@ -47,10 +47,10 @@ class CRM_Donrec_Logic_Selector {
 
     $query_date_limit = '';
     if ($date_from) {
-      $query_date_limit .= "AND `receive_date` >= '$formatted_date_from'";
+      $query_date_limit .= "AND `civicrm_contribution`.`receive_date` >= '$formatted_date_from'";
     }
     if ($date_to) {
-      $query_date_limit .= " AND `receive_date` <= '$formatted_date_to'";
+      $query_date_limit .= " AND `civicrm_contribution`.`receive_date` <= '$formatted_date_to'";
     }
 
     $currency = $values['donrec_contribution_currency'];
@@ -124,9 +124,9 @@ class CRM_Donrec_Logic_Selector {
                     OR `civicrm_line_item`.`non_deductible_amount` = 0
                     OR `civicrm_line_item`.`non_deductible_amount` IS NULL
                   )
-                  AND `contribution_status_id` = 1
-                  AND `is_test` = 0
-                  AND `currency` = '$currency'
+                  AND `civicrm_contribution`.`contribution_status_id` = 1
+                  AND `civicrm_contribution`.`is_test` = 0
+                  AND `civicrm_contribution`.`currency` = '$currency'
                   AND existing_receipt.`entity_id` IS NULL
               GROUP BY `civicrm_contribution`.`id`;";
     }
@@ -139,11 +139,12 @@ class CRM_Donrec_Logic_Selector {
               WHERE
                   ($main_selector)
                   $query_date_limit
-                  AND $financialTypeClause
-                  AND (`non_deductible_amount` = 0 OR `non_deductible_amount` IS NULL)
-                  AND `contribution_status_id` = 1
-                  AND `is_test` = 0
-                  AND `currency` = '$currency'
+                  AND `civicrm_contribution`.$financialTypeClause
+                  AND (`civicrm_contribution`.`non_deductible_amount` = 0
+                    OR `civicrm_contribution`.`non_deductible_amount` IS NULL)
+                  AND `civicrm_contribution`.`contribution_status_id` = 1
+                  AND `civicrm_contribution`.`is_test` = 0
+                  AND `civicrm_contribution`.`currency` = '$currency'
                   AND existing_receipt.`entity_id` IS NULL;";
     }
 
