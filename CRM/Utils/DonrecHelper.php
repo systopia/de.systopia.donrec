@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-use Civi\Api4\Contribution;
+use Civi\Api4\CustomField;
 use CRM_Donrec_ExtensionUtil as E;
 
 /**
@@ -113,26 +113,23 @@ class CRM_Utils_DonrecHelper {
 
   /**
    * @param string $field_name
-   *   APIv4 field name of a custom Contribution field. If the group name is
-   *   omitted, "zwb_donation_receipt_item" will be used.
+   *   Name of field in custom group zwb_donation_receipt_item.
    *
    * @return int|null
    *   Custom field ID or NULL if not found.
    */
   public static function getCustomFieldId(string $field_name): ?int {
     static $customFieldIds;
-    $customFieldIds ??= Contribution::getFields(FALSE)
-      ->addSelect('name', 'custom_field_id')
-      ->addWhere('custom_field_id', 'IS NOT NULL')
+    // Note: We cannot use Contribution.getFields because it doesn't return
+    // fields of reserved custom groups.
+    $customFieldIds ??= CustomField::get(FALSE)
+      ->addSelect('id', 'name')
+      ->addWhere('custom_group_id.name', '=', 'zwb_donation_receipt_item')
       ->execute()
       ->indexBy('name')
-      ->column('custom_field_id');
+      ->column('id');
 
-    if (!str_contains($field_name, '.')) {
-      $field_name = 'zwb_donation_receipt_item.' . $field_name;
-    }
-
-    return $customFieldIds['zwb_donation_receipt_item.' . $field_name] ?? NULL;
+    return $customFieldIds[$field_name] ?? NULL;
   }
 
   /**
