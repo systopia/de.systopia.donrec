@@ -56,7 +56,7 @@ return [
       'values' => [
         'custom_group_id.name' => 'zwb_donation_receipt_item',
         'name' => 'exporters',
-        'label' => E::ts('exporters'),
+        'label' => E::ts('Exporters'),
         'html_type' => 'Text',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
