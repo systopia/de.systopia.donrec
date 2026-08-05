@@ -22,24 +22,23 @@ class CRM_Utils_DonrecCustomisationHooks {
    * You should use this when the token cannot be shared between chunk items (for example a
    * unique document id that is part of the pdf file)
    *
-   * You can implement this hook to add/modify template tokens
-   * e.g. in your hook implementation call $template->assign('myCustomToken', 'my custom token');
-   * and place a token called {$myCustomToken} in the template.
+   * You can implement this hook to add/modify template tokens e.g. in your hook
+   * implementation call
+   * $template->assignAll(['myCustomToken' => 'my custom token']);
+   * to place a token called {$myCustomToken} in the template.
    *
-   * @param object $template
-   * @param-out object $template
-   *
-   * @param mixed $chunk_item
+   * @param array<string, mixed> $chunk_item
    *
    * @return mixed based on op. pre-hooks return a boolean or
    *   an error message which aborts the operation
    * @access public
    */
-  public static function pdf_unique_token(&$template, &$chunk_item) {
+  public static function pdf_unique_token(\CRM_Core_Smarty &$template, array &$chunk_item) {
     return CRM_Utils_Hook::singleton()->invoke(
       ['template', 'chunk_item'],
-      // @phpstan-ignore paramOut.type
+      // @phpstan-ignore parameterByRef.type
       $template,
+      // @phpstan-ignore parameterByRef.type
       $chunk_item,
       self::$null,
       self::$null,

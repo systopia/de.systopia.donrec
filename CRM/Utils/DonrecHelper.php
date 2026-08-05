@@ -66,12 +66,11 @@ class CRM_Utils_DonrecHelper {
     $smarty = CRM_Core_Smarty::singleton();
     $template = file_get_contents(dirname(__DIR__) . '../../templates/fatal_error.tpl');
 
-    // assign values
-    $smarty->assign('title', E::ts('Error'));
-    $smarty->assign('headline', E::ts('Error'));
-    $smarty->assign('description', $error_message);
-
-    $html = $smarty->fetch("string:$template");
+    $html = $smarty->fetchWith("string:$template", [
+      'title' => E::ts('Error'),
+      'headline' => E::ts('Error'),
+      'description' => $error_message,
+    ]);
     exit($html);
   }
 
