@@ -703,7 +703,7 @@ msgid "Spanish (Spain)"
 msgstr ""
 
 #: CRM/Donrec/Lang/Fr/Fr.php
-msgid "Français (France)"
+msgid "French (France)"
 msgstr ""
 
 #: CRM/Donrec/Lang/Pl/Pl.php
