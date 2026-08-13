@@ -24,6 +24,7 @@ class CRM_Donrec_Logic_Selector {
    * @return array
    *   creation result/error
    */
+  // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
   public static function createSnapshot($values) {
     // Process date picker values.
     [
@@ -42,8 +43,14 @@ class CRM_Donrec_Logic_Selector {
     $date_from = CRM_Utils_DonrecHelper::convertDate($raw_from_ts, -1, 'YmdHis');
     $date_to = CRM_Utils_DonrecHelper::convertDate($raw_to_ts, 1, 'YmdHis');
 
-    $formatted_date_from = date('Y-m-d H:i:s', $date_from);
-    $formatted_date_to = date('Y-m-d H:i:s', $date_to);
+    // convertDate() returns FALSE (not a valid timestamp) when the "from" or
+    // "to" field of the horizon was left empty, i.e. the period is open on
+    // that end. date() cannot be called with FALSE, so fall back to a
+    // concrete timestamp here: the donrec_snapshot.date_from/date_to columns
+    // are NOT NULL, but the open end is still correctly excluded from the
+    // query below since that only depends on $date_from/$date_to.
+    $formatted_date_from = date('Y-m-d H:i:s', $date_from !== FALSE ? $date_from : 0);
+    $formatted_date_to = date('Y-m-d H:i:s', $date_to !== FALSE ? $date_to : time());
 
     $query_date_limit = '';
     if ($date_from) {

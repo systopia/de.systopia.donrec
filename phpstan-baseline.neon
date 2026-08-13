@@ -2960,12 +2960,6 @@ parameters:
 			path: CRM/Donrec/Logic/Selector.php
 
 		-
-			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: CRM/Donrec/Logic/Selector.php
-
-		-
 			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
 			identifier: function.strict
 			count: 2
@@ -4369,12 +4363,6 @@ parameters:
 			identifier: encapsedStringPart.nonString
 			count: 1
 			path: donrec.php
-
-		-
-			message: '#^Cannot access offset ''id'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
 
 		-
 			message: '#^Method CRM_Donrec_BaseTestCase\:\:generateContributions\(\) return type has no value type specified in iterable type array\.$#'
