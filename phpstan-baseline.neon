@@ -4365,6 +4365,12 @@ parameters:
 			path: donrec.php
 
 		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
+
+		-
 			message: '#^Method CRM_Donrec_BaseTestCase\:\:generateContributions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
