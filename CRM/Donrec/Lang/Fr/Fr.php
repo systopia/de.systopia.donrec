@@ -23,7 +23,7 @@ class CRM_Donrec_Lang_Fr_Fr extends CRM_Donrec_Lang {
    * @return string
    */
   public function getName() {
-    return E::ts('Français (France)');
+    return E::ts('French (France)');
   }
 
   /**

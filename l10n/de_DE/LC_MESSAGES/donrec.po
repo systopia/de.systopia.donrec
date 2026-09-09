@@ -773,6 +773,10 @@ msgstr "Englisch (US)"
 msgid "Spanish (Spain)"
 msgstr "Spanisch (Spanien)"
 
+#: CRM/Donrec/Lang/Fr/Fr.php
+msgid "French (France)"
+msgstr "Französisch (Frankreich)"
+
 #: CRM/Donrec/Lang/Pl/Pl.php
 msgid "Polish"
 msgstr "Polnisch"
@@ -1205,8 +1209,9 @@ msgstr ""
 
 #: managed/CustomGroup_zwb_donation_receipt.mgd.php
 #: managed/CustomGroup_zwb_donation_receipt_item.mgd.php
-msgid "exporters"
-msgstr ""
+#: templates/CRM/Donrec/Page/Tab.tpl
+msgid "Exporters"
+msgstr "Exporter"
 
 #: managed/CustomGroup_zwb_donation_receipt_item.mgd.php
 msgid "Donation Receipt Item"
@@ -2229,10 +2234,6 @@ msgid "withdrawn copy"
 msgstr "zurückgezogene Kopie"
 
 #: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Exporters"
-msgstr "Exporter"
-
-#: templates/CRM/Donrec/Page/Tab.tpl
 msgid "Creation date"
 msgstr "Erstelldatum"
 
@@ -2351,6 +2352,3 @@ msgstr ""
 #: templates/CRM/Donrec/Page/Tempfile.tpl
 msgid "Temporary file dowload failed."
 msgstr "Download der temporären Datei fehlgeschlagen."
-
-#~ msgid "Upgrade %1 to revision %2"
-#~ msgstr "Aktualisieren von %1 auf Revision %2"

@@ -703,7 +703,7 @@ msgid "Spanish (Spain)"
 msgstr ""
 
 #: CRM/Donrec/Lang/Fr/Fr.php
-msgid "Français (France)"
+msgid "French (France)"
 msgstr ""
 
 #: CRM/Donrec/Lang/Pl/Pl.php
@@ -1114,8 +1114,8 @@ msgstr ""
 msgid "Email Greeting Display"
 msgstr ""
 
-#: managed/CustomGroup_zwb_donation_receipt.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php
-msgid "exporters"
+#: managed/CustomGroup_zwb_donation_receipt.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php templates/CRM/Donrec/Page/Tab.tpl
+msgid "Exporters"
 msgstr ""
 
 #: managed/CustomGroup_zwb_donation_receipt_item.mgd.php
@@ -1816,10 +1816,6 @@ msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl
 msgid "withdrawn copy"
-msgstr ""
-
-#: templates/CRM/Donrec/Page/Tab.tpl
-msgid "Exporters"
 msgstr ""
 
 #: templates/CRM/Donrec/Page/Tab.tpl
