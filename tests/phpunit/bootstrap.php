@@ -23,11 +23,18 @@ require_once __DIR__ . '/../../donrec.civix.php';
 
 // phpcs:disable PSR1.Files.SideEffects
 
+$loader = new ClassLoader();
+$loader->register();
+
 // Add test classes to class loader.
-addExtensionDirToClassLoader(__DIR__);
+addExtensionDirToClassLoader($loader, __DIR__);
 
 // Add classes for tests without booted CiviCRM environment, i.e. simple PHPUnit tests.
-addExtensionToClassLoader('de.systopia.donrec');
+addExtensionToClassLoader($loader, 'de.systopia.donrec');
+$simpleXml = simplexml_load_file(__DIR__ . '/../../info.xml');
+foreach ($simpleXml->requires->ext ?? [] as $ext) {
+  addExtensionToClassLoader($loader, (string) $ext);
+}
 
 if (!function_exists('ts')) {
   // Ensure function ts() is available - it's declared in the same file as CRM_Core_I18n in CiviCRM < 5.74.
@@ -41,39 +48,50 @@ if (!function_exists('ts')) {
 function _donrec_test_civicrm_container(ContainerBuilder $container): void {
 }
 
-function addExtensionToClassLoader(string $extension): void {
+function addExtensionToClassLoader(ClassLoader $loader, string $extension): void {
   // Support symlinks. Current working dir should be the extensions' directory
   // relative to the "ext" directory.
   // Note: getcwd() is not used because it returns the real path.
-  /** @var string $currentWorkingDir */
-  $currentWorkingDir = getenv('PWD');
+  static $currentWorkingDirParent;
+  // @phpstan-ignore argument.type
+  $currentWorkingDirParent ??= dirname(getenv('PWD'));
   $candidates = [
-    dirname($currentWorkingDir) . '/' . $extension,
-    __DIR__ . '/../../../' . $extension,
+    "$currentWorkingDirParent/$extension",
+    __DIR__ . "/../$extension",
   ];
 
   foreach ($candidates as $candidate) {
     $real = realpath($candidate);
     if ($real !== FALSE && is_dir($real)) {
-      addExtensionDirToClassLoader($real);
+      addExtensionDirToClassLoader($loader, $real);
 
       return;
     }
   }
 
+  // Fallback to CiviCRM core ext directory. (Not in $candidates to avoid
+  // unnecessary call of cv.)
+  static $civicrmCoreDir;
+  $civicrmCoreDir ??= cv('path -d "[civicrm.root]"')[0]['value'];
+  if (is_dir("$civicrmCoreDir/ext/$extension")) {
+    addExtensionDirToClassLoader($loader, "$civicrmCoreDir/ext/$extension");
+
+    return;
+  }
+
   throw new RuntimeException("Extension path not found for: $extension");
 }
 
-function addExtensionDirToClassLoader(string $extensionDir): void {
-  $loader = new ClassLoader();
-  $loader->add('CRM_', [$extensionDir]);
-  $loader->addPsr4('Civi\\', [$extensionDir . '/Civi']);
-  $loader->add('api_', [$extensionDir]);
-  $loader->addPsr4('api\\', [$extensionDir . '/api']);
-  $loader->register();
+function addExtensionDirToClassLoader(ClassLoader $loader, string $extensionDir): void {
+  if (is_dir("$extensionDir/CRM")) {
+    $loader->add('CRM_', [$extensionDir]);
+  }
+  if (is_dir("$extensionDir/Civi")) {
+    $loader->addPsr4('Civi\\', ["$extensionDir/Civi"]);
+  }
 
-  if (file_exists($extensionDir . '/autoload.php')) {
-    require_once $extensionDir . '/autoload.php';
+  if (file_exists("$extensionDir/vendor/autoload.php")) {
+    require_once "$extensionDir/vendor/autoload.php";
   }
 }
 

@@ -78,11 +78,12 @@ jobs:
         env:
           COMPOSER_COMPILE: all
           INPUTS_CIVICRM_VERSION: ${{ inputs.civicrm-version }}
+          MATRIX_EXPERIMENTAL: ${{ matrix.experimental }}
           MATRIX_PREFER: ${{ matrix.prefer }}
         run: |
           if [ "${MATRIX_PREFER}" = "prefer-lowest" ]; then
             # Actually test with lowest possible versions.
-            export COMPOSER_NO_SECURITY_BLOCKING=1
+            export COMPOSER_NO_BLOCKING=1
           fi
 
           # Prevent this git error: The repository does not have the correct ownership and git refuses to use it
@@ -95,7 +96,7 @@ jobs:
           git clone https://github.com/civicrm/civicrm-standalone.git
           cd civicrm-standalone
 
-          if [ "${{ matrix.experimental }}" == "true" ]; then
+          if [ "${MATRIX_EXPERIMENTAL}" == "true" ]; then
             sed -E -i composer.json \
               -e 's/"minimum-stability":[^,]*/"minimum-stability": "dev"/' \
               -e 's/"prefer-stable":[^,]*/"prefer-stable": false/'
@@ -145,10 +146,14 @@ jobs:
           sed -i "s#\"TEST_DB_DSN\": \".*\"#\"TEST_DB_DSN\": \"$DATABASE_URL\"#g" "$CV_CONFIG"
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        env:
+          RUNNER_TOOL_CACHE: ${{ runner.tool_cache }}
+        run: echo "::add-matcher::${RUNNER_TOOL_CACHE}/php.json"
 
       - name: Setup problem matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        env:
+          RUNNER_TOOL_CACHE: ${{ runner.tool_cache }}
+        run: echo "::add-matcher::${RUNNER_TOOL_CACHE}/phpunit.json"
 
       - name: Run PHPUnit
         run: |
