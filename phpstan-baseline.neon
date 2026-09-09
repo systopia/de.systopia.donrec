@@ -2960,12 +2960,6 @@ parameters:
 			path: CRM/Donrec/Logic/Selector.php
 
 		-
-			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: CRM/Donrec/Logic/Selector.php
-
-		-
 			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
 			identifier: function.strict
 			count: 2
