@@ -3451,26 +3451,8 @@ parameters:
 			path: CRM/Donrec/Logic/Template.php
 
 		-
-			message: '#^Call to an undefined method object\:\:assign\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: CRM/Donrec/Logic/Template.php
-
-		-
-			message: '#^Call to an undefined method object\:\:clearTemplateVars\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: CRM/Donrec/Logic/Template.php
-
-		-
 			message: '#^Call to an undefined method object\:\:fetch\(\)\.$#'
 			identifier: method.notFound
-			count: 2
-			path: CRM/Donrec/Logic/Template.php
-
-		-
-			message: '#^Cannot access offset ''contributor'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: CRM/Donrec/Logic/Template.php
 

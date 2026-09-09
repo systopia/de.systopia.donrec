@@ -170,19 +170,17 @@ class CRM_Donrec_Logic_Template {
    *   The filename or FALSE if an error occurred.
    */
   public function generatePDF($values, &$parameters, $profile) {
-    $smarty = CRM_Core_Smarty::singleton();
     $config = CRM_Core_Config::singleton();
 
-    // assign all values
-    foreach ($values as $token => $value) {
-      $smarty->assign($token, $value);
-    }
+    $smartyVars = $this->profile_variables + $values;
+    $smartyVars['profile_variables'] = $this->profile_variables;
 
-    // Assign profile variables.
-    $smarty->assign('profile_variables', $this->profile_variables);
-    foreach ($this->profile_variables as $name => $value) {
-      $smarty->assign($name, $value);
-    }
+    // identify pdf engine
+    $smartyVars['wk_enabled'] = !empty($config->wkhtmltopdfPath);
+
+    $smarty = CRM_Core_Smarty::singleton();
+    $smarty->pushScope([]);
+    $smarty->assignAll($smartyVars);
 
     // callback for custom variables
     CRM_Utils_DonrecCustomisationHooks::pdf_unique_token($smarty, $values);
@@ -208,16 +206,11 @@ class CRM_Donrec_Logic_Template {
     $watermark = new $watermark_class();
     $watermark->injectMarkup($html, $pdf_format);
     $watermark->injectStyles($html, $pdf_format);
-
-    // identify pdf engine
-    $smarty->assign('wk_enabled', !empty($config->wkhtmltopdfPath));
-
     // --- watermark injection end ---
-    // compile template
-    $html = $smarty->fetch("string:$html");
 
-    // reset template variables
-    $smarty->clearTemplateVars();
+    // compile template
+    $html = $smarty->fetchWith("string:$html", []);
+    $smarty->popScope();
 
     // set up file names
     $filename_export = CRM_Donrec_Logic_File::makeFileName(
@@ -227,7 +220,7 @@ class CRM_Donrec_Logic_Template {
 
     // render PDF receipt
     $result = file_put_contents($filename_export, CRM_Utils_PDF_Utils::html2pdf(
-      $html,
+      [$html],
       '',
       TRUE,
       $this->pdf_format_id
