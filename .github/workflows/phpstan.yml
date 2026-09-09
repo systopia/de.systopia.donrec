@@ -67,17 +67,24 @@ jobs:
         env:
           COMPOSER_COMPILE: all
           INPUTS_CIVICRM_VERSION: ${{ inputs.civicrm-version }}
+          MATRIX_EXPERIMENTAL: ${{ matrix.experimental }}
           MATRIX_PREFER: ${{ matrix.prefer }}
         run: |
           if [ "${MATRIX_PREFER}" = "prefer-lowest" ]; then
             # Actually test with lowest possible versions.
-            export COMPOSER_NO_SECURITY_BLOCKING=1
+            export COMPOSER_NO_BLOCKING=1
           fi
 
-          if [ "${{ matrix.experimental }}" == "true" ]; then
+          # Don't enforce all extensions to be installed.
+          export COMPOSER_IGNORE_PLATFORM_REQ="ext-*"
+
+          if [ "${MATRIX_EXPERIMENTAL}" == "true" ]; then
             sed -E -i composer.json \
               -e 's/"minimum-stability":[^,]*/"minimum-stability": "dev"/' \
               -e 's/"prefer-stable":[^,]*/"prefer-stable": false/'
+            # Ignore upper bound of php requirement to test with development
+            # version of PHP, even if not allowed by some composer.json.
+            export COMPOSER_IGNORE_PLATFORM_REQ+=",php+"
           fi
 
           composer config --no-plugins allow-plugins.civicrm/composer-compile-plugin false
@@ -86,7 +93,7 @@ jobs:
           composer config --no-plugins allow-plugins.cweagans/composer-patches true
 
           composer config --json "extra.installer-paths.$(dirname $PWD)/{\$name}" '["type:civicrm-ext"]'
-          composer require --ignore-platform-reqs --no-progress composer/installers
+          composer require --no-progress composer/installers
 
           if [ -n "${INPUTS_CIVICRM_VERSION}" ]; then
             composer require --no-update "civicrm/civicrm-core:${INPUTS_CIVICRM_VERSION}" \
@@ -95,7 +102,7 @@ jobs:
 
           # Run with --no-scripts so ComposerHelper doesn't prevent installation
           # of civicrm packages.
-          composer update --no-scripts --no-progress --${MATRIX_PREFER} --optimize-autoloader --ignore-platform-reqs
+          composer update --no-scripts --no-progress --${MATRIX_PREFER} --optimize-autoloader
           composer composer-phpunit -- update --no-progress --optimize-autoloader
           composer composer-phpstan -- update --no-progress --optimize-autoloader
 
