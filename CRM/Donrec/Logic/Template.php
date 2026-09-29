@@ -135,7 +135,7 @@ class CRM_Donrec_Logic_Template {
     ];
 
     /** @var \CRM_Core_DAO_MessageTemplate $result */
-    $result = CRM_Core_BAO_MessageTemplate::add($params);
+    $result = CRM_Core_BAO_MessageTemplate::writeRecord($params);
     if ($result) {
       return (int) $result->id;
     }
