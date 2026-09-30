@@ -3498,7 +3498,7 @@ parameters:
 			path: CRM/Donrec/Logic/Template.php
 
 		-
-			message: '#^Only booleans are allowed in an if condition, CRM_Core_DAO_MessageTemplate given\.$#'
+			message: '#^Only booleans are allowed in an if condition, CRM_Core_BAO_MessageTemplate given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
 			path: CRM/Donrec/Logic/Template.php
