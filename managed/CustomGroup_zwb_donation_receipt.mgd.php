@@ -258,7 +258,7 @@ return [
       'values' => [
         'custom_group_id.name' => 'zwb_donation_receipt',
         'name' => 'status',
-        'label' => E::ts('status'),
+        'label' => E::ts('Status'),
         'html_type' => 'Select',
         'is_searchable' => TRUE,
         'is_view' => TRUE,
@@ -267,6 +267,32 @@ return [
         'note_rows' => 4,
         'column_name' => 'status',
         'option_group_id.name' => 'donrec_status',
+      ],
+      'match' => [
+        'name',
+        'custom_group_id',
+      ],
+    ],
+  ],
+  [
+    'name' => 'CustomGroup_zwb_donation_receipt_CustomField_type',
+    'entity' => 'CustomField',
+    'cleanup' => 'unused',
+    'update' => 'unmodified',
+    'params' => [
+      'version' => 4,
+      'values' => [
+        'custom_group_id.name' => 'zwb_donation_receipt',
+        'name' => 'type',
+        'label' => E::ts('Type'),
+        'html_type' => 'Select',
+        'is_searchable' => TRUE,
+        'is_view' => TRUE,
+        'text_length' => 255,
+        'note_columns' => 60,
+        'note_rows' => 4,
+        'column_name' => 'type',
+        'option_group_id.name' => 'donrec_type',
       ],
       'match' => [
         'name',
