@@ -350,7 +350,7 @@ msgstr "Keine gültige E-Mail Adresse für den Kontakt gefunden."
 
 #: CRM/Donrec/Exporters/EmailPDF.php
 msgid "Error was: "
-msgstr "Fehlermeldung war:"
+msgstr "Fehlermeldung war: "
 
 #: CRM/Donrec/Exporters/EncryptedPDF.php
 msgid "no path to encryption tool given. please check the donrec settings"
@@ -529,7 +529,7 @@ msgstr "Fehler"
 
 #: CRM/Donrec/Form/ProcessReturns.php
 msgid "It looks like there are more emails to be processed."
-msgstr "Im Postfach scheinen noch weitere E-Mails vorzuliegen"
+msgstr "Im Postfach scheinen noch weitere E-Mails vorzuliegen."
 
 #: CRM/Donrec/Form/ProcessReturns.php
 msgid "There's more"
@@ -553,7 +553,7 @@ msgstr "Zuwendungsbescheinigungen erstellen"
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
 msgid "This Year"
-msgstr "dieses Jahr"
+msgstr "Dieses Jahr"
 
 #: CRM/Donrec/Form/Task/ContributeTask.php CRM/Donrec/Form/Task/DonrecTask.php
 msgid "last year"

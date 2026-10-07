@@ -950,7 +950,7 @@ msgstr ""
 msgid "This contribution [%d] must not be deleted because it has a receipt or is going to be receipted!"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Tab.tpl
+#: donrec.php managed/CustomGroup_zwb_donation_receipt.mgd.php templates/CRM/Donrec/Page/Tab.tpl
 msgid "Status"
 msgstr ""
 
@@ -974,7 +974,7 @@ msgstr ""
 msgid "withdrawn_copy"
 msgstr ""
 
-#: donrec.php templates/CRM/Donrec/Page/Runner.tpl
+#: donrec.php managed/CustomGroup_zwb_donation_receipt.mgd.php templates/CRM/Donrec/Page/Runner.tpl
 msgid "Type"
 msgstr ""
 
@@ -990,7 +990,7 @@ msgstr ""
 msgid "Issued by contact"
 msgstr ""
 
-#: managed/1_OptionGroup_donrec_status.mgd.php managed/CustomGroup_zwb_donation_receipt.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php
+#: managed/1_OptionGroup_donrec_status.mgd.php managed/CustomGroup_zwb_donation_receipt_item.mgd.php
 msgid "status"
 msgstr ""
 
