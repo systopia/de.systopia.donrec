@@ -8,9 +8,9 @@
     <author>SYSTOPIA</author>
     <email>info@systopia.de</email>
   </maintainer>
-  <releaseDate>2026-10-07</releaseDate>
-  <version>2.7.0</version>
-  <develStage>stable</develStage>
+  <releaseDate/>
+  <version>2.8.0-dev</version>
+  <develStage>dev</develStage>
   <compatibility>
     <ver>5.76</ver>
   </compatibility>
