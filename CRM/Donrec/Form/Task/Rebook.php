@@ -197,7 +197,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         }
         catch (\Throwable $th) {
           // @ignoreException
-          Civi::log()->error(E::ts('DonRec - Error getting payment instrument', [1 => $th->getMessage()]));
+          Civi::log()->error(E::ts('DonRec - Error getting payment instrument: %1', [1 => $th->getMessage()]));
           $paymentInstrument = NULL;
         }
 
@@ -283,7 +283,7 @@ class CRM_Donrec_Form_Task_Rebook extends CRM_Core_Form {
         "de.systopia.donrec: Only $rebooked of $contribution_count contributions rebooked.",
         ['domain' => 'de.systopia.donrec']
       );
-      CRM_Core_Session::setStatus(ts('Please check your data and try again', [1 => $contribution_count]),
+      CRM_Core_Session::setStatus(E::ts('Please check your data and try again'),
         E::ts('Nothing rebooked!'),
         'warning');
       CRM_Utils_System::redirect($redirect_url);
