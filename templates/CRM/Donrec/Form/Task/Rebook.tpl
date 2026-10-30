@@ -22,9 +22,9 @@
       <p>{ts domain="de.systopia.donrec"}Are you sure you want to rebook the contribution?{/ts}</p>
       {/if}
   </div>
-  
+
   <p><strong>{ts domain="de.systopia.donrec"}Please enter the target CiviCRM ID?{/ts}</strong></p>
-  
+
 
   {$form.contactId.label}<br />
   {$form.contactId.html}
@@ -36,29 +36,33 @@
   {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 </div>
-  
+
 {literal}
 <script type="text/javascript">
-cj(function( ) {
-
-  var contactUrl = {/literal}"{crmURL p='civicrm/ajax/rest' q='className=CRM_Contact_Page_AJAX&fnName=getContactList&json=1&context=navigation' h=0 }"{literal};
-
-  cj( '#contactId' ).autocomplete( contactUrl, {
-      width: 200,
-      selectFirst: true,
-      minChars: 1,
-      matchContains: true,
-      delay: 400,
-      max: 1,
-      extraParams:{
-        fieldName: 'contact_id',
-        tableName: 'cc'
-      }
-  }).result(function(event, data, formatted) {
-     cj( '#contactId' ).val(data[1]);
-     return false;
+CRM.$(function($) {
+  $('#contactId').autocomplete({
+    source: function(request, response) {
+      CRM.api4('Contact', 'get', {
+        select: ['id', 'display_name', 'email_primary.email'],
+        where: [['sort_name', 'LIKE', '%' + request.term + '%'], ['is_deleted', '=', false]],
+        limit: 15
+      }).then(function(contacts) {
+        response(contacts.map(function(c) {
+          var label = c.display_name + (c['email_primary.email'] ? ' (' + c['email_primary.email'] + ')' : '') + ' [id: ' + c.id + ']';
+          return {
+            label: label,
+            value: c.id
+          };
+        }));
+      });
+    },
+    minLength: 1,
+    delay: 300,
+    select: function(event, ui) {
+      cj('#contactId').val(ui.item.value);
+      return false;
+    }
   });
 });
-
 </script>
-{/literal}  
+{/literal}
