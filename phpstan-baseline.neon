@@ -67,7 +67,7 @@ parameters:
 			path: CRM/Admin/Form/DonrecProfile.php
 
 		-
-			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int\|numeric\-string, mixed given\.$#'
+			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int\|string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 5
 			path: CRM/Admin/Form/DonrecProfile.php
@@ -613,12 +613,6 @@ parameters:
 			path: CRM/Donrec/Exporters/MergedPDF.php
 
 		-
-			message: '#^Foreach overwrites \$file with its value variable\.$#'
-			identifier: foreach.valueOverwrite
-			count: 1
-			path: CRM/Donrec/Exporters/MergedPDF.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 2
@@ -667,12 +661,6 @@ parameters:
 			path: CRM/Donrec/Exporters/PDF.php
 
 		-
-			message: '#^Foreach overwrites \$file with its value variable\.$#'
-			identifier: foreach.valueOverwrite
-			count: 1
-			path: CRM/Donrec/Exporters/PDF.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 1
@@ -716,12 +704,6 @@ parameters:
 
 		-
 			message: '#^Do not throw the \\Exception base class\.$#'
-			count: 1
-			path: CRM/Donrec/Exporters/PDFCiviOffice.php
-
-		-
-			message: '#^Foreach overwrites \$file with its value variable\.$#'
-			identifier: foreach.valueOverwrite
 			count: 1
 			path: CRM/Donrec/Exporters/PDFCiviOffice.php
 
@@ -1291,6 +1273,12 @@ parameters:
 			path: CRM/Donrec/Lang/De/De.php
 
 		-
+			message: '#^Invalid array key type float\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: CRM/Donrec/Lang/De/De.php
+
+		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 2
@@ -1337,6 +1325,12 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: CRM/Donrec/Lang/De/De.php
+
+		-
+			message: '#^Invalid array key type float\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: CRM/Donrec/Lang/De/Xx.php
 
 		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
@@ -2193,6 +2187,12 @@ parameters:
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 5
@@ -2200,7 +2200,7 @@ parameters:
 
 		-
 			message: '#^Do not throw the \\Exception base class\.$#'
-			count: 3
+			count: 2
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
@@ -2366,8 +2366,32 @@ parameters:
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$data \(array\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
 			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$data type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$name \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$template \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: CRM/Donrec/Logic/Profile.php
+
+		-
+			message: '#^Property CRM_Donrec_Logic_Profile\:\:\$variables \(array\) does not accept mixed\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: CRM/Donrec/Logic/Profile.php
 
@@ -2403,6 +2427,12 @@ parameters:
 
 		-
 			message: '#^Cannot access offset ''is_error'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Donrec/Logic/Receipt.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: CRM/Donrec/Logic/Receipt.php
@@ -2494,12 +2524,6 @@ parameters:
 		-
 			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getDisplayTokens\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Donrec/Logic/Receipt.php
-
-		-
-			message: '#^Method CRM_Donrec_Logic_Receipt\:\:getProfile\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: CRM/Donrec/Logic/Receipt.php
 
@@ -2828,24 +2852,6 @@ parameters:
 			path: CRM/Donrec/Logic/ReceiptTokens.php
 
 		-
-			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Donrec/Logic/ReceiptTokens.php
-
-		-
-			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has parameter \$profile with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Donrec/Logic/ReceiptTokens.php
-
-		-
-			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) has parameter \$values with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Donrec/Logic/ReceiptTokens.php
-
-		-
 			message: '#^Method CRM_Donrec_Logic_ReceiptTokens\:\:getAllTokens\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2894,8 +2900,26 @@ parameters:
 			path: CRM/Donrec/Logic/ReceiptTokens.php
 
 		-
+			message: '#^Parameter \#1 \$amount of static method CRM_Utils_Money\:\:format\(\) expects float, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Parameter \#1 \$profile_id of static method CRM_Donrec_Logic_Profile\:\:getProfile\(\) expects int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
 			message: '#^Parameter \#2 \$v of method DB_DataObject\:\:get\(\) expects string\|null, int\<min, \-1\>\|int\<1, max\> given\.$#'
 			identifier: argument.type
+			count: 1
+			path: CRM/Donrec/Logic/ReceiptTokens.php
+
+		-
+			message: '#^Parameter &\$values by\-ref type of method CRM_Donrec_Logic_ReceiptTokens\:\:addDynamicTokens\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: parameterByRef.type
 			count: 1
 			path: CRM/Donrec/Logic/ReceiptTokens.php
 
@@ -3075,6 +3099,12 @@ parameters:
 		-
 			message: '#^Only booleans are allowed in \|\|, bool\|int given on the right side\.$#'
 			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: CRM/Donrec/Logic/Settings.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_filter expects array, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: CRM/Donrec/Logic/Settings.php
 
@@ -3991,6 +4021,12 @@ parameters:
 			path: CRM/Utils/DonrecSafeLock.php
 
 		-
+			message: '#^Cannot call method generatePDF\(\) on CRM_Donrec_Logic_Template\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: api/v3/DonationReceipt.php
+
+		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 4
@@ -4000,6 +4036,12 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 10
+			path: api/v3/DonationReceipt.php
+
+		-
+			message: '#^Parameter \#1 \$path of static method CRM_Donrec_Logic_File\:\:createTemporaryFile\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
 			path: api/v3/DonationReceipt.php
 
 		-
@@ -4128,7 +4170,7 @@ parameters:
 		-
 			message: '#^Cannot access offset ''event'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
+			count: 1
 			path: donrec.php
 
 		-
@@ -4347,12 +4389,6 @@ parameters:
 			path: donrec.php
 
 		-
-			message: '#^Cannot access offset ''id'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/phpunit/CRM/Donrec/BaseTestCase.php
-
-		-
 			message: '#^Method CRM_Donrec_BaseTestCase\:\:generateContributions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4405,6 +4441,24 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 3
 			path: tests/phpunit/CRM/Donrec/PdfcryptTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''CRM_Donrec_Logic_Profile'' and CRM_Donrec_Logic_Profile will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 4
+			path: tests/phpunit/CRM/Donrec/ProfileTest.php
+
+		-
+			message: '#^Class CRM_Donrec_Upgrader does not have a constructor and must be instantiated without any parameters\.$#'
+			identifier: new.noConstructor
+			count: 1
+			path: tests/phpunit/CRM/Donrec/ProfileTest.php
+
+		-
+			message: '#^Property CRM_Donrec_ProfileTest\:\:\$tablesToTruncate type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Donrec/ProfileTest.php
 
 		-
 			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotConflict\(\) has no return type specified\.$#'

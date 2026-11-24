@@ -28,7 +28,7 @@ class CRM_Donrec_Upgrader extends CRM_Extension_Upgrader_Base {
 
     // Create default profile.
     $default_profile = new CRM_Donrec_Logic_Profile();
-    $default_profile->save();
+    $default_profile->setDefault(TRUE);
   }
 
   /**
@@ -499,6 +499,53 @@ class CRM_Donrec_Upgrader extends CRM_Extension_Upgrader_Base {
         ADD PRIMARY KEY (`id`),
         ADD UNIQUE `snapshot_contrib_line_item` (`snapshot_id`, `contribution_id`, `line_item_id`);
     ');
+    return TRUE;
+  }
+
+  /**
+   * Set default profile ID on legacy donation receipts and snapshots where profile_id is NULL or 0.
+   *
+   * @return bool
+   */
+  public function upgrade_0222(): bool {
+    $default_profile_id = (int) CRM_Core_DAO::singleValueQuery(
+      'SELECT `id` FROM `donrec_profile` WHERE `is_default` = 1 ORDER BY `id` ASC LIMIT 1'
+    );
+    if ($default_profile_id <= 0) {
+      $default_profile_id = (int) CRM_Core_DAO::singleValueQuery(
+        'SELECT `id` FROM `donrec_profile` ORDER BY `id` ASC LIMIT 1'
+      );
+    }
+    if ($default_profile_id <= 0) {
+      $default_profile = new CRM_Donrec_Logic_Profile();
+      $default_profile->save();
+      $default_profile_id = $default_profile->getId();
+    }
+
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $receipt_fields = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt');
+    if (isset($receipt_fields['profile_id'])) {
+      $profile_id_field = $receipt_fields['profile_id'];
+      $update_query = "
+        UPDATE `{$receipt_table}`
+        SET `{$profile_id_field}` = %1
+        WHERE `{$profile_id_field}` IS NULL OR `{$profile_id_field}` = 0 OR `{$profile_id_field}` = ''
+      ;";
+      CRM_Core_DAO::executeQuery($update_query, [1 => [$default_profile_id, 'Int']]);
+    }
+
+    try {
+      $snapshot_query = '
+        UPDATE `donrec_snapshot`
+        SET `profile_id` = %1
+        WHERE `profile_id` IS NULL OR `profile_id` = 0
+      ;';
+      CRM_Core_DAO::executeQuery($snapshot_query, [1 => [$default_profile_id, 'Int']]);
+    }
+    catch (Exception $exception) {
+      // @ignoreException
+    }
+
     return TRUE;
   }
 

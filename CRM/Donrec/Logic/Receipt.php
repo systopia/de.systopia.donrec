@@ -14,11 +14,13 @@ declare(strict_types = 1);
  * This class represents a single donation receipt
  */
 class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
+
   /**
    * Custom field array to map attribute names to database colums
    * i.e. self::$_custom_field['status'] == 'status_38'
    */
   protected static ?array $_custom_fields = NULL;
+
   protected static ?int $_custom_group_id = NULL;
 
   /**
@@ -38,7 +40,9 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * get an existing receipt
+   *
    * @param int $receipt_id
+   *
    * @return \CRM_Donrec_Logic_Receipt | NULL
    */
   public static function get($receipt_id) {
@@ -54,10 +58,14 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Creates a receipt without receipt-items using the generic tokens
-   * @param array $tokens             tokens coming from SnapshotReceipt->getAllTokens
+   *
+   * @param array $tokens tokens coming from SnapshotReceipt->getAllTokens
+   *
    * @return \CRM_Core_DAO
    */
+  // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
   public static function _createReceiptFromTokens($tokens) {
+    // phpcs:enable
     // initialize custom field map
     self::getCustomFields();
     $fields = self::$_custom_fields ?? [];
@@ -68,7 +76,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     foreach ($fields as $key => $field) {
       $value = NULL;
       if ($key == 'profile_id') {
-        $value = CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'])->getId();
+        $value = CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'] ?? NULL)->getId();
       }
       elseif (0 === strpos($key, 'shipping')) {
         $token_key = substr($key, strlen('shipping_'));
@@ -90,7 +98,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $query = "INSERT INTO `$table` SET $sql_set";
 
     // Lock profile (mark as used for issueing receipts).
-    CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'])->lock();
+    CRM_Donrec_Logic_Profile::getProfile($tokens['profile_id'] ?? NULL)->lock();
 
     // run the query
     // @phpstan-ignore return.type
@@ -100,8 +108,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Creates a new receipt and belonging receipt-items
    *
-   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt   a snapshotReceipt object
-   * @param array $parameters         an assoc. array of creation parameters TODO: to be defined
+   * @param \CRM_Donrec_Logic_SnapshotReceipt $snapshot_receipt a snapshotReceipt object
+   * @param array $parameters an assoc. array of creation parameters TODO: to be defined
    *
    * @return self | bool
    *   TRUE if successful, FALSE otherwise. In that case, the $parameters['error'] contains an error message
@@ -180,7 +188,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Delete this receipt.
    *
-   * @param array $parameters         an assoc. array of creation parameters TODO: to be defined
+   * @param array $parameters an assoc. array of creation parameters TODO: to be defined
    *
    * @return bool
    *   TRUE if successfull, FALSE otherwise. In that case, the $parameters['error'] contains an error message
@@ -227,6 +235,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Get all copies of this receipt.
+   *
    * @return list<self>
    *   array of receipt-objects
    */
@@ -286,8 +295,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * Find all receipts for the given contact ID
    *
-   * @param int $contact_id    a contact ID
-   * @param array $parameters    TODO: to be definied. Maybe for only to restrict search (like 'only copies')
+   * @param int $contact_id a contact ID
+   * @param array $parameters TODO: to be definied. Maybe for only to restrict search (like 'only copies')
    *
    * @return array
    *   array of CRM_Donrec_Logic_Receipt instances
@@ -315,6 +324,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * @param string|null $issue_timestamp timestamp (to be parsed with strtotime)
    * @param int $issue_timestamp_precision +/- deviation from timestamp in seconds
    * @param string|null $status receipt status
+   *
    * @return array receipt IDs
    */
   public static function getReceiptIDsByContributionID(
@@ -324,10 +334,10 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     $status = NULL
   ) {
     $receipt_ids = [];
-    $receipt_table   = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
-    $item_table      = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
-    $receipt_fields  = self::getCustomFields();
-    $item_fields     = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
+    $receipt_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
+    $item_table = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt_item');
+    $receipt_fields = self::getCustomFields();
+    $item_fields = CRM_Donrec_Logic_ReceiptItem::getCustomFields();
 
     // generate timestamp clause
     if ($issue_timestamp) {
@@ -389,6 +399,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * This method should be HIGHLY optimized
    *
    * @param int $contribution_id
+   *
    * @return bool
    *   TRUE if there is a VALID donation receipt, FALSE otherwise
    */
@@ -403,6 +414,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Returns the id of this receipt
+   *
    * @return int
    */
   public function getId() {
@@ -421,6 +433,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Checks whether this receipt is an original
+   *
    * @return bool TRUE if the receipt is an original otherwise FALSE
    */
   public function isOriginal() {
@@ -441,7 +454,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     if (self::$_custom_fields === NULL) {
       // get the ids of all relevant custom fields
       $params = [
-        'name'     => 'zwb_donation_receipt',
+        'name' => 'zwb_donation_receipt',
       ];
       $custom_group = civicrm_api3('CustomGroup', 'getsingle', $params);
       if (isset($custom_group['is_error'])) {
@@ -453,7 +466,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
       $params = [
         'custom_group_id' => $custom_group['id'],
-        'option.limit'    => 999,
+        'option.limit' => 999,
       ];
       $custom_fields = civicrm_api3('CustomField', 'get', $params);
       if ($custom_fields['is_error'] != 0) {
@@ -478,7 +491,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   public function getAllTokens() {
-  // phpcs:enable
+    // phpcs:enable
     $values = [];
 
     $expected_fields = CRM_Donrec_Logic_ReceiptTokens::$STORED_TOKENS;
@@ -593,7 +606,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // add dynamically created tokens
-    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values, self::getProfile());
+    CRM_Donrec_Logic_ReceiptTokens::addDynamicTokens($values, $this->getProfile());
 
     return $values;
   }
@@ -613,6 +626,7 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
 
   /**
    * Delete original-file if exists
+   *
    * @return bool TRUE for success, FALSE for failure
    */
   public function deleteOriginalFile() {
@@ -653,14 +667,16 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
   /**
    * get the profile object that was used to create this receipt
    */
-  public function getProfile() {
+  public function getProfile(): CRM_Donrec_Logic_Profile {
     $receipt_table_name = CRM_Donrec_DataStructure::getTableName('zwb_donation_receipt');
     $profile_column_name = CRM_Donrec_DataStructure::getCustomFields('zwb_donation_receipt')['profile_id'];
-    $profile_id = (int) CRM_Core_DAO::singleValueQuery(
+    $profile_id = CRM_Core_DAO::singleValueQuery(
       "SELECT `$profile_column_name` FROM `$receipt_table_name` WHERE `id` = %1",
       [1 => [$this->Id, 'Integer']]
     );
-    return CRM_Donrec_Logic_Profile::getProfile($profile_id);
+    return CRM_Donrec_Logic_Profile::getProfile(
+      NULL !== $profile_id && '' !== $profile_id ? (int) $profile_id : NULL
+    );
   }
 
 }
