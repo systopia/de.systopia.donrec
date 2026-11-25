@@ -80,14 +80,7 @@ class CRM_Donrec_Logic_Profile {
    * load setting entity with given ID
    */
   public function __construct(?int $profile_id = NULL) {
-    $all_profiles = self::getAllData();
-    if (NULL !== $profile_id && isset($all_profiles[$profile_id])) {
-      $profile_data = $all_profiles[$profile_id];
-    }
-    else {
-      $profile_data = CRM_Donrec_Logic_Profile::defaultProfileData();
-    }
-
+    $profile_data = self::getProfileData($profile_id);
     $this->name = $profile_data['name'];
     $this->id = (int) $profile_data['id'];
     $this->data = $profile_data['data'] ?? [];
@@ -102,12 +95,33 @@ class CRM_Donrec_Logic_Profile {
   }
 
   /**
-   * @param int|numeric-string $profile_id
+   * @param int|null $profile_id
+   *
+   * @return array<string, mixed>
+   */
+  private static function getProfileData(?int $profile_id = NULL): array {
+    $all_profiles = self::getAllData();
+    if (NULL !== $profile_id && $profile_id > 0 && isset($all_profiles[$profile_id])) {
+      return $all_profiles[$profile_id];
+    }
+
+    foreach ($all_profiles as $profile) {
+      if (isset($profile['is_default']) && (bool) $profile['is_default']) {
+        return $profile;
+      }
+    }
+
+    return self::defaultProfileData();
+  }
+
+  /**
+   * @param int|string|null $profile_id
    *
    * @return \CRM_Donrec_Logic_Profile
    */
-  public static function getProfile(int|string $profile_id): self {
-    return new self((int) $profile_id);
+  public static function getProfile(int|string|null $profile_id = NULL): self {
+    $id = (NULL !== $profile_id && '' !== $profile_id) ? (int) $profile_id : NULL;
+    return new self($id);
   }
 
   /**
@@ -141,13 +155,14 @@ class CRM_Donrec_Logic_Profile {
    *   When no default profile could be found.
    */
   public static function getDefaultProfile() {
-    foreach (self::getAll() as $profile) {
+    $all = self::getAll();
+    foreach ($all as $profile) {
       if ($profile->isDefault()) {
         return $profile;
       }
     }
 
-    throw new Exception(E::ts('Could not find a default profile.'));
+    return new self(NULL);
   }
 
   public static function copyProfile($profile_id) {
@@ -208,7 +223,7 @@ class CRM_Donrec_Logic_Profile {
       $query_params[8] = [$this->template_pdf_format_id, 'Int'];
     }
 
-    if ($this->id) {
+    if ($this->id > 0) {
       $query = "
           UPDATE
             `donrec_profile`
@@ -225,10 +240,9 @@ class CRM_Donrec_Logic_Profile {
         ;";
     }
 
-    /** @var \CRM_Core_DAO $result */
-    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+    CRM_Core_DAO::executeQuery($query, $query_params);
 
-    if (!$this->id) {
+    if ($this->id <= 0) {
       $this->id = (int) CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
     }
   }

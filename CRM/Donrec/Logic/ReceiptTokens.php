@@ -156,10 +156,15 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
    * Takes a full list of token -> values and
    * adds the dynamic tokens
    *
-   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
+   * @param array<string, mixed> $values
+   * @param \CRM_Donrec_Logic_Profile|null $profile
    */
-  public static function addDynamicTokens(&$values, $profile) {
+  // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
+  public static function addDynamicTokens(array &$values, ?CRM_Donrec_Logic_Profile $profile = NULL): void {
   // phpcs:enable
+    if (NULL === $profile) {
+      $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile_id'] ?? NULL);
+    }
     $language = CRM_Donrec_Lang::getLanguage(NULL, $profile);
 
     if (!empty($values['issued_by'])) {
@@ -237,7 +242,6 @@ abstract class CRM_Donrec_Logic_ReceiptTokens {
     }
 
     // ADD watermarks
-    $profile = CRM_Donrec_Logic_Profile::getProfile($values['profile_id'] ?? NULL);
     // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedIf
     if (isset($values['status']) && $values['status'] == 'ORIGINAL') {
     // phpcs:enable

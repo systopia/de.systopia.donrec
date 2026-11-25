@@ -13,7 +13,12 @@ declare(strict_types = 1);
 use Civi\Test;
 use Civi\Test\Api3TestTrait;
 use Civi\Test\CiviEnvBuilder;
+use Civi\Test\ContactTestTrait;
+use Civi\Test\DbTestTrait;
+use Civi\Test\GenericAssertionsTrait;
 use Civi\Test\HeadlessInterface;
+use Civi\Test\LocaleTestTrait;
+use Civi\Test\MailingTestTrait;
 use Civi\Test\TransactionalInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -25,17 +30,29 @@ use PHPUnit\Framework\TestCase;
 abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInterface, TransactionalInterface {
 
   use Api3TestTrait;
-  use \Civi\Test\GenericAssertionsTrait;
-  use \Civi\Test\DbTestTrait;
-  use \Civi\Test\ContactTestTrait;
-  use \Civi\Test\MailingTestTrait;
-  use \Civi\Test\LocaleTestTrait;
+  use GenericAssertionsTrait;
+  use DbTestTrait;
+  use ContactTestTrait;
+  use MailingTestTrait;
+  use LocaleTestTrait;
 
   public function setUpHeadless(): CiviEnvBuilder {
     return Test::headless()
       ->install('civi_contribute')
       ->installMe(__DIR__)
       ->apply();
+  }
+
+  protected function setUp(): void {
+    parent::setUp();
+    // ensure default profile exists
+    $defaultProfileCount = CRM_Core_DAO::singleValueQuery(
+      'SELECT COUNT(*) FROM `donrec_profile` WHERE `is_default` = 1'
+    );
+    if (0 === (int) $defaultProfileCount) {
+      $defaultProfile = new CRM_Donrec_Logic_Profile();
+      $defaultProfile->setDefault(TRUE);
+    }
   }
 
   // ############################################################################
@@ -51,7 +68,7 @@ abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInter
    * @author endres -at- systopia.de
    *         bochan -at- systopia.de
    */
-  public function generateContributions($count = 2) {
+  public function generateContributions(int $count = 2): array {
     $contribution_status_pending = (int) CRM_Donrec_CustomData::getOptionValue(
       'contribution_status',
       'Pending',
@@ -60,21 +77,21 @@ abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInter
     static::assertNotEmpty($contribution_status_pending, "Could not find the 'Pending' contribution status.");
 
     $create_contribution = [
-      'contact_id'              => $this->individualCreate(),
-      'financial_type_id'       => 1,
-      'currency'                => 'EUR',
-      'contribution_status_id'  => $contribution_status_pending,
-      'is_test'                 => 0,
-      'id'                      => NULL,
+      'contact_id' => $this->individualCreate(),
+      'financial_type_id' => 'Donation',
+      'currency' => 'EUR',
+      'contribution_status_id' => $contribution_status_pending,
+      'is_test' => 0,
+      'id' => NULL,
     ];
 
     $create_contribution['payment_instrument_id'] = 1;
     $result = [];
     for ($c = 0; $c < $count; $c++) {
-      $create_contribution['total_amount'] = number_format((float) rand(1, 1000), 2, '.', '');
+      $create_contribution['total_amount'] = number_format((float) random_int(1, 1000), 2, '.', '');
       $create_contribution['receive_date'] = date('YmdHis');
       $contribution = $this->callAPISuccess('Contribution', 'create', $create_contribution);
-      $result[] = $contribution['id'];
+      $result[] = is_array($contribution) ? (int) $contribution['id'] : (int) $contribution;
     }
 
     return $result;
@@ -84,9 +101,8 @@ abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInter
    * Quick clean by emptying tables created for the test.
    *
    * @param array $tablesToTruncate
-   * @param bool $dropCustomValueTables
    */
-  public function quickCleanup(array $tablesToTruncate, $dropCustomValueTables = FALSE): void {
+  public function quickCleanup(array $tablesToTruncate): void {
     CRM_Core_DAO::executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
     foreach ($tablesToTruncate as $table) {
       $sql = "TRUNCATE TABLE $table";

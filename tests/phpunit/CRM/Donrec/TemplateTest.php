@@ -17,6 +17,7 @@ declare(strict_types = 1);
  * @group headless
  */
 class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
+
   private array $tablesToTruncate = [];
 
   protected function setUp(): void {
@@ -33,7 +34,34 @@ class CRM_Donrec_TemplateTest extends CRM_Donrec_BaseTestCase {
    */
   public function testGeneratePDF(): void {
     $values = [
-      'contributor' => ['display_name' => 'TEST CONTRIBUTOR'],
+      'contributor' => [
+        'id' => 1,
+        'display_name' => 'TEST CONTRIBUTOR',
+        'street_address' => 'Spenderstr. 1',
+        'postal_code' => '12345',
+        'city' => 'Musterstadt',
+        'supplemental_address_1' => '',
+        'supplemental_address_2' => '',
+        'country' => 'Deutschland',
+      ],
+      'organisation' => [
+        'display_name' => 'Test Org',
+        'organization_name' => 'Test Organisation e.V.',
+        'street_address' => 'Teststr. 1',
+        'supplemental_address_1' => '',
+        'supplemental_address_2' => '',
+        'postal_code' => '12345',
+        'city' => 'Musterstadt',
+      ],
+      'addressee' => [
+        'display_name' => 'Test Empfänger',
+        'street_address' => 'Teststr. 2',
+        'supplemental_address_1' => '',
+        'supplemental_address_2' => '',
+        'postal_code' => '12345',
+        'city' => 'Musterstadt',
+        'country' => 'Deutschland',
+      ],
       'total' => 100,
       'total_text' => 'ein hundert Euro',
     ];
