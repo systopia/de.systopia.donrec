@@ -73,8 +73,7 @@ abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInter
     for ($c = 0; $c < $count; $c++) {
       $create_contribution['total_amount'] = number_format((float) rand(1, 1000), 2, '.', '');
       $create_contribution['receive_date'] = date('YmdHis');
-      $contribution = $this->callAPISuccess('Contribution', 'create', $create_contribution);
-      $result[] = $contribution['id'];
+      $result[] = (int) $this->callAPISuccess('Contribution', 'create', $create_contribution, 'id');
     }
 
     return $result;
