@@ -2342,18 +2342,6 @@ parameters:
 			path: CRM/Donrec/Logic/Profile.php
 
 		-
-			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
-			identifier: booleanNot.exprNotBoolean
-			count: 1
-			path: CRM/Donrec/Logic/Profile.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, int given\.$#'
-			identifier: if.condNotBoolean
-			count: 1
-			path: CRM/Donrec/Logic/Profile.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
@@ -4441,24 +4429,6 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 3
 			path: tests/phpunit/CRM/Donrec/PdfcryptTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''CRM_Donrec_Logic_Profile'' and CRM_Donrec_Logic_Profile will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 4
-			path: tests/phpunit/CRM/Donrec/ProfileTest.php
-
-		-
-			message: '#^Class CRM_Donrec_Upgrader does not have a constructor and must be instantiated without any parameters\.$#'
-			identifier: new.noConstructor
-			count: 1
-			path: tests/phpunit/CRM/Donrec/ProfileTest.php
-
-		-
-			message: '#^Property CRM_Donrec_ProfileTest\:\:\$tablesToTruncate type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/phpunit/CRM/Donrec/ProfileTest.php
 
 		-
 			message: '#^Method CRM_Donrec_SnapshotTest\:\:testSnapshotConflict\(\) has no return type specified\.$#'

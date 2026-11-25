@@ -111,10 +111,6 @@ class CRM_Donrec_Logic_Profile {
       }
     }
 
-    if (count($all_profiles) > 0) {
-      return reset($all_profiles);
-    }
-
     return self::defaultProfileData();
   }
 
@@ -164,10 +160,6 @@ class CRM_Donrec_Logic_Profile {
       if ($profile->isDefault()) {
         return $profile;
       }
-    }
-
-    if (count($all) > 0) {
-      return reset($all);
     }
 
     return new self(NULL);
@@ -231,7 +223,17 @@ class CRM_Donrec_Logic_Profile {
       $query_params[8] = [$this->template_pdf_format_id, 'Int'];
     }
 
-    if ($this->id) {
+    if ($this->id <= 0) {
+      $existing_id = (int) CRM_Core_DAO::singleValueQuery(
+        'SELECT `id` FROM `donrec_profile` WHERE `name` = %1 LIMIT 1',
+        [1 => [$this->name, 'String']]
+      );
+      if ($existing_id > 0) {
+        $this->id = $existing_id;
+      }
+    }
+
+    if ($this->id > 0) {
       $query = "
           UPDATE
             `donrec_profile`
@@ -248,10 +250,9 @@ class CRM_Donrec_Logic_Profile {
         ;";
     }
 
-    /** @var \CRM_Core_DAO $result */
-    $result = CRM_Core_DAO::executeQuery($query, $query_params);
+    CRM_Core_DAO::executeQuery($query, $query_params);
 
-    if (!$this->id) {
+    if ($this->id <= 0) {
       $this->id = (int) CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
     }
   }
