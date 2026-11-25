@@ -43,6 +43,18 @@ abstract class CRM_Donrec_BaseTestCase extends TestCase implements HeadlessInter
       ->apply();
   }
 
+  protected function setUp(): void {
+    parent::setUp();
+    // ensure default profile exists
+    $defaultProfileCount = CRM_Core_DAO::singleValueQuery(
+      'SELECT COUNT(*) FROM `donrec_profile` WHERE `is_default` = 1'
+    );
+    if (0 === (int) $defaultProfileCount) {
+      $defaultProfile = new CRM_Donrec_Logic_Profile();
+      $defaultProfile->setDefault(TRUE);
+    }
+  }
+
   // ############################################################################
   //                              Helper functions
   // ############################################################################
