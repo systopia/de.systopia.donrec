@@ -63,9 +63,8 @@ class CRM_Donrec_Logic_Receipt extends CRM_Donrec_Logic_ReceiptTokens {
    *
    * @return \CRM_Core_DAO
    */
-  // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
+  // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.CyclomaticComplexity.MaxExceeded
   public static function _createReceiptFromTokens($tokens) {
-    // phpcs:enable
     // initialize custom field map
     self::getCustomFields();
     $fields = self::$_custom_fields ?? [];
